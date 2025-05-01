@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Spenser</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f7f7f7;
+      }
+
+      .swimlane {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-left: 10px solid transparent;
+      }
+
+      .swimlane-dark {
+        border-left-color: #c60b0b;
+        background-color: #fff5f5;
+      }
+
+      .swimlane-milk {
+        border-left-color: #0735a9;
+        background-color: #f0f4ff;
+      }
+
+      .inventory {
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .button-red {
+        padding: 10px 20px;
+        background-color: #c60b0b;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+      }
+
+      .button-blue {
+        padding: 10px 20px;
+        background-color: #0735a9;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+      }
+
+      .button-red:hover {
+        background-color: #ff4040;
+      }
+
+      .button-blue:hover {
+        background-color: #418aff;
+      }
+
+      form {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      input[type="number"] {
+        padding: 5px;
+        font-size: 1em;
+        width: 80px;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: #ff4444;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        display: none;
+      }
+    </style>
+  </head>
+  <body onload="refreshInventory()">
+    <h1>🍫 Spenser 🍫</h1>
+
+    <div class="swimlane swimlane-dark">
+      <div>
+        <div class="inventory">
+          <p>Dark Chocolate: <span id="inv-dark">...</span></p>
+        </div>
+      </div>
+      <div>
+        <button class="button-red" onclick="dispense('chocolate-dark')">
+          Dispense Dark Chocolate
+        </button>
+      </div>
+      <div>
+        <form onsubmit="return setInventory('dark')">
+          <input type="number" id="darkInput" min="0" placeholder="Set Dark" />
+          <button type="submit" class="button-red">Set</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="swimlane swimlane-milk">
+      <div>
+        <div class="inventory">
+          <p>Milk Chocolate: <span id="inv-milk">...</span></p>
+        </div>
+      </div>
+      <div>
+        <button class="button-blue" onclick="dispense('chocolate-milk')">
+          Dispense Milk Chocolate
+        </button>
+      </div>
+      <div>
+        <form onsubmit="return setInventory('milk')">
+          <input type="number" id="milkInput" min="0" placeholder="Set Milk" />
+          <button type="submit" class="button-blue">Set</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">Out of stock</div>
+
+
+    <div>
+      <strong>Battery Level:</strong> <span id="battery-level">Loading...</span>
+    </div>
+
+
+    <script>
+      async function refreshInventory() {
+        try {
+          const res = await fetch("/InventoryReport");
+          const data = await res.json();
+          const listings = data.inventoryListing || [];
+
+          let darkQty = 0;
+          let milkQty = 0;
+
+          listings.forEach((listing) => {
+            (listing.item || []).forEach((entry) => {
+              const code = entry.item?.coding?.[0]?.code;
+              const quantity = entry.quantity?.value;
+
+              if (code === "chocolate-dark") {
+                darkQty = quantity;
+              } else if (code === "chocolate-milk") {
+                milkQty = quantity;
+              }
+            });
+          });
+
+          document.getElementById("inv-dark").innerText = darkQty;
+          document.getElementById("inv-milk").innerText = milkQty;
+        } catch (err) {
+          console.error("Error loading inventory", err);
+        }
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.style.display = "block";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 3000);
+      }
+
+      async function dispense(type) {
+        const body = {
+          resourceType: "MedicationRequest",
+          id: Math.random().toString(36).substring(2),
+          status: "active",
+          intent: "instance-order",
+          medicationCodeableConcept: {
+            coding: [
+              {
+                code: type,
+                display:
+                  type === "chocolate-dark"
+                    ? "Dark Chocolate"
+                    : "Milk Chocolate",
+              },
+            ],
+          },
+          dosageInstruction: [
+            {
+              text: "One bite",
+            },
+          ],
+          subject: {
+            reference: "Patient/123",
+          },
+        };
+
+        const res = await fetch("/MedicationRequest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        if (res.ok) {
+          await refreshInventory();
+        } else {
+          const errData = await res.json();
+          showToast(errData.message || "Dispense failed");
+        }
+      }
+
+      async function setInventory(type) {
+        const val = document.getElementById(type + "Input").value;
+        if (!val) return false;
+        await fetch(`/resetInventory?${type}=${val}`);
+        await refreshInventory();
+        return false; // prevent form submit redirect
+      }
+
+      window.onload = refreshInventory;
+    </script>
+
+<script>
+  async function refreshBattery() {
+    try {
+      const res = await fetch("/battery");
+      const data = await res.json();
+      document.getElementById("battery-level").innerText = data.percent;
+    } catch (e) {
+      console.error("Battery read failed", e);
+    }
+  }
+
+  setInterval(refreshBattery, 10000); // update every 10s
+  refreshBattery(); // initial
+</script>
+
+<button onclick="fetch('/wifi-settings')">Configure Wi-Fi</button>
+<button onclick="fetch('/wifi-reset')">Forget Wi-Fi</button>
+<button onclick="fetch('/wifi-reboot-config')">Reboot to Config Mode</button>
+  </body>
+</html>

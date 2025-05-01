@@ -1,0 +1,116 @@
+@host = http://192.168.50.108
+@host = http://192.168.4.1
+
+
+
+### POST request to send MedicationRequest
+GET {{host}}/metadata
+Accept: application/fhir+json
+
+
+
+### POST request to send MedicationRequest
+POST {{host}}/MedicationRequest
+Content-Type: application/json
+
+{
+    "resourceType": "MedicationRequest",
+    "id": "med-request-1234",
+    "status": "active",
+    "intent": "instance-order",
+    "medicationCodeableConcept": {
+        "coding": [
+            {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "chocolate-milk",
+                "display": "Milk chocolate"
+            }
+        ]
+    },
+    "dosageInstruction": [
+        {
+            "text": "Just take it."
+        }
+    ],
+    "subject": {
+        "reference": "Patient/123"
+    }
+}
+
+
+### GET InventoryReport
+GET http://192.168.50.108/InventoryReport
+Content-Type: application/json
+
+
+
+### POST request to add InventoryReport
+POST http://192.168.50.108/InventoryReport
+Content-Type: application/json
+
+{
+  "resourceType": "InventoryReport",
+  "status": "draft",
+  "countType": "difference",
+  "inventoryListing": [
+    {
+      "location": {
+        "display": "Bin 1"
+      },
+      "item": [
+        {
+          "item": {
+            "coding": [
+              {
+                "system": "http://example.org/choco-codes",
+                "code": "chocolate-dark",
+                "display": "Dark Chocolate"
+              }
+            ]
+          },
+          "quantity": {
+            "value": 5,
+            "unit": "pieces"
+          },
+          "itemStatus": "available"
+        }
+      ]
+    }
+  ]
+}
+
+
+### POST request to reset InventoryReport
+POST http://192.168.50.108/InventoryReport
+Content-Type: application/json
+
+{
+  "resourceType": "InventoryReport",
+  "status": "draft",
+  "countType": "snapshot",
+  "inventoryListing": [
+    {
+      "location": {
+        "display": "Bin 1"
+      },
+      "item": [
+        {
+          "item": {
+            "coding": [
+              {
+                "system": "http://example.org/choco-codes",
+                "code": "chocolate-dark",
+                "display": "Dark Chocolate"
+              }
+            ]
+          },
+          "quantity": {
+            "value": 17,
+            "unit": "pieces"
+          },
+          "itemStatus": "available"
+        }
+      ]
+    }
+  ]
+}
