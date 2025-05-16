@@ -14,7 +14,7 @@ Below are the 3D parts used to build **Spenser**.
 | **Axle Pin** | ![](pin.png){:width="120px"} | Axle for articulating the arm and pusher. | [STL](pin.stl) • [GLB](pin.glb) • [OBJ](pin.zip) |
 | **Main Tower** | ![](tower.png){:width="120px"} | Extension for storing more chocolates. | [STL](tower.stl) • [GLB](tower.glb) • [OBJ](tower.zip) |
 | **Tower with Motor Mount** | ![](tower-motor.png){:width="120px"} | Tower with servo controller holder. | [STL](tower-motor.stl) • [GLB](tower-motor.glb) • [OBJ](tower-motor.zip) |
-| **Front Face** | ![](face.png){:width="120px"} | Just a pretty face. | [STL](face.stl) • [GLB](face.glb) • [OBJ](face.zip) |
+| **Front Face** | ![](face.png){:width="120px"} | Just a pretty face. FHIR® and the flame icon are the registered trademark of HL7 and are used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of the contents of this product by HL7 | [STL](face.stl) • [GLB](face.glb) • [OBJ](face.zip) |
 {:.table-bordered}
 
 ### Bill of Materials
