@@ -1,0 +1,20 @@
+{
+  "url" : "http://example.com/fhir/spenser",
+  "name" : "Spenser",
+  "title" : "Spenser - a developer's companion",
+  "description" : "Spenser - a developer's companion.",
+  "ig-date" : "2025-05-01",
+  "status" : "active",
+  "package-id" : "jct.fhir.spenser",
+  "ig-ver" : "1.0.0",
+  "date" : "Fri, 16 May, 2025 09:50:35 +0000",
+  "dateISO8601" : "2025-05-16T09:50:35+00:00",
+  "errs" : 5,
+  "warnings" : 12,
+  "hints" : 6,
+  "suppressed-hints" : 0,
+  "suppressed-warnings" : 0,
+  "version" : "5.0.0",
+  "tool" : "5.0.0 (3)",
+  "maxMemory" : 1405951096
+}

@@ -1,0 +1,67 @@
+{
+  "resourceType" : "Bundle",
+  "id" : "cacf9fe8-8d8b-4d6c-baca-d6cc133eef45",
+  "meta" : {
+    "lastUpdated" : "2025-05-16T09:50:35.213+00:00"
+  },
+  "type" : "collection",
+  "entry" : [{
+    "fullUrl" : "http://example.com/fhir/spenser/ValueSet/SpenserMedsVS",
+    "resource" : {
+      "resourceType" : "ValueSet",
+      "text" : {
+        "status" : "generated",
+        "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>ValueSet </b></p><p style=\"border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px\">Expansion performed internally based on <a href=\"CodeSystem-SpenserMeds.html\">codesystem Spenser Medications - Code System v1.0.0 (CodeSystem)</a></p><p>This value set contains 2 concepts</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>System</b></td><td><b>Display (en-US)</b></td></tr><tr><td style=\"white-space:nowrap\"><a name=\"x-http://example.com/fhir/spenser/CodeSystem/SpenserMeds-chocolate-dark\"> </a>\u00a0\u00a0<a href=\"CodeSystem-SpenserMeds.html#SpenserMeds-chocolate-dark\">chocolate-dark</a></td><td>http://example.com/fhir/spenser/CodeSystem/SpenserMeds</td><td>Dark Chocolate</td></tr><tr><td style=\"white-space:nowrap\"><a name=\"x-http://example.com/fhir/spenser/CodeSystem/SpenserMeds-chocolate-milk\"> </a>\u00a0\u00a0<a href=\"CodeSystem-SpenserMeds.html#SpenserMeds-chocolate-milk\">chocolate-milk</a></td><td>http://example.com/fhir/spenser/CodeSystem/SpenserMeds</td><td>Milk Chocolate</td></tr></table></div>"
+      },
+      "url" : "http://example.com/fhir/spenser/ValueSet/SpenserMedsVS",
+      "version" : "1.0.0",
+      "name" : "SpenserMedsVS",
+      "title" : "Spenser Medications - ValueSet",
+      "status" : "active",
+      "date" : "2025-05-16T09:50:06+00:00",
+      "jurisdiction" : [{
+        "coding" : [{
+          "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+          "code" : "001",
+          "display" : "World"
+        }]
+      }],
+      "expansion" : {
+        "identifier" : "urn:uuid:d65016f2-45c5-45e3-bc71-a11bd6593557",
+        "timestamp" : "2025-05-16T09:50:45+00:00",
+        "total" : 2,
+        "offset" : 0,
+        "parameter" : [{
+          "name" : "displayLanguage",
+          "valueCode" : "en-US"
+        },
+        {
+          "name" : "count",
+          "valueInteger" : 1000
+        },
+        {
+          "name" : "offset",
+          "valueInteger" : 0
+        },
+        {
+          "name" : "excludeNested",
+          "valueBoolean" : false
+        },
+        {
+          "name" : "used-codesystem",
+          "valueUri" : "http://example.com/fhir/spenser/CodeSystem/SpenserMeds|1.0.0"
+        }],
+        "contains" : [{
+          "system" : "http://example.com/fhir/spenser/CodeSystem/SpenserMeds",
+          "code" : "chocolate-dark",
+          "display" : "Dark Chocolate"
+        },
+        {
+          "system" : "http://example.com/fhir/spenser/CodeSystem/SpenserMeds",
+          "code" : "chocolate-milk",
+          "display" : "Milk Chocolate"
+        }]
+      }
+    }
+  }]
+}

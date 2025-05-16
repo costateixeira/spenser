@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bundle xmlns="http://hl7.org/fhir">
+  <id value="cacf9fe8-8d8b-4d6c-baca-d6cc133eef45"/>
+  <meta>
+    <lastUpdated value="2025-05-16T09:50:35.213+00:00"/>
+  </meta>
+  <type value="collection"/>
+  <entry>
+    <fullUrl value="http://example.com/fhir/spenser/ValueSet/SpenserMedsVS"/>
+    <resource>
+      <ValueSet>
+        <text>
+          <status value="generated"/>
+          <div xmlns="http://www.w3.org/1999/xhtml">
+            <p class="res-header-id">
+              <b>ValueSet </b>
+            </p>
+            <p style="border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px">Expansion performed internally based on 
+              <a href="CodeSystem-SpenserMeds.html">codesystem Spenser Medications - Code System v1.0.0 (CodeSystem)</a>
+            </p>
+            <p>This value set contains 2 concepts</p>
+            <table class="codes">
+              <tr>
+                <td style="white-space:nowrap">
+                  <b>Code</b>
+                </td>
+                <td>
+                  <b>System</b>
+                </td>
+                <td>
+                  <b>Display (en-US)</b>
+                </td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <a name="x-http://example.com/fhir/spenser/CodeSystem/SpenserMeds-chocolate-dark"> </a>  
+                  <a href="CodeSystem-SpenserMeds.html#SpenserMeds-chocolate-dark">chocolate-dark</a>
+                </td>
+                <td>http://example.com/fhir/spenser/CodeSystem/SpenserMeds</td>
+                <td>Dark Chocolate</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <a name="x-http://example.com/fhir/spenser/CodeSystem/SpenserMeds-chocolate-milk"> </a>  
+                  <a href="CodeSystem-SpenserMeds.html#SpenserMeds-chocolate-milk">chocolate-milk</a>
+                </td>
+                <td>http://example.com/fhir/spenser/CodeSystem/SpenserMeds</td>
+                <td>Milk Chocolate</td>
+              </tr>
+            </table>
+          </div>
+        </text>
+        <url value="http://example.com/fhir/spenser/ValueSet/SpenserMedsVS"/>
+        <version value="1.0.0"/>
+        <name value="SpenserMedsVS"/>
+        <title value="Spenser Medications - ValueSet"/>
+        <status value="active"/>
+        <date value="2025-05-16T09:50:06+00:00"/>
+        <jurisdiction>
+          <coding>
+            <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+            <code value="001"/>
+            <display value="World"/>
+          </coding>
+        </jurisdiction>
+        <expansion>
+          <identifier value="urn:uuid:d65016f2-45c5-45e3-bc71-a11bd6593557"/>
+          <timestamp value="2025-05-16T09:50:45+00:00"/>
+          <total value="2"/>
+          <offset value="0"/>
+          <parameter>
+            <name value="displayLanguage"/>
+            <valueCode value="en-US"/>
+          </parameter>
+          <parameter>
+            <name value="count"/>
+            <valueInteger value="1000"/>
+          </parameter>
+          <parameter>
+            <name value="offset"/>
+            <valueInteger value="0"/>
+          </parameter>
+          <parameter>
+            <name value="excludeNested"/>
+            <valueBoolean value="false"/>
+          </parameter>
+          <parameter>
+            <name value="used-codesystem"/>
+            <valueUri value="http://example.com/fhir/spenser/CodeSystem/SpenserMeds|1.0.0"/>
+          </parameter>
+          <contains>
+            <system value="http://example.com/fhir/spenser/CodeSystem/SpenserMeds"/>
+            <code value="chocolate-dark"/>
+            <display value="Dark Chocolate"/>
+          </contains>
+          <contains>
+            <system value="http://example.com/fhir/spenser/CodeSystem/SpenserMeds"/>
+            <code value="chocolate-milk"/>
+            <display value="Milk Chocolate"/>
+          </contains>
+        </expansion>
+      </ValueSet>
+    </resource>
+  </entry>
+</Bundle>

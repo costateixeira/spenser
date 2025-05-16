@@ -1,0 +1,9 @@
+Source File	Size	loadResources	load	generateSnapshots	load-configure	scan	loadDepInfo	loadInfo	checkR4R4B	generateNarratives	validate	loadLists	checkConformanceResources	checkConformanceResources2	checkConformanceResources3	generateLogicalMaps	validateExpressions	scanForUsageStats	checkURLsUnique	processProvenanceDetails	generate1	generate2	generateLogicals	makeDependencies	generateExampleZip	generateValidationPack	scanProfilesForR5	scanExamplesForR5
+/fsh-generated/resources/ImplementationGuide-jct.fhir.spenser.json	4991	-	0	0	0	0	0	0	3	84	0	0	0	0	0	0	0	0	0	0	55	65	0	0	0	2	0	1
+fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement.json	1010	23	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	1	0	0	26	33	0	0	0	1	0	0
+fsh-generated/resources/CodeSystem-SpenserMeds.json	512	17	0	0	0	0	0	0	0	14	0	0	1	0	0	0	0	0	0	0	15	1283	0	0	0	0	0	0
+fsh-generated/resources/InventoryReport-Add5Milk.json	829	18	0	0	0	0	0	0	0	13	0	0	0	0	0	0	0	0	0	0	10	6	0	0	0	0	0	0
+fsh-generated/resources/InventoryReport-SetDarkTo17.json	831	17	0	0	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	16	5	0	0	0	0	0	0
+fsh-generated/resources/MedicationRequest-med-request-1234.json	604	18	0	0	0	0	0	0	0	12	0	0	0	0	0	0	0	0	0	0	13	7	0	0	0	0	0	0
+fsh-generated/resources/StructureDefinition-SpenserRequest.json	1169	19	0	84	0	0	0	0	0	62	0	0	0	0	0	0	0	1	0	0	195	873	0	0	0	11	0	1
+fsh-generated/resources/ValueSet-SpenserMedsVS.json	427	12	0	0	1	0	0	0	1	62	0	0	0	0	0	0	0	0	0	0	9	159	0	0	0	1	0	0
