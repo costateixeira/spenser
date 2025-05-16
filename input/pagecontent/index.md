@@ -10,7 +10,7 @@ This open source specification provides everything you need to create your own S
 **This documentation and set of artefacts are still undergoing development.**  
 {:.stu-note}
 
-
+**FHIR® and the flame icon are the registered trademark of HL7 and are used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of the contents of this product by HL7**
 
 ### Background
 
