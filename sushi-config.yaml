@@ -8,8 +8,8 @@
 
 
 id: jct.fhir.spenser
-canonical: http://example.com/fhir/spenser
-url: http://example.com/fhir/spenser
+canonical: http://costateixeira.github.io/spenser
+# url: http://example.com/fhir/spenser
 name: Spenser
 title: "Spenser - a developer's companion"
 description: Spenser - a developer's companion.
