@@ -6,7 +6,7 @@ Parent: MedicationRequest
 * medication from SpenserMedsVS
 * dispenseRequest.quantity.value = 1
 * medication.concept.coding.code 1..1
-* medication.concept from SpenserMedsVS
+* medication from SpenserMedsVS
 
 
 ValueSet: SpenserMedsVS
