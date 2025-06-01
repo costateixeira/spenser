@@ -1,0 +1,36 @@
+{
+  "resourceType" : "InventoryReport",
+  "id" : "Add5Milk",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: InventoryReport Add5Milk</b></p><a name=\"Add5Milk\"> </a><a name=\"hcAdd5Milk\"> </a><a name=\"Add5Milk-en-US\"> </a><p><b>status</b>: Draft</p><p><b>countType</b>: Difference</p><p><b>reportedDateTime</b>: 2025-05-01 12:00:00+0000</p><blockquote><p><b>inventoryListing</b></p><p><b>location</b>: Bin 1</p><p><b>itemStatus</b>: <span title=\"Codes:\">available</span></p><blockquote><p><b>item</b></p><p><b>quantity</b>: 5 pieces</p><h3>Items</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}\">Milk chocolate</span></td></tr></table></blockquote></blockquote></div>"
+  },
+  "status" : "draft",
+  "countType" : "difference",
+  "reportedDateTime" : "2025-05-01T12:00:00Z",
+  "inventoryListing" : [{
+    "location" : {
+      "display" : "Bin 1"
+    },
+    "itemStatus" : {
+      "coding" : [{
+        "code" : "available"
+      }]
+    },
+    "item" : [{
+      "quantity" : {
+        "value" : 5,
+        "unit" : "pieces"
+      },
+      "item" : {
+        "concept" : {
+          "coding" : [{
+            "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+            "code" : "chocolate-milk",
+            "display" : "Milk chocolate"
+          }]
+        }
+      }
+    }]
+  }]
+}

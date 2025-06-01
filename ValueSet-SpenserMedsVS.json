@@ -1,0 +1,47 @@
+{
+  "resourceType" : "ValueSet",
+  "id" : "SpenserMedsVS",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: ValueSet SpenserMedsVS</b></p><a name=\"SpenserMedsVS\"> </a><a name=\"hcSpenserMedsVS\"> </a><a name=\"SpenserMedsVS-en-US\"> </a><ul><li>Include all codes defined in <a href=\"CodeSystem-SpenserMeds.html\"><code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code></a></li></ul></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS",
+  "version" : "1.0.0",
+  "name" : "SpenserMedsVS",
+  "title" : "Spenser Medications - ValueSet",
+  "status" : "active",
+  "date" : "2025-06-01T17:26:20+00:00",
+  "publisher" : "Zeora",
+  "contact" : [{
+    "name" : "Zeora",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "http://example.com/committees"
+    },
+    {
+      "system" : "email",
+      "value" : "my-group@example.com"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A value set of medications that Spenser can dispense.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "compose" : {
+    "include" : [{
+      "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
+    }]
+  }
+}

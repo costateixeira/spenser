@@ -1,0 +1,36 @@
+[
+  {
+    "id" : "SpenserFHIRCapabilityStatement",
+    "type" : "CapabilityStatement",
+    "url" : "http://costateixeira.github.io/spenser/CapabilityStatement/SpenserFHIRCapabilityStatement",
+    "version" : "1.0.0"
+  },
+  {
+    "id" : "SpenserMeds",
+    "type" : "CodeSystem",
+    "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+    "version" : "1.0.0",
+    "name" : "SpenserMeds"
+  },
+  {
+    "id" : "jct.fhir.spenser",
+    "type" : "ImplementationGuide",
+    "url" : "http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser",
+    "version" : "1.0.0",
+    "name" : "Spenser"
+  },
+  {
+    "id" : "SpenserRequest",
+    "type" : "StructureDefinition",
+    "url" : "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest",
+    "version" : "1.0.0",
+    "name" : "SpenserRequest"
+  },
+  {
+    "id" : "SpenserMedsVS",
+    "type" : "ValueSet",
+    "url" : "http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS",
+    "version" : "1.0.0",
+    "name" : "SpenserMedsVS"
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "resourceType" : "CodeSystem",
+  "id" : "SpenserMeds",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: CodeSystem SpenserMeds</b></p><a name=\"SpenserMeds\"> </a><a name=\"hcSpenserMeds\"> </a><a name=\"SpenserMeds-en-US\"> </a><p>This  code system <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code> defines the following codes:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Display</b></td></tr><tr><td style=\"white-space:nowrap\">chocolate-dark<a name=\"SpenserMeds-chocolate-dark\"> </a></td><td>Dark Chocolate</td></tr><tr><td style=\"white-space:nowrap\">chocolate-milk<a name=\"SpenserMeds-chocolate-milk\"> </a></td><td>Milk Chocolate</td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+  "version" : "1.0.0",
+  "name" : "SpenserMeds",
+  "title" : "Spenser Medications - Code System",
+  "status" : "active",
+  "date" : "2025-06-01T17:26:20+00:00",
+  "publisher" : "Zeora",
+  "contact" : [{
+    "name" : "Zeora",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "http://example.com/committees"
+    },
+    {
+      "system" : "email",
+      "value" : "my-group@example.com"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A code system of medications that Spenser can dispense.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "content" : "complete",
+  "count" : 2,
+  "concept" : [{
+    "code" : "chocolate-dark",
+    "display" : "Dark Chocolate"
+  },
+  {
+    "code" : "chocolate-milk",
+    "display" : "Milk Chocolate"
+  }]
+}

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bundle xmlns="http://hl7.org/fhir">
+  <id value="02904574-0c0e-45ab-9a4f-5903c17833e2"/>
+  <meta>
+    <lastUpdated value="2025-06-01T17:26:48.053+00:00"/>
+  </meta>
+  <type value="collection"/>
+  <entry>
+    <fullUrl value="http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS"/>
+    <resource>
+      <ValueSet>
+        <text>
+          <status value="generated"/>
+          <div xmlns="http://www.w3.org/1999/xhtml">
+            <p class="res-header-id"/>
+            <p style="border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px">Expansion performed internally based on 
+              <a href="CodeSystem-SpenserMeds.html">codesystem Spenser Medications - Code System v1.0.0 (CodeSystem)</a>
+            </p>
+            <p>This value set contains 2 concepts</p>
+            <table class="codes">
+              <tr>
+                <td style="white-space:nowrap">
+                  <b>Code</b>
+                </td>
+                <td>
+                  <b>System</b>
+                </td>
+                <td>
+                  <b>Display (en-US)</b>
+                </td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <a name="x-http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds-chocolate-dark"> </a>  
+                  <a href="CodeSystem-SpenserMeds.html#SpenserMeds-chocolate-dark">chocolate-dark</a>
+                </td>
+                <td>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</td>
+                <td>Dark Chocolate</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <a name="x-http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds-chocolate-milk"> </a>  
+                  <a href="CodeSystem-SpenserMeds.html#SpenserMeds-chocolate-milk">chocolate-milk</a>
+                </td>
+                <td>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</td>
+                <td>Milk Chocolate</td>
+              </tr>
+            </table>
+          </div>
+        </text>
+        <url value="http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS"/>
+        <version value="1.0.0"/>
+        <name value="SpenserMedsVS"/>
+        <title value="Spenser Medications - ValueSet"/>
+        <status value="active"/>
+        <date value="2025-06-01T17:26:20+00:00"/>
+        <jurisdiction>
+          <coding>
+            <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+            <code value="001"/>
+            <display value="World"/>
+          </coding>
+        </jurisdiction>
+        <expansion>
+          <identifier value="urn:uuid:1de390d4-306c-40d0-8dd4-95e94766ea29"/>
+          <timestamp value="2025-06-01T17:27:00+00:00"/>
+          <total value="2"/>
+          <offset value="0"/>
+          <parameter>
+            <name value="displayLanguage"/>
+            <valueCode value="en-US"/>
+          </parameter>
+          <parameter>
+            <name value="count"/>
+            <valueInteger value="1000"/>
+          </parameter>
+          <parameter>
+            <name value="offset"/>
+            <valueInteger value="0"/>
+          </parameter>
+          <parameter>
+            <name value="excludeNested"/>
+            <valueBoolean value="false"/>
+          </parameter>
+          <parameter>
+            <name value="used-codesystem"/>
+            <valueUri value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds|1.0.0"/>
+          </parameter>
+          <contains>
+            <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+            <code value="chocolate-dark"/>
+            <display value="Dark Chocolate"/>
+          </contains>
+          <contains>
+            <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+            <code value="chocolate-milk"/>
+            <display value="Milk Chocolate"/>
+          </contains>
+        </expansion>
+      </ValueSet>
+    </resource>
+  </entry>
+</Bundle>

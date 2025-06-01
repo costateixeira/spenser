@@ -1,0 +1,48 @@
+Spenser : Validation Results
+=========================================
+
+err = 2, warn = 11, info = 6
+$--
+Generated $--. FHIR version $-- for jct.fhir.spenser#$-- (canonical = http://costateixeira.github.io/spenser)
+ Build Errors : 4 / 5 / 0
+ /github/workspace/fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement : 0 / 0 / 2
+ /github/workspace/fsh-generated/resources/CodeSystem-SpenserMeds : 0 / 2 / 3
+ /github/workspace/fsh-generated/resources/ImplementationGuide-jct.fhir.spenser : 0 / 0 / 2
+ /github/workspace/fsh-generated/resources/InventoryReport-Add5Milk : 0 / 1 / 1
+ /github/workspace/fsh-generated/resources/InventoryReport-SetDarkTo17 : 0 / 1 / 1
+ /github/workspace/fsh-generated/resources/MedicationRequest-med-request-1234 : 2 / 0 / 1
+ /github/workspace/fsh-generated/resources/StructureDefinition-SpenserRequest : 0 / 1 / 2
+ /github/workspace/fsh-generated/resources/ValueSet-SpenserMedsVS : 0 / 1 / 2
+</table>
+== n/a ==
+WARNING: Unable to find ImplementationGuide.definition.resource.description for the resource CapabilityStatement/SpenserFHIRCapabilityStatement.  Descriptions are strongly encouraged if they cannot be inferred from the resource to allow proper population of the artifact list.
+WARNING: Unable to find ImplementationGuide.definition.resource.description for the resource StructureDefinition/SpenserRequest.  Descriptions are strongly encouraged if they cannot be inferred from the resource to allow proper population of the artifact list.
+ERROR: /github/workspace/output/MedicationRequest-med-request-1234.html#/html/body/div/div/div/div/div/div/p/a at Line 221, column 817: The link 'Patient/123' for "Patient/123" cannot be resolved
+ERROR: /github/workspace/output/hardware-3ddesign.html#/html/body/div/div/div/div/div/table/tbody/tr/td/a at Line 215, column 12: The link 'base-body.stl' for "STL" cannot be resolved
+ERROR: /github/workspace/output/hardware-3ddesign.html#/html/body/div/div/div/div/div/table/tbody/tr/td/a at Line 215, column 46: The link 'base-body.glb' for "GLB" cannot be resolved
+ERROR: /github/workspace/output/hardware-3ddesign.html#/html/body/div/div/div/div/div/table/tbody/tr/td/a at Line 215, column 80: The link 'base-body.zip' for "OBJ" cannot be resolved
+WARNING: 1: The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide
+WARNING: 3: An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml, dependency-table-nontech.xhtml] is not included anywhere in the produced implementation guide
+WARNING: 4: The HTML fragment 'globals-table.xhtml' is not included anywhere in the produced implementation guide
+== fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement.json ==
+INFORMATION: CapabilityStatement/SpenserFHIRCapabilityStatement: CapabilityStatement.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+== fsh-generated/resources/CodeSystem-SpenserMeds.json ==
+INFORMATION: CodeSystem/SpenserMeds: CodeSystem.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+INFORMATION: CodeSystem/SpenserMeds: CodeSystem: CodeSystems SHOULD have a stated value for the caseSensitive element so that users know the status and meaning of the code system clearly
+WARNING: CodeSystem/SpenserMeds: CodeSystem: Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.experimental is mandatory, but it is not present
+WARNING: CodeSystem/SpenserMeds: CodeSystem: Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.caseSensitive is mandatory, but it is not present
+== fsh-generated/resources/ImplementationGuide-jct.fhir.spenser.json ==
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+== fsh-generated/resources/InventoryReport-Add5Milk.json ==
+WARNING: InventoryReport/Add5Milk: InventoryReport.inventoryListing[0].itemStatus.coding[0]: Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided
+== fsh-generated/resources/InventoryReport-SetDarkTo17.json ==
+WARNING: InventoryReport/SetDarkTo17: InventoryReport.inventoryListing[0].itemStatus.coding[0]: Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided
+== fsh-generated/resources/MedicationRequest-med-request-1234.json ==
+ERROR: MedicationRequest/med-request-1234: MedicationRequest.subject: Unable to resolve resource with reference 'Patient/123'
+ERROR: MedicationRequest.text.div: Hyperlink 'Patient/123' at 'div/p/a' for 'Patient/123' does not resolve
+== fsh-generated/resources/StructureDefinition-SpenserRequest.json ==
+INFORMATION: StructureDefinition/SpenserRequest: StructureDefinition.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+WARNING: StructureDefinition/SpenserRequest: StructureDefinition.snapshot.element[18].binding: The definition for the element 'MedicationRequest.priority' binds to the value set 'http://hl7.org/fhir/ValueSet/request-priority|5.0.0' which is experimental, but this structure is not labeled as experimental
+== fsh-generated/resources/ValueSet-SpenserMedsVS.json ==
+INFORMATION: ValueSet/SpenserMedsVS: ValueSet.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+WARNING: ValueSet/SpenserMedsVS: ValueSet: Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.experimental is mandatory, but it is not present

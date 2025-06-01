@@ -1,0 +1,18 @@
+{
+  "codeSystems" : [
+    {
+      "url" : "http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS",
+      "version" : "1.0.0",
+      "status" : "active",
+      "name" : "SpenserMedsVS",
+      "title" : "Spenser Medications - ValueSet",
+      "description" : "A value set of medications that Spenser can dispense.",
+      "systems" : [
+        "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
+      ],
+      "uses" : {
+      },
+      "StructureDefinition-SpenserRequest.html" : "SpenserRequest"
+    }
+  ]
+}

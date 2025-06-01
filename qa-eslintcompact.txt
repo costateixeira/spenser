@@ -1,0 +1,29 @@
+Spenser
+=========================================
+
+Generic: line 0, col 0, Warning - Unable to find ImplementationGuide.definition.resource.description for the resource CapabilityStatement/SpenserFHIRCapabilityStatement.  Descriptions are strongly encouraged if they cannot be inferred from the resource to allow proper population of the artifact list. (INVARIANT)
+Generic: line 0, col 0, Warning - Unable to find ImplementationGuide.definition.resource.description for the resource StructureDefinition/SpenserRequest.  Descriptions are strongly encouraged if they cannot be inferred from the resource to allow proper population of the artifact list. (INVARIANT)
+Generic: line 0, col 0, Error - The link 'Patient/123' for "Patient/123" cannot be resolved (NOTFOUND)
+Generic: line 0, col 0, Error - The link 'base-body.stl' for "STL" cannot be resolved (NOTFOUND)
+Generic: line 0, col 0, Error - The link 'base-body.glb' for "GLB" cannot be resolved (NOTFOUND)
+Generic: line 0, col 0, Error - The link 'base-body.zip' for "OBJ" cannot be resolved (NOTFOUND)
+Generic: line 0, col 0, Warning - The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide (NOTFOUND)
+Generic: line 0, col 0, Warning - An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml, dependency-table-nontech.xhtml] is not included anywhere in the produced implementation guide (NOTFOUND)
+Generic: line 0, col 0, Warning - The HTML fragment 'globals-table.xhtml' is not included anywhere in the produced implementation guide (NOTFOUND)
+/github/workspace/fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement.json: line 1, col 6549, Info - Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/CodeSystem-SpenserMeds.json: line 1, col 1482, Info - Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/CodeSystem-SpenserMeds.json: line 0, col 0, Info - CodeSystems SHOULD have a stated value for the caseSensitive element so that users know the status and meaning of the code system clearly (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/CodeSystem-SpenserMeds.json: line 1, col 1633, Warning - Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.experimental is mandatory, but it is not present (REQUIRED)
+/github/workspace/fsh-generated/resources/CodeSystem-SpenserMeds.json: line 1, col 1633, Warning - Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.caseSensitive is mandatory, but it is not present (REQUIRED)
+/github/workspace/fsh-generated/resources/ImplementationGuide-jct.fhir.spenser.json: line 1, col 1217, Info - Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/InventoryReport-Add5Milk.json: line 31, col 8, Warning - Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided (INVALID)
+/github/workspace/fsh-generated/resources/InventoryReport-SetDarkTo17.json: line 31, col 8, Warning - Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided (INVALID)
+/github/workspace/fsh-generated/resources/MedicationRequest-med-request-1234.json: line 27, col 4, Error - Unable to resolve resource with reference 'Patient/123' (STRUCTURE)
+/github/workspace/fsh-generated/resources/MedicationRequest-med-request-1234.json: line 0, col 0, Error - Hyperlink 'Patient/123' at 'div/p/a' for 'Patient/123' does not resolve (INVALID)
+/github/workspace/fsh-generated/resources/StructureDefinition-SpenserRequest.json: line 1, col 24008, Info - Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/StructureDefinition-SpenserRequest.json: line 0, col 0, Warning - The definition for the element 'MedicationRequest.priority' binds to the value set 'http://hl7.org/fhir/ValueSet/request-priority|5.0.0' which is experimental, but this structure is not labeled as experimental (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/ValueSet-SpenserMedsVS.json: line 1, col 1154, Info - Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 (BUSINESSRULE)
+/github/workspace/fsh-generated/resources/ValueSet-SpenserMedsVS.json: line 1, col 1255, Warning - Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.experimental is mandatory, but it is not present (REQUIRED)
+
+err = 2, warn = 11, info = 6
+IG Publisher Version: 2.0.3

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<InventoryReport xmlns="http://hl7.org/fhir">
+  <id value="SetDarkTo17"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p class="res-header-id"><b>Generated Narrative: InventoryReport SetDarkTo17</b></p><a name="SetDarkTo17"> </a><a name="hcSetDarkTo17"> </a><a name="SetDarkTo17-en-US"> </a><p><b>status</b>: Draft</p><p><b>countType</b>: Snapshot</p><p><b>reportedDateTime</b>: 2025-05-01 12:00:00+0000</p><blockquote><p><b>inventoryListing</b></p><p><b>location</b>: Bin 1</p><p><b>itemStatus</b>: <span title="Codes:">available</span></p><blockquote><p><b>item</b></p><p><b>quantity</b>: 17 pieces</p><h3>Items</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}">Dark chocolate</span></td></tr></table></blockquote></blockquote></div>
+  </text>
+  <status value="draft"/>
+  <countType value="snapshot"/>
+  <reportedDateTime value="2025-05-01T12:00:00Z"/>
+  <inventoryListing>
+    <location>
+      <display value="Bin 1"/>
+    </location>
+    <itemStatus>
+      <coding>
+        <code value="available"/>
+      </coding>
+    </itemStatus>
+    <item>
+      <quantity>
+        <value value="17"/>
+        <unit value="pieces"/>
+      </quantity>
+      <item>
+        <concept>
+          <coding>
+            <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+            <code value="chocolate-dark"/>
+            <display value="Dark chocolate"/>
+          </coding>
+        </concept>
+      </item>
+    </item>
+  </inventoryListing>
+</InventoryReport>

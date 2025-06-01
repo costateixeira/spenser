@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CodeSystem xmlns="http://hl7.org/fhir">
+  <id value="SpenserMeds"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p class="res-header-id"><b>Generated Narrative: CodeSystem SpenserMeds</b></p><a name="SpenserMeds"> </a><a name="hcSpenserMeds"> </a><a name="SpenserMeds-en-US"> </a><p>This  code system <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code> defines the following codes:</p><table class="codes"><tr><td style="white-space:nowrap"><b>Code</b></td><td><b>Display</b></td></tr><tr><td style="white-space:nowrap">chocolate-dark<a name="SpenserMeds-chocolate-dark"> </a></td><td>Dark Chocolate</td></tr><tr><td style="white-space:nowrap">chocolate-milk<a name="SpenserMeds-chocolate-milk"> </a></td><td>Milk Chocolate</td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+  <version value="1.0.0"/>
+  <name value="SpenserMeds"/>
+  <title value="Spenser Medications - Code System"/>
+  <status value="active"/>
+  <date value="2025-06-01T17:26:20+00:00"/>
+  <publisher value="Zeora"/>
+  <contact>
+    <name value="Zeora"/>
+    <telecom>
+      <system value="url"/>
+      <value value="http://example.com/committees"/>
+    </telecom>
+    <telecom>
+      <system value="email"/>
+      <value value="my-group@example.com"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="A code system of medications that Spenser can dispense."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <content value="complete"/>
+  <count value="2"/>
+  <concept>
+    <code value="chocolate-dark"/>
+    <display value="Dark Chocolate"/>
+  </concept>
+  <concept>
+    <code value="chocolate-milk"/>
+    <display value="Milk Chocolate"/>
+  </concept>
+</CodeSystem>

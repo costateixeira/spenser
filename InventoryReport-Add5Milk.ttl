@@ -1,0 +1,46 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/InventoryReport/Add5Milk> a fhir:InventoryReport ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "Add5Milk"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: InventoryReport Add5Milk</b></p><a name=\"Add5Milk\"> </a><a name=\"hcAdd5Milk\"> </a><a name=\"Add5Milk-en-US\"> </a><p><b>status</b>: Draft</p><p><b>countType</b>: Difference</p><p><b>reportedDateTime</b>: 2025-05-01 12:00:00+0000</p><blockquote><p><b>inventoryListing</b></p><p><b>location</b>: Bin 1</p><p><b>itemStatus</b>: <span title=\"Codes:\">available</span></p><blockquote><p><b>item</b></p><p><b>quantity</b>: 5 pieces</p><h3>Items</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}\">Milk chocolate</span></td></tr></table></blockquote></blockquote></div>"^^rdf:XMLLiteral
+  ] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:countType [ fhir:v "difference"] ; # 
+  fhir:reportedDateTime [ fhir:v "2025-05-01T12:00:00Z"^^xsd:dateTime] ; # 
+  fhir:inventoryListing ( [
+     fhir:location [
+       fhir:display [ fhir:v "Bin 1" ]
+     ] ;
+     fhir:itemStatus [
+       fhir:coding ( [
+         fhir:code [ fhir:v "available" ]
+       ] )
+     ] ;
+     fhir:item ( [
+       fhir:quantity [
+         fhir:value [ fhir:v "5"^^xsd:decimal ] ;
+         fhir:unit [ fhir:v "pieces" ]
+       ] ;
+       fhir:item [
+         fhir:concept [
+           fhir:coding ( [
+             fhir:system [ fhir:v "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"^^xsd:anyURI ] ;
+             fhir:code [ fhir:v "chocolate-milk" ] ;
+             fhir:display [ fhir:v "Milk chocolate" ]
+           ] )
+         ]
+       ]
+     ] )
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

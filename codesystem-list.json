@@ -1,0 +1,12 @@
+{
+  "codeSystems" : [
+    {
+      "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+      "version" : "1.0.0",
+      "status" : "active",
+      "name" : "SpenserMeds",
+      "title" : "Spenser Medications - Code System",
+      "description" : "A code system of medications that Spenser can dispense."
+    }
+  ]
+}

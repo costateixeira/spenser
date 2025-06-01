@@ -1,0 +1,2 @@
+URL,Version,Status,OIDs,Name,Title,Descriptino,Uses,Used,Sources
+http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS,1.0.0,active,,SpenserMedsVS,Spenser Medications - ValueSet,"A value set of medications that Spenser can dispense.","StructureDefinition/SpenserRequest","Internal"
