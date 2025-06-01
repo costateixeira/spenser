@@ -6,14 +6,14 @@ This is an empty IG
 ### Publication
 This ImplementationGuide is published in the following locations:
 
-Continuous Build: __http://build.fhir.org/ig/<handle>/<repo>/branches/main/index.html__  
+Continuous Build: __http://build.fhir.org/ig/costateixeira/spenser/index.html__  
 Canonical / permanent URL: 
 <br> </br>
 
 ### Issues
 Issues and change requests are managed here:  
 
-Issues:  __https://github.com/<handle>/<repo>/issues__  
-Kanban board:  __https://github.com/<handle>/<repo>/projects/1__  
+Issues:  __https://github.com/costateixeira/spenser/issues__  
+Kanban board:  __https://github.com/costateixeira/spenser/projects/1__  
 
 ---
