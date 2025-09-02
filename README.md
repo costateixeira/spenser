@@ -17,3 +17,4 @@ Issues:  __https://github.com/costateixeira/spenser/issues__
 Kanban board:  __https://github.com/costateixeira/spenser/projects/1__  
 
 ---
+
