@@ -114,3 +114,18 @@ Content-Type: application/json
     }
   ]
 }
+
+
+### Read this unit's stored settings
+GET {{host}}/settings
+Accept: application/json
+
+
+### Update this unit's settings (persisted in NVS)
+GET {{host}}/setSettings?servoDark=3&servoMilk=2&angleRest=0&anglePush=97&returnDelayMs=300
+Accept: application/json
+
+
+### Restore the compiled-in defaults
+GET {{host}}/resetSettings
+Accept: application/json

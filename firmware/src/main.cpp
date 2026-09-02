@@ -31,10 +31,86 @@ unsigned long lastIpReportTime = 0;
 unsigned long ipReportInterval = 2000;
 
 
-int dispenseAngle =  97;
+// ---- Per-unit settings, persisted in NVS (namespace "spenser") ----
+// Defaults are only used the first time a unit boots, or after /resetSettings.
+struct Settings
+{
+  int servoDark;     // servo channel driving the dark (red) lane
+  int servoMilk;     // servo channel driving the milk (blue) lane
+  int angleRest;     // angle the arm sits at when idle
+  int anglePush;     // angle at maximum push
+  int returnDelayMs; // how long to hold the push before the arm comes back
+};
+
+const Settings DEFAULT_SETTINGS = {3, 2, 0, 97, 300};
+Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
 int inventoryMilk = 15;
+
+void loadSettings()
+{
+  prefs.begin("spenser", true);
+  settings.servoDark = prefs.getInt("servoDark", settings.servoDark);
+  settings.servoMilk = prefs.getInt("servoMilk", settings.servoMilk);
+  settings.angleRest = prefs.getInt("angleRest", settings.angleRest);
+  settings.anglePush = prefs.getInt("anglePush", settings.anglePush);
+  settings.returnDelayMs = prefs.getInt("returnMs", settings.returnDelayMs);
+  prefs.end();
+
+  Serial.printf("Settings: servoDark=%d servoMilk=%d rest=%d push=%d returnMs=%d\n",
+                settings.servoDark, settings.servoMilk, settings.angleRest,
+                settings.anglePush, settings.returnDelayMs);
+}
+
+void saveSettings()
+{
+  prefs.begin("spenser", false);
+  prefs.putInt("servoDark", settings.servoDark);
+  prefs.putInt("servoMilk", settings.servoMilk);
+  prefs.putInt("angleRest", settings.angleRest);
+  prefs.putInt("anglePush", settings.anglePush);
+  prefs.putInt("returnMs", settings.returnDelayMs);
+  prefs.end();
+}
+
+String settingsJson()
+{
+  StaticJsonDocument<256> doc;
+  doc["servoDark"] = settings.servoDark;
+  doc["servoMilk"] = settings.servoMilk;
+  doc["angleRest"] = settings.angleRest;
+  doc["anglePush"] = settings.anglePush;
+  doc["returnDelayMs"] = settings.returnDelayMs;
+
+  String out;
+  serializeJson(doc, out);
+  return out;
+}
+
+// Read an int parameter from either the query string or a posted form body.
+bool paramInt(AsyncWebServerRequest *request, const char *name, int &out)
+{
+  if (request->hasParam(name))
+  {
+    out = request->getParam(name)->value().toInt();
+    return true;
+  }
+  if (request->hasParam(name, true))
+  {
+    out = request->getParam(name, true)->value().toInt();
+    return true;
+  }
+  return false;
+}
+
+// One push-and-return cycle on the given servo channel, using the unit's settings.
+void dispenseServo(int channel)
+{
+  AtomicMotion.setServoAngle(channel, settings.anglePush);
+  delay(settings.returnDelayMs);
+  AtomicMotion.setServoAngle(channel, settings.angleRest);
+}
 
 String createMedicationDispense(const String &id, const String &code, const String &patientRef)
 {
@@ -101,9 +177,7 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
       inventoryDark--;
       rgb.setPixelColor(0, rgb.Color(128, 0, 0)); // red
       rgb.show();
-      AtomicMotion.setServoAngle(3, dispenseAngle);
-      delay(300);
-      AtomicMotion.setServoAngle(3, 0);
+      dispenseServo(settings.servoDark);
       String response = createMedicationDispense(id, medicationCode, patientReference);
       request->send(200, "application/json", response);
     }
@@ -139,9 +213,7 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
       inventoryMilk--;
       rgb.setPixelColor(0, rgb.Color(0, 0, 200)); // blue
       rgb.show();
-      AtomicMotion.setServoAngle(2, dispenseAngle);
-      delay(300);
-      AtomicMotion.setServoAngle(2, 0);
+      dispenseServo(settings.servoMilk);
       String response = createMedicationDispense(id, medicationCode, patientReference);
       request->send(200, "application/json", response);
     }
@@ -188,6 +260,8 @@ void setup()
   Serial.begin(115200);
   delay(500);
   Serial.println("Setup starting");
+
+  loadSettings();
 
   pinMode(buttonPin, INPUT_PULLUP);
   bool resetWiFi = false;
@@ -520,8 +594,8 @@ void setup()
     rgb.setPixelColor(0, rgb.Color(0, 0, 0));  // Turn off the LED
     rgb.show();
 
-    AtomicMotion.setServoAngle(3, 0);  // Reset Servo 1 to 0 degrees
-    AtomicMotion.setServoAngle(2, 0);  // Reset Servo 2 to 0 degrees
+    AtomicMotion.setServoAngle(settings.servoDark, settings.angleRest);
+    AtomicMotion.setServoAngle(settings.servoMilk, settings.angleRest);
 
     request->send(200, "text/plain", "Sliders and servos reset to 0"); });
 
@@ -538,18 +612,14 @@ void setup()
   server.on("/flashServo1", HTTP_GET, [](AsyncWebServerRequest *request)
             {
     Serial.println("Flashing Servo 1");
-    AtomicMotion.setServoAngle(3, dispenseAngle);  // Move servo to 180 degrees
-    delay(500);       // Wait for 1 second
-    AtomicMotion.setServoAngle(3, 0);   // Move servo back to 0 degrees
+    dispenseServo(settings.servoDark);
     request->send(200, "text/plain", "Servo 1 flashed"); });
 
   // Define a route to handle flashing of Servo 2 (go to 180 degrees and back)
   server.on("/flashServo2", HTTP_GET, [](AsyncWebServerRequest *request)
             {
     Serial.println("Flashing Servo 2");
-    AtomicMotion.setServoAngle(2, dispenseAngle);  // Move servo to 180 degrees
-    delay(500);       // Wait for 1 second
-    AtomicMotion.setServoAngle(2, 0);   // Move servo back to 0 degrees
+    dispenseServo(settings.servoMilk);
     request->send(200, "text/plain", "Servo 2 flashed"); });
 
   server.on("/inventory", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -597,6 +667,56 @@ void setup()
       } else {
         request->send(400, "text/plain", "Missing 'dark' and/or 'milk' parameters");
       } });
+
+  // Current per-unit settings (as stored in NVS)
+  server.on("/settings", HTTP_GET, [](AsyncWebServerRequest *request)
+            { request->send(200, "application/json", settingsJson()); });
+
+  // Update one or more settings and persist them on this unit.
+  // e.g. /setSettings?servoDark=3&servoMilk=2&angleRest=0&anglePush=97&returnDelayMs=300
+  server.on("/setSettings", HTTP_GET | HTTP_POST, [](AsyncWebServerRequest *request)
+            {
+      bool updated = false;
+      int value = 0;
+
+      if (paramInt(request, "servoDark", value)) {
+        settings.servoDark = constrain(value, 0, 3);
+        updated = true;
+      }
+      if (paramInt(request, "servoMilk", value)) {
+        settings.servoMilk = constrain(value, 0, 3);
+        updated = true;
+      }
+      if (paramInt(request, "angleRest", value)) {
+        settings.angleRest = constrain(value, 0, 360);
+        updated = true;
+      }
+      if (paramInt(request, "anglePush", value)) {
+        settings.anglePush = constrain(value, 0, 360);
+        updated = true;
+      }
+      if (paramInt(request, "returnDelayMs", value)) {
+        settings.returnDelayMs = constrain(value, 0, 5000);
+        updated = true;
+      }
+
+      if (!updated) {
+        request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"No known setting in request\"}");
+        return;
+      }
+
+      saveSettings();
+      Serial.println("Settings saved: " + settingsJson());
+      request->send(200, "application/json", settingsJson()); });
+
+  // Wipe the stored settings and fall back to the compiled-in defaults
+  server.on("/resetSettings", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+      prefs.begin("spenser", false);
+      prefs.clear();
+      prefs.end();
+      settings = DEFAULT_SETTINGS;
+      request->send(200, "application/json", settingsJson()); });
 
   server.on("/metadata", HTTP_GET, [](AsyncWebServerRequest *request)
             {
@@ -907,9 +1027,7 @@ void loop()
         inventoryDark--;
         rgb.setPixelColor(0, rgb.Color(128, 0, 0)); // red
         rgb.show();
-        AtomicMotion.setServoAngle(3, dispenseAngle);
-        delay(300);
-        AtomicMotion.setServoAngle(3, 0);
+        dispenseServo(settings.servoDark);
         rgb.setPixelColor(0, rgb.Color(0, 0, 0)); // LED off
         rgb.show();
       }

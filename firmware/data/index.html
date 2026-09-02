@@ -75,6 +75,36 @@
         width: 80px;
       }
 
+      .settings {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-left: 10px solid #888;
+      }
+
+      .settings h2 {
+        margin-top: 0;
+      }
+
+      .settings .hint {
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .settings label {
+        display: inline-block;
+        margin: 0 15px 10px 0;
+        font-size: 0.9em;
+      }
+
+      .settings input[type="number"] {
+        display: block;
+        width: 90px;
+        margin-top: 4px;
+      }
+
       .toast {
         position: fixed;
         bottom: 20px;
@@ -88,7 +118,7 @@
       }
     </style>
   </head>
-  <body onload="refreshInventory()">
+  <body>
     <h1>🍫 Spenser 🍫</h1>
 
     <div class="swimlane swimlane-dark">
@@ -127,6 +157,33 @@
           <button type="submit" class="button-blue">Set</button>
         </form>
       </div>
+    </div>
+
+    <div class="settings">
+      <h2>Settings</h2>
+      <p class="hint">
+        Stored on this unit (NVS), not in the firmware &mdash; each Spenser keeps
+        its own values across reboots and re-flashes.
+      </p>
+      <form onsubmit="return saveSettings()">
+        <label>Motor for dark (red)
+          <input type="number" id="servoDark" min="0" max="3" />
+        </label>
+        <label>Motor for milk (blue)
+          <input type="number" id="servoMilk" min="0" max="3" />
+        </label>
+        <label>Angle at rest
+          <input type="number" id="angleRest" min="0" max="360" />
+        </label>
+        <label>Angle at max push
+          <input type="number" id="anglePush" min="0" max="360" />
+        </label>
+        <label>Time before arm returns (ms)
+          <input type="number" id="returnDelayMs" min="0" max="5000" />
+        </label>
+        <button type="submit">Save settings</button>
+        <button type="button" onclick="resetSettings()">Restore defaults</button>
+      </form>
     </div>
 
     <div class="toast" id="toast">Out of stock</div>
@@ -225,7 +282,57 @@
         return false; // prevent form submit redirect
       }
 
-      window.onload = refreshInventory;
+      const SETTING_FIELDS = [
+        "servoDark",
+        "servoMilk",
+        "angleRest",
+        "anglePush",
+        "returnDelayMs",
+      ];
+
+      function showSettings(data) {
+        SETTING_FIELDS.forEach((field) => {
+          document.getElementById(field).value = data[field];
+        });
+      }
+
+      async function loadSettings() {
+        try {
+          const res = await fetch("/settings");
+          showSettings(await res.json());
+        } catch (err) {
+          console.error("Error loading settings", err);
+        }
+      }
+
+      async function saveSettings() {
+        const params = new URLSearchParams();
+        SETTING_FIELDS.forEach((field) => {
+          params.set(field, document.getElementById(field).value);
+        });
+
+        const res = await fetch("/setSettings?" + params.toString());
+        if (res.ok) {
+          showSettings(await res.json());
+          showToast("Settings saved");
+        } else {
+          showToast("Could not save settings");
+        }
+        return false; // prevent form submit redirect
+      }
+
+      async function resetSettings() {
+        const res = await fetch("/resetSettings");
+        if (res.ok) {
+          showSettings(await res.json());
+          showToast("Settings restored to defaults");
+        }
+      }
+
+      window.onload = () => {
+        refreshInventory();
+        loadSettings();
+      };
     </script>
 
 <script>
