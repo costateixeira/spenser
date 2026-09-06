@@ -1,0 +1,65 @@
+Spenser : Validation Results
+=========================================
+
+err = 2, warn = 13, info = 24
+IG Publisher Version: 2.3.4
+Generated Sun Sep 06 10:58:21 UTC 2026. FHIR version 5.0.0 for jct.fhir.spenser#1.0.0 (canonical = http://costateixeira.github.io/spenser)
+ Build Errors : 1 / 5 / 0
+ /work/fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement : 0 / 0 / 3
+ /work/fsh-generated/resources/CodeSystem-SpenserMeds : 0 / 3 / 3
+ /work/fsh-generated/resources/ImplementationGuide-jct.fhir.spenser : 0 / 0 / 18
+ /work/fsh-generated/resources/InventoryReport-Add5Milk : 0 / 1 / 1
+ /work/fsh-generated/resources/InventoryReport-SetDarkTo17 : 0 / 1 / 1
+ /work/fsh-generated/resources/MedicationRequest-med-request-1234 : 2 / 0 / 1
+ /work/fsh-generated/resources/StructureDefinition-SpenserRequest : 0 / 1 / 3
+ /work/fsh-generated/resources/ValueSet-SpenserMedsVS : 0 / 2 / 2
+</table>
+== n/a ==
+WARNING: Unable to find ImplementationGuide.definition.resource.description for the resource CapabilityStatement/SpenserFHIRCapabilityStatement.  Descriptions are strongly encouraged if they cannot be inferred from the resource to allow proper population of the artifact list.
+WARNING: Unable to find ImplementationGuide.definition.resource.description for the resource StructureDefinition/SpenserRequest.  Descriptions are strongly encouraged if they cannot be inferred from the resource to allow proper population of the artifact list.
+ERROR: MedicationRequest-med-request-1234.html#/html/body/div/div/div/div/div/div/p/a at Line 221, column 779: The link 'Patient/123' for "Patient/123" cannot be resolved
+WARNING: 1: The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide
+WARNING: 3: An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml, dependency-table-nontech.xhtml] is not included anywhere in the produced implementation guide
+WARNING: 4: The HTML fragment 'globals-table.xhtml' is not included anywhere in the produced implementation guide
+== fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement.json ==
+INFORMATION: CapabilityStatement/SpenserFHIRCapabilityStatement: CapabilityStatement.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+INFORMATION: Resource: The resource CapabilityStatement/SpenserFHIRCapabilityStatement could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
+== fsh-generated/resources/CodeSystem-SpenserMeds.json ==
+INFORMATION: CodeSystem/SpenserMeds: CodeSystem.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+INFORMATION: CodeSystem/SpenserMeds: CodeSystem: CodeSystems SHOULD have a stated value for the caseSensitive element so that users know the status and meaning of the code system clearly
+WARNING: CodeSystem/SpenserMeds: CodeSystem: Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.experimental is mandatory, but it is not present
+WARNING: CodeSystem/SpenserMeds: CodeSystem: Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.caseSensitive is mandatory, but it is not present
+WARNING: Resource: The resource CodeSystem/SpenserMeds should have an OID assigned to cater for possible use with OID based terminology systems e.g. CDA usage (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
+== fsh-generated/resources/ImplementationGuide-jct.fhir.spenser.json ==
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[3].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[4].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[5].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[6].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[7].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[8].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[9].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[10].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[11].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[12].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[13].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[14].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[15].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[16].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: ImplementationGuide/jct.fhir.spenser: ImplementationGuide.definition.parameter[22].code: Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+INFORMATION: Resource: The resource ImplementationGuide/jct.fhir.spenser could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
+== fsh-generated/resources/InventoryReport-Add5Milk.json ==
+WARNING: InventoryReport/Add5Milk: InventoryReport.inventoryListing[0].itemStatus.coding[0]: Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided
+== fsh-generated/resources/InventoryReport-SetDarkTo17.json ==
+WARNING: InventoryReport/SetDarkTo17: InventoryReport.inventoryListing[0].itemStatus.coding[0]: Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided
+== fsh-generated/resources/MedicationRequest-med-request-1234.json ==
+ERROR: MedicationRequest/med-request-1234: MedicationRequest.subject: Unable to resolve resource with reference 'Patient/123'
+ERROR: MedicationRequest.text.div: Hyperlink 'Patient/123' at 'div/p/a' for 'Patient/123' does not resolve
+== fsh-generated/resources/StructureDefinition-SpenserRequest.json ==
+INFORMATION: StructureDefinition/SpenserRequest: StructureDefinition.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+WARNING: StructureDefinition/SpenserRequest: StructureDefinition.snapshot.element[18].binding: The definition for the element 'MedicationRequest.priority' binds to the value set 'http://hl7.org/fhir/ValueSet/request-priority|5.0.0' which is experimental, but this structure is not labeled as experimental
+INFORMATION: Resource: The resource StructureDefinition/SpenserRequest could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
+== fsh-generated/resources/ValueSet-SpenserMedsVS.json ==
+INFORMATION: ValueSet/SpenserMedsVS: ValueSet.jurisdiction[0]: Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+WARNING: ValueSet/SpenserMedsVS: ValueSet: Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.experimental is mandatory, but it is not present
+WARNING: Resource: The resource ValueSet/SpenserMedsVS should have an OID assigned to cater for possible use with OID based terminology systems e.g. CDA usage (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)

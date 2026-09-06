@@ -1,0 +1,42 @@
+# jct.fhir.spenser#1.0.0: Spenser - a developer's companion
+
+## Pages
+
+* [Home](index.md)
+* [Hardware Bill of Materials](hardware-bom.md)
+* [Implementing](implementing.md)
+* [Firmware](firmware.md)
+* [3D printable parts](hardware-3ddesign.md)
+* [Authors](authors.md)
+* [Usage](usage.md)
+* [Artifacts Summary](artifacts.md)
+* [FHIR](fhir-intro.md)
+* [Downloads](downloads.md)
+
+## Resources
+
+### CodeSystems
+
+* [Spenser Medications - Code System](CodeSystem-SpenserMeds.md)
+
+### ValueSets
+
+* [Spenser Medications - ValueSet](ValueSet-SpenserMedsVS.md)
+
+### Resource Profiles
+
+* [SpenserRequest](StructureDefinition-SpenserRequest.md)
+
+### CapabilityStatements
+
+* [SpenserFHIRCapabilityStatement](CapabilityStatement-SpenserFHIRCapabilityStatement.md)
+
+### ImplementationGuides
+
+* [Spenser - a developer's companion](index.md)
+
+### Examples
+
+* [Add5Milk (InventoryReport)](InventoryReport-Add5Milk.md)
+* [SetDarkTo17 (InventoryReport)](InventoryReport-SetDarkTo17.md)
+* [med-request-1234 (MedicationRequest)](MedicationRequest-med-request-1234.md)
