@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#1f1b18" />
   <link rel="icon" href="data:," />
-  <title>Spenser</title>
+  <title>Spenser — Preview</title>
   <style>
     :root {
       --bg: #f5f3f0;
@@ -52,7 +52,10 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 8px 4px 16px;
     }
-    .brand { display: flex; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: 700; letter-spacing: -.01em; }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.4rem; font-weight: 700; letter-spacing: -.01em;
+    }
     .brand .logo { font-size: 1.6rem; }
     .status-bar { display: flex; gap: 8px; align-items: center; font-size: .85rem; color: var(--ink-soft); }
     .pill {
@@ -124,9 +127,14 @@
     .panel { display: none; }
     .panel.active { display: block; }
 
-    /* What? panel grid */
-    .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
-    @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
+    /* What? panel grid (existing dispense UI) */
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
 
     .card {
       background: var(--card);
@@ -186,10 +194,17 @@
     .set-row button:hover:not(:disabled) { background: var(--bg); }
 
     /* FHIR panel */
-    .fhir-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
-    @media (min-width: 880px) { .fhir-grid { grid-template-columns: 1fr 1fr; } }
+    .fhir-grid {
+      display: grid; gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 880px) {
+      .fhir-grid { grid-template-columns: 1fr 1fr; }
+    }
     .editor-card { display: flex; flex-direction: column; gap: 12px; }
-    .editor-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .editor-head {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
     .editor-head label {
       font-size: .85rem; color: var(--ink-soft); font-weight: 600;
       text-transform: uppercase; letter-spacing: .06em;
@@ -213,7 +228,9 @@
       tab-size: 2;
     }
     .json-area:focus { outline: 2px solid var(--ink-soft); outline-offset: 1px; }
-    .editor-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .editor-actions {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
     .btn-post {
       background: var(--dark); color: #fff;
       padding: 10px 18px; min-height: 40px;
@@ -274,24 +291,14 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .settings > summary::-webkit-details-marker { display: none; }
-    .settings > summary::after { content: "▾"; color: var(--ink-soft); transition: transform .2s ease; }
+    .settings > summary::after {
+      content: "▾"; color: var(--ink-soft); transition: transform .2s ease;
+    }
     .settings[open] > summary::after { transform: rotate(180deg); }
     .settings-body { padding: 4px 18px 20px; display: flex; flex-direction: column; gap: 18px; }
     .settings-section h3 { margin: 0 0 8px; font-size: .95rem; }
     .settings-section p { font-size: .8rem; color: var(--ink-soft); margin: 0 0 10px; line-height: 1.5; }
-    .settings-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-    .settings-row label.field { display: flex; flex-direction: column; gap: 4px; font-size: .8rem; color: var(--ink-soft); }
-    .settings-row label.check { display: flex; align-items: center; gap: 6px; font-size: .85rem; }
-    .settings-row input[type="url"], .settings-row input[type="number"], .settings-row select {
-      padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px;
-      font: inherit; font-size: .85rem; background: var(--card); color: var(--ink);
-    }
-    .settings-row input[type="url"] { flex: 1; min-width: 220px; }
-    .order-status {
-      font-size: .8rem; color: var(--ink-soft); line-height: 1.5;
-      background: var(--bg); border: 1px solid var(--line);
-      border-radius: 8px; padding: 8px 10px; margin: 0 0 10px;
-    }
+    .settings-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .settings-row input[type="text"] {
       flex: 1; min-width: 160px;
       padding: 8px 10px; font: inherit; font-size: .9rem;
@@ -308,14 +315,6 @@
     .mac-info { font-size: .85rem; margin-bottom: 8px; }
     .mac-info span { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 
-    .share-body { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-    @media (min-width: 480px) { .share-body { flex-direction: row; align-items: center; } }
-    #qr { background: #fff; padding: 10px; border-radius: 10px; line-height: 0; flex-shrink: 0; }
-    #qr svg { display: block; width: 160px; height: 160px; }
-    .share-meta { flex: 1; min-width: 0; }
-    .share-url { color: var(--ink); font-weight: 600; font-size: 1rem; word-break: break-all; text-decoration: none; }
-    .share-url:hover { text-decoration: underline; }
-
     .toast {
       position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
       background: var(--ink); color: var(--bg);
@@ -330,27 +329,28 @@
     .toast.ok { background: var(--ok); color: #fff; }
     .toast.err { background: var(--err); color: #fff; }
 
-    .skeleton {
-      display: inline-block;
-      width: 1.5em; height: .9em; vertical-align: -.1em;
-      background: linear-gradient(90deg, var(--line) 0%, var(--bg) 50%, var(--line) 100%);
-      background-size: 200% 100%;
-      border-radius: 4px;
-      animation: shimmer 1.2s infinite;
+    .preview-banner {
+      background: #fff3cd; color: #5a4500; border: 1px solid #ffe188;
+      padding: 8px 14px; border-radius: 8px; font-size: .82rem;
+      margin-bottom: 12px; text-align: center;
     }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    @media (prefers-color-scheme: dark) {
+      .preview-banner { background: #3a2f10; color: #ffe188; border-color: #5a4500; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
+
+    <div class="preview-banner">📐 Preview mode — all requests are mocked locally, nothing is sent to the dispenser.</div>
 
     <header>
       <div class="brand"><span class="logo">🍫</span> Spenser</div>
       <div class="status-bar">
         <span class="pill" id="batteryPill" title="Battery">
           <span class="bolt" id="batteryBolt"></span>
-          <span class="batt" id="batteryIcon"><i id="batteryFill"></i></span>
-          <span id="batteryText">--%</span>
+          <span class="batt" id="batteryIcon"><i style="width:78%"></i></span>
+          <span id="batteryText">78%</span>
         </span>
       </div>
     </header>
@@ -385,13 +385,13 @@
               <span id="responseTiming"></span>
             </span>
           </div>
-          <div class="response-area empty" id="responseJson">Pick a template and press the button to send a request.</div>
+          <div class="response-area empty" id="responseJson">Press POST to send the request and see the response here.</div>
         </div>
 
       </div>
     </section>
 
-    <!-- What!?.. panel -->
+    <!-- What? panel (existing dispense UI) -->
     <section class="panel" id="panel-what" role="tabpanel">
       <p style="text-align:center;color:var(--ink-soft);font-size:.95rem;margin:0 0 16px;font-style:italic">…is all that FHIR stuff for? I just want chocolate. 🍫</p>
       <div class="grid">
@@ -400,9 +400,9 @@
           <div class="card-head">
             <div class="card-title"><span class="emoji">🍫</span> Dark Chocolate</div>
           </div>
-          <div class="qty" id="qtyDark"><span class="skeleton"></span><span class="label">in stock</span></div>
-          <button class="btn-primary btn-dark" id="dispenseDark" onclick="dispense('chocolate-dark')">Dispense</button>
-          <form class="set-row" onsubmit="return setInventory('dark', event)">
+          <div class="qty" id="qtyDark">7<span class="label">in stock</span></div>
+          <button class="btn-primary btn-dark" id="dispenseDark" onclick="dispenseMock('chocolate-dark')">Dispense</button>
+          <form class="set-row" onsubmit="return setInventoryMock('dark', event)">
             <input type="number" id="darkInput" min="0" inputmode="numeric" placeholder="set qty" />
             <button type="submit">Update</button>
           </form>
@@ -412,9 +412,9 @@
           <div class="card-head">
             <div class="card-title"><span class="emoji">🥛</span> Milk Chocolate</div>
           </div>
-          <div class="qty" id="qtyMilk"><span class="skeleton"></span><span class="label">in stock</span></div>
-          <button class="btn-primary btn-milk" id="dispenseMilk" onclick="dispense('chocolate-milk')">Dispense</button>
-          <form class="set-row" onsubmit="return setInventory('milk', event)">
+          <div class="qty low" id="qtyMilk">2<span class="label">in stock</span></div>
+          <button class="btn-primary btn-milk" id="dispenseMilk" onclick="dispenseMock('chocolate-milk')">Dispense</button>
+          <form class="set-row" onsubmit="return setInventoryMock('milk', event)">
             <input type="number" id="milkInput" min="0" inputmode="numeric" placeholder="set qty" />
             <button type="submit">Update</button>
           </form>
@@ -429,56 +429,10 @@
       <div class="settings-body">
 
         <div class="settings-section">
-          <h3>Orders</h3>
-          <p>This dispenser only acts on an order the placer made actionable: a
-          MedicationRequest tagged <code>actionable</code>, or a Task pointing at
-          the request and asking for it to be fulfilled.</p>
-
-          <div class="order-status" id="order-status">Not checked yet</div>
-
-          <div class="settings-row">
-            <label class="field" style="flex:1">Order server (FHIR base URL)
-              <input type="url" id="serverUrl" placeholder="https://host/fhir/r5" />
-            </label>
-          </div>
-          <div class="settings-row">
-            <label class="field">What makes an order actionable
-              <select id="orderMode">
-                <option value="tag">actionable tag on the request</option>
-                <option value="task">Task asking for fulfilment</option>
-              </select>
-            </label>
-            <label class="field">Check every (s)
-              <input type="number" id="pollSeconds" min="5" max="3600" />
-            </label>
-          </div>
-          <div class="settings-row">
-            <label class="field" style="flex:1">Extra search parameters (tag mode)
-              <input type="url" id="orderQuery" />
-            </label>
-          </div>
-          <div class="settings-row">
-            <label class="field" style="flex:1">Task search parameters (task mode)
-              <input type="url" id="taskQuery" />
-            </label>
-          </div>
-          <div class="settings-row">
-            <label class="check"><input type="checkbox" id="pollEnabled" /> Check automatically</label>
-            <label class="check"><input type="checkbox" id="writeBack" /> Report back to the server</label>
-            <label class="check"><input type="checkbox" id="giveUpOnStockEmpty" /> Give up when the lane is empty</label>
-          </div>
-          <div class="settings-row">
-            <button onclick="checkOrders()">Check for orders</button>
-            <button onclick="saveOrderSettings()">Save</button>
-            <button onclick="forgetOrders()">Forget handled orders</button>
-          </div>
-        </div>
-
-        <div class="settings-section">
           <h3>Wi-Fi</h3>
           <div class="settings-row">
-            <button onclick="wifiAction('/wifi-settings', 'Rebooting to Wi-Fi config…')">Configure Wi-Fi</button>
-            <button onclick="wifiAction('/wifi-reset', 'Wi-Fi credentials cleared')">Forget Wi-Fi</button>
+            <button onclick="alert('preview: would reboot into Wi-Fi config')">Configure Wi-Fi</button>
+            <button onclick="alert('preview: would forget Wi-Fi credentials')">Forget Wi-Fi</button>
           </div>
         </div>
 
@@ -486,29 +440,22 @@
           <h3>MAC address override</h3>
           <p>Override the STA MAC address to clone another device (e.g. to bypass a captive portal). Disconnect the source device from the target network before saving — both devices cannot be online with the same MAC.</p>
           <div class="mac-info">
-            <strong>Current:</strong> <span id="current-mac">…</span>
-            <span id="mac-status" style="margin-left:8px"></span>
+            <strong>Current:</strong> <span id="current-mac">AA:BB:CC:11:22:33</span>
           </div>
           <div class="mac-info">
-            <strong>Stored:</strong> <span id="stored-mac">None</span>
+            <strong>Stored:</strong> <span id="stored-mac">None (factory MAC)</span>
           </div>
           <div class="settings-row">
             <input type="text" id="macInput" placeholder="AA:BB:CC:DD:EE:FF" maxlength="17">
-            <button onclick="setCustomMac()">Save MAC</button>
-            <button onclick="clearCustomMac()">Clear</button>
+            <button onclick="alert('preview: would save MAC')">Save MAC</button>
+            <button onclick="alert('preview: would clear MAC')">Clear</button>
           </div>
           <p style="margin-top:8px">Accepts AA:BB:CC:DD:EE:FF, AA-BB-CC-DD-EE-FF, or AABBCCDDEEFF. First byte must be even (unicast). Reboot to apply.</p>
         </div>
 
         <div class="settings-section">
           <h3>Share dispenser</h3>
-          <div class="share-body">
-            <div id="qr"></div>
-            <div class="share-meta">
-              <div style="color:var(--ink-soft);font-size:.85rem;margin-bottom:6px">Scan to open on your phone</div>
-              <a id="shareUrl" class="share-url" href="" target="_blank" rel="noopener"></a>
-            </div>
-          </div>
+          <p>Scan to open on your phone. (QR rendered in real index.html.)</p>
         </div>
 
       </div>
@@ -518,7 +465,6 @@
 
   <div class="toast" id="toast"></div>
 
-  <script src="/qrcode.min.js"></script>
   <script>
     const $ = (id) => document.getElementById(id);
 
@@ -546,7 +492,7 @@
         label: 'POST MedicationRequest — Dispense Dark',
         method: 'POST',
         path: '/MedicationRequest',
-        body: () => ({
+        body: {
           resourceType: 'MedicationRequest',
           id: 'req-' + Math.random().toString(36).slice(2, 8),
           status: 'active',
@@ -556,13 +502,13 @@
           },
           dosageInstruction: [{ text: 'One bite' }],
           subject: { reference: 'Patient/123' }
-        })
+        }
       },
       'medreq-milk': {
         label: 'POST MedicationRequest — Dispense Milk',
         method: 'POST',
         path: '/MedicationRequest',
-        body: () => ({
+        body: {
           resourceType: 'MedicationRequest',
           id: 'req-' + Math.random().toString(36).slice(2, 8),
           status: 'active',
@@ -572,13 +518,13 @@
           },
           dosageInstruction: [{ text: 'One bite' }],
           subject: { reference: 'Patient/123' }
-        })
+        }
       },
       'invreport-reset': {
         label: 'POST InventoryReport — Reset stock',
         method: 'POST',
         path: '/InventoryReport',
-        body: () => ({
+        body: {
           resourceType: 'InventoryReport',
           status: 'active',
           countType: 'snapshot',
@@ -590,18 +536,12 @@
               { item: { coding: [{ system: 'http://example.org/choco-codes', code: 'chocolate-milk', display: 'Milk Chocolate' }] }, quantity: { value: 10, unit: 'pieces' } }
             ]
           }]
-        })
+        }
       },
       'metadata-get': {
         label: 'GET metadata (CapabilityStatement)',
         method: 'GET',
         path: '/metadata',
-        body: null
-      },
-      'invreport-get': {
-        label: 'GET InventoryReport — current stock',
-        method: 'GET',
-        path: '/InventoryReport',
         body: null
       }
     };
@@ -624,7 +564,7 @@
       } else {
         ta.disabled = false;
         ta.placeholder = '';
-        ta.value = JSON.stringify(tpl.body(), null, 2);
+        ta.value = JSON.stringify(tpl.body, null, 2);
       }
       $('sendBtn').textContent = tpl.method;
       $('endpointHint').textContent = tpl.method + ' ' + tpl.path;
@@ -642,292 +582,125 @@
       }
     });
 
-    /* ---------- Real send ---------- */
+    /* ---------- Mock send ---------- */
     $('sendBtn').addEventListener('click', async () => {
       const tpl = TEMPLATES[tplSel.value];
-      const opts = { method: tpl.method, headers: {} };
+      let parsed = null;
       if (tpl.method === 'POST') {
         try {
-          JSON.parse($('requestJson').value); // validate
+          parsed = JSON.parse($('requestJson').value);
         } catch (e) {
-          setResponse(0, { error: 'Invalid JSON in request', detail: e.message }, 0);
+          setResponse(400, { error: 'Invalid JSON in request', detail: e.message }, 0);
           return;
         }
-        opts.headers['Content-Type'] = 'application/fhir+json';
-        opts.body = $('requestJson').value;
       }
       $('sendBtn').disabled = true;
       const t0 = performance.now();
-      try {
-        const r = await fetch(tpl.path, opts);
-        const ms = Math.round(performance.now() - t0);
-        const text = await r.text();
-        let body;
-        try { body = JSON.parse(text); } catch { body = text; }
-        setResponse(r.status, body, ms);
-        // refresh inventory if we just changed it
-        if (tpl.path === '/MedicationRequest' || tpl.path === '/InventoryReport') {
-          refreshInventory();
-        }
-      } catch (e) {
-        const ms = Math.round(performance.now() - t0);
-        setResponse(0, { error: 'Network error', detail: e.message }, ms);
-      } finally {
-        $('sendBtn').disabled = false;
-      }
+      await new Promise(r => setTimeout(r, 250 + Math.random() * 400));
+      const resp = mockServer(tplSel.value, parsed);
+      const ms = Math.round(performance.now() - t0);
+      setResponse(resp.status, resp.body, ms);
+      $('sendBtn').disabled = false;
     });
 
-    function setResponse(status, body, ms) {
-      const badge = $('statusBadge');
-      badge.textContent = status || 'ERR';
-      badge.className = 'status-badge ' + (status >= 200 && status < 300 ? 'ok' : (status >= 400 || status === 0 ? 'err' : 'warn'));
-      $('responseTiming').textContent = ms ? ms + ' ms' : '';
-      const area = $('responseJson');
-      area.classList.remove('empty');
-      area.textContent = typeof body === 'string' ? body : JSON.stringify(body, null, 2);
-    }
-
-    /* ---------- Inventory + dispense (What!?.. tab) ---------- */
-    function renderQty(el, n) {
-      const cls = n === 0 ? 'qty empty' : (n <= 3 ? 'qty low' : 'qty');
-      el.className = cls;
-      el.innerHTML = `${n}<span class="label">in stock</span>`;
-    }
-
-    async function refreshInventory() {
-      try {
-        const r = await fetch('/InventoryReport');
-        const data = await r.json();
-        const listings = data.inventoryListing || [];
-        let dark = 0, milk = 0;
+    function mockServer(templateKey, body) {
+      if (templateKey === 'metadata-get') {
+        return {
+          status: 200,
+          body: {
+            resourceType: 'CapabilityStatement',
+            status: 'active',
+            date: '2026-05-18',
+            publisher: 'Spenser',
+            kind: 'instance',
+            fhirVersion: '5.0.0',
+            format: ['json'],
+            rest: [{
+              mode: 'server',
+              resource: [
+                { type: 'MedicationRequest', profile: 'http://costateixeira.github.io/spenser', interaction: [{ code: 'create' }] },
+                { type: 'InventoryReport', interaction: [{ code: 'read' }, { code: 'create' }] }
+              ]
+            }]
+          }
+        };
+      }
+      if (templateKey === 'invreport-reset') {
+        if (body?.resourceType !== 'InventoryReport') {
+          return { status: 400, body: { resourceType: 'OperationOutcome', issue: [{ severity: 'error', code: 'invalid', diagnostics: 'Expected InventoryReport' }] } };
+        }
+        const listings = body.inventoryListing || [];
+        const updated = [];
         listings.forEach(l => (l.item || []).forEach(e => {
           const code = e.item?.coding?.[0]?.code;
           const q = e.quantity?.value ?? 0;
-          if (code === 'chocolate-dark') dark = q;
-          else if (code === 'chocolate-milk') milk = q;
+          if (code === 'chocolate-dark') { stock.dark = q; updated.push({ code, value: q }); }
+          else if (code === 'chocolate-milk') { stock.milk = q; updated.push({ code, value: q }); }
         }));
-        renderQty($('qtyDark'), dark);
-        renderQty($('qtyMilk'), milk);
-        $('dispenseDark').disabled = dark === 0;
-        $('dispenseMilk').disabled = milk === 0;
-      } catch (e) {
-        showToast('Could not load inventory', 'err');
+        renderQtyMock();
+        return { status: 200, body: { status: 'ok', countType: body.countType || 'snapshot', updated } };
       }
+      // POST MedicationRequest
+      const code = body?.medicationCodeableConcept?.coding?.[0]?.code;
+      if (code === 'chocolate-dark' || code === 'chocolate-milk') {
+        return {
+          status: 200,
+          body: {
+            resourceType: 'MedicationDispense',
+            id: 'disp-' + Math.random().toString(36).slice(2, 8),
+            status: 'completed',
+            medicationCodeableConcept: body.medicationCodeableConcept,
+            authorizingPrescription: [{ reference: 'MedicationRequest/' + (body.id || 'unknown') }],
+            whenHandedOver: new Date().toISOString(),
+            quantity: { value: 1, unit: 'piece' }
+          }
+        };
+      }
+      return { status: 400, body: { error: 'Unknown medication code', code } };
     }
 
-    async function dispense(type) {
-      const btn = type === 'chocolate-dark' ? $('dispenseDark') : $('dispenseMilk');
-      btn.disabled = true;
-      const body = {
-        resourceType: 'MedicationRequest',
-        id: Math.random().toString(36).slice(2),
-        status: 'active',
-        intent: 'instance-order',
-        medicationCodeableConcept: {
-          coding: [{ code: type, display: type === 'chocolate-dark' ? 'Dark Chocolate' : 'Milk Chocolate' }]
-        },
-        dosageInstruction: [{ text: 'One bite' }],
-        subject: { reference: 'Patient/123' }
+    function setResponse(status, body, ms) {
+      const badge = $('statusBadge');
+      badge.textContent = status;
+      badge.className = 'status-badge ' + (status >= 200 && status < 300 ? 'ok' : (status >= 400 ? 'err' : 'warn'));
+      $('responseTiming').textContent = ms ? ms + ' ms' : '';
+      const area = $('responseJson');
+      area.classList.remove('empty');
+      area.textContent = JSON.stringify(body, null, 2);
+    }
+
+    /* ---------- Mock dispense (What? tab) ---------- */
+    let stock = { dark: 7, milk: 2 };
+    function renderQtyMock() {
+      const setOne = (id, n) => {
+        const el = $(id);
+        const cls = n === 0 ? 'qty empty' : (n <= 3 ? 'qty low' : 'qty');
+        el.className = cls;
+        el.innerHTML = `${n}<span class="label">in stock</span>`;
       };
-      try {
-        const r = await fetch('/MedicationRequest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/fhir+json' },
-          body: JSON.stringify(body)
-        });
-        const j = await r.json().catch(() => ({}));
-        if (r.status === 200) showToast('Dispensed 🎉', 'ok');
-        else if (r.status === 201) showToast('Out of stock', 'err');
-        else showToast(j.message || `Error ${r.status}`, 'err');
-      } catch (e) {
-        showToast('Network error', 'err');
-      } finally {
-        await refreshInventory();
-      }
+      setOne('qtyDark', stock.dark);
+      setOne('qtyMilk', stock.milk);
+      $('dispenseDark').disabled = stock.dark === 0;
+      $('dispenseMilk').disabled = stock.milk === 0;
     }
-
-    async function setInventory(type, ev) {
+    function dispenseMock(type) {
+      const k = type === 'chocolate-dark' ? 'dark' : 'milk';
+      if (stock[k] <= 0) { showToast('Out of stock', 'err'); return; }
+      stock[k]--;
+      renderQtyMock();
+      showToast('Dispensed 🎉', 'ok');
+    }
+    function setInventoryMock(type, ev) {
       ev?.preventDefault();
-      const val = $(type + 'Input').value;
-      if (val === '') return false;
-      try {
-        await fetch(`/resetInventory?${type}=${encodeURIComponent(val)}`);
-        $(type + 'Input').value = '';
-        await refreshInventory();
-        showToast('Inventory updated', 'ok');
-      } catch (e) {
-        showToast('Update failed', 'err');
-      }
+      const v = parseInt($(type + 'Input').value, 10);
+      if (isNaN(v) || v < 0) return false;
+      stock[type] = v;
+      $(type + 'Input').value = '';
+      renderQtyMock();
+      showToast('Inventory updated', 'ok');
       return false;
     }
-
-    /* ---------- Battery ---------- */
-    async function refreshBattery() {
-      const pill = $('batteryPill');
-      try {
-        const r = await fetch('/battery');
-        if (!r.ok) throw new Error('sensor unavailable');
-        const j = await r.json();
-        const onUsb = j.source === 'usb' || j.source === 'charging';
-        pill.style.display = '';
-        pill.classList.toggle('usb', onUsb);
-        pill.title = (j.voltage ?? '') + ' V'
-          + (j.current != null ? ', ' + Number(j.current).toFixed(2) + ' A' : '')
-          + (j.source ? ' — ' + j.source : '');
-
-        // On a 5V rail the pack is hidden behind it, so there is no level to draw
-        if (j.percent == null) {
-          $('batteryIcon').style.display = 'none';
-          $('batteryText').textContent = 'USB';
-          return;
-        }
-        $('batteryIcon').style.display = '';
-        const p = Math.round(j.percent);
-        $('batteryText').textContent = p + '%';
-        $('batteryIcon').className = 'batt' + (p < 15 ? ' err' : (p < 35 ? ' warn' : ''));
-        // keep a sliver visible so a near-empty battery still reads as red
-        $('batteryFill').style.width = p <= 0 ? '0' : Math.max(8, Math.min(100, p)) + '%';
-      } catch (e) {
-        pill.style.display = 'none';
-      }
-    }
-
-    /* ---------- Wi-Fi + MAC ---------- */
-    async function wifiAction(url, msg) {
-      if (!confirm(msg.endsWith('…') ? msg + ' Continue?' : msg + '. Continue?')) return;
-      try { await fetch(url); showToast(msg, 'ok'); }
-      catch (e) { showToast('Request failed', 'err'); }
-    }
-
-    async function loadMacInfo() {
-      try {
-        const r = await fetch('/getMac');
-        const j = await r.json();
-        $('current-mac').textContent = j.currentMac || 'unknown';
-        $('stored-mac').textContent = j.storedMac || 'None (factory MAC)';
-        const s = $('mac-status');
-        if (j.customMacActive) s.innerHTML = '<span style="color:#28a745;font-weight:600">✓ active</span>';
-        else if (j.storedMac) s.innerHTML = '<span style="color:#b07a00;font-weight:600">reboot to apply</span>';
-        else s.innerHTML = '<span style="color:#888">factory</span>';
-      } catch (e) {}
-    }
-
-    async function setCustomMac() {
-      const v = $('macInput').value.trim();
-      if (!v) { showToast('Enter a MAC address', 'err'); return; }
-      const cleaned = v.replace(/[^0-9A-Fa-f]/g, '');
-      if (cleaned.length !== 12) { showToast('Invalid MAC (need 12 hex chars)', 'err'); return; }
-      if (parseInt(cleaned.slice(0, 2), 16) & 1) { showToast('First byte must be even (unicast)', 'err'); return; }
-      try {
-        const r = await fetch('/setMac?mac=' + encodeURIComponent(v));
-        const j = await r.json();
-        if (r.ok) { showToast('Saved. Reboot to apply.', 'ok'); $('macInput').value = ''; loadMacInfo(); }
-        else showToast(j.error || 'Save failed', 'err');
-      } catch (e) { showToast('Request failed', 'err'); }
-    }
-
-    async function clearCustomMac() {
-      if (!confirm('Clear custom MAC and revert to factory MAC on next reboot?')) return;
-      try {
-        await fetch('/clearMac');
-        showToast('Custom MAC cleared. Reboot to apply.', 'ok');
-        loadMacInfo();
-      } catch (e) { showToast('Request failed', 'err'); }
-    }
-
-    /* ---------- QR ---------- */
-    function renderQR() {
-      const url = window.location.origin + '/';
-      const link = $('shareUrl');
-      link.href = url;
-      link.textContent = url.replace(/^https?:\/\//, '');
-      const qrEl = $('qr');
-      if (typeof qrcode === 'undefined') { qrEl.textContent = 'qrcode.min.js not loaded'; return; }
-      try {
-        const qr = qrcode(0, 'M');
-        qr.addData(url);
-        qr.make();
-        qrEl.innerHTML = qr.createSvgTag({ cellSize: 5, margin: 2, scalable: true });
-      } catch (e) { qrEl.textContent = 'QR error: ' + e.message; }
-    }
-
-    /* ---------- Orders ---------- */
-    const ORDER_FIELDS = ['serverUrl', 'orderMode', 'orderQuery', 'taskQuery', 'pollSeconds'];
-    const ORDER_FLAGS = ['pollEnabled', 'writeBack', 'giveUpOnStockEmpty'];
-    let lastHandled = null;
-
-    function showOrderSettings(data) {
-      ORDER_FIELDS.forEach((f) => { $(f).value = data[f] ?? ''; });
-      ORDER_FLAGS.forEach((f) => { $(f).checked = !!data[f]; });
-    }
-
-    async function loadOrderSettings() {
-      try {
-        const r = await fetch('/settings');
-        showOrderSettings(await r.json());
-      } catch (e) { console.error('settings load failed', e); }
-    }
-
-    async function saveOrderSettings() {
-      const params = new URLSearchParams();
-      ORDER_FIELDS.forEach((f) => params.set(f, $(f).value));
-      ORDER_FLAGS.forEach((f) => params.set(f, $(f).checked ? '1' : '0'));
-      try {
-        const r = await fetch('/setSettings?' + params.toString());
-        if (r.ok) { showOrderSettings(await r.json()); showToast('Order settings saved', 'ok'); }
-        else showToast('Could not save order settings', 'err');
-      } catch (e) { showToast('Request failed', 'err'); }
-    }
-
-    async function checkOrders() {
-      // the device does the actual HTTP call from its main loop
-      try {
-        await fetch('/checkOrders');
-        showToast('Checking for orders');
-        setTimeout(refreshOrders, 1000);
-        setTimeout(refreshOrders, 3000);
-      } catch (e) { showToast('Request failed', 'err'); }
-    }
-
-    async function forgetOrders() {
-      try {
-        await fetch('/forgetOrders');
-        lastHandled = null;
-        refreshOrders();
-        showToast('Handled orders forgotten', 'ok');
-      } catch (e) { showToast('Request failed', 'err'); }
-    }
-
-    async function refreshOrders() {
-      try {
-        const r = await fetch('/orders');
-        const d = await r.json();
-
-        const parts = [];
-        if (d.busy) parts.push('checking now');
-        parts.push(d.everRan ? 'last check ' + d.secondsAgo + 's ago' : 'not checked yet');
-        if (d.everRan) parts.push(d.dispensed + ' dispensed of ' + d.found + ' new');
-        if (d.message) parts.push(d.message);
-        parts.push(d.handled + ' remembered');
-        if (d.queuedRetries) parts.push(d.queuedRetries + ' post(s) queued for retry');
-
-        $('order-status').textContent = parts.join(' \u00b7 ');
-
-        if (lastHandled !== null && d.handled > lastHandled) refreshInventory();
-        lastHandled = d.handled;
-      } catch (e) { console.error('order status failed', e); }
-    }
-
-    /* ---------- Boot ---------- */
-    refreshInventory();
-    refreshBattery();
-    loadMacInfo();
-    renderQR();
-    loadOrderSettings();
-    refreshOrders();
-    setInterval(refreshInventory, 5000);
-    setInterval(refreshBattery, 15000);
-    setInterval(refreshOrders, 5000);
+    renderQtyMock();
   </script>
 </body>
 </html>
