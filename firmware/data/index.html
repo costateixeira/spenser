@@ -236,6 +236,10 @@
           <input type="checkbox" id="writeBack" /> Report fulfilment back to the
           server
         </label>
+        <label class="check">
+          <input type="checkbox" id="giveUpOnStockEmpty" /> Give up on an order
+          when the lane is empty (otherwise it is retried after a refill)
+        </label>
 
         <div class="row">
           <button type="button" onclick="checkOrders()">Check for orders</button>
@@ -426,7 +430,7 @@
         "taskQuery",
         "pollSeconds",
       ];
-      const ORDER_FLAGS = ["pollEnabled", "writeBack"];
+      const ORDER_FLAGS = ["pollEnabled", "writeBack", "giveUpOnStockEmpty"];
 
       let lastHandled = null;
 

@@ -19,6 +19,11 @@ AsyncWebServer server(80);
 
 Preferences prefs;
 
+#define ACTIONABLE_SYSTEM "http://terminology.hl7.org/CodeSystem/common-tags"
+#define ACTIONABLE_CODE "actionable"
+#define MEDS_SYSTEM "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
+#define NOT_PERFORMED_SYSTEM "http://hl7.org/fhir/CodeSystem/medicationdispense-status-reason"
+
 const int ledPin = 35;
 Adafruit_NeoPixel rgb(1, ledPin, NEO_GRB + NEO_KHZ800);
 M5AtomicMotion AtomicMotion;
@@ -50,6 +55,8 @@ struct Settings
   bool pollEnabled;   // check the server automatically
   int pollSeconds;    // seconds between automatic checks
   bool writeBack;     // report fulfilment back to the server
+  bool giveUpOnStockEmpty; // an order this unit cannot fill: abandon it, or retry
+                           // it on every poll until the lane is refilled
 };
 
 const Settings DEFAULT_SETTINGS = {
@@ -58,7 +65,7 @@ const Settings DEFAULT_SETTINGS = {
     "tag",
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
-    false, 30, true};
+    false, 30, true, false};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
@@ -79,6 +86,7 @@ void loadSettings()
   settings.pollEnabled = prefs.getBool("pollEnabled", settings.pollEnabled);
   settings.pollSeconds = prefs.getInt("pollSecs", settings.pollSeconds);
   settings.writeBack = prefs.getBool("writeBack", settings.writeBack);
+  settings.giveUpOnStockEmpty = prefs.getBool("giveUpEmpty", settings.giveUpOnStockEmpty);
   prefs.end();
 
   Serial.printf("Settings: servoDark=%d servoMilk=%d rest=%d push=%d returnMs=%d\n",
@@ -101,6 +109,7 @@ void saveSettings()
   prefs.putBool("pollEnabled", settings.pollEnabled);
   prefs.putInt("pollSecs", settings.pollSeconds);
   prefs.putBool("writeBack", settings.writeBack);
+  prefs.putBool("giveUpEmpty", settings.giveUpOnStockEmpty);
   prefs.end();
 }
 
@@ -119,6 +128,7 @@ String settingsJson()
   doc["pollEnabled"] = settings.pollEnabled;
   doc["pollSeconds"] = settings.pollSeconds;
   doc["writeBack"] = settings.writeBack;
+  doc["giveUpOnStockEmpty"] = settings.giveUpOnStockEmpty;
 
   String out;
   serializeJson(doc, out);
@@ -179,42 +189,71 @@ void loadSeenIds()
   prefs.end();
 }
 
-int seenCount()
+// Orders already reported to the server as out of stock. RAM only: after a
+// reboot an order may be reported once more, which beats posting a declined
+// dispense on every single poll while a lane sits empty.
+String reportedIds = "|";
+
+int listCount(const String &list)
 {
   int bars = 0;
-  for (unsigned int i = 0; i < seenIds.length(); i++)
-    if (seenIds[i] == '|')
+  for (unsigned int i = 0; i < list.length(); i++)
+    if (list[i] == '|')
       bars++;
   return bars > 0 ? bars - 1 : 0;
 }
 
+bool listHas(const String &list, const String &id)
+{
+  return id.length() > 0 && list.indexOf("|" + id + "|") >= 0;
+}
+
+void listAdd(String &list, const String &id)
+{
+  if (id.isEmpty() || listHas(list, id))
+    return;
+
+  list += id + "|";
+  while (listCount(list) > SEEN_MAX)
+  {
+    int next = list.indexOf('|', 1);
+    if (next < 0)
+      break;
+    list = list.substring(next);
+  }
+}
+
+int seenCount()
+{
+  return listCount(seenIds);
+}
+
 bool alreadyHandled(const String &id)
 {
-  return id.length() > 0 && seenIds.indexOf("|" + id + "|") >= 0;
+  return listHas(seenIds, id);
 }
 
 void markHandled(const String &id)
 {
-  if (id.isEmpty() || alreadyHandled(id))
+  if (listHas(seenIds, id))
     return;
 
-  seenIds += id + "|";
-  while (seenCount() > SEEN_MAX)
-  {
-    int next = seenIds.indexOf('|', 1);
-    if (next < 0)
-      break;
-    seenIds = seenIds.substring(next);
-  }
+  listAdd(seenIds, id);
 
   prefs.begin("spenser", false);
   prefs.putString("seenIds", seenIds);
   prefs.end();
 }
 
+bool alreadyReported(const String &id)
+{
+  return listHas(reportedIds, id);
+}
+
 void forgetHandled()
 {
   seenIds = "|";
+  reportedIds = "|";
   prefs.begin("spenser", false);
   prefs.putString("seenIds", seenIds);
   prefs.end();
@@ -234,11 +273,56 @@ String createMedicationDispense(const String &id, const String &code, const Stri
   doc["resourceType"] = "MedicationDispense";
   doc["id"] = id + "-dispense";
   doc["status"] = "completed";
-  JsonObject med = doc.createNestedObject("medicationCodeableConcept");
+  JsonObject med = doc.createNestedObject("medication").createNestedObject("concept");
   JsonObject coding = med.createNestedArray("coding").createNestedObject();
+  coding["system"] = MEDS_SYSTEM;
   coding["code"] = code;
   coding["display"] = (code == "chocolate-dark") ? "Dark Chocolate" : "Milk Chocolate";
   doc["subject"]["reference"] = patientRef;
+
+  String output;
+  serializeJson(doc, output);
+  return output;
+}
+
+
+// Read part of the ordered medication. R5 carries it in medication.concept,
+// R4 in medicationCodeableConcept; orders arrive in both shapes.
+String medicationField(JsonObject request, const char *field)
+{
+  String value = request["medication"]["concept"]["coding"][0][field] | "";
+  if (value.isEmpty())
+    value = request["medicationCodeableConcept"]["coding"][0][field] | "";
+  return value;
+}
+
+// A dispense that did not happen, because the lane is empty. R5 removed
+// MedicationDispense.statusReason[x]; the reason now lives in notPerformedReason,
+// which is a CodeableReference, hence the .concept.
+String createDeclinedDispense(const String &id, const String &code, const String &display,
+                              const String &patientRef)
+{
+  StaticJsonDocument<640> doc;
+  doc["resourceType"] = "MedicationDispense";
+  doc["id"] = id + "-declined";
+  doc["status"] = "declined";
+
+  JsonObject reason = doc.createNestedObject("notPerformedReason").createNestedObject("concept");
+  JsonObject reasonCoding = reason.createNestedArray("coding").createNestedObject();
+  reasonCoding["system"] = NOT_PERFORMED_SYSTEM;
+  reasonCoding["code"] = "outofstock";
+  reasonCoding["display"] = "Drug not available - out of stock";
+
+  JsonObject med = doc.createNestedObject("medication").createNestedObject("concept");
+  JsonObject coding = med.createNestedArray("coding").createNestedObject();
+  coding["system"] = MEDS_SYSTEM;
+  coding["code"] = code;
+  coding["display"] = display;
+
+  if (patientRef.length())
+    doc["subject"]["reference"] = patientRef;
+  doc.createNestedArray("authorizingPrescription").createNestedObject()["reference"] =
+      "MedicationRequest/" + id;
 
   String output;
   serializeJson(doc, output);
@@ -250,6 +334,11 @@ void setLEDColor(uint8_t r, uint8_t g, uint8_t b)
 {
   rgb.setPixelColor(0, rgb.Color(r, g, b));
   rgb.show();
+}
+
+bool knownMedication(const String &code)
+{
+  return code == "chocolate-dark" || code == "chocolate-milk";
 }
 
 // Dispense one item of the given code. Returns false when the code is unknown
@@ -304,8 +393,8 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
   String id = doc["id"] | "";
   String status = doc["status"] | "";
   String intent = doc["intent"] | "";
-  String medicationCode = doc["medicationCodeableConcept"]["coding"][0]["code"] | "";
-  String medicationDisplay = doc["medicationCodeableConcept"]["coding"][0]["display"] | "";
+  String medicationCode = medicationField(doc.as<JsonObject>(), "code");
+  String medicationDisplay = medicationField(doc.as<JsonObject>(), "display");
   String dosageText = doc["dosageInstruction"][0]["text"] | "";
   String patientReference = doc["subject"]["reference"] | "";
 
@@ -325,26 +414,9 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
     else
     {
 
-      StaticJsonDocument<512> errorDoc;
-      errorDoc["resourceType"] = "MedicationDispense";
-      errorDoc["id"] = id + "-declined";
-      errorDoc["status"] = "declined";
-
-      JsonObject reason = errorDoc.createNestedObject("statusReason");
-      JsonObject coding = reason.createNestedArray("coding").createNestedObject();
-      coding["system"] = "http://hl7.org/fhir/CodeSystem/medicationdispense-status-reason";
-      coding["code"] = "outofstock";
-      coding["display"] = "Out of Stock";
-
-      errorDoc["medicationCodeableConcept"]["coding"][0]["code"] = medicationCode;
-      errorDoc["medicationCodeableConcept"]["coding"][0]["display"] = medicationDisplay;
-      errorDoc["subject"]["reference"] = patientReference;
-
-      String declinedResponse;
-      serializeJson(errorDoc, declinedResponse);
+      String declinedResponse =
+          createDeclinedDispense(id, medicationCode, medicationDisplay, patientReference);
       request->send(201, "application/fhir+json", declinedResponse);
-
-      //      request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"Out of dark chocolate stock\"}");
     }
   }
   else if (medicationCode == "chocolate-milk")
@@ -356,26 +428,9 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
     }
     else
     {
-      StaticJsonDocument<512> errorDoc;
-      errorDoc["resourceType"] = "MedicationDispense";
-      errorDoc["id"] = id + "-declined";
-      errorDoc["status"] = "declined";
-
-      JsonObject reason = errorDoc.createNestedObject("statusReason");
-      JsonObject coding = reason.createNestedArray("coding").createNestedObject();
-      coding["system"] = "http://hl7.org/fhir/CodeSystem/medicationdispense-status-reason";
-      coding["code"] = "outofstock";
-      coding["display"] = "Out of Stock";
-
-      errorDoc["medicationCodeableConcept"]["coding"][0]["code"] = medicationCode;
-      errorDoc["medicationCodeableConcept"]["coding"][0]["display"] = medicationDisplay;
-      errorDoc["subject"]["reference"] = patientReference;
-
-      String declinedResponse;
-      serializeJson(errorDoc, declinedResponse);
+      String declinedResponse =
+          createDeclinedDispense(id, medicationCode, medicationDisplay, patientReference);
       request->send(201, "application/fhir+json", declinedResponse);
-
-      //      request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"Out of milk chocolate stock\"}");
     }
   }
   else
@@ -393,10 +448,6 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
 //   "task" - a Coordination Task points at it (Task.focus) asking for fulfilment.
 // Both are polled by the same code path; the mode is a per-unit setting.
 
-#define ACTIONABLE_SYSTEM "http://terminology.hl7.org/CodeSystem/common-tags"
-#define ACTIONABLE_CODE "actionable"
-#define MEDS_SYSTEM "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
-
 const size_t ORDER_DOC_SIZE = 20480; // keep _count small: the Bundle is parsed in RAM
 
 struct OrderCheck
@@ -407,7 +458,7 @@ struct OrderCheck
   int httpStatus;          // status of the search itself
   int found;               // orders seen for the first time
   int dispensed;           // orders actually dispensed
-  char message[128];       // the web task reads this while loop() writes it: keep it a plain buffer
+  char message[160];       // the web task reads this while loop() writes it: keep it a plain buffer
 };
 
 OrderCheck orderCheck = {false, false, 0, 0, 0, 0, ""};
@@ -432,15 +483,6 @@ String serverBase()
   while (base.endsWith("/"))
     base.remove(base.length() - 1);
   return base;
-}
-
-// R5 carries the code in medication.concept, R4 in medicationCodeableConcept.
-String medicationCodeOf(JsonObject request)
-{
-  String code = request["medication"]["concept"]["coding"][0]["code"] | "";
-  if (code.isEmpty())
-    code = request["medicationCodeableConcept"]["coding"][0]["code"] | "";
-  return code;
 }
 
 JsonObject findResource(JsonArray entries, const String &type, const String &id)
@@ -559,6 +601,52 @@ String reportFulfilment(const String &base, JsonObject request, const String &re
 
   return "Dispensed, but the server refused the write-back (dispense " +
          String(dispenseStatus) + ", update " + String(followUp) + ")";
+}
+
+// Tell the server we could not fill an order: a declined MedicationDispense
+// carrying the out-of-stock reason. What happens to the workflow afterwards is
+// the giveUpOnStockEmpty setting: left open so a refill can still fulfil it, or
+// closed by failing the Task. Returns "" when the server took everything.
+String reportDecline(const String &base, JsonObject request, const String &requestId,
+                     const String &code, JsonObject task)
+{
+  String display = medicationField(request, "display");
+  if (display.isEmpty())
+    display = (code == "chocolate-dark") ? "Dark Chocolate" : "Milk Chocolate";
+
+  String dispenseId;
+  String body = createDeclinedDispense(requestId, code, display,
+                                       request["subject"]["reference"] | "");
+  int status = sendResource("POST", base + "/MedicationDispense", body, &dispenseId);
+  Serial.printf("POST declined MedicationDispense -> %d\n", status);
+
+  if (status < 200 || status >= 300)
+    return "Out of " + code + ", and the server refused the decline (HTTP " +
+           String(status) + ")";
+
+  // Only when giving up is the Task closed. Otherwise it stays requested, which
+  // is what lets a refill fulfil the same order on a later poll.
+  if (settings.giveUpOnStockEmpty && !task.isNull())
+  {
+    task["status"] = "failed";
+    if (dispenseId.length())
+    {
+      JsonObject output = task.createNestedArray("output").createNestedObject();
+      output.createNestedObject("type")["text"] = "MedicationDispense";
+      output.createNestedObject("valueReference")["reference"] = "MedicationDispense/" + dispenseId;
+    }
+
+    String taskId = task["id"] | "";
+    String taskBody;
+    serializeJson(task, taskBody);
+    int put = sendResource("PUT", base + "/Task/" + taskId, taskBody);
+    Serial.printf("PUT Task/%s failed -> %d\n", taskId.c_str(), put);
+
+    if (put < 200 || put >= 300)
+      return "Out of " + code + ", and the Task could not be failed (HTTP " + String(put) + ")";
+  }
+
+  return "";
 }
 
 void checkOrders()
@@ -683,14 +771,38 @@ void checkOrders()
       continue;
 
     orderCheck.found++;
-    String code = medicationCodeOf(request);
+    String code = medicationField(request, "code");
 
     if (!dispenseCode(code))
     {
       problem = "Cannot dispense " + (code.isEmpty() ? String("an order with no code") : code) +
                 " for " + orderId;
       Serial.println(problem);
-      continue; // out of stock, or not one of ours: leave it for a later check
+
+      // Say so once - never on every poll. Whether the order then stays in play
+      // is the giveUpOnStockEmpty setting, applied just below.
+      // MedicationDispense.subject is 1..1 in R5, so an order without one could
+      // only produce a resource the server would reject.
+      String subject = request["subject"]["reference"] | "";
+      if (settings.writeBack && knownMedication(code) && subject.length() &&
+          !alreadyReported(orderId))
+      {
+        String declineProblem =
+            reportDecline(base, request, String(request["id"] | ""), code, task);
+        listAdd(reportedIds, orderId);
+
+        if (declineProblem.length())
+          problem = declineProblem;
+        else
+          problem += settings.giveUpOnStockEmpty ? " (told the server, abandoned)"
+                                                 : " (told the server)";
+      }
+
+      // Abandon the order so later polls skip it, or leave it for a refill.
+      if (settings.giveUpOnStockEmpty)
+        markHandled(orderId);
+
+      continue;
     }
 
     orderCheck.dispensed++;
@@ -716,8 +828,9 @@ void checkOrders()
 
 String orderStatusJson()
 {
-  StaticJsonDocument<768> doc;
+  StaticJsonDocument<1024> doc;
   doc["mode"] = settings.orderMode;
+  doc["giveUpOnStockEmpty"] = settings.giveUpOnStockEmpty;
   doc["serverUrl"] = settings.serverUrl;
   doc["busy"] = orderCheck.busy || checkRequested;
   doc["everRan"] = orderCheck.everRan;
@@ -1214,6 +1327,10 @@ void setup()
       }
       if (paramBool(request, "writeBack", flag)) {
         settings.writeBack = flag;
+        updated = true;
+      }
+      if (paramBool(request, "giveUpOnStockEmpty", flag)) {
+        settings.giveUpOnStockEmpty = flag;
         updated = true;
       }
 
