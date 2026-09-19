@@ -677,6 +677,68 @@ String createDeclinedDispense(const String &id, const String &medicationCode, co
   return response;
 }
 
+// --- Dispense log ---
+// The last few MedicationDispense resources this unit produced, completed or
+// declined, whichever way the order came in (polled from a server or POSTed
+// straight at the device). GET /MedicationDispense serves them as a searchset,
+// which is the FHIR way of asking "what did the dispenser do?".
+//
+// Fixed buffers, newest first: loop() writes here while the web task reads,
+// so no String reallocation may happen underneath a reader. A resource that
+// comes back with an id already in the log (an out-of-stock order that is
+// retried on every poll) replaces the earlier copy instead of piling up.
+
+const int DISPENSE_LOG_SIZE = 6;
+const size_t DISPENSE_LOG_ENTRY = 1024; // createDeclinedDispense is the larger one, ~450 bytes
+char dispenseLog[DISPENSE_LOG_SIZE][DISPENSE_LOG_ENTRY];
+int dispenseLogCount = 0;
+
+// The "id" of a serialized MedicationDispense, without parsing it
+String dispenseLogId(const char *json)
+{
+  const char *key = strstr(json, "\"id\":\"");
+  if (!key)
+    return "";
+  key += 6;
+  const char *end = strchr(key, '"');
+  return end ? String(key).substring(0, end - key) : "";
+}
+
+void logDispense(const String &json)
+{
+  if (json.length() >= DISPENSE_LOG_ENTRY)
+  {
+    Serial.println("[Dispense] Resource too large for the log, not kept");
+    return;
+  }
+
+  String id = dispenseLogId(json.c_str());
+  int slot = -1;
+  for (int i = 0; i < dispenseLogCount; i++)
+    if (id.length() && dispenseLogId(dispenseLog[i]) == id)
+      slot = i;
+
+  if (slot < 0)
+  {
+    // Shift everything down one place; the oldest falls off the end
+    int last = min(dispenseLogCount, DISPENSE_LOG_SIZE - 1);
+    for (int i = last; i > 0; i--)
+      memcpy(dispenseLog[i], dispenseLog[i - 1], DISPENSE_LOG_ENTRY);
+    if (dispenseLogCount < DISPENSE_LOG_SIZE)
+      dispenseLogCount++;
+    slot = 0;
+  }
+  else if (slot > 0)
+  {
+    // Move the refreshed entry to the front
+    for (int i = slot; i > 0; i--)
+      memcpy(dispenseLog[i], dispenseLog[i - 1], DISPENSE_LOG_ENTRY);
+    slot = 0;
+  }
+
+  strlcpy(dispenseLog[slot], json.c_str(), DISPENSE_LOG_ENTRY);
+}
+
 // --- Core dispensing logic (no HTTP dependency) ---
 
 DispenseResult processDispenseRequest(const String &body)
@@ -732,11 +794,13 @@ DispenseResult processDispenseRequest(const String &body)
       dispenseServo(settings.servoDark);
       String response = createMedicationDispense(id, medicationCode, patientReference);
       setLEDColor(0, 0, 0);
+      logDispense(response);
       return {true, 200, response, "application/fhir+json"};
     }
     else
     {
       String response = createDeclinedDispense(id, medicationCode, medicationDisplay, patientReference);
+      logDispense(response);
       return {true, 201, response, "application/fhir+json"};
     }
   }
@@ -749,11 +813,13 @@ DispenseResult processDispenseRequest(const String &body)
       dispenseServo(settings.servoMilk);
       String response = createMedicationDispense(id, medicationCode, patientReference);
       setLEDColor(0, 0, 0);
+      logDispense(response);
       return {true, 200, response, "application/fhir+json"};
     }
     else
     {
       String response = createDeclinedDispense(id, medicationCode, medicationDisplay, patientReference);
+      logDispense(response);
       return {true, 201, response, "application/fhir+json"};
     }
   }
@@ -879,15 +945,17 @@ struct OrderCheck
   int found;               // orders seen for the first time
   int dispensed;           // orders actually dispensed
   char message[160];       // the web task reads this while loop() writes it: keep it a plain buffer
+  char severity[12];       // OperationOutcome.issue.severity for the message: information, warning or error
 };
 
-OrderCheck orderCheck = {false, false, 0, 0, 0, 0, ""};
+OrderCheck orderCheck = {false, false, 0, 0, 0, 0, "", "information"};
 volatile bool checkRequested = false; // set by /checkOrders, serviced from loop()
 unsigned long lastPollAttempt = 0;
 
-void setOrderMessage(const String &text)
+void setOrderMessage(const String &text, const char *severity = "error")
 {
   strlcpy(orderCheck.message, text.c_str(), sizeof(orderCheck.message));
+  strlcpy(orderCheck.severity, severity, sizeof(orderCheck.severity));
   Serial.println("[Orders] " + text);
 }
 
@@ -1056,7 +1124,7 @@ void checkOrders()
   JsonArray entries = doc["entry"].as<JsonArray>();
   if (entries.isNull())
   {
-    setOrderMessage("No orders waiting");
+    setOrderMessage("No orders waiting", "information");
     finishCheck();
     return;
   }
@@ -1158,11 +1226,11 @@ void checkOrders()
   }
 
   if (problem.length())
-    setOrderMessage(problem);
+    setOrderMessage(problem, "warning");
   else if (orderCheck.found == 0)
-    setOrderMessage("No new orders");
+    setOrderMessage("No new orders", "information");
   else
-    setOrderMessage("Dispensed " + String(orderCheck.dispensed) + " of " + String(orderCheck.found));
+    setOrderMessage("Dispensed " + String(orderCheck.dispensed) + " of " + String(orderCheck.found), "information");
 
   finishCheck();
 }
@@ -1185,6 +1253,75 @@ String orderStatusJson()
 
   String out;
   serializeJson(doc, out);
+  return out;
+}
+
+String jsonString(const JsonDocument &doc)
+{
+  String out;
+  serializeJson(doc, out);
+  return out;
+}
+
+// The last check of the order server as an OperationOutcome. It rides along in
+// the /MedicationDispense searchset with search.mode "outcome", which is where
+// FHIR puts "here is why the list looks the way it does".
+String checkOutcomeJson()
+{
+  StaticJsonDocument<1024> doc;
+  doc["resourceType"] = "OperationOutcome";
+  JsonArray issues = doc.createNestedArray("issue");
+
+  if (orderCheck.busy || checkRequested)
+  {
+    JsonObject busy = issues.createNestedObject();
+    busy["severity"] = "information";
+    busy["code"] = "informational";
+    busy["diagnostics"] = "A check of the order server is in progress";
+  }
+
+  JsonObject issue = issues.createNestedObject();
+  if (!orderCheck.everRan)
+  {
+    issue["severity"] = "information";
+    issue["code"] = "informational";
+    issue["diagnostics"] = "This unit has not checked the order server yet";
+    return jsonString(doc);
+  }
+
+  const char *severity = orderCheck.severity;
+  issue["severity"] = severity;
+  issue["code"] = (strcmp(severity, "error") == 0)     ? "exception"
+                  : (strcmp(severity, "warning") == 0) ? "processing"
+                                                       : "informational";
+  issue["diagnostics"] = orderCheck.message;
+  issue["details"]["text"] =
+      "Last check of " + orderServerUrl + " (" + settings.orderMode + " mode) " +
+      String((millis() - orderCheck.lastCheck) / 1000) + " s ago: search HTTP " +
+      String(orderCheck.httpStatus) + ", " + String(orderCheck.found) + " new, " +
+      String(orderCheck.dispensed) + " dispensed";
+
+  return jsonString(doc);
+}
+
+// GET /MedicationDispense: the resources in the dispense log, newest first, as
+// a searchset. The entries are already JSON, so the Bundle is assembled as
+// text rather than parsed into a document and back.
+String dispenseBundleJson(const String &base)
+{
+  String out;
+  out.reserve(768 + dispenseLogCount * DISPENSE_LOG_ENTRY);
+  out += "{\"resourceType\":\"Bundle\",\"type\":\"searchset\",\"total\":" + String(dispenseLogCount);
+  out += ",\"link\":[{\"relation\":\"self\",\"url\":\"" + base + "/MedicationDispense\"}],\"entry\":[";
+
+  for (int i = 0; i < dispenseLogCount; i++)
+  {
+    out += "{\"fullUrl\":\"" + base + "/MedicationDispense/" + dispenseLogId(dispenseLog[i]) + "\",\"resource\":";
+    out += dispenseLog[i];
+    out += ",\"search\":{\"mode\":\"match\"}},";
+  }
+
+  out += "{\"resource\":" + checkOutcomeJson() + ",\"search\":{\"mode\":\"outcome\"}}]}";
   return out;
 }
 
@@ -1612,9 +1749,36 @@ void setup()
     checkRequested = true;
     request->send(202, "application/json", "{\"status\":\"scheduled\"}"); });
 
-  // What the last check did
+  // What the last check did, for the device's own dashboard (not FHIR - the
+  // FHIR view of the same thing is GET /MedicationDispense below)
   server.on("/orders", HTTP_GET, [](AsyncWebServerRequest *request)
             { request->send(200, "application/json", orderStatusJson()); });
+
+  // FHIR MedicationDispense: what this unit did, as the resources it produced.
+  // /MedicationDispense is a searchset, newest first, carrying an
+  // OperationOutcome about the last check of the order server. The handler
+  // also matches /MedicationDispense/{id}, which is a plain read.
+  server.on("/MedicationDispense", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    String base = "http://" + request->host();
+    String path = request->url();
+    const String prefix = "/MedicationDispense/";
+
+    if (path.startsWith(prefix)) {
+      String id = path.substring(prefix.length());
+      for (int i = 0; i < dispenseLogCount; i++) {
+        if (dispenseLogId(dispenseLog[i]) == id) {
+          request->send(200, "application/fhir+json", dispenseLog[i]);
+          return;
+        }
+      }
+      request->send(404, "application/fhir+json",
+                    "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"not-found\","
+                    "\"diagnostics\":\"MedicationDispense/" + id + " is not in this unit's log\"}]}");
+      return;
+    }
+
+    request->send(200, "application/fhir+json", dispenseBundleJson(base)); });
 
   // Forget which orders were already dealt with, so they can be dispensed again
   server.on("/forgetOrders", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -1749,6 +1913,13 @@ void setup()
     JsonArray res2_interaction = res2.createNestedArray("interaction");
     res2_interaction.createNestedObject()["code"] = "read";
     res2_interaction.createNestedObject()["code"] = "create";
+
+    JsonObject res3 = resources.createNestedObject();
+    res3["type"] = "MedicationDispense";
+    res3["documentation"] = "The last few dispenses this unit produced, completed or declined, newest first. The searchset carries an OperationOutcome (search.mode 'outcome') describing the last check of the order server";
+    JsonArray res3_interaction = res3.createNestedArray("interaction");
+    res3_interaction.createNestedObject()["code"] = "read";
+    res3_interaction.createNestedObject()["code"] = "search-type";
 
     // ---- client: what this unit asks of an order server ----
     JsonObject rest1 = rest.createNestedObject();

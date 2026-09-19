@@ -1,0 +1,381 @@
+###############################################################################
+# Spenser - order client
+#
+# Exercises the two ways an order becomes actionable, per the HL7 COW IG:
+#   tag mode  - the MedicationRequest carries meta.tag common-tags#actionable
+#   task mode - a Coordination Task points at it (Task.focus)
+#
+# The merged firmware talks to https:// as well as http:// (certificates are
+# not validated), so the device and this file can use the same base URL.
+#
+# VS Code REST Client: click "Send Request" above each block. Requests that
+# reference an earlier one by name ({{placeTagOrder.response.body.$.id}}) need
+# that earlier request to have been sent in this session.
+#
+# After each "check now", give the device a few seconds before reading
+# /MedicationDispense: it does the HTTP work from its main loop, not while
+# answering the request. That searchset is the device's own log, newest first,
+# plus an OperationOutcome entry (search.mode = outcome) about the check itself.
+###############################################################################
+
+@device = http://192.168.1.50
+@fhir = https://spenser.178.104.103.200.sslip.io/fhir/r5
+@patient = Patient/123
+@meds = http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds
+@tags = http://terminology.hl7.org/CodeSystem/common-tags
+
+
+###############################################################################
+# 0. Wiring
+###############################################################################
+
+### Is the server there
+GET {{fhir}}/metadata
+Accept: application/fhir+json
+
+### Everything this unit has stored
+GET {{device}}/settings
+Accept: application/json
+
+### Point it at the server, tag mode, polling every 30s
+GET {{device}}/setSettings?serverUrl={{fhir}}&orderMode=tag&pollEnabled=1&pollSeconds=30&writeBack=1&giveUpOnStockEmpty=0
+Accept: application/json
+
+### Make sure both lanes have stock
+GET {{device}}/resetInventory?dark=10&milk=10
+
+### Both roles it now claims
+GET {{device}}/metadata
+Accept: application/fhir+json
+
+
+###############################################################################
+# 1. Tag mode
+###############################################################################
+
+### Place an order the placer marked actionable
+# @name placeTagOrder
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "meta": {
+    "tag": [
+      { "system": "{{tags}}", "code": "actionable" }
+    ]
+  },
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-dark", "display": "Dark Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" },
+  "dosageInstruction": [ { "text": "One bite" } ]
+}
+
+### The same search the firmware runs - the order should be in here
+GET {{fhir}}/MedicationRequest?_tag={{tags}}%7Cactionable&status=active&intent=instance-order&_count=5
+Accept: application/fhir+json
+
+### Ask the device to check now (202, it queues the work)
+GET {{device}}/checkOrders
+Accept: application/json
+
+### A few seconds later: what it did, as the dispense it produced
+# expect a MedicationDispense with status = completed on top, and the
+# OperationOutcome entry saying "Dispensed 1 of 1"
+GET {{device}}/MedicationDispense
+Accept: application/fhir+json
+
+### The order is completed - in tag mode the device closes it itself
+# expect status = completed
+GET {{fhir}}/MedicationRequest/{{placeTagOrder.response.body.$.id}}
+Accept: application/fhir+json
+
+### And a dispense points back at it through authorizingPrescription
+GET {{fhir}}/MedicationDispense?_count=20
+Accept: application/fhir+json
+
+### An order WITHOUT the tag: the device must ignore it
+# @name placeUntaggedOrder
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-milk", "display": "Milk Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" }
+}
+
+### Check again - nothing new should be dispensed
+GET {{device}}/checkOrders
+
+### expect nothing new on top, the OperationOutcome saying "No new orders",
+### and the order below still active
+GET {{device}}/MedicationDispense
+Accept: application/fhir+json
+
+### expect status = active, untouched
+GET {{fhir}}/MedicationRequest/{{placeUntaggedOrder.response.body.$.id}}
+Accept: application/fhir+json
+
+
+###############################################################################
+# 2. Task mode
+###############################################################################
+
+### Switch the unit over
+GET {{device}}/setSettings?orderMode=task
+Accept: application/json
+
+### A plain order - not actionable on its own
+# @name placeTaskOrder
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-milk", "display": "Milk Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" }
+}
+
+### The Coordination Task that makes it actionable
+# @name placeTask
+POST {{fhir}}/Task
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "Task",
+  "identifier": [
+    { "system": "http://example.org/spenser-orders", "value": "rest-client-1" }
+  ],
+  "status": "requested",
+  "intent": "order",
+  "code": {
+    "coding": [
+      { "system": "http://hl7.org/fhir/CodeSystem/task-code", "code": "fulfill" }
+    ]
+  },
+  "focus": { "reference": "MedicationRequest/{{placeTaskOrder.response.body.$.id}}" },
+  "for": { "reference": "{{patient}}" }
+}
+
+### The search the firmware runs in task mode - Task plus its focus, one Bundle
+GET {{fhir}}/Task?status=requested&_include=Task:focus&_count=5
+Accept: application/fhir+json
+
+### Check now
+GET {{device}}/checkOrders
+
+### A few seconds later
+# expect a new completed MedicationDispense on top, and the OperationOutcome
+# details mentioning "task mode"
+GET {{device}}/MedicationDispense
+Accept: application/fhir+json
+
+### The Task is completed, with the dispense in Task.output
+GET {{fhir}}/Task/{{placeTask.response.body.$.id}}
+Accept: application/fhir+json
+
+### The order itself is still active - closing it is the placer's job, not the filler's
+# expect status = active
+GET {{fhir}}/MedicationRequest/{{placeTaskOrder.response.body.$.id}}
+Accept: application/fhir+json
+
+
+###############################################################################
+# 3. Out of stock
+#
+# With giveUpOnStockEmpty=0 (set in section 0) the order is reported once and
+# left open, so refilling the lane fulfils it on a later poll.
+###############################################################################
+
+### Back to tag mode and empty the dark lane
+GET {{device}}/setSettings?orderMode=tag
+Accept: application/json
+
+###
+GET {{device}}/resetInventory?dark=0
+
+### An order it cannot fill
+# @name placeStarvedOrder
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "meta": {
+    "tag": [
+      { "system": "{{tags}}", "code": "actionable" }
+    ]
+  },
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-dark", "display": "Dark Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" }
+}
+
+###
+GET {{device}}/checkOrders
+
+### expect a MedicationDispense with status = declined and notPerformedReason
+### outofstock on top, and the OperationOutcome (severity = warning) saying
+### "Out of stock ... (told the server)"
+GET {{device}}/MedicationDispense
+Accept: application/fhir+json
+
+### The declined dispense: status = declined, and the reason in R5 lives in
+### notPerformedReason.concept, NOT in statusReason (removed in R5)
+GET {{fhir}}/MedicationDispense?_count=20
+Accept: application/fhir+json
+
+### The order is still open, waiting for a refill
+# expect status = active
+GET {{fhir}}/MedicationRequest/{{placeStarvedOrder.response.body.$.id}}
+Accept: application/fhir+json
+
+### Refill and check again
+GET {{device}}/resetInventory?dark=10
+
+###
+GET {{device}}/checkOrders
+
+### The same order now goes through
+# expect status = completed
+GET {{fhir}}/MedicationRequest/{{placeStarvedOrder.response.body.$.id}}
+Accept: application/fhir+json
+
+
+###############################################################################
+# 4. Giving up instead
+#
+# The other half of the setting: report it once, then abandon it. In task mode
+# the Task is set to failed with the declined dispense in Task.output.
+###############################################################################
+
+### Turn it on
+GET {{device}}/setSettings?giveUpOnStockEmpty=1
+Accept: application/json
+
+###
+GET {{device}}/resetInventory?milk=0
+
+### @name placeAbandonedOrder
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "meta": {
+    "tag": [
+      { "system": "{{tags}}", "code": "actionable" }
+    ]
+  },
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-milk", "display": "Milk Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" }
+}
+
+###
+GET {{device}}/checkOrders
+
+### expect a declined dispense on top and the OperationOutcome saying
+### "... (told the server, abandoned)"
+GET {{device}}/MedicationDispense
+Accept: application/fhir+json
+
+### Refill, check, and confirm it is NOT picked up again
+GET {{device}}/resetInventory?milk=10
+
+###
+GET {{device}}/checkOrders
+
+### expect no completed dispense for it and the OperationOutcome saying
+### "No new orders": the unit has written this order off
+GET {{device}}/MedicationDispense
+Accept: application/fhir+json
+
+### Back to retrying
+GET {{device}}/setSettings?giveUpOnStockEmpty=0
+Accept: application/json
+
+
+###############################################################################
+# 5. Housekeeping
+###############################################################################
+
+### Forget which orders were already dealt with (lets them be dispensed again)
+GET {{device}}/forgetOrders
+Accept: application/json
+
+### Dispense straight at the device, no server involved
+POST {{device}}/MedicationRequest
+Content-Type: application/json
+
+{
+  "resourceType": "MedicationRequest",
+  "id": "rest-client-direct",
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-dark", "display": "Dark Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" }
+}
+
+### ...and it is in the device's own log, readable by id
+GET {{device}}/MedicationDispense/rest-client-direct-dispense
+Accept: application/fhir+json
+
+### Stock as a FHIR InventoryReport
+GET {{device}}/InventoryReport
+Accept: application/fhir+json
+
+### Clear the server between runs
+GET {{fhir}}/MedicationRequest?_count=50
+Accept: application/fhir+json
+
+###
+GET {{fhir}}/Task?_count=50
+Accept: application/fhir+json
+
+### DELETE one by id, e.g.
+# DELETE {{fhir}}/MedicationRequest/{{placeTagOrder.response.body.$.id}}
