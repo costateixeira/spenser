@@ -1110,13 +1110,22 @@ void checkOrders()
     return;
   }
 
-  DynamicJsonDocument doc(ORDER_DOC_SIZE);
-  DeserializationError error = deserializeJson(doc, http.getStream());
+  // getString(), never getStream(): a FHIR server is free to answer with
+  // Transfer-Encoding: chunked (fhir-candle behind Caddy always does), and
+  // HTTPClient only unwraps the chunk framing on the writeToStream() path that
+  // getString() uses. getStream() hands back the raw socket, so ArduinoJson
+  // reads the hex chunk-size line as if it were the Bundle and fails with
+  // InvalidInput. Keep _count small and this stays a couple of KB.
+  String payload = http.getString();
   http.end();
+
+  DynamicJsonDocument doc(ORDER_DOC_SIZE);
+  DeserializationError error = deserializeJson(doc, payload);
 
   if (error)
   {
-    setOrderMessage(String("Could not read the Bundle: ") + error.c_str());
+    setOrderMessage(String("Could not read the Bundle: ") + error.c_str() +
+                    " (" + String(payload.length()) + " bytes)");
     finishCheck();
     return;
   }

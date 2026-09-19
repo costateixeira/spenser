@@ -1,4 +1,4 @@
-@host = http://192.168.50.108
+@host = http://spenser.local
 @host = http://192.168.4.1
 
 
@@ -39,13 +39,13 @@ Content-Type: application/json
 
 
 ### GET InventoryReport
-GET http://192.168.50.108/InventoryReport
+GET {{host}}/InventoryReport
 Content-Type: application/json
 
 
 
 ### POST request to add InventoryReport
-POST http://192.168.50.108/InventoryReport
+POST {{host}}/InventoryReport
 Content-Type: application/json
 
 {
@@ -81,7 +81,7 @@ Content-Type: application/json
 
 
 ### POST request to reset InventoryReport
-POST http://192.168.50.108/InventoryReport
+POST {{host}}/InventoryReport
 Content-Type: application/json
 
 {
@@ -150,9 +150,10 @@ GET {{host}}/checkOrders
 Accept: application/json
 
 
-### What the last check did
-GET {{host}}/orders
-Accept: application/json
+### What the last check did, as the dispenses it produced: a FHIR searchset,
+### newest first, with an OperationOutcome entry about the check itself
+GET {{host}}/MedicationDispense
+Accept: application/fhir+json
 
 
 ### Forget which orders were already fulfilled (so they can be dispensed again)
@@ -252,3 +253,43 @@ Accept: application/fhir+json
 ### What Spenser searches for in task mode
 GET {{fhir}}/Task?status=requested&_include=Task:focus&_count=5
 Accept: application/fhir+json
+
+
+########################################################################
+# Companion order server (server/server.js), from the FHIRDispenser wifi branch
+########################################################################
+@server = http://localhost:3000
+
+### Server health check
+GET {{server}}/
+
+### POST a new order to the server
+POST {{server}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+    "resourceType": "MedicationRequest",
+    "id": "test-order-1",
+    "status": "active",
+    "intent": "instance-order",
+    "medicationCodeableConcept": {
+        "coding": [
+            {
+                "code": "chocolate-dark",
+                "display": "Dark Chocolate"
+            }
+        ]
+    },
+    "subject": {
+        "reference": "Patient/123"
+    }
+}
+
+### Check pending orders on server
+GET {{server}}/MedicationRequest?status=active
+
+### View all orders on server
+GET {{server}}/MedicationRequest
+
+### View dispense history on server
+GET {{server}}/MedicationDispense
