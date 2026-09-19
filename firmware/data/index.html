@@ -105,6 +105,41 @@
         margin-top: 4px;
       }
 
+      .orders-status {
+        margin: 0 0 15px 0;
+        padding: 10px 12px;
+        border-radius: 6px;
+        background: #f2f4f7;
+        font-size: 0.9em;
+        color: #333;
+      }
+
+      .settings label.check {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .settings input[type="url"],
+      .settings input[type="text"] {
+        display: block;
+        width: 320px;
+        max-width: 100%;
+        padding: 5px;
+        margin-top: 4px;
+        font-size: 1em;
+      }
+
+      .settings select {
+        display: block;
+        margin-top: 4px;
+        padding: 5px;
+        font-size: 1em;
+      }
+
+      .settings .row {
+        margin-top: 10px;
+      }
+
       .toast {
         position: fixed;
         bottom: 20px;
@@ -157,6 +192,59 @@
           <button type="submit" class="button-blue">Set</button>
         </form>
       </div>
+    </div>
+
+    <div class="settings">
+      <h2>Orders</h2>
+      <p class="hint">
+        Spenser only acts on an order the placer made actionable: either a
+        MedicationRequest tagged <code>actionable</code>, or a Task pointing at
+        the request and asking for it to be fulfilled.
+      </p>
+
+      <div class="orders-status" id="orders-status">Not checked yet</div>
+
+      <form onsubmit="return saveOrderSettings()">
+        <label
+          >Order server (FHIR base URL)
+          <input type="url" id="serverUrl" placeholder="http://my-server/fhir" />
+        </label>
+        <label
+          >What makes an order actionable
+          <select id="orderMode">
+            <option value="tag">actionable tag on the MedicationRequest</option>
+            <option value="task">Task asking for it to be fulfilled</option>
+          </select>
+        </label>
+        <label
+          >Extra search parameters (tag mode)
+          <input type="text" id="orderQuery" />
+        </label>
+        <label
+          >Task search parameters (task mode)
+          <input type="text" id="taskQuery" />
+        </label>
+        <label
+          >Check every (s)
+          <input type="number" id="pollSeconds" min="5" max="3600" />
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="pollEnabled" /> Check automatically
+        </label>
+        <label class="check">
+          <input type="checkbox" id="writeBack" /> Report fulfilment back to the
+          server
+        </label>
+
+        <div class="row">
+          <button type="button" onclick="checkOrders()">Check for orders</button>
+          <button type="submit">Save order settings</button>
+          <button type="button" onclick="forgetOrders()">
+            Forget handled orders
+          </button>
+        </div>
+      </form>
     </div>
 
     <div class="settings">
@@ -299,7 +387,9 @@
       async function loadSettings() {
         try {
           const res = await fetch("/settings");
-          showSettings(await res.json());
+          const data = await res.json();
+          showSettings(data);
+          showOrderSettings(data);
         } catch (err) {
           console.error("Error loading settings", err);
         }
@@ -329,9 +419,91 @@
         }
       }
 
+      const ORDER_FIELDS = [
+        "serverUrl",
+        "orderMode",
+        "orderQuery",
+        "taskQuery",
+        "pollSeconds",
+      ];
+      const ORDER_FLAGS = ["pollEnabled", "writeBack"];
+
+      let lastHandled = null;
+
+      function showOrderSettings(data) {
+        ORDER_FIELDS.forEach((field) => {
+          document.getElementById(field).value = data[field];
+        });
+        ORDER_FLAGS.forEach((field) => {
+          document.getElementById(field).checked = !!data[field];
+        });
+      }
+
+      async function saveOrderSettings() {
+        const params = new URLSearchParams();
+        ORDER_FIELDS.forEach((field) => {
+          params.set(field, document.getElementById(field).value);
+        });
+        ORDER_FLAGS.forEach((field) => {
+          params.set(field, document.getElementById(field).checked ? "1" : "0");
+        });
+
+        const res = await fetch("/setSettings?" + params.toString());
+        if (res.ok) {
+          showOrderSettings(await res.json());
+          showToast("Order settings saved");
+        } else {
+          showToast("Could not save order settings");
+        }
+        return false; // prevent form submit redirect
+      }
+
+      async function checkOrders() {
+        // the device does the actual HTTP call from its main loop
+        await fetch("/checkOrders");
+        showToast("Checking for orders");
+        setTimeout(refreshOrders, 1000);
+        setTimeout(refreshOrders, 3000);
+      }
+
+      async function forgetOrders() {
+        await fetch("/forgetOrders");
+        lastHandled = null;
+        refreshOrders();
+      }
+
+      async function refreshOrders() {
+        try {
+          const res = await fetch("/orders");
+          const data = await res.json();
+
+          const parts = [];
+          if (data.busy) parts.push("checking now");
+          parts.push(
+            data.everRan ? "last check " + data.secondsAgo + "s ago" : "not checked yet"
+          );
+          if (data.everRan) {
+            parts.push(data.dispensed + " dispensed of " + data.found + " new");
+          }
+          if (data.message) parts.push(data.message);
+          parts.push(data.handled + " orders remembered");
+
+          document.getElementById("orders-status").innerText = parts.join(" - ");
+
+          if (lastHandled !== null && data.handled > lastHandled) {
+            refreshInventory();
+          }
+          lastHandled = data.handled;
+        } catch (err) {
+          console.error("Error loading order status", err);
+        }
+      }
+
       window.onload = () => {
         refreshInventory();
         loadSettings();
+        refreshOrders();
+        setInterval(refreshOrders, 5000);
       };
     </script>
 

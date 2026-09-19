@@ -129,3 +129,126 @@ Accept: application/json
 ### Restore the compiled-in defaults
 GET {{host}}/resetSettings
 Accept: application/json
+
+
+########################################################################
+# Order client - Spenser polling a server for actionable orders
+########################################################################
+
+### Point this unit at an order server (tag mode: actionable MedicationRequests)
+GET {{host}}/setSettings?serverUrl=http://192.168.50.50:8080/fhir&orderMode=tag&pollEnabled=1&pollSeconds=30&writeBack=1
+Accept: application/json
+
+
+### ...or task mode: a Coordination Task asking for the request to be fulfilled
+GET {{host}}/setSettings?orderMode=task&taskQuery=status=requested%26_include=Task:focus%26_count=5
+Accept: application/json
+
+
+### Ask Spenser to check now (the call itself runs from the device main loop)
+GET {{host}}/checkOrders
+Accept: application/json
+
+
+### What the last check did
+GET {{host}}/orders
+Accept: application/json
+
+
+### Forget which orders were already fulfilled (so they can be dispensed again)
+GET {{host}}/forgetOrders
+Accept: application/json
+
+
+########################################################################
+# What the order server should hold for Spenser to find
+########################################################################
+@fhir = http://192.168.50.50:8080/fhir
+
+### tag mode - an order the placer marked as actionable
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "meta": {
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/common-tags",
+        "code": "actionable"
+      }
+    ]
+  },
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        {
+          "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+          "code": "chocolate-dark",
+          "display": "Dark Chocolate"
+        }
+      ]
+    }
+  },
+  "subject": { "reference": "Patient/123" }
+}
+
+
+### task mode - the same order, left plain...
+POST {{fhir}}/MedicationRequest
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        {
+          "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+          "code": "chocolate-milk",
+          "display": "Milk Chocolate"
+        }
+      ]
+    }
+  },
+  "subject": { "reference": "Patient/123" }
+}
+
+
+### ...and a Coordination Task asking Spenser to fulfil it
+### (replace the focus reference with the id the server assigned above)
+POST {{fhir}}/Task
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "Task",
+  "identifier": [
+    { "system": "http://example.org/orders", "value": "order-1" }
+  ],
+  "status": "requested",
+  "intent": "order",
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/CodeSystem/task-code",
+        "code": "fulfill"
+      }
+    ]
+  },
+  "focus": { "reference": "MedicationRequest/1" },
+  "for": { "reference": "Patient/123" }
+}
+
+
+### What Spenser searches for in tag mode
+GET {{fhir}}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags%7Cactionable&status=active&intent=instance-order&_count=5
+Accept: application/fhir+json
+
+
+### What Spenser searches for in task mode
+GET {{fhir}}/Task?status=requested&_include=Task:focus&_count=5
+Accept: application/fhir+json

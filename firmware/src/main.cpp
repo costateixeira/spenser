@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
+#include <HTTPClient.h>
 #include "M5AtomS3.h"
 #include "M5AtomicMotion.h"
 #include <Adafruit_NeoPixel.h>
@@ -40,9 +41,24 @@ struct Settings
   int angleRest;     // angle the arm sits at when idle
   int anglePush;     // angle at maximum push
   int returnDelayMs; // how long to hold the push before the arm comes back
+  // --- Order client (see the COW IG: an order is actionable when it carries the
+  // "actionable" tag, or when a Task asks for it to be fulfilled) ---
+  String serverUrl;   // FHIR base URL of the order server, e.g. http://my-server/fhir
+  String orderMode;   // "tag" = poll tagged MedicationRequests, "task" = poll Coordination Tasks
+  String orderQuery;  // extra search parameters used in "tag" mode
+  String taskQuery;   // extra search parameters used in "task" mode
+  bool pollEnabled;   // check the server automatically
+  int pollSeconds;    // seconds between automatic checks
+  bool writeBack;     // report fulfilment back to the server
 };
 
-const Settings DEFAULT_SETTINGS = {3, 2, 0, 97, 300};
+const Settings DEFAULT_SETTINGS = {
+    3, 2, 0, 97, 300,
+    "",
+    "tag",
+    "status=active&intent=instance-order&_count=5",
+    "status=requested&_include=Task:focus&_count=5",
+    false, 30, true};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
@@ -56,6 +72,13 @@ void loadSettings()
   settings.angleRest = prefs.getInt("angleRest", settings.angleRest);
   settings.anglePush = prefs.getInt("anglePush", settings.anglePush);
   settings.returnDelayMs = prefs.getInt("returnMs", settings.returnDelayMs);
+  settings.serverUrl = prefs.getString("serverUrl", settings.serverUrl);
+  settings.orderMode = prefs.getString("orderMode", settings.orderMode);
+  settings.orderQuery = prefs.getString("orderQuery", settings.orderQuery);
+  settings.taskQuery = prefs.getString("taskQuery", settings.taskQuery);
+  settings.pollEnabled = prefs.getBool("pollEnabled", settings.pollEnabled);
+  settings.pollSeconds = prefs.getInt("pollSecs", settings.pollSeconds);
+  settings.writeBack = prefs.getBool("writeBack", settings.writeBack);
   prefs.end();
 
   Serial.printf("Settings: servoDark=%d servoMilk=%d rest=%d push=%d returnMs=%d\n",
@@ -71,17 +94,31 @@ void saveSettings()
   prefs.putInt("angleRest", settings.angleRest);
   prefs.putInt("anglePush", settings.anglePush);
   prefs.putInt("returnMs", settings.returnDelayMs);
+  prefs.putString("serverUrl", settings.serverUrl);
+  prefs.putString("orderMode", settings.orderMode);
+  prefs.putString("orderQuery", settings.orderQuery);
+  prefs.putString("taskQuery", settings.taskQuery);
+  prefs.putBool("pollEnabled", settings.pollEnabled);
+  prefs.putInt("pollSecs", settings.pollSeconds);
+  prefs.putBool("writeBack", settings.writeBack);
   prefs.end();
 }
 
 String settingsJson()
 {
-  StaticJsonDocument<256> doc;
+  StaticJsonDocument<1024> doc;
   doc["servoDark"] = settings.servoDark;
   doc["servoMilk"] = settings.servoMilk;
   doc["angleRest"] = settings.angleRest;
   doc["anglePush"] = settings.anglePush;
   doc["returnDelayMs"] = settings.returnDelayMs;
+  doc["serverUrl"] = settings.serverUrl;
+  doc["orderMode"] = settings.orderMode;
+  doc["orderQuery"] = settings.orderQuery;
+  doc["taskQuery"] = settings.taskQuery;
+  doc["pollEnabled"] = settings.pollEnabled;
+  doc["pollSeconds"] = settings.pollSeconds;
+  doc["writeBack"] = settings.writeBack;
 
   String out;
   serializeJson(doc, out);
@@ -102,6 +139,85 @@ bool paramInt(AsyncWebServerRequest *request, const char *name, int &out)
     return true;
   }
   return false;
+}
+
+// Read a string parameter from either the query string or a posted form body.
+bool paramStr(AsyncWebServerRequest *request, const char *name, String &out)
+{
+  if (request->hasParam(name))
+  {
+    out = request->getParam(name)->value();
+    return true;
+  }
+  if (request->hasParam(name, true))
+  {
+    out = request->getParam(name, true)->value();
+    return true;
+  }
+  return false;
+}
+
+bool paramBool(AsyncWebServerRequest *request, const char *name, bool &out)
+{
+  String raw;
+  if (!paramStr(request, name, raw))
+    return false;
+  raw.toLowerCase();
+  out = (raw == "1" || raw == "true" || raw == "on" || raw == "yes");
+  return true;
+}
+
+// ---- Orders already fulfilled, so a poll never dispenses the same one twice ----
+// Kept as "|id1|id2|" in NVS; only the most recent SEEN_MAX ids are remembered.
+const int SEEN_MAX = 20;
+String seenIds = "|";
+
+void loadSeenIds()
+{
+  prefs.begin("spenser", true);
+  seenIds = prefs.getString("seenIds", "|");
+  prefs.end();
+}
+
+int seenCount()
+{
+  int bars = 0;
+  for (unsigned int i = 0; i < seenIds.length(); i++)
+    if (seenIds[i] == '|')
+      bars++;
+  return bars > 0 ? bars - 1 : 0;
+}
+
+bool alreadyHandled(const String &id)
+{
+  return id.length() > 0 && seenIds.indexOf("|" + id + "|") >= 0;
+}
+
+void markHandled(const String &id)
+{
+  if (id.isEmpty() || alreadyHandled(id))
+    return;
+
+  seenIds += id + "|";
+  while (seenCount() > SEEN_MAX)
+  {
+    int next = seenIds.indexOf('|', 1);
+    if (next < 0)
+      break;
+    seenIds = seenIds.substring(next);
+  }
+
+  prefs.begin("spenser", false);
+  prefs.putString("seenIds", seenIds);
+  prefs.end();
+}
+
+void forgetHandled()
+{
+  seenIds = "|";
+  prefs.begin("spenser", false);
+  prefs.putString("seenIds", seenIds);
+  prefs.end();
 }
 
 // One push-and-return cycle on the given servo channel, using the unit's settings.
@@ -134,6 +250,35 @@ void setLEDColor(uint8_t r, uint8_t g, uint8_t b)
 {
   rgb.setPixelColor(0, rgb.Color(r, g, b));
   rgb.show();
+}
+
+// Dispense one item of the given code. Returns false when the code is unknown
+// or that lane is empty; the caller decides how to report that.
+bool dispenseCode(const String &code)
+{
+  if (code == "chocolate-dark")
+  {
+    if (inventoryDark <= 0)
+      return false;
+    inventoryDark--;
+    setLEDColor(128, 0, 0); // red
+    dispenseServo(settings.servoDark);
+  }
+  else if (code == "chocolate-milk")
+  {
+    if (inventoryMilk <= 0)
+      return false;
+    inventoryMilk--;
+    setLEDColor(0, 0, 200); // blue
+    dispenseServo(settings.servoMilk);
+  }
+  else
+  {
+    return false;
+  }
+
+  setLEDColor(0, 0, 0);
+  return true;
 }
 
 void handleMedicationRequest(String body, AsyncWebServerRequest *request)
@@ -172,12 +317,8 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
 
   if (medicationCode == "chocolate-dark")
   {
-    if (inventoryDark > 0)
+    if (dispenseCode(medicationCode))
     {
-      inventoryDark--;
-      rgb.setPixelColor(0, rgb.Color(128, 0, 0)); // red
-      rgb.show();
-      dispenseServo(settings.servoDark);
       String response = createMedicationDispense(id, medicationCode, patientReference);
       request->send(200, "application/json", response);
     }
@@ -208,12 +349,8 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
   }
   else if (medicationCode == "chocolate-milk")
   {
-    if (inventoryMilk > 0)
+    if (dispenseCode(medicationCode))
     {
-      inventoryMilk--;
-      rgb.setPixelColor(0, rgb.Color(0, 0, 200)); // blue
-      rgb.show();
-      dispenseServo(settings.servoMilk);
       String response = createMedicationDispense(id, medicationCode, patientReference);
       request->send(200, "application/json", response);
     }
@@ -249,6 +386,353 @@ void handleMedicationRequest(String body, AsyncWebServerRequest *request)
   rgb.show();
 }
 
+// ==================== Order client ====================
+// A FHIR request is an authorization, not an instruction: per the COW IG
+// ("Actionable orders") Spenser only acts on an order when either
+//   "tag"  - the MedicationRequest carries meta.tag common-tags#actionable, or
+//   "task" - a Coordination Task points at it (Task.focus) asking for fulfilment.
+// Both are polled by the same code path; the mode is a per-unit setting.
+
+#define ACTIONABLE_SYSTEM "http://terminology.hl7.org/CodeSystem/common-tags"
+#define ACTIONABLE_CODE "actionable"
+#define MEDS_SYSTEM "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
+
+const size_t ORDER_DOC_SIZE = 20480; // keep _count small: the Bundle is parsed in RAM
+
+struct OrderCheck
+{
+  bool busy;
+  bool everRan;
+  unsigned long lastCheck; // millis() of the last finished check
+  int httpStatus;          // status of the search itself
+  int found;               // orders seen for the first time
+  int dispensed;           // orders actually dispensed
+  char message[128];       // the web task reads this while loop() writes it: keep it a plain buffer
+};
+
+OrderCheck orderCheck = {false, false, 0, 0, 0, 0, ""};
+volatile bool checkRequested = false; // set by /checkOrders, serviced from loop()
+unsigned long lastPollAttempt = 0;
+
+void setOrderMessage(const String &text)
+{
+  strlcpy(orderCheck.message, text.c_str(), sizeof(orderCheck.message));
+  Serial.println("Orders: " + text);
+}
+
+void finishCheck()
+{
+  orderCheck.lastCheck = millis();
+  orderCheck.busy = false;
+}
+
+String serverBase()
+{
+  String base = settings.serverUrl;
+  while (base.endsWith("/"))
+    base.remove(base.length() - 1);
+  return base;
+}
+
+// R5 carries the code in medication.concept, R4 in medicationCodeableConcept.
+String medicationCodeOf(JsonObject request)
+{
+  String code = request["medication"]["concept"]["coding"][0]["code"] | "";
+  if (code.isEmpty())
+    code = request["medicationCodeableConcept"]["coding"][0]["code"] | "";
+  return code;
+}
+
+JsonObject findResource(JsonArray entries, const String &type, const String &id)
+{
+  for (JsonObject entry : entries)
+  {
+    JsonObject resource = entry["resource"];
+    if (resource.isNull())
+      continue;
+    if (String(resource["resourceType"] | "") == type && String(resource["id"] | "") == id)
+      return resource;
+  }
+  return JsonObject();
+}
+
+// Send a resource; report the HTTP status and, for a create, the id the server assigned.
+int sendResource(const char *method, const String &url, const String &body, String *createdId = nullptr)
+{
+  HTTPClient http;
+  if (!http.begin(url))
+    return -1;
+
+  const char *headerKeys[] = {"Location", "Content-Location"};
+  http.collectHeaders(headerKeys, 2);
+  http.addHeader("Content-Type", "application/fhir+json");
+  http.addHeader("Accept", "application/fhir+json");
+  http.setTimeout(8000);
+
+  int status = http.sendRequest(method, (uint8_t *)body.c_str(), body.length());
+
+  if (createdId)
+  {
+    String location = http.header("Location");
+    if (location.isEmpty())
+      location = http.header("Content-Location");
+
+    int history = location.indexOf("/_history"); // .../MedicationDispense/7/_history/1
+    if (history > 0)
+      location = location.substring(0, history);
+    int slash = location.lastIndexOf('/');
+    *createdId = slash >= 0 ? location.substring(slash + 1) : "";
+  }
+
+  http.end();
+  return status;
+}
+
+String dispenseBody(JsonObject request, const String &requestId, const String &code)
+{
+  StaticJsonDocument<768> doc;
+  doc["resourceType"] = "MedicationDispense";
+  doc["status"] = "completed";
+
+  JsonObject medication = doc.createNestedObject("medication");
+  JsonObject coding = medication.createNestedObject("concept").createNestedArray("coding").createNestedObject();
+  coding["system"] = MEDS_SYSTEM;
+  coding["code"] = code;
+  coding["display"] = (code == "chocolate-dark") ? "Dark Chocolate" : "Milk Chocolate";
+
+  String subject = request["subject"]["reference"] | "";
+  if (subject.length())
+    doc.createNestedObject("subject")["reference"] = subject;
+
+  if (requestId.length())
+    doc.createNestedArray("authorizingPrescription").createNestedObject()["reference"] =
+        "MedicationRequest/" + requestId;
+
+  String out;
+  serializeJson(doc, out);
+  return out;
+}
+
+// Tell the server what happened. The dispense event is always reported; what is
+// completed afterwards depends on the mode. In "task" mode the COW IG leaves the
+// request to the placer, so Spenser completes the Task and hands the dispense back
+// in Task.output. In "tag" mode there is no Task, so the request itself is completed.
+// Returns an empty String when the server accepted everything.
+String reportFulfilment(const String &base, JsonObject request, const String &requestId,
+                        const String &code, JsonObject task)
+{
+  String dispenseId;
+  int dispenseStatus = sendResource("POST", base + "/MedicationDispense",
+                                    dispenseBody(request, requestId, code), &dispenseId);
+  Serial.printf("POST MedicationDispense -> %d\n", dispenseStatus);
+
+  int followUp = 0;
+  if (!task.isNull())
+  {
+    task["status"] = "completed";
+    if (dispenseId.length())
+    {
+      JsonObject output = task.createNestedArray("output").createNestedObject();
+      output.createNestedObject("type")["text"] = "MedicationDispense";
+      output.createNestedObject("valueReference")["reference"] = "MedicationDispense/" + dispenseId;
+    }
+
+    String taskId = task["id"] | "";
+    String body;
+    serializeJson(task, body);
+    followUp = sendResource("PUT", base + "/Task/" + taskId, body);
+    Serial.printf("PUT Task/%s -> %d\n", taskId.c_str(), followUp);
+  }
+  else
+  {
+    request["status"] = "completed";
+    String body;
+    serializeJson(request, body);
+    followUp = sendResource("PUT", base + "/MedicationRequest/" + requestId, body);
+    Serial.printf("PUT MedicationRequest/%s -> %d\n", requestId.c_str(), followUp);
+  }
+
+  bool dispenseOk = dispenseStatus >= 200 && dispenseStatus < 300;
+  bool followUpOk = followUp >= 200 && followUp < 300;
+  if (dispenseOk && followUpOk)
+    return "";
+
+  return "Dispensed, but the server refused the write-back (dispense " +
+         String(dispenseStatus) + ", update " + String(followUp) + ")";
+}
+
+void checkOrders()
+{
+  orderCheck.busy = true;
+  orderCheck.everRan = true;
+  orderCheck.found = 0;
+  orderCheck.dispensed = 0;
+  orderCheck.httpStatus = 0;
+
+  bool taskMode = (settings.orderMode == "task");
+  String base = serverBase();
+
+  if (base.isEmpty())
+  {
+    setOrderMessage("No server URL configured");
+    finishCheck();
+    return;
+  }
+
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    setOrderMessage("Not connected to Wi-Fi");
+    finishCheck();
+    return;
+  }
+
+  String url = base + (taskMode ? "/Task" : "/MedicationRequest");
+  String query = taskMode ? settings.taskQuery : settings.orderQuery;
+  if (!taskMode)
+  {
+    // Only orders the placer marked as actionable
+    String tag = "_tag=" ACTIONABLE_SYSTEM "%7C" ACTIONABLE_CODE;
+    query = query.length() ? tag + "&" + query : tag;
+  }
+  if (query.length())
+    url += "?" + query;
+
+  Serial.println("Checking for orders: " + url);
+
+  HTTPClient http;
+  if (!http.begin(url))
+  {
+    setOrderMessage("Could not open " + url);
+    finishCheck();
+    return;
+  }
+
+  http.addHeader("Accept", "application/fhir+json");
+  http.setTimeout(8000);
+  orderCheck.httpStatus = http.GET();
+
+  if (orderCheck.httpStatus != 200)
+  {
+    http.end();
+    setOrderMessage("Search failed (HTTP " + String(orderCheck.httpStatus) + ")");
+    finishCheck();
+    return;
+  }
+
+  DynamicJsonDocument doc(ORDER_DOC_SIZE);
+  DeserializationError error = deserializeJson(doc, http.getStream());
+  http.end();
+
+  if (error)
+  {
+    setOrderMessage(String("Could not read the Bundle: ") + error.c_str());
+    finishCheck();
+    return;
+  }
+
+  JsonArray entries = doc["entry"].as<JsonArray>();
+  if (entries.isNull())
+  {
+    setOrderMessage("No orders waiting");
+    finishCheck();
+    return;
+  }
+
+  String problem;
+  for (JsonObject entry : entries)
+  {
+    JsonObject resource = entry["resource"];
+    if (resource.isNull())
+      continue;
+
+    String type = resource["resourceType"] | "";
+    JsonObject task;
+    JsonObject request;
+    String orderId;
+
+    if (taskMode)
+    {
+      if (type != "Task")
+        continue; // the _include brought the requests along; they are not orders by themselves
+
+      String focus = resource["focus"]["reference"] | "";
+      if (!focus.startsWith("MedicationRequest/"))
+        continue;
+
+      task = resource;
+      orderId = "Task/" + String(resource["id"] | "");
+      request = findResource(entries, "MedicationRequest", focus.substring(focus.indexOf('/') + 1));
+
+      if (request.isNull())
+      {
+        problem = orderId + " points at " + focus + ", which the search did not return";
+        Serial.println(problem);
+        continue;
+      }
+    }
+    else
+    {
+      if (type != "MedicationRequest")
+        continue;
+
+      request = resource;
+      orderId = "MedicationRequest/" + String(resource["id"] | "");
+    }
+
+    if (alreadyHandled(orderId))
+      continue;
+
+    orderCheck.found++;
+    String code = medicationCodeOf(request);
+
+    if (!dispenseCode(code))
+    {
+      problem = "Cannot dispense " + (code.isEmpty() ? String("an order with no code") : code) +
+                " for " + orderId;
+      Serial.println(problem);
+      continue; // out of stock, or not one of ours: leave it for a later check
+    }
+
+    orderCheck.dispensed++;
+    markHandled(orderId);
+
+    if (settings.writeBack)
+    {
+      String writeProblem = reportFulfilment(base, request, String(request["id"] | ""), code, task);
+      if (writeProblem.length())
+        problem = writeProblem;
+    }
+  }
+
+  if (problem.length())
+    setOrderMessage(problem);
+  else if (orderCheck.found == 0)
+    setOrderMessage("No new orders");
+  else
+    setOrderMessage("Dispensed " + String(orderCheck.dispensed) + " of " + String(orderCheck.found));
+
+  finishCheck();
+}
+
+String orderStatusJson()
+{
+  StaticJsonDocument<768> doc;
+  doc["mode"] = settings.orderMode;
+  doc["serverUrl"] = settings.serverUrl;
+  doc["busy"] = orderCheck.busy || checkRequested;
+  doc["everRan"] = orderCheck.everRan;
+  doc["secondsAgo"] = orderCheck.everRan ? (int)((millis() - orderCheck.lastCheck) / 1000) : -1;
+  doc["httpStatus"] = orderCheck.httpStatus;
+  doc["found"] = orderCheck.found;
+  doc["dispensed"] = orderCheck.dispensed;
+  doc["message"] = orderCheck.message;
+  doc["handled"] = seenCount();
+
+  String out;
+  serializeJson(doc, out);
+  return out;
+}
+
 bool isAPMode()
 {
   return WiFi.getMode() == WIFI_AP || WiFi.status() != WL_CONNECTED;
@@ -262,6 +746,7 @@ void setup()
   Serial.println("Setup starting");
 
   loadSettings();
+  loadSeenIds();
 
   pinMode(buttonPin, INPUT_PULLUP);
   bool resetWiFi = false;
@@ -700,6 +1185,38 @@ void setup()
         updated = true;
       }
 
+      String text;
+      bool flag = false;
+
+      if (paramStr(request, "serverUrl", text)) {
+        settings.serverUrl = text;
+        updated = true;
+      }
+      if (paramStr(request, "orderMode", text)) {
+        settings.orderMode = (text == "task") ? "task" : "tag";
+        updated = true;
+      }
+      if (paramStr(request, "orderQuery", text)) {
+        settings.orderQuery = text;
+        updated = true;
+      }
+      if (paramStr(request, "taskQuery", text)) {
+        settings.taskQuery = text;
+        updated = true;
+      }
+      if (paramBool(request, "pollEnabled", flag)) {
+        settings.pollEnabled = flag;
+        updated = true;
+      }
+      if (paramInt(request, "pollSeconds", value)) {
+        settings.pollSeconds = constrain(value, 5, 3600);
+        updated = true;
+      }
+      if (paramBool(request, "writeBack", flag)) {
+        settings.writeBack = flag;
+        updated = true;
+      }
+
       if (!updated) {
         request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"No known setting in request\"}");
         return;
@@ -716,11 +1233,29 @@ void setup()
       prefs.clear();
       prefs.end();
       settings = DEFAULT_SETTINGS;
+      seenIds = "|";
       request->send(200, "application/json", settingsJson()); });
+
+  // Ask for a check. The HTTP call itself runs from loop(), so the async
+  // web server is never blocked while Spenser talks to the order server.
+  server.on("/checkOrders", HTTP_GET | HTTP_POST, [](AsyncWebServerRequest *request)
+            {
+      checkRequested = true;
+      request->send(202, "application/json", "{\"status\":\"scheduled\"}"); });
+
+  // What the last check did
+  server.on("/orders", HTTP_GET, [](AsyncWebServerRequest *request)
+            { request->send(200, "application/json", orderStatusJson()); });
+
+  // Forget which orders were already fulfilled, so they can be dispensed again
+  server.on("/forgetOrders", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+      forgetHandled();
+      request->send(200, "application/json", orderStatusJson()); });
 
   server.on("/metadata", HTTP_GET, [](AsyncWebServerRequest *request)
             {
-        StaticJsonDocument<4096> doc;
+        DynamicJsonDocument doc(8192);
         doc["resourceType"] = "CapabilityStatement";
         doc["status"] = "active";
         doc["date"] = "2025-04-18";
@@ -766,6 +1301,50 @@ void setup()
         // op_difference["name"] = "supports-difference-update";
         // op_difference["definition"] = "http://example.org/fhir/OperationDefinition/inventory-difference";
       
+        // ---- client: what Spenser asks of an order server ----
+        JsonObject rest1 = rest.createNestedObject();
+        rest1["mode"] = "client";
+        rest1["documentation"] = "Spenser polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled";
+
+        JsonArray clientResources = rest1.createNestedArray("resource");
+
+        // MedicationRequest: the order to dispense
+        JsonObject cres1 = clientResources.createNestedObject();
+        cres1["type"] = "MedicationRequest";
+        cres1["documentation"] = "Searched for orders tagged as actionable. Set to 'completed' after dispensing, when no Task is coordinating the work";
+        JsonArray cres1_interaction = cres1.createNestedArray("interaction");
+        cres1_interaction.createNestedObject()["code"] = "search-type";
+        cres1_interaction.createNestedObject()["code"] = "update";
+        JsonArray cres1_params = cres1.createNestedArray("searchParam");
+        JsonObject cres1_tag = cres1_params.createNestedObject();
+        cres1_tag["name"] = "_tag";
+        cres1_tag["type"] = "token";
+        cres1_tag["documentation"] = "Selects orders tagged " ACTIONABLE_SYSTEM "#" ACTIONABLE_CODE;
+        JsonObject cres1_status = cres1_params.createNestedObject();
+        cres1_status["name"] = "status";
+        cres1_status["type"] = "token";
+        JsonObject cres1_intent = cres1_params.createNestedObject();
+        cres1_intent["name"] = "intent";
+        cres1_intent["type"] = "token";
+
+        // Task: the Coordination Task asking for fulfilment
+        JsonObject cres2 = clientResources.createNestedObject();
+        cres2["type"] = "Task";
+        cres2["documentation"] = "Coordination Task pointing at the order in Task.focus. Set to 'completed' with the dispense in Task.output; the status of the request itself is left to the placer";
+        JsonArray cres2_interaction = cres2.createNestedArray("interaction");
+        cres2_interaction.createNestedObject()["code"] = "search-type";
+        cres2_interaction.createNestedObject()["code"] = "update";
+        JsonObject cres2_status = cres2.createNestedArray("searchParam").createNestedObject();
+        cres2_status["name"] = "status";
+        cres2_status["type"] = "token";
+        cres2["searchInclude"][0] = "Task:focus";
+
+        // MedicationDispense: what Spenser reports back
+        JsonObject cres3 = clientResources.createNestedObject();
+        cres3["type"] = "MedicationDispense";
+        cres3["documentation"] = "Created on the server once an order has been dispensed, referring to the order in authorizingPrescription";
+        cres3.createNestedArray("interaction").createNestedObject()["code"] = "create";
+
         String response;
         serializeJsonPretty(doc, response);
         request->send(200, "application/fhir+json", response); });
@@ -1036,6 +1615,19 @@ void loop()
         Serial.println("Out of dark chocolate!");
       }
     }
+  }
+
+  // Order polling. The blocking HTTP work happens here in loop(), never inside
+  // an async web handler, which only raises the checkRequested flag.
+  unsigned long nowMs = millis();
+  bool pollDue = settings.pollEnabled && settings.pollSeconds > 0 &&
+                 (nowMs - lastPollAttempt >= (unsigned long)settings.pollSeconds * 1000UL);
+
+  if (checkRequested || pollDue)
+  {
+    checkRequested = false;
+    lastPollAttempt = nowMs;
+    checkOrders();
   }
 
   // Optional: report IP periodically
