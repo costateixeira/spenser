@@ -1,0 +1,21 @@
+meta {
+  name: Accept tasks only
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{spenser}}/setSettings?orderMode=task
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.orderMode: eq task
+}
+
+docs {
+  The other narrowing: only a Task asking for fulfilment will move this
+  unit, a tagged order on its own will not.
+}

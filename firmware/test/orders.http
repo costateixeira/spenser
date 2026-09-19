@@ -2,8 +2,13 @@
 # Spenser - order client
 #
 # Exercises the two ways an order becomes actionable, per the HL7 COW IG:
-#   tag mode  - the MedicationRequest carries meta.tag common-tags#actionable
-#   task mode - a Coordination Task points at it (Task.focus)
+#   a tag  - the MedicationRequest carries meta.tag common-tags#actionable
+#   a Task - a Coordination Task points at it (Task.focus)
+#
+# These are not two modes of the device: it looks for both on every check and
+# acts on whichever turns up. When an order arrives by both routes the Task
+# wins, and the order is still dispensed once. orderMode=tag or =task narrows
+# it to one route, which section 2 uses only to show the difference.
 #
 # The merged firmware talks to https:// as well as http:// (certificates are
 # not validated), so the device and this file can use the same base URL.
@@ -37,8 +42,8 @@ Accept: application/fhir+json
 GET {{device}}/settings
 Accept: application/json
 
-### Point it at the server, tag mode, polling every 30s
-GET {{device}}/setSettings?serverUrl={{fhir}}&orderMode=tag&pollEnabled=1&pollSeconds=30&writeBack=1&giveUpOnStockEmpty=0
+### Point it at the server, accepting both routes, polling every 30s
+GET {{device}}/setSettings?serverUrl={{fhir}}&orderMode=both&pollEnabled=1&pollSeconds=30&writeBack=1&giveUpOnStockEmpty=0
 Accept: application/json
 
 ### Make sure both lanes have stock
@@ -50,7 +55,7 @@ Accept: application/fhir+json
 
 
 ###############################################################################
-# 1. Tag mode
+# 1. Made actionable by a tag
 ###############################################################################
 
 ### Place an order the placer marked actionable
@@ -92,7 +97,7 @@ Accept: application/json
 GET {{device}}/MedicationDispense
 Accept: application/fhir+json
 
-### The order is completed - in tag mode the device closes it itself
+### The order is completed - with no Task involved the device closes it itself
 # expect status = completed
 GET {{fhir}}/MedicationRequest/{{placeTagOrder.response.body.$.id}}
 Accept: application/fhir+json
@@ -134,10 +139,12 @@ Accept: application/fhir+json
 
 
 ###############################################################################
-# 2. Task mode
+# 2. Made actionable by a Task
 ###############################################################################
 
-### Switch the unit over
+### Nothing to switch: the unit already looks for Tasks on every check. This
+### narrows it to Tasks only, so the plain order below is demonstrably ignored
+### until its Task exists.
 GET {{device}}/setSettings?orderMode=task
 Accept: application/json
 
@@ -181,7 +188,7 @@ Content-Type: application/fhir+json
   "for": { "reference": "{{patient}}" }
 }
 
-### The search the firmware runs in task mode - Task plus its focus, one Bundle
+### The Task search the firmware runs - Task plus its focus, one Bundle
 GET {{fhir}}/Task?status=requested&_include=Task:focus&_count=5
 Accept: application/fhir+json
 
@@ -190,7 +197,7 @@ GET {{device}}/checkOrders
 
 ### A few seconds later
 # expect a new completed MedicationDispense on top, and the OperationOutcome
-# details mentioning "task mode"
+# details saying it is accepting tasks
 GET {{device}}/MedicationDispense
 Accept: application/fhir+json
 
@@ -211,8 +218,8 @@ Accept: application/fhir+json
 # left open, so refilling the lane fulfils it on a later poll.
 ###############################################################################
 
-### Back to tag mode and empty the dark lane
-GET {{device}}/setSettings?orderMode=tag
+### Back to accepting both routes, and empty the dark lane
+GET {{device}}/setSettings?orderMode=both
 Accept: application/json
 
 ###
@@ -276,7 +283,7 @@ Accept: application/fhir+json
 ###############################################################################
 # 4. Giving up instead
 #
-# The other half of the setting: report it once, then abandon it. In task mode
+# The other half of the setting: report it once, then abandon it. With a Task
 # the Task is set to failed with the declined dispense in Task.output.
 ###############################################################################
 

@@ -135,12 +135,13 @@ Accept: application/json
 # Order client - Spenser polling a server for actionable orders
 ########################################################################
 
-### Point this unit at an order server (tag mode: actionable MedicationRequests)
-GET {{host}}/setSettings?serverUrl=http://192.168.50.50:8080/fhir&orderMode=tag&pollEnabled=1&pollSeconds=30&writeBack=1
+### Point this unit at an order server. orderMode=both (the default) looks for
+### actionable MedicationRequests and Tasks alike on every check.
+GET {{host}}/setSettings?serverUrl=http://192.168.50.50:8080/fhir&orderMode=both&pollEnabled=1&pollSeconds=30&writeBack=1
 Accept: application/json
 
 
-### ...or task mode: a Coordination Task asking for the request to be fulfilled
+### ...or narrow it to one route, and set the Task search while we are here
 GET {{host}}/setSettings?orderMode=task&taskQuery=status=requested%26_include=Task:focus%26_count=5
 Accept: application/json
 
@@ -166,7 +167,7 @@ Accept: application/json
 ########################################################################
 @fhir = http://192.168.50.50:8080/fhir
 
-### tag mode - an order the placer marked as actionable
+### made actionable by a tag - the placer marked the order itself
 POST {{fhir}}/MedicationRequest
 Content-Type: application/fhir+json
 
@@ -197,7 +198,7 @@ Content-Type: application/fhir+json
 }
 
 
-### task mode - the same order, left plain...
+### made actionable by a Task - the same order, left plain...
 POST {{fhir}}/MedicationRequest
 Content-Type: application/fhir+json
 
@@ -245,12 +246,12 @@ Content-Type: application/fhir+json
 }
 
 
-### What Spenser searches for in tag mode
+### The first of Spenser's two searches: tagged orders
 GET {{fhir}}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags%7Cactionable&status=active&intent=instance-order&_count=5
 Accept: application/fhir+json
 
 
-### What Spenser searches for in task mode
+### The second: Tasks asking for fulfilment
 GET {{fhir}}/Task?status=requested&_include=Task:focus&_count=5
 Accept: application/fhir+json
 

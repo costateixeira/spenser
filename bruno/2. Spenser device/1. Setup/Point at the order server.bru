@@ -1,0 +1,30 @@
+meta {
+  name: Point at the order server
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{spenser}}/setSettings?serverUrl={{deviceFhirBase}}&orderMode=both&pollEnabled=1&pollSeconds=30&writeBack=1&giveUpOnStockEmpty=0
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.orderMode: eq both
+  res.body.giveUpOnStockEmpty: eq false
+}
+
+docs {
+  orderMode=both is the default and what every scenario here assumes: a tag
+  and a Task are two ways of authorizing the same dispense, so the unit
+  checks for both on every poll. When an order arrives by both routes at
+  once the Task wins, and the order is still dispensed only once.
+
+  Note deviceFhirBase, not fhirBase: the deployment publishes the order
+  server on both schemes, and Caddyfile.spenser keeps the plain-http site
+  precisely so the device can reach it. The firmware does handle https://
+  as well (certificates are not validated), so fhirBase works too - http
+  just saves the ESP32 a TLS handshake on every poll.
+}

@@ -442,10 +442,11 @@
             </label>
           </div>
           <div class="settings-row">
-            <label class="field">What makes an order actionable
+            <label class="field">Accept orders made actionable by
               <select id="orderMode">
-                <option value="tag">actionable tag on the request</option>
-                <option value="task">Task asking for fulfilment</option>
+                <option value="both">either a tag or a Task</option>
+                <option value="tag">an actionable tag only</option>
+                <option value="task">a Task asking for fulfilment only</option>
               </select>
             </label>
             <label class="field">Check every (s)
@@ -453,12 +454,12 @@
             </label>
           </div>
           <div class="settings-row">
-            <label class="field" style="flex:1">Extra search parameters (tag mode)
+            <label class="field" style="flex:1">Extra search parameters (tagged orders)
               <input type="url" id="orderQuery" />
             </label>
           </div>
           <div class="settings-row">
-            <label class="field" style="flex:1">Task search parameters (task mode)
+            <label class="field" style="flex:1">Extra search parameters (tasks)
               <input type="url" id="taskQuery" />
             </label>
           </div>

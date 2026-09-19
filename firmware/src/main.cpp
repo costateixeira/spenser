@@ -48,9 +48,13 @@ struct Settings
 
   // --- Order client. The server URL itself lives in orderServerUrl, which the
   // Wi-Fi portal also writes. ---
-  String orderMode;   // "tag" = poll tagged MedicationRequests, "task" = poll Tasks
-  String orderQuery;  // extra search parameters used in "tag" mode
-  String taskQuery;   // extra search parameters used in "task" mode
+  // Which routes to an actionable order this unit accepts: "both" (the
+  // default), or "tag"/"task" to listen on only one of them. They are not
+  // alternative modes - a tag and a Task are two ways of authorizing the same
+  // dispense, and the unit is happy to be told either way.
+  String orderMode;   // "both", "tag" or "task"
+  String orderQuery;  // extra search parameters for the MedicationRequest search
+  String taskQuery;   // extra search parameters for the Task search
   bool pollEnabled;   // check the server automatically
   int pollSeconds;    // seconds between automatic checks
   bool writeBack;     // report what happened back to the server
@@ -60,7 +64,7 @@ struct Settings
 
 const Settings DEFAULT_SETTINGS = {
     3, 2, 0, 77, 300,
-    "tag",
+    "both",
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
     true, 30, true, false};
@@ -1049,34 +1053,40 @@ String closeOrder(const String &base, JsonObject request, const String &requestI
   return "Server refused the update (HTTP " + String(status) + ")";
 }
 
-void checkOrders()
+// A tag and a Task are two ways of saying the same thing - this order may be
+// acted on - not two modes of operation. This unit accepts both by default;
+// settings.orderMode narrows that to one of them when a demo needs it.
+bool acceptsTagged() { return settings.orderMode != "task"; }
+bool acceptsTasks() { return settings.orderMode != "tag"; }
+
+String acceptedLanes()
 {
-  orderCheck.busy = true;
-  orderCheck.everRan = true;
-  orderCheck.found = 0;
-  orderCheck.dispensed = 0;
-  orderCheck.httpStatus = 0;
+  if (settings.orderMode == "tag")
+    return "tagged orders";
+  if (settings.orderMode == "task")
+    return "tasks";
+  return "tagged orders and tasks";
+}
 
-  bool taskMode = (settings.orderMode == "task");
-  String base = serverBase();
+// Remember an order so later polls skip it. Handling a Task also stands in for
+// the request it points at, so the tag lane will not dispense the same order a
+// second time.
+void rememberHandled(const String &orderId, bool taskLane, const String &requestId)
+{
+  markHandled(orderId);
+  if (taskLane && requestId.length())
+    markHandled("MedicationRequest/" + requestId);
+}
 
-  if (base.isEmpty())
-  {
-    setOrderMessage("No server URL configured");
-    finishCheck();
-    return;
-  }
-
-  if (WiFi.status() != WL_CONNECTED)
-  {
-    setOrderMessage("Not connected to Wi-Fi");
-    finishCheck();
-    return;
-  }
-
-  String url = base + (taskMode ? "/Task" : "/MedicationRequest");
-  String query = taskMode ? settings.taskQuery : settings.orderQuery;
-  if (!taskMode)
+// One lane of a check: either the search for MedicationRequests the placer
+// tagged actionable, or the search for Tasks asking for an order to be
+// fulfilled. Adds to the shared counters, appends anything worth reporting to
+// "problem", and returns false when the search itself did not come back.
+bool runOrderLane(const String &base, bool taskLane, String &problem)
+{
+  String url = base + (taskLane ? "/Task" : "/MedicationRequest");
+  String query = taskLane ? settings.taskQuery : settings.orderQuery;
+  if (!taskLane)
   {
     // Only orders the placer marked as actionable
     String tag = "_tag=" ACTIONABLE_SYSTEM "%7C" ACTIONABLE_CODE;
@@ -1093,21 +1103,23 @@ void checkOrders()
 
   if (!beginHttp(http, secureClient, plainClient, url))
   {
-    setOrderMessage("Could not open " + url);
-    finishCheck();
-    return;
+    problem = "Could not open " + url;
+    return false;
   }
 
   http.addHeader("Accept", "application/fhir+json");
   http.setTimeout(8000);
-  orderCheck.httpStatus = http.GET();
+  int status = http.GET();
 
-  if (orderCheck.httpStatus != 200)
+  // A failure in either lane is what the status ends up reporting
+  if (orderCheck.httpStatus == 0 || orderCheck.httpStatus == 200)
+    orderCheck.httpStatus = status;
+
+  if (status != 200)
   {
     http.end();
-    setOrderMessage("Search failed (HTTP " + String(orderCheck.httpStatus) + ")");
-    finishCheck();
-    return;
+    problem = String(taskLane ? "Task" : "Order") + " search failed (HTTP " + String(status) + ")";
+    return false;
   }
 
   // getString(), never getStream(): a FHIR server is free to answer with
@@ -1124,21 +1136,15 @@ void checkOrders()
 
   if (error)
   {
-    setOrderMessage(String("Could not read the Bundle: ") + error.c_str() +
-                    " (" + String(payload.length()) + " bytes)");
-    finishCheck();
-    return;
+    problem = String("Could not read the Bundle: ") + error.c_str() +
+              " (" + String(payload.length()) + " bytes)";
+    return false;
   }
 
   JsonArray entries = doc["entry"].as<JsonArray>();
   if (entries.isNull())
-  {
-    setOrderMessage("No orders waiting", "information");
-    finishCheck();
-    return;
-  }
+    return true; // nothing waiting in this lane
 
-  String problem;
   for (JsonObject entry : entries)
   {
     JsonObject resource = entry["resource"];
@@ -1150,7 +1156,7 @@ void checkOrders()
     JsonObject request;
     String orderId;
 
-    if (taskMode)
+    if (taskLane)
     {
       if (type != "Task")
         continue; // the _include brought the requests along; they are not orders by themselves
@@ -1179,7 +1185,13 @@ void checkOrders()
       orderId = "MedicationRequest/" + String(resource["id"] | "");
     }
 
-    if (alreadyHandled(orderId))
+    // An order that carries the tag AND has a Task pointing at it turns up in
+    // both lanes. The Task lane runs first and remembers the request as well as
+    // the Task, so the tag lane skips it below. The reverse guard covers an
+    // order dispensed on an earlier poll that only later gained a Task: the
+    // work is already done, so the Task is left alone rather than repeated.
+    if (alreadyHandled(orderId) ||
+        (taskLane && alreadyHandled("MedicationRequest/" + String(request["id"] | ""))))
       continue;
 
     orderCheck.found++;
@@ -1192,7 +1204,7 @@ void checkOrders()
     if (result.httpStatus == 200) // dispensed
     {
       orderCheck.dispensed++;
-      markHandled(orderId);
+      rememberHandled(orderId, taskLane, requestId);
 
       if (settings.writeBack)
       {
@@ -1222,7 +1234,7 @@ void checkOrders()
       // Abandon the order so later polls skip it, or leave it for a refill.
       if (settings.giveUpOnStockEmpty)
       {
-        markHandled(orderId);
+        rememberHandled(orderId, taskLane, requestId);
         if (settings.writeBack)
           closeOrder(base, request, requestId, task, "", true);
       }
@@ -1234,8 +1246,55 @@ void checkOrders()
     }
   }
 
+  return true;
+}
+
+void checkOrders()
+{
+  orderCheck.busy = true;
+  orderCheck.everRan = true;
+  orderCheck.found = 0;
+  orderCheck.dispensed = 0;
+  orderCheck.httpStatus = 0;
+
+  String base = serverBase();
+
+  if (base.isEmpty())
+  {
+    setOrderMessage("No server URL configured");
+    finishCheck();
+    return;
+  }
+
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    setOrderMessage("Not connected to Wi-Fi");
+    finishCheck();
+    return;
+  }
+
+  // Both lanes run on every check unless the settings narrow it down. The Task
+  // lane goes first: when an order is both tagged and pointed at by a Task, the
+  // Task is the stronger statement - it names a filler and expects the dispense
+  // back in Task.output - so that is the route taken, and the order is
+  // dispensed once.
+  String problem;
+  bool searchFailed = false;
+
+  if (acceptsTasks())
+    searchFailed = !runOrderLane(base, true, problem);
+
+  if (acceptsTagged())
+  {
+    String tagProblem;
+    if (!runOrderLane(base, false, tagProblem))
+      searchFailed = true;
+    if (tagProblem.length())
+      problem = problem.length() ? problem + "; " + tagProblem : tagProblem;
+  }
+
   if (problem.length())
-    setOrderMessage(problem, "warning");
+    setOrderMessage(problem, searchFailed ? "error" : "warning");
   else if (orderCheck.found == 0)
     setOrderMessage("No new orders", "information");
   else
@@ -1305,7 +1364,7 @@ String checkOutcomeJson()
                                                        : "informational";
   issue["diagnostics"] = orderCheck.message;
   issue["details"]["text"] =
-      "Last check of " + orderServerUrl + " (" + settings.orderMode + " mode) " +
+      "Last check of " + orderServerUrl + " (accepting " + acceptedLanes() + ") " +
       String((millis() - orderCheck.lastCheck) / 1000) + " s ago: search HTTP " +
       String(orderCheck.httpStatus) + ", " + String(orderCheck.found) + " new, " +
       String(orderCheck.dispensed) + " dispensed";
@@ -1703,7 +1762,10 @@ void setup()
       updated = true;
     }
     if (paramStr(request, "orderMode", text)) {
-      settings.orderMode = (text == "task") ? "task" : "tag";
+      // Anything that is not one of the two narrowing values means "accept
+      // either", so orderMode=both, =either or an empty value all widen it.
+      settings.orderMode = (text == "task") ? "task" : (text == "tag") ? "tag"
+                                                                       : "both";
       updated = true;
     }
     if (paramStr(request, "orderQuery", text)) {
@@ -1933,7 +1995,7 @@ void setup()
     // ---- client: what this unit asks of an order server ----
     JsonObject rest1 = rest.createNestedObject();
     rest1["mode"] = "client";
-    rest1["documentation"] = "Polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled";
+    rest1["documentation"] = "Polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled. Both routes are accepted on every check; a Task takes precedence when an order arrives by both. The orderMode setting narrows this to one route when a demo calls for it";
 
     JsonArray clientResources = rest1.createNestedArray("resource");
 

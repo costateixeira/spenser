@@ -1,0 +1,22 @@
+meta {
+  name: Accept tagged orders only
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{spenser}}/setSettings?orderMode=tag
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.orderMode: eq tag
+}
+
+docs {
+  Narrows the unit to one of the two routes: it will act on a tagged
+  MedicationRequest and ignore Tasks. Only useful to demonstrate the
+  difference - the default accepts both.
+}
