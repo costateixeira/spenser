@@ -1958,7 +1958,10 @@ void setup()
   // FHIR CapabilityStatement
   server.on("/metadata", HTTP_GET, [](AsyncWebServerRequest *request)
             {
-    DynamicJsonDocument doc(8192);
+    // Headroom: the documentation strings below are copied into this pool,
+    // and an overflowing document serializes as truncated JSON rather than
+    // failing loudly.
+    DynamicJsonDocument doc(12288);
     doc["resourceType"] = "CapabilityStatement";
     doc["status"] = "active";
     doc["date"] = "2025-04-18";
@@ -1967,9 +1970,18 @@ void setup()
     doc["fhirVersion"] = "5.0.0";
     doc["format"][0] = "json";
 
+    // Where a reader, human or agent, goes next. /llms.txt is this unit's own
+    // guide: every endpoint, the shapes it accepts, worked examples and the
+    // traps, written to be read by an AI agent writing examples or tests.
+    String selfBase = "http://" + request->host();
+    doc["implementation"]["description"] = "Spenser chocolate dispenser. Agent guide with examples at " + selfBase + "/llms.txt";
+    doc["implementation"]["url"] = selfBase;
+    doc["implementationGuide"][0] = "http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser";
+
     JsonArray rest = doc.createNestedArray("rest");
     JsonObject rest0 = rest.createNestedObject();
     rest0["mode"] = "server";
+    rest0["documentation"] = "Orders posted straight at this unit are dispensed on the spot: posting here is itself the authorization. See " + selfBase + "/llms.txt";
 
     JsonArray resources = rest0.createNestedArray("resource");
 
@@ -2227,6 +2239,8 @@ void setup()
         else if (path.endsWith(".svg"))  ct = "image/svg+xml";
         else if (path.endsWith(".ico"))  ct = "image/x-icon";
         else if (path.endsWith(".json")) ct = "application/json";
+        else if (path.endsWith(".txt"))  ct = "text/plain";
+        else if (path.endsWith(".md"))   ct = "text/markdown";
         request->send(SPIFFS, path, ct);
         return;
       }

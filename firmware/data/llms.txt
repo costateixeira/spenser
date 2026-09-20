@@ -1,0 +1,313 @@
+# Spenser
+
+> A chocolate dispenser that speaks FHIR R5. It treats chocolate as a
+> medication: you place a MedicationRequest, it dispenses a piece and reports a
+> MedicationDispense. It is both a FHIR server, for orders posted straight at
+> it, and a FHIR client, polling an order server for orders it should fulfil.
+
+This file is written for AI agents and for people using them. It is served by
+the device itself, so whatever you are reading describes THIS unit. Fetch it
+from http://spenser.local/llms.txt, or from <this unit's address>/llms.txt.
+
+Use it to write examples, tests and client code without guessing. Every shape
+below is what the firmware actually accepts or produces. When something here
+disagrees with the device, the device is right: check GET /metadata, which is
+the CapabilityStatement this unit publishes.
+
+Specification and examples: http://costateixeira.github.io/spenser
+
+
+## The one thing to understand first
+
+A FHIR request is an authorization, not an instruction. Spenser will not
+dispense just because an order exists. An order becomes actionable in one of
+two ways, per the HL7 Clinical Orders Workflow guidance:
+
+1. A tag: the MedicationRequest carries meta.tag
+   http://terminology.hl7.org/CodeSystem/common-tags#actionable
+2. A Task: a Task with status "requested" points at the order in Task.focus
+
+These are not two modes of the device. It looks for both on every check and
+acts on whichever turns up. When an order arrives by both routes at once the
+Task wins, and the order is still dispensed exactly once. The orderMode
+setting narrows it to one route, which is only useful for demonstrating the
+difference.
+
+Who closes the order differs, and this trips people up:
+
+- No Task involved: Spenser sets the MedicationRequest to "completed" itself.
+- A Task involved: Spenser sets the Task to "completed" and puts the dispense
+  in Task.output. The MedicationRequest is left "active", because closing the
+  request is the placer's job, not the filler's.
+
+
+## What it can dispense
+
+Two codes, from the system
+http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds
+
+- chocolate-dark  "Dark Chocolate"
+- chocolate-milk  "Milk Chocolate"
+
+One piece per order. Each lane has its own count, and an order for an empty
+lane is declined rather than queued. R5 puts the medication in
+medication.concept, not the R4 medicationCodeableConcept, although this unit
+still accepts the R4 spelling on a directly posted order.
+
+
+## FHIR interface, served by this device
+
+GET /metadata
+  CapabilityStatement. Declares both roles: server for posted orders and
+  inventory, client for polling an order server.
+
+POST /MedicationRequest
+  Dispense now. Body is a MedicationRequest. No tag or Task needed: posting
+  straight at the device IS the authorization.
+  200 with a MedicationDispense when it dispensed.
+  201 with a MedicationDispense, status "declined", when the lane is empty.
+  400 with a JSON error when the body is unusable.
+
+GET /MedicationDispense
+  Searchset Bundle of the last few dispenses this unit produced, newest first,
+  from polled orders and direct posts alike. It also carries an
+  OperationOutcome entry with search.mode "outcome" describing the last check
+  of the order server: severity information, warning or error, the message in
+  issue.diagnostics, and the server, accepted routes, age and counts in
+  issue.details.text. Read that entry to find out what the device is doing.
+
+GET /MedicationDispense/{id}
+  One dispense from that log. Ids are "<order id>-dispense" for a completed
+  one and "<order id>-declined" for a refused one. 404 with an
+  OperationOutcome when it is not in the log.
+
+GET /InventoryReport
+  Current stock as an InventoryReport, one inventoryListing per lane.
+
+POST /InventoryReport
+  Set stock from a report. countType "snapshot" sets the count, "difference"
+  adds to it.
+
+
+## What this device asks of an order server
+
+Set the server with GET /setSettings?serverUrl=... Then, on every check, it
+runs two searches and writes back what happened.
+
+  GET  {server}/Task?status=requested&_include=Task:focus&_count=5
+  GET  {server}/MedicationRequest?_tag=http%3A%2F%2Fterminology.hl7.org%2FCodeSystem%2Fcommon-tags%7Cactionable&status=active&intent=instance-order&_count=5
+  POST {server}/MedicationDispense
+  PUT  {server}/Task/{id}                 (completed, or failed when it gives up)
+  PUT  {server}/MedicationRequest/{id}    (completed, only when no Task is involved)
+
+The _include matters: the device resolves Task.focus from the entries in that
+one Bundle rather than fetching each order separately. A Task whose focus is
+not in the Bundle is reported as a problem and skipped.
+
+_count=5 matters when you are testing: only the first five results of each
+search are considered per check, so with a longer queue a specific order may
+not be picked up on a given check.
+
+Both http:// and https:// work. Certificates are not validated.
+
+
+## Non-FHIR interface, this unit's own admin API
+
+Everything here is JSON or plain text, and none of it is FHIR. It exists to
+configure and drive the unit, not to exchange clinical data.
+
+Orders
+  GET /checkOrders        Ask for a check now. Returns 202 immediately: the
+                          HTTP work happens in the main loop, not while
+                          answering this request. Give it a few seconds, or
+                          poll GET /MedicationDispense until the outcome entry
+                          stops saying a check is in progress.
+  GET /orders             The last check as plain JSON, for the dashboard:
+                          mode, serverUrl, busy, everRan, secondsAgo,
+                          httpStatus, found, dispensed, message, handled,
+                          queuedRetries.
+  GET /forgetOrders       Forget which orders were already dealt with, so the
+                          same order can be dispensed again. Useful between
+                          test runs.
+
+Settings
+  GET /settings           Everything stored in NVS.
+  GET /setSettings?...    Any of: serverUrl, orderMode (both, tag or task),
+                          orderQuery, taskQuery, pollEnabled (0 or 1),
+                          pollSeconds (5 to 3600), writeBack (0 or 1),
+                          giveUpOnStockEmpty (0 or 1), servoDark, servoMilk,
+                          angleRest, anglePush, returnDelayMs. Answers with
+                          the full settings JSON. 400 when nothing is known.
+  GET /resetSettings      Back to the compiled-in defaults.
+
+Stock and hardware
+  GET /inventory          Plain counts.
+  GET /setInventory?dark=&milk=
+  GET /resetInventory?dark=&milk=
+  GET /setServos?dark=&milk=
+  GET /flashServo1, /flashServo2
+  GET /setColor?r=&g=&b=
+  GET /battery            Voltage, current, percent, and whether it is on USB,
+                          charging or running off the pack.
+  GET /reset              Reboot.
+
+Wi-Fi and identity
+  GET /, /scan, /cfg, POST /save, /wifi-settings, /wifi-reset,
+  /wifi-reboot-config, /getMac, /setMac, /clearMac
+
+Captive portal
+  /generate_204, /hotspot-detect.html, /fwlink, /ncsi.txt, /connecttest.txt
+
+Anything else falls back to a static file from the device filesystem, which is
+how the dashboard at / is served. OPTIONS returns 200 for CORS preflight.
+
+Not HTTP at all: it advertises itself over mDNS as spenser, serves an open
+access point with a captive portal when it has no Wi-Fi, logs to serial at
+115200 baud, and has a button. A short press dispenses, three seconds is a
+soft reset, ten seconds wipes the stored credentials.
+
+
+## Polling
+
+By default it checks every 30 seconds while pollEnabled is on. The interval is
+pollSeconds, clamped between 5 and 3600. /checkOrders forces one immediately.
+
+When you are writing tests, turn polling off with
+GET /setSettings?pollEnabled=0 so that only your explicit checks run.
+Otherwise a background poll can fulfil an order before your test looks, and
+your assertions will race.
+
+
+## Examples you can copy
+
+An order made actionable by a tag. Place this on the order server, not on the
+device. Spenser will dispense it and set it to completed.
+
+    {
+      "resourceType": "MedicationRequest",
+      "meta": {
+        "tag": [
+          { "system": "http://terminology.hl7.org/CodeSystem/common-tags",
+            "code": "actionable" }
+        ]
+      },
+      "status": "active",
+      "intent": "instance-order",
+      "medication": {
+        "concept": {
+          "coding": [
+            { "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+              "code": "chocolate-dark",
+              "display": "Dark Chocolate" }
+          ]
+        }
+      },
+      "subject": { "reference": "Patient/123" },
+      "dosageInstruction": [ { "text": "One bite" } ]
+    }
+
+The same order without the tag is ignored. That is the negative test: place it,
+ask for a check, and assert that nothing was dispensed and the order is still
+active.
+
+A Task that makes a plain order actionable. Post the order first, then this,
+with its real id in focus.
+
+    {
+      "resourceType": "Task",
+      "identifier": [
+        { "system": "http://example.org/spenser-orders", "value": "demo-1" }
+      ],
+      "status": "requested",
+      "intent": "order",
+      "code": {
+        "coding": [
+          { "system": "http://hl7.org/fhir/CodeSystem/task-code",
+            "code": "fulfill" }
+        ]
+      },
+      "focus": { "reference": "MedicationRequest/<the order id>" },
+      "for": { "reference": "Patient/123" }
+    }
+
+An order posted straight at the device, which dispenses on the spot:
+
+    curl -X POST http://spenser.local/MedicationRequest \
+      -H "Content-Type: application/fhir+json" \
+      -d '{"resourceType":"MedicationRequest","id":"demo-direct",
+           "status":"active","intent":"instance-order",
+           "medication":{"concept":{"coding":[
+             {"system":"http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+              "code":"chocolate-milk","display":"Milk Chocolate"}]}},
+           "subject":{"reference":"Patient/123"}}'
+
+It answers with the MedicationDispense, and you can read it back afterwards at
+GET /MedicationDispense/demo-direct-dispense.
+
+What a refusal looks like. R5 removed MedicationDispense.statusReason, so the
+reason lives in notPerformedReason, which is a CodeableReference, hence the
+.concept in the path:
+
+    {
+      "resourceType": "MedicationDispense",
+      "id": "<order id>-declined",
+      "status": "declined",
+      "notPerformedReason": {
+        "concept": {
+          "coding": [
+            { "system": "http://hl7.org/fhir/CodeSystem/medicationdispense-status-reason",
+              "code": "outofstock",
+              "display": "Drug not available - out of stock" }
+          ]
+        }
+      },
+      "medication": { "concept": { "coding": [ { "code": "chocolate-dark" } ] } },
+      "subject": { "reference": "Patient/123" },
+      "authorizingPrescription": [ { "reference": "MedicationRequest/<order id>" } ]
+    }
+
+
+## A test that exercises the whole loop
+
+    # 1. a known state: both routes accepted, stock in both lanes, no polling
+    curl "http://spenser.local/setSettings?serverUrl=$SERVER&orderMode=both&writeBack=1&pollEnabled=0&giveUpOnStockEmpty=0"
+    curl "http://spenser.local/resetInventory?dark=10&milk=10"
+    curl "http://spenser.local/forgetOrders"
+
+    # 2. place an actionable order on the server, keep its id
+    curl -X POST "$SERVER/MedicationRequest" -H "Content-Type: application/fhir+json" -d @order.json
+
+    # 3. ask for a check, then wait for it to finish
+    curl "http://spenser.local/checkOrders"
+
+    # 4. what the device did, and whether the check itself was clean
+    curl -H "Accept: application/fhir+json" "http://spenser.local/MedicationDispense"
+
+    # 5. the server's side of the story
+    curl "$SERVER/MedicationRequest/<id>"        # completed
+    curl "$SERVER/MedicationDispense?_count=20"  # a dispense pointing back at it
+
+Assert on the FHIR, not on the prose: the dispense status, the
+authorizingPrescription reference, the order status, and for the out of stock
+case notPerformedReason.concept.coding.code. The OperationOutcome severity
+tells you whether the check itself went wrong, which is a different failure
+from an order that was correctly left alone.
+
+
+## Things that will catch you out
+
+- Nothing happens and the order stays active: it is probably not actionable.
+  No tag, no Task, or the Task is not "requested".
+- The device dispensed once and then ignores the same order: it remembers what
+  it has handled. GET /forgetOrders clears that.
+- An out of stock order is reported once, not on every poll. With
+  giveUpOnStockEmpty=0 it stays open and goes through after a refill. With =1
+  it is abandoned, and in that case a coordinating Task is set to "failed".
+- /checkOrders returns 202 before any work is done. Assert after the check has
+  finished, not after a fixed sleep.
+- A search that returns a chunked response is fine, but anything the device
+  cannot parse shows up as a Bundle error in the outcome entry rather than as
+  a failed HTTP status.
+- Placing an order with an unresolved template variable leaves a Task pointing
+  at nothing. The device will report it and move on, and it will sit on the
+  server forever.

@@ -1,0 +1,41 @@
+meta {
+  name: Agent guide
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{spenser}}/llms.txt
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: text/plain
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("it is this unit's own guide", function () {
+    expect(res.body).to.contain("# Spenser");
+  });
+
+  test("and it documents both routes to an actionable order", function () {
+    expect(res.body).to.contain("common-tags#actionable");
+    expect(res.body).to.contain("Task.focus");
+  });
+}
+
+docs {
+  Every unit serves a guide written for AI agents: each endpoint, the shapes it
+  accepts and produces, worked examples, a test that exercises the whole loop,
+  and the traps. Point an agent at this URL and it can write a client, examples
+  or tests against the unit in front of it.
+
+  It lives in firmware/data/llms.txt and reaches the device with
+  `pio run --target uploadfs`, not with a plain firmware upload. A 404 here
+  means the filesystem image is older than the firmware.
+}
