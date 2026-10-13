@@ -14,6 +14,14 @@
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <esp_wifi.h>
+#include <esp_random.h>
+#include <esp_ota_ops.h>
+#include <Update.h>
+#include <HTTPUpdate.h>
+#include <time.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
+#include <functional>
 
 DNSServer dns;
 AsyncWebServer server(80);
@@ -27,6 +35,12 @@ Preferences prefs;
 #define ACTIONABLE_CODE "actionable"
 #define MEDS_SYSTEM "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
 #define NOT_PERFORMED_SYSTEM "http://hl7.org/fhir/CodeSystem/medicationdispense-status-reason"
+
+// What this build is. Reported in /settings, in the CapabilityStatement as
+// software.version, and compared against the release manifest when the unit
+// checks for an update, so a unit in the field can always be identified.
+#define FIRMWARE_VERSION "1.1.0"
+#define FIRMWARE_BUILD __DATE__ " " __TIME__
 
 const int ledPin = 35;
 Adafruit_NeoPixel rgb(1, ledPin, NEO_GRB + NEO_KHZ800);
@@ -60,6 +74,11 @@ struct Settings
   bool writeBack;     // report what happened back to the server
   bool giveUpOnStockEmpty; // an order this unit cannot fill: abandon it, or retry
                            // it after a refill
+
+  // --- Over-the-air updates. updateUrl points at a manifest, which a release
+  // workflow publishes next to the binaries; see /ota/status. ---
+  String updateUrl;     // manifest URL, empty to disable pull updates
+  int updateCheckHours; // hours between automatic checks, 0 = only when asked
 };
 
 const Settings DEFAULT_SETTINGS = {
@@ -67,11 +86,30 @@ const Settings DEFAULT_SETTINGS = {
     "both",
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
-    true, 30, true, false};
+    true, 30, true, false,
+    "", 0};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
 int inventoryMilk = 15;
+
+// Stock is persisted: an update reboots the unit, and a dispenser that forgets
+// what is in its lanes every time it restarts reports stock it does not have.
+void loadInventory()
+{
+  prefs.begin("spenser", true);
+  inventoryDark = prefs.getInt("invDark", inventoryDark);
+  inventoryMilk = prefs.getInt("invMilk", inventoryMilk);
+  prefs.end();
+}
+
+void saveInventory()
+{
+  prefs.begin("spenser", false);
+  prefs.putInt("invDark", inventoryDark);
+  prefs.putInt("invMilk", inventoryMilk);
+  prefs.end();
+}
 
 // Network state
 enum NetMode { NET_BOOT, NET_STA, NET_AP };
@@ -87,10 +125,39 @@ String wifiSsid;
 String wifiPass;
 String orderServerUrl = "";
 
-// Retry queue for failed dispense POST-backs
-const int RETRY_QUEUE_SIZE = 5;
-String retryQueue[RETRY_QUEUE_SIZE];
+// Writes to the order server that have not landed yet. Posting a dispense and
+// closing the order out are both writes this unit owes the server, so both are
+// queued: a close-out that is dropped on the floor leaves a Task requested
+// forever while the order counts as handled.
+const int RETRY_QUEUE_SIZE = 8;
+
+struct PendingWrite
+{
+  String method;  // POST or PUT
+  String url;     // absolute
+  String body;
+  String ifMatch; // version the write was based on, when the server gave one
+};
+
+PendingWrite retryQueue[RETRY_QUEUE_SIZE];
 int retryCount = 0;
+
+void queueWrite(const String &method, const String &url, const String &body, const String &ifMatch)
+{
+  if (retryCount >= RETRY_QUEUE_SIZE)
+  {
+    Serial.println("[Orders] retry queue full, dropping the oldest write");
+    for (int i = 1; i < RETRY_QUEUE_SIZE; i++)
+      retryQueue[i - 1] = retryQueue[i];
+    retryCount = RETRY_QUEUE_SIZE - 1;
+  }
+
+  retryQueue[retryCount].method = method;
+  retryQueue[retryCount].url = url;
+  retryQueue[retryCount].body = body;
+  retryQueue[retryCount].ifMatch = ifMatch;
+  retryCount++;
+}
 
 // --- Dispense result struct ---
 
@@ -126,6 +193,8 @@ void loadSettings()
   settings.pollSeconds = prefs.getInt("pollSecs", settings.pollSeconds);
   settings.writeBack = prefs.getBool("writeBack", settings.writeBack);
   settings.giveUpOnStockEmpty = prefs.getBool("giveUpEmpty", settings.giveUpOnStockEmpty);
+  settings.updateUrl = prefs.getString("updateUrl", settings.updateUrl);
+  settings.updateCheckHours = prefs.getInt("updateHrs", settings.updateCheckHours);
   prefs.end();
 
   Serial.printf("Settings: servoDark=%d servoMilk=%d rest=%d push=%d returnMs=%d\n",
@@ -148,12 +217,14 @@ void saveSettings()
   prefs.putInt("pollSecs", settings.pollSeconds);
   prefs.putBool("writeBack", settings.writeBack);
   prefs.putBool("giveUpEmpty", settings.giveUpOnStockEmpty);
+  prefs.putString("updateUrl", settings.updateUrl);
+  prefs.putInt("updateHrs", settings.updateCheckHours);
   prefs.end();
 }
 
 String settingsJson()
 {
-  StaticJsonDocument<256> doc;
+  StaticJsonDocument<640> doc;
   doc["servoDark"] = settings.servoDark;
   doc["servoMilk"] = settings.servoMilk;
   doc["angleRest"] = settings.angleRest;
@@ -167,6 +238,9 @@ String settingsJson()
   doc["pollSeconds"] = settings.pollSeconds;
   doc["writeBack"] = settings.writeBack;
   doc["giveUpOnStockEmpty"] = settings.giveUpOnStockEmpty;
+  doc["updateUrl"] = settings.updateUrl;
+  doc["updateCheckHours"] = settings.updateCheckHours;
+  doc["firmwareVersion"] = FIRMWARE_VERSION;
 
   String out;
   serializeJson(doc, out);
@@ -213,6 +287,60 @@ bool paramBool(AsyncWebServerRequest *request, const char *name, bool &out)
   raw.toLowerCase();
   out = (raw == "1" || raw == "true" || raw == "on" || raw == "yes");
   return true;
+}
+
+// ==================== Per-unit key ====================
+// Everything that changes this unit - dispensing, settings, Wi-Fi, updates -
+// needs this key. Reads do not, so the dashboard and the FHIR searches stay
+// open. The key is generated on first boot, printed on the serial console, and
+// readable over HTTP only while the unit is in setup mode or in the first few
+// minutes after boot, which is the window its owner has and nobody else does.
+
+String deviceKey;
+unsigned long bootMillis = 0;
+const unsigned long KEY_REVEAL_WINDOW_MS = 5UL * 60UL * 1000UL;
+
+void loadDeviceKey()
+{
+  prefs.begin("spenser", false);
+  deviceKey = prefs.getString("deviceKey", "");
+  if (deviceKey.length() != 32)
+  {
+    char buf[33];
+    for (int i = 0; i < 4; i++)
+      snprintf(buf + i * 8, 9, "%08x", (unsigned int)esp_random());
+    deviceKey = String(buf);
+    prefs.putString("deviceKey", deviceKey);
+    Serial.println("Generated a new device key");
+  }
+  prefs.end();
+}
+
+// Presented as a bearer token, as an X-Spenser-Key header, or as ?key= for a
+// browser or a REST client that cannot set headers.
+bool keyMatches(AsyncWebServerRequest *request)
+{
+  if (deviceKey.isEmpty())
+    return true; // no key yet: do not lock the unit out of its own setup
+  if (netMode == NET_AP)
+    return true; // setup mode: the access point is the proof of proximity
+
+  String offered;
+  if (request->hasHeader("Authorization"))
+  {
+    offered = request->header("Authorization");
+    if (offered.startsWith("Bearer "))
+      offered = offered.substring(7);
+  }
+  if (offered.isEmpty() && request->hasHeader("X-Spenser-Key"))
+    offered = request->header("X-Spenser-Key");
+  if (offered.isEmpty() && request->hasParam("key"))
+    offered = request->getParam("key")->value();
+  if (offered.isEmpty() && request->hasParam("key", true))
+    offered = request->getParam("key", true)->value();
+
+  offered.trim();
+  return offered.length() == deviceKey.length() && offered == deviceKey;
 }
 
 // ---- Orders this unit has already dealt with, as "|id1|id2|" ----
@@ -287,6 +415,77 @@ void forgetHandled()
   prefs.begin("spenser", false);
   prefs.putString("seenIds", seenIds);
   prefs.end();
+}
+
+// ==================== Time ====================
+// Without a clock a dispense record cannot say when it happened, which for a
+// medication record is the part that matters. Rather than invent a timestamp,
+// the resources leave the element out until the unit has heard from an NTP
+// server.
+
+bool clockReady()
+{
+  return time(nullptr) > 1700000000; // anything earlier is the unset epoch
+}
+
+void startClock()
+{
+  configTzTime("UTC0", "pool.ntp.org", "time.google.com", "time.cloudflare.com");
+}
+
+String nowIso()
+{
+  if (!clockReady())
+    return "";
+
+  time_t now = time(nullptr);
+  struct tm utc;
+  gmtime_r(&now, &utc);
+  char buf[32];
+  strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%SZ", &utc);
+  return String(buf);
+}
+
+// ==================== OperationOutcome ====================
+// Every error from a FHIR route is an OperationOutcome, which is what a client
+// is entitled to expect. The admin routes answer with the same shape rather
+// than a second ad hoc error format.
+
+String outcomeJson(const char *severity, const char *code, const String &diagnostics)
+{
+  StaticJsonDocument<512> doc;
+  doc["resourceType"] = "OperationOutcome";
+  JsonObject issue = doc.createNestedArray("issue").createNestedObject();
+  issue["severity"] = severity;
+  issue["code"] = code;
+  issue["diagnostics"] = diagnostics;
+
+  String out;
+  serializeJson(doc, out);
+  return out;
+}
+
+void sendOutcome(AsyncWebServerRequest *request, int status, const char *code, const String &diagnostics)
+{
+  request->send(status, "application/fhir+json", outcomeJson("error", code, diagnostics));
+}
+
+// Guard for every route that changes something. Returns false when the caller
+// has not presented the key, having already answered the request.
+bool requireKey(AsyncWebServerRequest *request)
+{
+  if (keyMatches(request))
+    return true;
+
+  AsyncWebServerResponse *response = request->beginResponse(
+      401, "application/fhir+json",
+      outcomeJson("error", "security",
+                  "This unit needs its key. Send it as Authorization: Bearer <key>, "
+                  "as X-Spenser-Key, or as ?key=<key>. The key is printed on the serial "
+                  "console at boot and served at /key for five minutes after a restart."));
+  response->addHeader("WWW-Authenticate", "Bearer realm=\"spenser\"");
+  request->send(response);
+  return false;
 }
 
 // Open a connection for either scheme. https:// is accepted without validating
@@ -631,10 +830,21 @@ void forceReconnectSTA()
 
 String createMedicationDispense(const String &id, const String &code, const String &patientRef)
 {
-  StaticJsonDocument<512> doc;
+  StaticJsonDocument<640> doc;
   doc["resourceType"] = "MedicationDispense";
   doc["id"] = id + "-dispense";
   doc["status"] = "completed";
+
+  // When it happened. Left out rather than guessed when the unit has not yet
+  // reached an NTP server, because a wrong time in a dispense record is worse
+  // than none.
+  String at = nowIso();
+  if (at.length())
+  {
+    doc["recorded"] = at;
+    doc["whenPrepared"] = at;
+    doc["whenHandedOver"] = at;
+  }
   JsonObject med = doc.createNestedObject("medication").createNestedObject("concept");
   JsonObject coding = med.createNestedArray("coding").createNestedObject();
   coding["system"] = MEDS_SYSTEM;
@@ -655,10 +865,14 @@ String createMedicationDispense(const String &id, const String &code, const Stri
 // outright by an R5 server.
 String createDeclinedDispense(const String &id, const String &medicationCode, const String &medicationDisplay, const String &patientReference)
 {
-  StaticJsonDocument<640> errorDoc;
+  StaticJsonDocument<768> errorDoc;
   errorDoc["resourceType"] = "MedicationDispense";
   errorDoc["id"] = id + "-declined";
   errorDoc["status"] = "declined";
+
+  String at = nowIso();
+  if (at.length())
+    errorDoc["recorded"] = at;
 
   JsonObject reason = errorDoc.createNestedObject("notPerformedReason").createNestedObject("concept");
   JsonObject reasonCoding = reason.createNestedArray("coding").createNestedObject();
@@ -681,66 +895,180 @@ String createDeclinedDispense(const String &id, const String &medicationCode, co
   return response;
 }
 
-// --- Dispense log ---
-// The last few MedicationDispense resources this unit produced, completed or
-// declined, whichever way the order came in (polled from a server or POSTed
-// straight at the device). GET /MedicationDispense serves them as a searchset,
-// which is the FHIR way of asking "what did the dispenser do?".
+// ==================== Record store ====================
+// What this unit did, kept on the flash filesystem rather than in RAM, so a
+// reboot - or an over-the-air update - does not erase it. One resource per
+// line, oldest first. A resource whose id is already present is appended
+// again; readers walk backwards and keep the first copy of each id, so the
+// newest version of a record wins and no rewrite is needed.
 //
-// Fixed buffers, newest first: loop() writes here while the web task reads,
-// so no String reallocation may happen underneath a reader. A resource that
-// comes back with an id already in the log (an out-of-stock order that is
-// retried on every poll) replaces the earlier copy instead of piling up.
+// loop() writes these files while the web task reads them, and the filesystem
+// makes no promise about concurrent use, so every access takes a mutex.
 
-const int DISPENSE_LOG_SIZE = 6;
-const size_t DISPENSE_LOG_ENTRY = 1024; // createDeclinedDispense is the larger one, ~450 bytes
-char dispenseLog[DISPENSE_LOG_SIZE][DISPENSE_LOG_ENTRY];
-int dispenseLogCount = 0;
+const char *ORDER_STORE = "/orders.ndjson";
+const char *DISPENSE_STORE = "/dispenses.ndjson";
+const size_t STORE_MAX_BYTES = 40960; // per file; the oldest half is dropped past this
+const size_t STORE_MAX_LINE = 1536;
+const int STORE_INDEX_SIZE = 120; // how many of the newest records a read can reach
 
-// The "id" of a serialized MedicationDispense, without parsing it
-String dispenseLogId(const char *json)
+SemaphoreHandle_t storeMutex = nullptr;
+
+bool storeLock()
 {
-  const char *key = strstr(json, "\"id\":\"");
-  if (!key)
-    return "";
-  key += 6;
-  const char *end = strchr(key, '"');
-  return end ? String(key).substring(0, end - key) : "";
+  if (!storeMutex)
+    return true;
+  return xSemaphoreTake(storeMutex, pdMS_TO_TICKS(2000)) == pdTRUE;
+}
+
+void storeUnlock()
+{
+  if (storeMutex)
+    xSemaphoreGive(storeMutex);
+}
+
+// Caller holds the lock. Keeps the newer half of the file when it grows past
+// the cap, so the oldest records are the ones that go.
+void storeTrimLocked(const char *path)
+{
+  File in = SPIFFS.open(path, FILE_READ);
+  if (!in)
+    return;
+  if (in.size() <= STORE_MAX_BYTES)
+  {
+    in.close();
+    return;
+  }
+
+  in.seek(in.size() / 2);
+  in.readStringUntil('\n'); // discard the partial line we landed in
+
+  File out = SPIFFS.open("/store.tmp", FILE_WRITE);
+  if (!out)
+  {
+    in.close();
+    return;
+  }
+
+  while (in.available())
+  {
+    String line = in.readStringUntil('\n');
+    line.trim();
+    if (line.length())
+    {
+      out.print(line);
+      out.print('\n');
+    }
+  }
+  in.close();
+  out.close();
+
+  SPIFFS.remove(path);
+  SPIFFS.rename("/store.tmp", path);
+  Serial.printf("[Store] %s trimmed to the newest records\n", path);
+}
+
+bool storeAppend(const char *path, const String &json)
+{
+  if (json.length() >= STORE_MAX_LINE)
+  {
+    Serial.println("[Store] record too large, not kept");
+    return false;
+  }
+  if (json.indexOf('\n') >= 0)
+    return false; // one record per line, so a record may not contain one
+
+  if (!storeLock())
+    return false;
+
+  bool ok = false;
+  File f = SPIFFS.open(path, FILE_APPEND);
+  if (f)
+  {
+    ok = f.print(json) == json.length();
+    f.print('\n');
+    f.close();
+  }
+  else
+  {
+    Serial.printf("[Store] could not open %s for append\n", path);
+  }
+
+  if (ok)
+    storeTrimLocked(path);
+  storeUnlock();
+  return ok;
+}
+
+// Walk the records newest first. visit() returning false stops the walk.
+void storeWalkNewest(const char *path, std::function<bool(const String &)> visit)
+{
+  if (!storeLock())
+    return;
+
+  File f = SPIFFS.open(path, FILE_READ);
+  if (!f)
+  {
+    storeUnlock();
+    return;
+  }
+
+  // Remember where the newest records start, in a ring so that a long file
+  // leaves us holding the end of it rather than the beginning.
+  static uint32_t ring[STORE_INDEX_SIZE];
+  int seen = 0;
+  while (f.available())
+  {
+    uint32_t at = f.position();
+    String line = f.readStringUntil('\n');
+    if (!line.length())
+      break;
+    ring[seen % STORE_INDEX_SIZE] = at;
+    seen++;
+  }
+
+  int reachable = seen < STORE_INDEX_SIZE ? seen : STORE_INDEX_SIZE;
+  for (int i = 0; i < reachable; i++)
+  {
+    f.seek(ring[(seen - 1 - i) % STORE_INDEX_SIZE]);
+    String line = f.readStringUntil('\n');
+    line.trim();
+    if (line.length() && !visit(line))
+      break;
+  }
+
+  f.close();
+  storeUnlock();
+}
+
+// The newest stored copy of one resource, or "" when this unit has no record of it.
+String storeFindById(const char *path, const String &id)
+{
+  String found;
+  if (id.isEmpty())
+    return found;
+
+  storeWalkNewest(path, [&](const String &line) {
+    StaticJsonDocument<STORE_MAX_LINE> doc;
+    if (deserializeJson(doc, line))
+      return true; // unreadable line, keep looking
+    if (String(doc["id"] | "") == id)
+    {
+      found = line;
+      return false;
+    }
+    return true;
+  });
+  return found;
 }
 
 void logDispense(const String &json)
 {
-  if (json.length() >= DISPENSE_LOG_ENTRY)
-  {
-    Serial.println("[Dispense] Resource too large for the log, not kept");
-    return;
-  }
+  storeAppend(DISPENSE_STORE, json);
+}
 
-  String id = dispenseLogId(json.c_str());
-  int slot = -1;
-  for (int i = 0; i < dispenseLogCount; i++)
-    if (id.length() && dispenseLogId(dispenseLog[i]) == id)
-      slot = i;
-
-  if (slot < 0)
-  {
-    // Shift everything down one place; the oldest falls off the end
-    int last = min(dispenseLogCount, DISPENSE_LOG_SIZE - 1);
-    for (int i = last; i > 0; i--)
-      memcpy(dispenseLog[i], dispenseLog[i - 1], DISPENSE_LOG_ENTRY);
-    if (dispenseLogCount < DISPENSE_LOG_SIZE)
-      dispenseLogCount++;
-    slot = 0;
-  }
-  else if (slot > 0)
-  {
-    // Move the refreshed entry to the front
-    for (int i = slot; i > 0; i--)
-      memcpy(dispenseLog[i], dispenseLog[i - 1], DISPENSE_LOG_ENTRY);
-    slot = 0;
-  }
-
-  strlcpy(dispenseLog[slot], json.c_str(), DISPENSE_LOG_ENTRY);
+void logOrder(const String &json)
+{
+  storeAppend(ORDER_STORE, json);
 }
 
 // --- Core dispensing logic (no HTTP dependency) ---
@@ -754,13 +1082,15 @@ DispenseResult processDispenseRequest(const String &body)
   if (error)
   {
     Serial.println("Failed to deserialize JSON");
-    return {false, 400, "{\"status\":\"error\", \"message\":\"Invalid JSON\"}", "application/json"};
+    return {false, 400, outcomeJson("error", "invalid", String("The body is not readable JSON: ") + error.c_str()),
+            "application/fhir+json"};
   }
 
-  if (strcmp(doc["resourceType"], "MedicationRequest") != 0)
+  if (strcmp(doc["resourceType"] | "", "MedicationRequest") != 0)
   {
     Serial.println("Invalid resource type. Expected 'MedicationRequest'");
-    return {false, 400, "{\"status\":\"error\", \"message\":\"Invalid resource type. Expected 'MedicationRequest'\"}", "application/json"};
+    return {false, 400, outcomeJson("error", "invalid", "This endpoint takes a MedicationRequest"),
+            "application/fhir+json"};
   }
 
   String id = doc["id"] | "";
@@ -786,7 +1116,10 @@ DispenseResult processDispenseRequest(const String &body)
   // Accept both "active" (direct local request) and "on-hold" (claimed from server)
   if (id.isEmpty() || (status != "active" && status != "on-hold") || intent != "instance-order" || patientReference.isEmpty())
   {
-    return {false, 400, "{\"status\":\"error\", \"message\":\"Missing or invalid fields\"}", "application/json"};
+    return {false, 400,
+            outcomeJson("error", "invalid",
+                        "An order needs status active or on-hold, intent instance-order, and a subject"),
+            "application/fhir+json"};
   }
 
   if (medicationCode == "chocolate-dark")
@@ -794,6 +1127,7 @@ DispenseResult processDispenseRequest(const String &body)
     if (inventoryDark > 0)
     {
       inventoryDark--;
+      saveInventory();
       setLEDColor(128, 0, 0); // red
       dispenseServo(settings.servoDark);
       String response = createMedicationDispense(id, medicationCode, patientReference);
@@ -813,6 +1147,7 @@ DispenseResult processDispenseRequest(const String &body)
     if (inventoryMilk > 0)
     {
       inventoryMilk--;
+      saveInventory();
       setLEDColor(0, 0, 200); // blue
       dispenseServo(settings.servoMilk);
       String response = createMedicationDispense(id, medicationCode, patientReference);
@@ -829,16 +1164,166 @@ DispenseResult processDispenseRequest(const String &body)
   }
   else
   {
-    return {false, 400, "{\"status\":\"error\",\"message\":\"Invalid chocolate type\"}", "application/json"};
+    return {false, 400,
+            outcomeJson("error", "code-invalid",
+                        "This unit dispenses " MEDS_SYSTEM " chocolate-dark and chocolate-milk only"),
+            "application/fhir+json"};
   }
 }
 
-// --- Thin wrapper for local web server ---
+// --- The device's own server role ---
 
-void handleMedicationRequest(String body, AsyncWebServerRequest *request)
+// A server assigns ids; a client is not required to supply one. Random rather
+// than sequential so two units never hand out the same id.
+String newResourceId(const char *prefix)
 {
-  DispenseResult result = processDispenseRequest(body);
-  request->send(result.httpStatus, result.contentType, result.responseBody);
+  char buf[32];
+  snprintf(buf, sizeof(buf), "%s-%08x%04x", prefix, (unsigned int)esp_random(),
+           (unsigned int)(esp_random() & 0xFFFF));
+  return String(buf);
+}
+
+// POST /MedicationRequest - a FHIR create that also dispenses, because posting
+// an order straight at this unit is itself the decision to fill it.
+//
+// It behaves like a create: the id is ours to assign when the client does not
+// send one, the answer is 201 with a Location, and the created resource is
+// kept so it can be read back. What came out of the machine is a separate
+// resource, reachable at /MedicationDispense/{id}-dispense, or in one call
+// through POST /$dispense.
+void handleOrderCreate(const String &body, AsyncWebServerRequest *request)
+{
+  DynamicJsonDocument doc(2048);
+  DeserializationError error = deserializeJson(doc, body);
+
+  if (error)
+  {
+    sendOutcome(request, 400, "invalid", String("The body is not readable JSON: ") + error.c_str());
+    return;
+  }
+  if (strcmp(doc["resourceType"] | "", "MedicationRequest") != 0)
+  {
+    sendOutcome(request, 400, "invalid", "POST /MedicationRequest takes a MedicationRequest");
+    return;
+  }
+
+  String id = doc["id"] | "";
+  if (id.isEmpty())
+  {
+    id = newResourceId("mr");
+    doc["id"] = id;
+  }
+
+  String at = nowIso();
+  if (at.length())
+    doc["meta"]["lastUpdated"] = at;
+
+  String order;
+  serializeJson(doc, order);
+
+  DispenseResult result = processDispenseRequest(order);
+
+  if (result.httpStatus == 400)
+  {
+    // Nothing was created, so say why and keep no record of it
+    request->send(400, result.contentType, result.responseBody);
+    return;
+  }
+
+  // Keep the order, with the status the work left it in. Without a Task
+  // coordinating anything, a filled order is finished.
+  if (result.httpStatus == 200)
+    doc["status"] = "completed";
+  String stored;
+  serializeJson(doc, stored);
+  logOrder(stored);
+
+  String base = "http://" + request->host();
+  String prefer = request->hasHeader("Prefer") ? request->header("Prefer") : String("");
+  prefer.toLowerCase();
+
+  String payload;
+  String type = "application/fhir+json";
+  if (prefer.indexOf("return=minimal") >= 0)
+  {
+    payload = "";
+    type = "";
+  }
+  else if (prefer.indexOf("return=operationoutcome") >= 0)
+  {
+    payload = outcomeJson(result.httpStatus == 200 ? "information" : "warning",
+                          result.httpStatus == 200 ? "informational" : "business-rule",
+                          result.httpStatus == 200
+                              ? "Dispensed. The dispense is MedicationDispense/" + id + "-dispense"
+                              : "Created, but not dispensed: that lane is empty. See MedicationDispense/" + id + "-declined");
+  }
+  else
+  {
+    payload = stored;
+  }
+
+  AsyncWebServerResponse *response = payload.length()
+                                         ? request->beginResponse(201, type, payload)
+                                         : request->beginResponse(201);
+  response->addHeader("Location", base + "/MedicationRequest/" + id);
+  response->addHeader("ETag", "W/\"1\"");
+  if (at.length())
+    response->addHeader("Last-Modified", at);
+  request->send(response);
+}
+
+// POST /$dispense - the one-call path. An operation may answer with whatever
+// resource makes sense, so this one answers with the MedicationDispense, which
+// is what a caller standing at the machine actually wants to see.
+void handleDispenseOperation(const String &body, AsyncWebServerRequest *request)
+{
+  DynamicJsonDocument doc(2048);
+  DeserializationError error = deserializeJson(doc, body);
+
+  if (error)
+  {
+    sendOutcome(request, 400, "invalid", String("The body is not readable JSON: ") + error.c_str());
+    return;
+  }
+
+  // Accept a bare MedicationRequest, or Parameters with the order inside it
+  JsonVariant order = doc.as<JsonVariant>();
+  if (strcmp(doc["resourceType"] | "", "Parameters") == 0)
+  {
+    for (JsonObject p : doc["parameter"].as<JsonArray>())
+      if (p["resource"])
+        order = p["resource"];
+  }
+
+  if (strcmp(order["resourceType"] | "", "MedicationRequest") != 0)
+  {
+    sendOutcome(request, 400, "invalid", "$dispense takes a MedicationRequest, or Parameters carrying one");
+    return;
+  }
+
+  String id = order["id"] | "";
+  if (id.isEmpty())
+  {
+    id = newResourceId("mr");
+    order["id"] = id;
+  }
+
+  String payload;
+  serializeJson(order, payload);
+  DispenseResult result = processDispenseRequest(payload);
+
+  if (result.httpStatus != 400)
+  {
+    if (result.httpStatus == 200)
+      order["status"] = "completed";
+    String stored;
+    serializeJson(order, stored);
+    logOrder(stored);
+  }
+
+  // An operation reports its own outcome in the resource it returns, so a
+  // refusal to dispense is still a 200 with a declined MedicationDispense.
+  request->send(result.httpStatus == 400 ? 400 : 200, result.contentType, result.responseBody);
 }
 
 // --- Remote server communication ---
@@ -887,44 +1372,45 @@ int postDispenseResult(const String &dispenseJson, String *createdId = nullptr)
   else
   {
     Serial.printf("Dispense POST failed (HTTP %d), queued for retry\n", httpCode);
-    if (retryCount < RETRY_QUEUE_SIZE)
-      retryQueue[retryCount++] = dispenseJson;
+    queueWrite("POST", url, dispenseJson, "");
   }
 
   http.end();
   return httpCode;
 }
 
-void retryPendingDispenses()
+// Declared here, defined once sendResource is available further down.
+int sendResource(const char *method, const String &url, const String &body, const String &ifMatch = "");
+
+void retryPendingWrites()
 {
   if (retryCount == 0 || orderServerUrl.isEmpty())
     return;
 
-  WiFiClientSecure secureClient;
-  WiFiClient plainClient;
-
   int remaining = 0;
   for (int i = 0; i < retryCount; i++)
   {
-    HTTPClient http;
-    String url = orderServerUrl + "/MedicationDispense";
-    if (!beginHttp(http, secureClient, plainClient, url))
-    {
-      retryQueue[remaining++] = retryQueue[i];
-      continue;
-    }
-    http.addHeader("Content-Type", "application/fhir+json");
-    int httpCode = http.POST(retryQueue[i]);
-    http.end();
+    PendingWrite &w = retryQueue[i];
+    int status = sendResource(w.method.c_str(), w.url, w.body, w.ifMatch);
 
-    if (httpCode >= 200 && httpCode < 300)
+    // A version conflict means somebody else moved the resource on. Our write
+    // is still the newer truth about what the machine did, so try once more
+    // without the precondition rather than hold it forever.
+    if ((status == 409 || status == 412) && w.ifMatch.length())
     {
-      Serial.println("Retry succeeded for queued dispense");
+      w.ifMatch = "";
+      status = sendResource(w.method.c_str(), w.url, w.body, "");
+    }
+
+    if (status >= 200 && status < 300)
+    {
+      Serial.printf("[Orders] queued %s to %s landed\n", w.method.c_str(), w.url.c_str());
     }
     else
     {
-      // Keep in queue
-      retryQueue[remaining++] = retryQueue[i];
+      if (remaining != i)
+        retryQueue[remaining] = retryQueue[i];
+      remaining++;
     }
   }
   retryCount = remaining;
@@ -990,7 +1476,7 @@ JsonObject findResource(JsonArray entries, const String &type, const String &id)
   return JsonObject();
 }
 
-int sendResource(const char *method, const String &url, const String &body)
+int sendResource(const char *method, const String &url, const String &body, const String &ifMatch)
 {
   WiFiClientSecure secureClient;
   WiFiClient plainClient;
@@ -1001,6 +1487,10 @@ int sendResource(const char *method, const String &url, const String &body)
 
   http.addHeader("Content-Type", "application/fhir+json");
   http.addHeader("Accept", "application/fhir+json");
+  // An update based on a version we read should not silently overwrite a newer
+  // one, so say which version we saw.
+  if (ifMatch.length())
+    http.addHeader("If-Match", "W/\"" + ifMatch + "\"");
   http.setTimeout(8000);
 
   int status = http.sendRequest(method, (uint8_t *)body.c_str(), body.length());
@@ -1029,18 +1519,34 @@ String closeOrder(const String &base, JsonObject request, const String &requestI
     }
 
     String taskId = task["id"] | "";
+    String version = task["meta"]["versionId"] | "";
     String body;
     serializeJson(task, body);
-    status = sendResource("PUT", base + "/Task/" + taskId, body);
+    String url = base + "/Task/" + taskId;
+    status = sendResource("PUT", url, body, version);
     Serial.printf("PUT Task/%s -> %d\n", taskId.c_str(), status);
+
+    if ((status == 409 || status == 412) && version.length())
+      status = sendResource("PUT", url, body, "");
+
+    if (status < 200 || status >= 300)
+      queueWrite("PUT", url, body, "");
   }
   else if (!failed)
   {
     request["status"] = "completed";
+    String version = request["meta"]["versionId"] | "";
     String body;
     serializeJson(request, body);
-    status = sendResource("PUT", base + "/MedicationRequest/" + requestId, body);
+    String url = base + "/MedicationRequest/" + requestId;
+    status = sendResource("PUT", url, body, version);
     Serial.printf("PUT MedicationRequest/%s -> %d\n", requestId.c_str(), status);
+
+    if ((status == 409 || status == 412) && version.length())
+      status = sendResource("PUT", url, body, "");
+
+    if (status < 200 || status >= 300)
+      queueWrite("PUT", url, body, "");
   }
   else
   {
@@ -1050,7 +1556,7 @@ String closeOrder(const String &base, JsonObject request, const String &requestI
   if (status >= 200 && status < 300)
     return "";
 
-  return "Server refused the update (HTTP " + String(status) + ")";
+  return "Server refused the update (HTTP " + String(status) + "), queued for retry";
 }
 
 // A tag and a Task are two ways of saying the same thing - this order may be
@@ -1082,20 +1588,31 @@ void rememberHandled(const String &orderId, bool taskLane, const String &request
 // tagged actionable, or the search for Tasks asking for an order to be
 // fulfilled. Adds to the shared counters, appends anything worth reporting to
 // "problem", and returns false when the search itself did not come back.
-bool runOrderLane(const String &base, bool taskLane, String &problem)
-{
-  String url = base + (taskLane ? "/Task" : "/MedicationRequest");
-  String query = taskLane ? settings.taskQuery : settings.orderQuery;
-  if (!taskLane)
-  {
-    // Only orders the placer marked as actionable
-    String tag = "_tag=" ACTIONABLE_SYSTEM "%7C" ACTIONABLE_CODE;
-    query = query.length() ? tag + "&" + query : tag;
-  }
-  if (query.length())
-    url += "?" + query;
+// How many pages of one search this unit will walk in a single check. A search
+// is capped by _count, and without following the Bundle's next link a backlog
+// longer than one page would never be reached.
+const int MAX_SEARCH_PAGES = 5;
 
-  Serial.println("[Orders] GET " + url);
+bool runOrderPage(const String &base, bool taskLane, String &problem, const String &pageUrl,
+                  int page, String &nextUrl)
+{
+  String url = pageUrl;
+  if (url.isEmpty())
+  {
+    url = base + (taskLane ? "/Task" : "/MedicationRequest");
+    String query = taskLane ? settings.taskQuery : settings.orderQuery;
+    if (!taskLane)
+    {
+      // Only orders the placer marked as actionable
+      String tag = "_tag=" ACTIONABLE_SYSTEM "%7C" ACTIONABLE_CODE;
+      query = query.length() ? tag + "&" + query : tag;
+    }
+    if (query.length())
+      url += "?" + query;
+  }
+
+  Serial.printf("[Orders] GET (page %d) ", page);
+  Serial.println(url);
 
   WiFiClientSecure secureClient;
   WiFiClient plainClient;
@@ -1246,6 +1763,31 @@ bool runOrderLane(const String &base, bool taskLane, String &problem)
     }
   }
 
+  // Hand the caller the server's next link, if it offered one.
+  for (JsonObject link : doc["link"].as<JsonArray>())
+    if (String(link["relation"] | "") == "next")
+      nextUrl = String(link["url"] | "");
+
+  return true;
+}
+
+// One lane of a check, across as many pages as the server offers up to the cap.
+// Each page is fetched, processed and freed before the next one, so a backlog
+// costs time rather than memory.
+bool runOrderLane(const String &base, bool taskLane, String &problem)
+{
+  String url = "";
+  for (int page = 1; page <= MAX_SEARCH_PAGES; page++)
+  {
+    String next;
+    if (!runOrderPage(base, taskLane, problem, url, page, next))
+      return false;
+    if (next.isEmpty())
+      return true;
+    url = next;
+    if (page == MAX_SEARCH_PAGES)
+      Serial.println("[Orders] stopping at the page cap; the rest waits for the next check");
+  }
   return true;
 }
 
@@ -1372,25 +1914,315 @@ String checkOutcomeJson()
   return jsonString(doc);
 }
 
-// GET /MedicationDispense: the resources in the dispense log, newest first, as
-// a searchset. The entries are already JSON, so the Bundle is assembled as
-// text rather than parsed into a document and back.
-String dispenseBundleJson(const String &base)
-{
-  String out;
-  out.reserve(768 + dispenseLogCount * DISPENSE_LOG_ENTRY);
-  out += "{\"resourceType\":\"Bundle\",\"type\":\"searchset\",\"total\":" + String(dispenseLogCount);
-  out += ",\"link\":[{\"relation\":\"self\",\"url\":\"" + base + "/MedicationDispense\"}],\"entry\":[";
+// A searchset over one of the stores. The entries are already JSON, so the
+// Bundle is assembled as text rather than parsed into a document and back.
+//
+// Supported parameters are the ones a client actually needs to ask this device
+// a question, and they are declared in the CapabilityStatement: _id, status,
+// subject, _count, and for dispenses authorizingPrescription. Anything else is
+// ignored rather than refused, which is what FHIR asks of a server, and the
+// self link records what was understood.
 
-  for (int i = 0; i < dispenseLogCount; i++)
+struct SearchQuery
+{
+  String id;
+  String status;
+  String subject;
+  String prescription;
+  int count;
+};
+
+SearchQuery readSearchQuery(AsyncWebServerRequest *request)
+{
+  SearchQuery q;
+  q.count = 20;
+
+  if (request->hasParam("_id"))
+    q.id = request->getParam("_id")->value();
+  if (request->hasParam("status"))
+    q.status = request->getParam("status")->value();
+  if (request->hasParam("subject"))
+    q.subject = request->getParam("subject")->value();
+  if (request->hasParam("patient"))
+    q.subject = request->getParam("patient")->value();
+  if (request->hasParam("authorizingPrescription"))
+    q.prescription = request->getParam("authorizingPrescription")->value();
+  if (request->hasParam("prescription"))
+    q.prescription = request->getParam("prescription")->value();
+  if (request->hasParam("_count"))
+    q.count = constrain(request->getParam("_count")->value().toInt(), 0, 50);
+
+  return q;
+}
+
+// A reference matches either in full or by its id alone, so both
+// subject=Patient/123 and subject=123 find the same records.
+bool referenceMatches(const String &wanted, const String &actual)
+{
+  if (wanted.isEmpty())
+    return true;
+  if (actual == wanted)
+    return true;
+  int slash = actual.lastIndexOf('/');
+  return slash >= 0 && actual.substring(slash + 1) == wanted;
+}
+
+String searchBundleJson(const char *path, const char *resourceType,
+                        const String &base, const SearchQuery &q,
+                        const String &selfQuery, bool withCheckOutcome)
+{
+  String entries;
+  String handled = "|"; // ids already emitted, so an updated record appears once
+  int matched = 0;
+
+  storeWalkNewest(path, [&](const String &line) {
+    StaticJsonDocument<STORE_MAX_LINE> doc;
+    if (deserializeJson(doc, line))
+      return true;
+
+    String id = doc["id"] | "";
+    if (id.isEmpty() || handled.indexOf("|" + id + "|") >= 0)
+      return true;
+    handled += id + "|"; // not listAdd: that caps its list, and a search must
+                         // not start emitting duplicates once it passes the cap
+
+    if (!q.id.isEmpty() && q.id != id)
+      return true;
+    if (!q.status.isEmpty() && String(doc["status"] | "") != q.status)
+      return true;
+    if (!referenceMatches(q.subject, String(doc["subject"]["reference"] | "")))
+      return true;
+    if (!q.prescription.isEmpty() &&
+        !referenceMatches(q.prescription, String(doc["authorizingPrescription"][0]["reference"] | "")))
+      return true;
+
+    matched++;
+    if (matched > q.count)
+      return false;
+
+    entries += "{\"fullUrl\":\"" + base + "/" + resourceType + "/" + id + "\",\"resource\":";
+    entries += line;
+    entries += ",\"search\":{\"mode\":\"match\"}},";
+    return true;
+  });
+
+  int total = matched > q.count ? q.count : matched;
+
+  String out;
+  out.reserve(entries.length() + 1024);
+  out += "{\"resourceType\":\"Bundle\",\"type\":\"searchset\",\"total\":" + String(total);
+  String stamp = nowIso();
+  if (stamp.length())
+    out += ",\"timestamp\":\"" + stamp + "\"";
+  out += ",\"link\":[{\"relation\":\"self\",\"url\":\"" + base + "/" + resourceType +
+         (selfQuery.length() ? "?" + selfQuery : "") + "\"}],\"entry\":[";
+  out += entries;
+
+  if (withCheckOutcome)
+    out += "{\"resource\":" + checkOutcomeJson() + ",\"search\":{\"mode\":\"outcome\"}},";
+
+  if (out.endsWith(","))
+    out.remove(out.length() - 1);
+  out += "]}";
+  return out;
+}
+
+// The query string as this unit understood it, for the Bundle's self link.
+String selfQueryOf(AsyncWebServerRequest *request, const SearchQuery &q)
+{
+  String self;
+  if (q.id.length())
+    self += "_id=" + q.id + "&";
+  if (q.status.length())
+    self += "status=" + q.status + "&";
+  if (q.subject.length())
+    self += "subject=" + q.subject + "&";
+  if (q.prescription.length())
+    self += "authorizingPrescription=" + q.prescription + "&";
+  self += "_count=" + String(q.count);
+  return self;
+}
+
+// ==================== Over-the-air updates ====================
+// The firmware and the web files are both replaceable over Wi-Fi. The chip
+// keeps two application slots, so an upload is written to the one that is not
+// running and the unit reboots into it; the filesystem has its own partition
+// and the same mechanism. A single page can also be replaced on its own, which
+// is how the dashboard is iterated on without rebuilding anything.
+//
+// Everything here needs the unit's key. An update endpoint without one is a
+// standing invitation to run code on somebody else's dispenser.
+
+struct OtaState
+{
+  bool active;
+  bool fileMode;
+  String filePath;
+  File file;
+  size_t expected;
+  String error;
+};
+
+OtaState ota = {false, false, "", File(), 0, ""};
+unsigned long restartAt = 0;          // loop() restarts the unit when this passes
+volatile bool updateCheckRequested = false;
+unsigned long lastUpdateCheck = 0;
+String lastUpdateResult = "never checked";
+bool appMarkedValid = false;
+
+void scheduleRestart(unsigned long inMs)
+{
+  restartAt = millis() + inMs;
+}
+
+// Once a new build has proved it can boot, reach the network and answer, the
+// slot it came from is worth keeping. Until then the previous slot stays as
+// the way back.
+void markRunningAppValid()
+{
+  if (appMarkedValid)
+    return;
+  appMarkedValid = true;
+  esp_err_t err = esp_ota_mark_app_valid_cancel_rollback();
+  Serial.printf("[OTA] running image marked valid (%s)\n", esp_err_to_name(err));
+}
+
+String otaStatusJson()
+{
+  StaticJsonDocument<512> doc;
+  doc["firmwareVersion"] = FIRMWARE_VERSION;
+  doc["build"] = FIRMWARE_BUILD;
+
+  const esp_partition_t *running = esp_ota_get_running_partition();
+  if (running)
   {
-    out += "{\"fullUrl\":\"" + base + "/MedicationDispense/" + dispenseLogId(dispenseLog[i]) + "\",\"resource\":";
-    out += dispenseLog[i];
-    out += ",\"search\":{\"mode\":\"match\"}},";
+    doc["runningSlot"] = running->label;
+    doc["slotBytes"] = running->size;
+  }
+  doc["canRollback"] = esp_ota_get_next_update_partition(nullptr) != nullptr;
+  doc["sketchBytes"] = ESP.getSketchSize();
+  doc["updateUrl"] = settings.updateUrl;
+  doc["updateCheckHours"] = settings.updateCheckHours;
+  doc["lastResult"] = lastUpdateResult;
+  doc["clock"] = clockReady() ? nowIso() : "unset";
+
+  String out;
+  serializeJson(doc, out);
+  return out;
+}
+
+// Pull an update the unit fetches for itself, from a manifest a release
+// workflow publishes beside the binaries:
+//   { "version": "1.2.0",
+//     "firmware": "https://.../firmware.bin",
+//     "filesystem": "https://.../spiffs.bin" }
+// The filesystem goes first: a new dashboard served by old firmware is a
+// smaller problem than new firmware looking for files that are not there.
+void runUpdateCheck()
+{
+  if (settings.updateUrl.isEmpty())
+  {
+    lastUpdateResult = "no manifest URL configured";
+    return;
+  }
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    lastUpdateResult = "no network";
+    return;
   }
 
-  out += "{\"resource\":" + checkOutcomeJson() + ",\"search\":{\"mode\":\"outcome\"}}]}";
-  return out;
+  WiFiClientSecure secureClient;
+  WiFiClient plainClient;
+  HTTPClient http;
+
+  if (!beginHttp(http, secureClient, plainClient, settings.updateUrl))
+  {
+    lastUpdateResult = "could not open the manifest URL";
+    return;
+  }
+
+  http.addHeader("Accept", "application/json");
+  http.setTimeout(8000);
+  // A release asset is served from a redirect, so both the manifest and the
+  // binaries below have to be followed rather than reported as a 302.
+  http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+  int status = http.GET();
+  if (status != 200)
+  {
+    http.end();
+    lastUpdateResult = "manifest HTTP " + String(status);
+    Serial.println("[OTA] " + lastUpdateResult);
+    return;
+  }
+
+  String payload = http.getString();
+  http.end();
+
+  StaticJsonDocument<768> manifest;
+  if (deserializeJson(manifest, payload))
+  {
+    lastUpdateResult = "manifest is not readable JSON";
+    return;
+  }
+
+  String offered = manifest["version"] | "";
+  if (offered.isEmpty())
+  {
+    lastUpdateResult = "manifest has no version";
+    return;
+  }
+  if (offered == FIRMWARE_VERSION)
+  {
+    lastUpdateResult = "up to date at " + offered;
+    Serial.println("[OTA] " + lastUpdateResult);
+    return;
+  }
+
+  Serial.println("[OTA] manifest offers " + offered + ", this unit runs " FIRMWARE_VERSION);
+
+  String fsUrl = manifest["filesystem"] | "";
+  String fwUrl = manifest["firmware"] | "";
+
+  httpUpdate.rebootOnUpdate(false);
+  httpUpdate.setLedPin(-1, LOW);
+  httpUpdate.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+
+  if (fsUrl.length())
+  {
+    WiFiClientSecure fsSecure;
+    WiFiClient fsPlain;
+    WiFiClient &client = fsUrl.startsWith("https://") ? (fsSecure.setInsecure(), (WiFiClient &)fsSecure)
+                                                      : (WiFiClient &)fsPlain;
+    SPIFFS.end();
+    t_httpUpdate_return r = httpUpdate.updateSpiffs(client, fsUrl);
+    if (r == HTTP_UPDATE_FAILED)
+    {
+      lastUpdateResult = "filesystem update failed: " + httpUpdate.getLastErrorString();
+      Serial.println("[OTA] " + lastUpdateResult);
+      SPIFFS.begin(true);
+      return;
+    }
+    Serial.println("[OTA] filesystem updated");
+  }
+
+  if (fwUrl.length())
+  {
+    WiFiClientSecure fwSecure;
+    WiFiClient fwPlain;
+    WiFiClient &client = fwUrl.startsWith("https://") ? (fwSecure.setInsecure(), (WiFiClient &)fwSecure)
+                                                      : (WiFiClient &)fwPlain;
+    t_httpUpdate_return r = httpUpdate.update(client, fwUrl);
+    if (r == HTTP_UPDATE_FAILED)
+    {
+      lastUpdateResult = "firmware update failed: " + httpUpdate.getLastErrorString();
+      Serial.println("[OTA] " + lastUpdateResult);
+      return;
+    }
+  }
+
+  lastUpdateResult = "updated to " + offered + ", restarting";
+  Serial.println("[OTA] " + lastUpdateResult);
+  scheduleRestart(500);
 }
 
 // --- Setup ---
@@ -1399,7 +2231,12 @@ void setup()
 {
   Serial.begin(115200);
   delay(500);
+  bootMillis = millis();
   Serial.println("Setup starting");
+  Serial.println("Spenser firmware " FIRMWARE_VERSION " (" FIRMWARE_BUILD ")");
+
+  // The stores are read by the web task while loop() writes them
+  storeMutex = xSemaphoreCreateMutex();
 
   pinMode(buttonPin, INPUT_PULLUP);
 
@@ -1418,6 +2255,15 @@ void setup()
   // Load this unit's servo angles / timing from Preferences
   loadSettings();
   loadSeenIds();
+  loadInventory();
+  loadDeviceKey();
+
+  // The one place the key is always available to whoever can reach the board
+  Serial.println("----------------------------------------------------------");
+  Serial.println("Device key: " + deviceKey);
+  Serial.println("Needed by everything that changes this unit. Also at GET /key");
+  Serial.println("for five minutes after this boot, or any time in setup mode.");
+  Serial.println("----------------------------------------------------------");
 
   // Load saved server URL from Preferences
   prefs.begin("config", true);
@@ -1450,6 +2296,7 @@ void setup()
   else
   {
     setLEDColor(0, 255, 0); // Green = connected
+    startClock(); // dispense records are worth nothing without a real time
   }
 
   // Initialize M5 Atom
@@ -1546,6 +2393,7 @@ void setup()
   // Portal: save credentials and reboot into STA
   server.on("/save", HTTP_POST, [](AsyncWebServerRequest *req)
             {
+    if (!requireKey(req)) return;
     if (!req->hasParam("ssid", true)) {
       req->send(400, "application/json", "{\"ok\":false,\"error\":\"missing ssid\"}");
       return;
@@ -1574,6 +2422,7 @@ void setup()
   // Wi-Fi management endpoints (STA-side convenience)
   server.on("/wifi-settings", HTTP_GET, [](AsyncWebServerRequest *req)
             {
+    if (!requireKey(req)) return;
     setForcePortalFlag();
     req->send(200, "text/html", "<p>Rebooting into Wi-Fi config mode (credentials kept)...</p>");
     delay(500);
@@ -1581,6 +2430,7 @@ void setup()
 
   server.on("/wifi-reset", HTTP_GET, [](AsyncWebServerRequest *req)
             {
+    if (!requireKey(req)) return;
     clearWifiConfig();
     req->send(200, "text/html", "<p>Wi-Fi credentials cleared. Rebooting into AP mode...</p>");
     delay(500);
@@ -1588,6 +2438,7 @@ void setup()
 
   server.on("/wifi-reboot-config", HTTP_GET, [](AsyncWebServerRequest *req)
             {
+    if (!requireKey(req)) return;
     setForcePortalFlag();
     req->send(200, "text/html", "<p>Rebooting into Wi-Fi config mode...</p>");
     delay(500);
@@ -1611,6 +2462,7 @@ void setup()
 
   server.on("/setMac", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     if (!request->hasParam("mac")) {
       request->send(400, "application/json", "{\"error\":\"Missing 'mac' parameter\"}");
       return;
@@ -1642,6 +2494,7 @@ void setup()
 
   server.on("/clearMac", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     prefs.begin("network", false);
     prefs.remove("customMAC");
     prefs.end();
@@ -1662,6 +2515,7 @@ void setup()
   // Color control
   server.on("/setColor", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     String redValue = request->getParam("red")->value();
     String greenValue = request->getParam("green")->value();
     String blueValue = request->getParam("blue")->value();
@@ -1674,6 +2528,7 @@ void setup()
   // Servo control
   server.on("/setServos", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     if (request->hasParam("servo4")) {
       int angle = request->getParam("servo4")->value().toInt();
       if (angle >= 0 && angle <= 360) {
@@ -1692,6 +2547,7 @@ void setup()
 
   server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     rgb.setPixelColor(0, rgb.Color(0, 0, 0));
     rgb.show();
     AtomicMotion.setServoAngle(settings.servoDark, settings.angleRest);
@@ -1700,12 +2556,14 @@ void setup()
 
   server.on("/flashServo1", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     Serial.println("Flashing Servo 1");
     dispenseServo(settings.servoDark);
     request->send(200, "text/plain", "Servo 1 flashed"); });
 
   server.on("/flashServo2", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     Serial.println("Flashing Servo 2");
     dispenseServo(settings.servoMilk);
     request->send(200, "text/plain", "Servo 2 flashed"); });
@@ -1724,6 +2582,7 @@ void setup()
   // e.g. /setSettings?servoDark=3&servoMilk=2&angleRest=0&anglePush=97&returnDelayMs=300
   server.on("/setSettings", HTTP_GET | HTTP_POST, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     bool updated = false;
     int value = 0;
 
@@ -1792,9 +2651,17 @@ void setup()
       settings.giveUpOnStockEmpty = flag;
       updated = true;
     }
+    if (paramStr(request, "updateUrl", text)) {
+      settings.updateUrl = text;
+      updated = true;
+    }
+    if (paramInt(request, "updateCheckHours", value)) {
+      settings.updateCheckHours = constrain(value, 0, 24 * 7);
+      updated = true;
+    }
 
     if (!updated) {
-      request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"No known setting in request\"}");
+      sendOutcome(request, 400, "invalid", "No setting this unit recognises was in the request");
       return;
     }
 
@@ -1805,6 +2672,7 @@ void setup()
   // Wipe the stored settings and fall back to the compiled-in defaults
   server.on("/resetSettings", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     prefs.begin("spenser", false);
     prefs.clear();
     prefs.end();
@@ -1817,18 +2685,41 @@ void setup()
   // server is never blocked while this unit talks to the order server.
   server.on("/checkOrders", HTTP_GET | HTTP_POST, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     checkRequested = true;
     request->send(202, "application/json", "{\"status\":\"scheduled\"}"); });
+
+  // This unit's key, which everything that changes it needs. Readable only
+  // while the unit is in setup mode or in the first few minutes after a
+  // restart: whoever just powered it on is its owner, and anybody later is
+  // not. It is also printed on the serial console at every boot.
+  server.on("/key", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    bool fresh = (millis() - bootMillis) < KEY_REVEAL_WINDOW_MS;
+    if (!fresh && netMode != NET_AP && !keyMatches(request)) {
+      sendOutcome(request, 403, "forbidden",
+                  "The key is only readable in setup mode or within five minutes of a restart. "
+                  "Restart this unit, or read it from the serial console.");
+      return;
+    }
+
+    StaticJsonDocument<192> doc;
+    doc["key"] = deviceKey;
+    doc["firmwareVersion"] = FIRMWARE_VERSION;
+    String out;
+    serializeJson(doc, out);
+    request->send(200, "application/json", out); });
 
   // What the last check did, for the device's own dashboard (not FHIR - the
   // FHIR view of the same thing is GET /MedicationDispense below)
   server.on("/orders", HTTP_GET, [](AsyncWebServerRequest *request)
             { request->send(200, "application/json", orderStatusJson()); });
 
-  // FHIR MedicationDispense: what this unit did, as the resources it produced.
-  // /MedicationDispense is a searchset, newest first, carrying an
-  // OperationOutcome about the last check of the order server. The handler
-  // also matches /MedicationDispense/{id}, which is a plain read.
+  // FHIR MedicationDispense: what this unit did, as the resources it produced,
+  // from its own store rather than from memory. A search honours _id, status,
+  // subject, authorizingPrescription and _count, and the searchset carries an
+  // OperationOutcome about the last check of the order server. The same
+  // handler serves /MedicationDispense/{id}, which is a plain read.
   server.on("/MedicationDispense", HTTP_GET, [](AsyncWebServerRequest *request)
             {
     String base = "http://" + request->host();
@@ -1837,28 +2728,247 @@ void setup()
 
     if (path.startsWith(prefix)) {
       String id = path.substring(prefix.length());
-      for (int i = 0; i < dispenseLogCount; i++) {
-        if (dispenseLogId(dispenseLog[i]) == id) {
-          request->send(200, "application/fhir+json", dispenseLog[i]);
-          return;
-        }
+      String found = storeFindById(DISPENSE_STORE, id);
+      if (found.length()) {
+        request->send(200, "application/fhir+json", found);
+        return;
       }
-      request->send(404, "application/fhir+json",
-                    "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"not-found\","
-                    "\"diagnostics\":\"MedicationDispense/" + id + " is not in this unit's log\"}]}");
+      sendOutcome(request, 404, "not-found", "MedicationDispense/" + id + " is not in this unit's record");
       return;
     }
 
-    request->send(200, "application/fhir+json", dispenseBundleJson(base)); });
+    SearchQuery q = readSearchQuery(request);
+    request->send(200, "application/fhir+json",
+                  searchBundleJson(DISPENSE_STORE, "MedicationDispense", base, q,
+                                   selfQueryOf(request, q), true)); });
+
+  // FHIR MedicationRequest: the orders this unit accepted. A dispenser that
+  // keeps no orders cannot answer for what it did, so a created order is
+  // readable afterwards, and searchable by _id, status, subject and _count.
+  server.on("/MedicationRequest", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    String base = "http://" + request->host();
+    String path = request->url();
+    const String prefix = "/MedicationRequest/";
+
+    if (path.startsWith(prefix)) {
+      String id = path.substring(prefix.length());
+      String found = storeFindById(ORDER_STORE, id);
+      if (found.length()) {
+        request->send(200, "application/fhir+json", found);
+        return;
+      }
+      sendOutcome(request, 404, "not-found",
+                  "MedicationRequest/" + id + " is not in this unit's record. It keeps the orders "
+                  "posted to it, not the ones it polled from a server.");
+      return;
+    }
+
+    SearchQuery q = readSearchQuery(request);
+    request->send(200, "application/fhir+json",
+                  searchBundleJson(ORDER_STORE, "MedicationRequest", base, q,
+                                   selfQueryOf(request, q), false)); });
+
+  // ---- Over-the-air updates ----
+
+  server.on("/ota/status", HTTP_GET, [](AsyncWebServerRequest *request)
+            { request->send(200, "application/json", otaStatusJson()); });
+
+  server.on("/ota/rollback", HTTP_POST | HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    if (!requireKey(request)) return;
+    if (!Update.canRollBack()) {
+      sendOutcome(request, 409, "not-supported", "This unit has no previous image to go back to");
+      return;
+    }
+    if (!Update.rollBack()) {
+      sendOutcome(request, 500, "exception", "The rollback was refused");
+      return;
+    }
+    request->send(200, "application/json", "{\"status\":\"rolling back\",\"restarting\":true}");
+    scheduleRestart(1200); });
+
+  server.on("/ota/check", HTTP_POST | HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    if (!requireKey(request)) return;
+    if (settings.updateUrl.isEmpty()) {
+      sendOutcome(request, 400, "required", "Set updateUrl first, e.g. /setSettings?updateUrl=https://.../manifest.json");
+      return;
+    }
+    updateCheckRequested = true;
+    request->send(202, "application/json", "{\"status\":\"scheduled\"}"); });
+
+  // Whole images: the firmware, or the filesystem that holds the web files.
+  // The body is the .bin itself, streamed straight into the spare slot.
+  auto receiveImage = [](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
+  {
+    bool filesystem = request->url().endsWith("/filesystem");
+
+    if (index == 0)
+    {
+      if (!requireKey(request))
+        return;
+      if (orderCheck.busy)
+      {
+        sendOutcome(request, 409, "lock-error", "This unit is mid-check; try again in a moment");
+        return;
+      }
+      if (total == 0)
+      {
+        sendOutcome(request, 400, "invalid", "Send the image as the request body");
+        return;
+      }
+
+      if (filesystem)
+        SPIFFS.end(); // the partition is about to be rewritten underneath it
+
+      if (!Update.begin(total, filesystem ? U_SPIFFS : U_FLASH))
+      {
+        String why = Update.errorString();
+        if (filesystem)
+          SPIFFS.begin(true);
+        sendOutcome(request, 507, "exception", "Could not start the update: " + why);
+        return;
+      }
+
+      ota.active = true;
+      ota.fileMode = false;
+      ota.expected = total;
+      ota.error = "";
+      Serial.printf("[OTA] receiving %u bytes of %s\n", (unsigned)total,
+                    filesystem ? "filesystem" : "firmware");
+    }
+
+    if (!ota.active)
+      return; // refused above, or already failed
+
+    if (Update.write(data, len) != len)
+    {
+      ota.error = Update.errorString();
+      Update.abort();
+      ota.active = false;
+      if (filesystem)
+        SPIFFS.begin(true);
+      sendOutcome(request, 500, "exception", "The upload failed: " + ota.error);
+      return;
+    }
+
+    if (index + len == total)
+    {
+      bool ok = Update.end(true);
+      ota.active = false;
+
+      if (!ok)
+      {
+        String why = Update.errorString();
+        if (filesystem)
+          SPIFFS.begin(true);
+        sendOutcome(request, 500, "exception", "The image was not accepted: " + why);
+        return;
+      }
+
+      Serial.println("[OTA] image accepted, restarting");
+      request->send(200, "application/json",
+                    String("{\"status\":\"updated\",\"target\":\"") +
+                        (filesystem ? "filesystem" : "firmware") + "\",\"restarting\":true}");
+      scheduleRestart(1200);
+    }
+  };
+
+  AsyncCallbackWebHandler *otaFirmware = new AsyncCallbackWebHandler();
+  otaFirmware->setUri("/ota/firmware");
+  otaFirmware->setMethod(HTTP_POST);
+  otaFirmware->onRequest([](AsyncWebServerRequest *request) {});
+  otaFirmware->onBody(receiveImage);
+  server.addHandler(otaFirmware);
+
+  AsyncCallbackWebHandler *otaFilesystem = new AsyncCallbackWebHandler();
+  otaFilesystem->setUri("/ota/filesystem");
+  otaFilesystem->setMethod(HTTP_POST);
+  otaFilesystem->onRequest([](AsyncWebServerRequest *request) {});
+  otaFilesystem->onBody(receiveImage);
+  server.addHandler(otaFilesystem);
+
+  // One file at a time, which is all a dashboard tweak needs. Written to a
+  // temporary name and moved into place at the end, so an upload that stops
+  // half way cannot leave a half-written page behind.
+  AsyncCallbackWebHandler *otaFile = new AsyncCallbackWebHandler();
+  otaFile->setUri("/ota/file");
+  otaFile->setMethod(HTTP_POST);
+  otaFile->onRequest([](AsyncWebServerRequest *request) {});
+  otaFile->onBody([](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
+                  {
+    if (index == 0)
+    {
+      if (!requireKey(request))
+        return;
+
+      String path;
+      if (request->hasParam("path"))
+        path = request->getParam("path")->value();
+      if (!path.startsWith("/") || path.indexOf("..") >= 0 || path.length() > 31)
+      {
+        sendOutcome(request, 400, "invalid", "Give an absolute path on the device filesystem, e.g. ?path=/index.html");
+        return;
+      }
+
+      ota.file = SPIFFS.open("/upload.tmp", FILE_WRITE);
+      if (!ota.file)
+      {
+        sendOutcome(request, 507, "exception", "Could not open a temporary file");
+        return;
+      }
+      ota.active = true;
+      ota.fileMode = true;
+      ota.filePath = path;
+      Serial.printf("[OTA] receiving %u bytes for %s\n", (unsigned)total, path.c_str());
+    }
+
+    if (!ota.active || !ota.fileMode)
+      return;
+
+    if (ota.file.write(data, len) != len)
+    {
+      ota.file.close();
+      SPIFFS.remove("/upload.tmp");
+      ota.active = false;
+      sendOutcome(request, 507, "exception", "The device filesystem is full");
+      return;
+    }
+
+    if (index + len == total)
+    {
+      ota.file.close();
+      ota.active = false;
+
+      SPIFFS.remove(ota.filePath);
+      if (!SPIFFS.rename("/upload.tmp", ota.filePath))
+      {
+        SPIFFS.remove("/upload.tmp");
+        sendOutcome(request, 500, "exception", "Could not move the file into place");
+        return;
+      }
+
+      StaticJsonDocument<192> out;
+      out["status"] = "written";
+      out["path"] = ota.filePath;
+      out["bytes"] = total;
+      String body;
+      serializeJson(out, body);
+      request->send(200, "application/json", body);
+    } });
+  server.addHandler(otaFile);
 
   // Forget which orders were already dealt with, so they can be dispensed again
   server.on("/forgetOrders", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     forgetHandled();
     request->send(200, "application/json", orderStatusJson()); });
 
   server.on("/setInventory", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     bool updated = false;
     if (request->hasParam("dark")) {
       inventoryDark = request->getParam("dark")->value().toInt();
@@ -1876,6 +2986,7 @@ void setup()
 
   server.on("/resetInventory", HTTP_GET, [](AsyncWebServerRequest *request)
             {
+    if (!requireKey(request)) return;
     if (request->hasParam("dark")) inventoryDark = request->getParam("dark")->value().toInt();
     if (request->hasParam("milk")) inventoryMilk = request->getParam("milk")->value().toInt();
     request->send(200, "text/plain", "Inventory updated"); });
@@ -1969,6 +3080,8 @@ void setup()
     doc["kind"] = "instance";
     doc["fhirVersion"] = "5.0.0";
     doc["format"][0] = "json";
+    doc["software"]["name"] = "Spenser";
+    doc["software"]["version"] = FIRMWARE_VERSION;
 
     // Where a reader, human or agent, goes next. /llms.txt is this unit's own
     // guide: every endpoint, the shapes it accepts, worked examples and the
@@ -1982,14 +3095,38 @@ void setup()
     JsonObject rest0 = rest.createNestedObject();
     rest0["mode"] = "server";
     rest0["documentation"] = "Orders posted straight at this unit are dispensed on the spot: posting here is itself the authorization. See " + selfBase + "/llms.txt";
+    rest0["security"]["description"] =
+        "Reads are open. Everything that changes this unit needs its per-unit key, as "
+        "Authorization: Bearer <key>, as X-Spenser-Key, or as ?key=<key>. The key is printed on "
+        "the serial console at boot and served at /key for five minutes afterwards.";
 
     JsonArray resources = rest0.createNestedArray("resource");
 
     JsonObject res1 = resources.createNestedObject();
     res1["type"] = "MedicationRequest";
-    res1["profile"] = "http://costateixeira.github.io/spenser";
+    res1["profile"] = "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest";
+    res1["documentation"] = "A create dispenses on the spot and is kept, so the order can be read back. "
+                            "The id is assigned here when the client does not supply one, and the answer "
+                            "is 201 with a Location. $dispense does the same in one call and answers with "
+                            "the MedicationDispense instead.";
     JsonArray res1_interaction = res1.createNestedArray("interaction");
     res1_interaction.createNestedObject()["code"] = "create";
+    res1_interaction.createNestedObject()["code"] = "read";
+    res1_interaction.createNestedObject()["code"] = "search-type";
+    JsonArray res1_params = res1.createNestedArray("searchParam");
+    JsonObject p1a = res1_params.createNestedObject();
+    p1a["name"] = "_id";
+    p1a["type"] = "token";
+    JsonObject p1b = res1_params.createNestedObject();
+    p1b["name"] = "status";
+    p1b["type"] = "token";
+    JsonObject p1c = res1_params.createNestedObject();
+    p1c["name"] = "subject";
+    p1c["type"] = "reference";
+    JsonObject op1 = res1.createNestedArray("operation").createNestedObject();
+    op1["name"] = "dispense";
+    op1["definition"] = "http://costateixeira.github.io/spenser/OperationDefinition/dispense";
+    op1["documentation"] = "POST a MedicationRequest to /$dispense and the MedicationDispense comes back.";
 
     JsonObject res2 = resources.createNestedObject();
     res2["type"] = "InventoryReport";
@@ -1999,10 +3136,25 @@ void setup()
 
     JsonObject res3 = resources.createNestedObject();
     res3["type"] = "MedicationDispense";
-    res3["documentation"] = "The last few dispenses this unit produced, completed or declined, newest first. The searchset carries an OperationOutcome (search.mode 'outcome') describing the last check of the order server";
+    res3["documentation"] = "What this unit dispensed or refused to dispense, newest first, kept on its "
+                            "filesystem so a restart does not erase it. The searchset carries an "
+                            "OperationOutcome (search.mode 'outcome') describing the last check of the order server";
     JsonArray res3_interaction = res3.createNestedArray("interaction");
     res3_interaction.createNestedObject()["code"] = "read";
     res3_interaction.createNestedObject()["code"] = "search-type";
+    JsonArray res3_params = res3.createNestedArray("searchParam");
+    JsonObject p3a = res3_params.createNestedObject();
+    p3a["name"] = "_id";
+    p3a["type"] = "token";
+    JsonObject p3b = res3_params.createNestedObject();
+    p3b["name"] = "status";
+    p3b["type"] = "token";
+    JsonObject p3c = res3_params.createNestedObject();
+    p3c["name"] = "subject";
+    p3c["type"] = "reference";
+    JsonObject p3d = res3_params.createNestedObject();
+    p3d["name"] = "authorizingPrescription";
+    p3d["type"] = "reference";
 
     // ---- client: what this unit asks of an order server ----
     JsonObject rest1 = rest.createNestedObject();
@@ -2061,7 +3213,11 @@ void setup()
     doc["id"] = "choco-inventory";
     doc["status"] = "current";
     doc["countType"] = "snapshot";
-    doc["reportedDate"] = "2025-04-18T12:00:00Z";
+    // reportedDateTime, not reportedDate, and the real time rather than a
+    // date frozen into the firmware. The epoch is what an unset clock looks
+    // like, which is at least unmistakable.
+    String at = nowIso();
+    doc["reportedDateTime"] = at.length() ? at : "1970-01-01T00:00:00Z";
 
     JsonArray inventoryListing = doc.createNestedArray("inventoryListing");
 
@@ -2105,6 +3261,9 @@ void setup()
       delete (String *)request->_tempObject;
       request->_tempObject = nullptr;
 
+      if (!requireKey(request))
+        return;
+
       StaticJsonDocument<2048> doc;
       DeserializationError error = deserializeJson(doc, body);
       if (error) {
@@ -2121,13 +3280,13 @@ void setup()
       }
 
       if (doc["resourceType"] != "InventoryReport") {
-        request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"Expected InventoryReport\"}");
+        sendOutcome(request, 400, "invalid", "POST /InventoryReport takes an InventoryReport");
         return;
       }
 
       String countType = doc["countType"] | "snapshot";
       if (!doc.containsKey("inventoryListing")) {
-        request->send(400, "application/json", "{\"status\":\"error\",\"message\":\"Missing inventoryListing\"}");
+        sendOutcome(request, 400, "required", "An InventoryReport needs at least one inventoryListing");
         return;
       }
 
@@ -2190,34 +3349,47 @@ void setup()
     } });
 
   // FHIR MedicationRequest - POST (local)
+  // POST /MedicationRequest is a create, and POST /MedicationRequest/$dispense
+  // or POST /$dispense is the one-call operation. One body collector serves
+  // all three, because a plain-path handler also matches paths beneath it.
+  auto collectAndRun = [](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
+  {
+    if (!index) {
+      if (!requireKey(request))
+        return;
+      request->_tempObject = new String();
+      ((String *)request->_tempObject)->reserve(total);
+    }
+    if (!request->_tempObject)
+      return; // refused above
+
+    ((String *)request->_tempObject)->concat((const char *)data, len);
+
+    if (index + len == total) {
+      String body = *((String *)request->_tempObject);
+      delete (String *)request->_tempObject;
+      request->_tempObject = nullptr;
+
+      if (request->url().endsWith("/$dispense"))
+        handleDispenseOperation(body, request);
+      else
+        handleOrderCreate(body, request);
+    }
+  };
+
   AsyncCallbackWebHandler *medicationHandler = new AsyncCallbackWebHandler();
   medicationHandler->setUri("/MedicationRequest");
   medicationHandler->setMethod(HTTP_POST);
-
-  medicationHandler->onRequest([](AsyncWebServerRequest *request)
-                               {
-                                 // Body handled in onBody
-                               });
-
-  medicationHandler->onBody([](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
-                            {
-    if (!index) {
-      request->_tempObject = new String();
-      ((String*)request->_tempObject)->reserve(total);
-      Serial.println("Start receiving MedicationRequest body...");
-    }
-
-    ((String*)request->_tempObject)->concat((const char*)data, len);
-
-    if (index + len == total) {
-      Serial.println("Full MedicationRequest body received.");
-      String body = *((String*)request->_tempObject);
-      delete (String*)request->_tempObject;
-      request->_tempObject = nullptr;
-      handleMedicationRequest(body, request);
-    } });
-
+  medicationHandler->onRequest([](AsyncWebServerRequest *request) {});
+  medicationHandler->onBody(collectAndRun);
   server.addHandler(medicationHandler);
+
+  AsyncCallbackWebHandler *dispenseOperation = new AsyncCallbackWebHandler();
+  dispenseOperation->setUri("/$dispense");
+  dispenseOperation->setMethod(HTTP_POST);
+  dispenseOperation->onRequest([](AsyncWebServerRequest *request) {});
+  dispenseOperation->onBody(collectAndRun);
+  server.addHandler(dispenseOperation);
 
   // 404 handler: fall back to static files in SPIFFS
   server.onNotFound([](AsyncWebServerRequest *request)
@@ -2438,6 +3610,32 @@ void loop()
     checkOrders(); // reports the Wi-Fi state itself when there is no connection
 
     if (WiFi.status() == WL_CONNECTED)
-      retryPendingDispenses();
+      retryPendingWrites();
+  }
+
+  // Updates, like order polling, are blocking HTTP work and belong here rather
+  // than in a request handler.
+  bool updateDue = settings.updateCheckHours > 0 && !settings.updateUrl.isEmpty() &&
+                   (lastUpdateCheck == 0 ||
+                    now - lastUpdateCheck >= (unsigned long)settings.updateCheckHours * 3600UL * 1000UL);
+
+  if (updateCheckRequested || (WiFi.status() == WL_CONNECTED && updateDue))
+  {
+    updateCheckRequested = false;
+    lastUpdateCheck = now;
+    runUpdateCheck();
+  }
+
+  // A build that has been up for a minute with a network and a web server is
+  // working. Until then the previous image stays available to roll back to.
+  if (!appMarkedValid && WiFi.status() == WL_CONNECTED && now - bootMillis > 60000UL)
+    markRunningAppValid();
+
+  // Restart after an update, once the response has had time to go out.
+  if (restartAt != 0 && (long)(now - restartAt) >= 0)
+  {
+    Serial.println("Restarting");
+    delay(100);
+    ESP.restart();
   }
 }
