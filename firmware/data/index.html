@@ -481,6 +481,104 @@
         </div>
 
         <div class="settings-section">
+          <h3>Servos</h3>
+          <p>Which motor drives each lane, how far the arm swings, and how long it
+          holds there before coming back. Tune with the buttons below: hold an arm
+          at the push angle to find the one that moves a single piece, then run a
+          full cycle to check it.</p>
+
+          <div class="settings-row">
+            <label class="field">Motor for dark (red)
+              <input type="number" id="servoDark" min="0" max="3" />
+            </label>
+            <label class="field">Motor for milk (blue)
+              <input type="number" id="servoMilk" min="0" max="3" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <label class="field">Angle at rest
+              <input type="number" id="angleRest" min="0" max="360" />
+            </label>
+            <label class="field">Angle at max push
+              <input type="number" id="anglePush" min="0" max="360" />
+            </label>
+            <label class="field">Hold before returning (ms)
+              <input type="number" id="returnDelayMs" min="0" max="5000" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <button onclick="saveServoSettings()">Save</button>
+            <button onclick="servoAction('/reset', 'Both arms back to rest')">Move both to rest</button>
+            <button onclick="holdAtPush('dark')">Hold dark at push angle</button>
+            <button onclick="holdAtPush('milk')">Hold milk at push angle</button>
+          </div>
+          <div class="settings-row">
+            <button onclick="servoAction('/flashServo1', 'Dark arm cycled')">Test dark cycle</button>
+            <button onclick="servoAction('/flashServo2', 'Milk arm cycled')">Test milk cycle</button>
+            <small>A full cycle pushes a piece out and does not change the stock count.</small>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>This unit's key</h3>
+          <p>Reads are open. Everything that changes this unit - dispensing,
+          settings, Wi-Fi, updates - needs its key. It is printed on the serial
+          console at boot, and this unit will hand it over for five minutes
+          after a restart.</p>
+          <div class="settings-row">
+            <label class="field" style="flex:1">Key
+              <input type="text" id="deviceKey" placeholder="32 characters" autocomplete="off" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <button onclick="saveKey()">Use this key</button>
+            <button onclick="fetchKey()">Ask the unit for it</button>
+            <small id="key-status">Kept in this browser only.</small>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Updates</h3>
+          <div class="order-status" id="ota-status">Checking…</div>
+          <p>The firmware and these web files can both be replaced over Wi-Fi.
+          A whole image reboots the unit; a single file does not.</p>
+          <div class="settings-row">
+            <label class="field">Firmware image (.bin)
+              <input type="file" id="fwFile" accept=".bin" />
+            </label>
+            <button onclick="uploadImage('firmware')">Upload firmware</button>
+          </div>
+          <div class="settings-row">
+            <label class="field">Filesystem image (spiffs.bin)
+              <input type="file" id="fsFile" accept=".bin" />
+            </label>
+            <button onclick="uploadImage('filesystem')">Upload filesystem</button>
+          </div>
+          <div class="settings-row">
+            <label class="field">Single file
+              <input type="file" id="oneFile" />
+            </label>
+            <label class="field">Path on the unit
+              <input type="text" id="onePath" value="/index.html" />
+            </label>
+            <button onclick="uploadOneFile()">Upload file</button>
+          </div>
+          <div class="settings-row">
+            <label class="field" style="flex:1">Release manifest URL
+              <input type="url" id="updateUrl" placeholder="https://…/manifest.json" />
+            </label>
+            <label class="field">Check every (h, 0 = never)
+              <input type="number" id="updateCheckHours" min="0" max="168" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <button onclick="saveUpdateSettings()">Save</button>
+            <button onclick="checkForUpdate()">Check now</button>
+            <button onclick="rollBack()">Roll back</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
           <h3>Wi-Fi</h3>
           <div class="settings-row">
             <button onclick="wifiAction('/wifi-settings', 'Rebooting to Wi-Fi config…')">Configure Wi-Fi</button>
@@ -527,6 +625,41 @@
   <script src="/qrcode.min.js"></script>
   <script>
     const $ = (id) => document.getElementById(id);
+
+    /* ---------- The unit's key ----------
+       Reads work without it; anything that changes the unit does not. Kept in
+       this browser's local storage and sent as a header, so it stays out of
+       URLs and out of anything that logs them. */
+    let deviceKey = '';
+    try { deviceKey = localStorage.getItem('spenserKey') || ''; } catch (e) {}
+
+    function api(path, opts = {}) {
+      const headers = Object.assign({}, opts.headers || {});
+      if (deviceKey) headers['X-Spenser-Key'] = deviceKey;
+      return fetch(path, Object.assign({}, opts, { headers }));
+    }
+
+    function saveKey() {
+      deviceKey = $('deviceKey').value.trim();
+      try { localStorage.setItem('spenserKey', deviceKey); } catch (e) {}
+      $('key-status').textContent = deviceKey ? 'Key stored in this browser.' : 'Key cleared.';
+      showToast(deviceKey ? 'Key saved' : 'Key cleared', 'ok');
+      refreshOta();
+    }
+
+    async function fetchKey() {
+      try {
+        const r = await api('/key');
+        if (!r.ok) {
+          $('key-status').textContent = 'The unit would not hand it over. Restart it, or read the serial console.';
+          showToast('Key not available', 'err');
+          return;
+        }
+        const d = await r.json();
+        $('deviceKey').value = d.key || '';
+        saveKey();
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
 
     function showToast(msg, kind = '') {
       const t = $('toast');
@@ -665,7 +798,7 @@
       $('sendBtn').disabled = true;
       const t0 = performance.now();
       try {
-        const r = await fetch(tpl.path, opts);
+        const r = await api(tpl.path, opts);
         const ms = Math.round(performance.now() - t0);
         const text = await r.text();
         let body;
@@ -702,7 +835,7 @@
 
     async function refreshInventory() {
       try {
-        const r = await fetch('/InventoryReport');
+        const r = await api('/InventoryReport');
         const data = await r.json();
         const listings = data.inventoryListing || [];
         let dark = 0, milk = 0;
@@ -729,22 +862,31 @@
         id: Math.random().toString(36).slice(2),
         status: 'active',
         intent: 'instance-order',
-        medicationCodeableConcept: {
-          coding: [{ code: type, display: type === 'chocolate-dark' ? 'Dark Chocolate' : 'Milk Chocolate' }]
+        medication: {
+          concept: {
+            coding: [{
+              system: 'http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds',
+              code: type,
+              display: type === 'chocolate-dark' ? 'Dark Chocolate' : 'Milk Chocolate'
+            }]
+          }
         },
         dosageInstruction: [{ text: 'One bite' }],
         subject: { reference: 'Patient/123' }
       };
       try {
-        const r = await fetch('/MedicationRequest', {
+        // $dispense rather than a create: an operation answers with the
+        // MedicationDispense, which is what tells us whether a piece came out.
+        const r = await api('/$dispense', {
           method: 'POST',
           headers: { 'Content-Type': 'application/fhir+json' },
           body: JSON.stringify(body)
         });
         const j = await r.json().catch(() => ({}));
-        if (r.status === 200) showToast('Dispensed 🎉', 'ok');
-        else if (r.status === 201) showToast('Out of stock', 'err');
-        else showToast(j.message || `Error ${r.status}`, 'err');
+        if (r.status === 401) showToast('This unit needs its key', 'err');
+        else if (j.resourceType === 'MedicationDispense' && j.status === 'completed') showToast('Dispensed 🎉', 'ok');
+        else if (j.resourceType === 'MedicationDispense') showToast('Out of stock', 'err');
+        else showToast(outcomeText(j) || `Error ${r.status}`, 'err');
       } catch (e) {
         showToast('Network error', 'err');
       } finally {
@@ -757,7 +899,7 @@
       const val = $(type + 'Input').value;
       if (val === '') return false;
       try {
-        await fetch(`/resetInventory?${type}=${encodeURIComponent(val)}`);
+        await api(`/resetInventory?${type}=${encodeURIComponent(val)}`);
         $(type + 'Input').value = '';
         await refreshInventory();
         showToast('Inventory updated', 'ok');
@@ -771,7 +913,7 @@
     async function refreshBattery() {
       const pill = $('batteryPill');
       try {
-        const r = await fetch('/battery');
+        const r = await api('/battery');
         if (!r.ok) throw new Error('sensor unavailable');
         const j = await r.json();
         const onUsb = j.source === 'usb' || j.source === 'charging';
@@ -801,13 +943,13 @@
     /* ---------- Wi-Fi + MAC ---------- */
     async function wifiAction(url, msg) {
       if (!confirm(msg.endsWith('…') ? msg + ' Continue?' : msg + '. Continue?')) return;
-      try { await fetch(url); showToast(msg, 'ok'); }
+      try { await api(url); showToast(msg, 'ok'); }
       catch (e) { showToast('Request failed', 'err'); }
     }
 
     async function loadMacInfo() {
       try {
-        const r = await fetch('/getMac');
+        const r = await api('/getMac');
         const j = await r.json();
         $('current-mac').textContent = j.currentMac || 'unknown';
         $('stored-mac').textContent = j.storedMac || 'None (factory MAC)';
@@ -825,7 +967,7 @@
       if (cleaned.length !== 12) { showToast('Invalid MAC (need 12 hex chars)', 'err'); return; }
       if (parseInt(cleaned.slice(0, 2), 16) & 1) { showToast('First byte must be even (unicast)', 'err'); return; }
       try {
-        const r = await fetch('/setMac?mac=' + encodeURIComponent(v));
+        const r = await api('/setMac?mac=' + encodeURIComponent(v));
         const j = await r.json();
         if (r.ok) { showToast('Saved. Reboot to apply.', 'ok'); $('macInput').value = ''; loadMacInfo(); }
         else showToast(j.error || 'Save failed', 'err');
@@ -835,7 +977,7 @@
     async function clearCustomMac() {
       if (!confirm('Clear custom MAC and revert to factory MAC on next reboot?')) return;
       try {
-        await fetch('/clearMac');
+        await api('/clearMac');
         showToast('Custom MAC cleared. Reboot to apply.', 'ok');
         loadMacInfo();
       } catch (e) { showToast('Request failed', 'err'); }
@@ -857,6 +999,137 @@
       } catch (e) { qrEl.textContent = 'QR error: ' + e.message; }
     }
 
+    /* ---------- Updates ---------- */
+    function outcomeText(body) {
+      if (!body || body.resourceType !== 'OperationOutcome') return '';
+      return (body.issue || []).map((i) => i.diagnostics).filter(Boolean).join(' ');
+    }
+
+    async function refreshOta() {
+      try {
+        const r = await api('/ota/status');
+        const d = await r.json();
+        const parts = ['firmware ' + d.firmwareVersion];
+        if (d.runningSlot) parts.push('slot ' + d.runningSlot);
+        if (d.sketchBytes && d.slotBytes) {
+          parts.push(Math.round((d.sketchBytes / d.slotBytes) * 100) + '% of the slot used');
+        }
+        parts.push('clock ' + d.clock);
+        parts.push(d.lastResult);
+        $('ota-status').textContent = parts.join(' \u00b7 ');
+        $('updateUrl').value = d.updateUrl || '';
+        $('updateCheckHours').value = d.updateCheckHours ?? 0;
+      } catch (e) { $('ota-status').textContent = 'Update status unavailable'; }
+    }
+
+    async function saveUpdateSettings() {
+      const params = new URLSearchParams();
+      params.set('updateUrl', $('updateUrl').value.trim());
+      params.set('updateCheckHours', $('updateCheckHours').value || '0');
+      try {
+        const r = await api('/setSettings?' + params.toString());
+        showToast(r.ok ? 'Update settings saved' : 'Could not save', r.ok ? 'ok' : 'err');
+        refreshOta();
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    async function checkForUpdate() {
+      try {
+        const r = await api('/ota/check', { method: 'POST' });
+        showToast(r.ok ? 'Checking for an update' : 'Check refused', r.ok ? 'ok' : 'err');
+        setTimeout(refreshOta, 6000);
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    async function rollBack() {
+      if (!confirm('Roll back to the previous firmware and restart?')) return;
+      try {
+        const r = await api('/ota/rollback', { method: 'POST' });
+        showToast(r.ok ? 'Rolling back, the unit is restarting' : 'Rollback refused', r.ok ? 'ok' : 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    // The body is the image itself. The unit streams it straight into the
+    // slot it is not running from, so nothing large is held in memory here.
+    async function uploadImage(target) {
+      const picker = target === 'firmware' ? $('fwFile') : $('fsFile');
+      const file = picker.files && picker.files[0];
+      if (!file) { showToast('Pick a .bin first', 'err'); return; }
+      if (!confirm('Upload ' + file.name + ' as the ' + target + '? The unit will restart.')) return;
+
+      $('ota-status').textContent = 'Uploading ' + file.name + '…';
+      try {
+        const r = await api('/ota/' + target, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: file
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) {
+          $('ota-status').textContent = 'Uploaded. The unit is restarting.';
+          showToast('Update accepted', 'ok');
+          setTimeout(refreshOta, 12000);
+        } else {
+          $('ota-status').textContent = outcomeText(j) || ('Upload failed: ' + r.status);
+          showToast('Update refused', 'err');
+        }
+      } catch (e) {
+        $('ota-status').textContent = 'Upload failed: ' + e.message;
+      }
+    }
+
+    async function uploadOneFile() {
+      const file = $('oneFile').files && $('oneFile').files[0];
+      const path = $('onePath').value.trim();
+      if (!file) { showToast('Pick a file first', 'err'); return; }
+      if (!path.startsWith('/')) { showToast('The path must start with /', 'err'); return; }
+
+      try {
+        const r = await api('/ota/file?path=' + encodeURIComponent(path), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: file
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) showToast('Wrote ' + (j.bytes || '') + ' bytes to ' + path, 'ok');
+        else showToast(outcomeText(j) || ('Upload failed: ' + r.status), 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    /* ---------- Servos ---------- */
+    const SERVO_FIELDS = ['servoDark', 'servoMilk', 'angleRest', 'anglePush', 'returnDelayMs'];
+
+    function showServoSettings(data) {
+      SERVO_FIELDS.forEach((f) => { $(f).value = data[f] ?? ''; });
+    }
+
+    async function saveServoSettings() {
+      const params = new URLSearchParams();
+      SERVO_FIELDS.forEach((f) => params.set(f, $(f).value));
+      try {
+        const r = await api('/setSettings?' + params.toString());
+        if (r.ok) { showServoSettings(await r.json()); showToast('Servo settings saved', 'ok'); }
+        else showToast('Could not save servo settings', 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    async function servoAction(path, done) {
+      try {
+        const r = await api(path);
+        showToast(r.ok ? done : 'Request refused', r.ok ? 'ok' : 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    // Park an arm at the angle in the form without saving it, to find the angle
+    // that moves one piece. /setServos names the lanes servo4 (dark) and servo3.
+    async function holdAtPush(lane) {
+      const angle = $('anglePush').value;
+      if (angle === '') { showToast('Set a push angle first', 'err'); return; }
+      const param = lane === 'dark' ? 'servo4' : 'servo3';
+      await servoAction('/setServos?' + param + '=' + encodeURIComponent(angle),
+                        'Holding ' + lane + ' at ' + angle + '\u00b0');
+    }
+
     /* ---------- Orders ---------- */
     const ORDER_FIELDS = ['serverUrl', 'orderMode', 'orderQuery', 'taskQuery', 'pollSeconds'];
     const ORDER_FLAGS = ['pollEnabled', 'writeBack', 'giveUpOnStockEmpty'];
@@ -869,8 +1142,10 @@
 
     async function loadOrderSettings() {
       try {
-        const r = await fetch('/settings');
-        showOrderSettings(await r.json());
+        const r = await api('/settings');
+        const data = await r.json();
+        showOrderSettings(data);
+        showServoSettings(data); // /settings carries both, so one fetch fills both panels
       } catch (e) { console.error('settings load failed', e); }
     }
 
@@ -879,7 +1154,7 @@
       ORDER_FIELDS.forEach((f) => params.set(f, $(f).value));
       ORDER_FLAGS.forEach((f) => params.set(f, $(f).checked ? '1' : '0'));
       try {
-        const r = await fetch('/setSettings?' + params.toString());
+        const r = await api('/setSettings?' + params.toString());
         if (r.ok) { showOrderSettings(await r.json()); showToast('Order settings saved', 'ok'); }
         else showToast('Could not save order settings', 'err');
       } catch (e) { showToast('Request failed', 'err'); }
@@ -888,7 +1163,7 @@
     async function checkOrders() {
       // the device does the actual HTTP call from its main loop
       try {
-        await fetch('/checkOrders');
+        await api('/checkOrders');
         showToast('Checking for orders');
         setTimeout(refreshOrders, 1000);
         setTimeout(refreshOrders, 3000);
@@ -897,7 +1172,7 @@
 
     async function forgetOrders() {
       try {
-        await fetch('/forgetOrders');
+        await api('/forgetOrders');
         lastHandled = null;
         refreshOrders();
         showToast('Handled orders forgotten', 'ok');
@@ -906,7 +1181,7 @@
 
     async function refreshOrders() {
       try {
-        const r = await fetch('/orders');
+        const r = await api('/orders');
         const d = await r.json();
 
         const parts = [];
@@ -931,6 +1206,8 @@
     renderQR();
     loadOrderSettings();
     refreshOrders();
+    $('deviceKey').value = deviceKey;
+    refreshOta();
     setInterval(refreshInventory, 5000);
     setInterval(refreshBattery, 15000);
     setInterval(refreshOrders, 5000);
