@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spenser FHIR Tester</title>
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --card: #ffffff;
+      --ink: #1f1b18;
+      --ink-soft: #6b6560;
+      --line: #e6e2dd;
+      --accent: #2266cc;
+      --ok: #1f7a3a;
+      --warn: #b94a00;
+      --err: #b3261e;
+      --code-bg: #1a1816;
+      --code-ink: #e8e4df;
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.45;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    h1 { font-size: 1.4rem; margin: 0; letter-spacing: -.01em; }
+    h2 { font-size: 1rem; margin: 0 0 12px; letter-spacing: -.005em; }
+
+    .url-bar { display: flex; gap: 8px; align-items: center; flex: 1; min-width: 280px; }
+    .url-bar input {
+      flex: 1; padding: 8px 12px; font: inherit; font-size: .95rem;
+      border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    }
+    .pill {
+      padding: 4px 10px; border-radius: 999px; background: var(--card);
+      border: 1px solid var(--line); font-size: .85rem; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-soft); }
+    .dot.ok { background: var(--ok); } .dot.err { background: var(--err); }
+
+    .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      box-shadow: var(--shadow); padding: 18px;
+    }
+    label { display: block; font-size: .8rem; color: var(--ink-soft); margin: 10px 0 4px; font-weight: 500; }
+    input[type=text], input[type=number], select, textarea {
+      width: 100%; padding: 8px 10px; font: inherit; font-size: .95rem;
+      border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+    }
+    textarea { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: .85rem; min-height: 90px; }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
+
+    button {
+      font: inherit; font-weight: 600; font-size: .95rem; cursor: pointer;
+      border: 0; border-radius: 8px; padding: 10px 14px; min-height: 40px;
+      background: var(--accent); color: #fff;
+    }
+    button:active { transform: scale(.98); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    button.ghost:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+    pre {
+      background: var(--code-bg); color: var(--code-ink);
+      padding: 12px; border-radius: 8px; overflow: auto;
+      font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: .82rem;
+      margin: 8px 0 0; max-height: 320px;
+    }
+    .status {
+      display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px;
+      border-radius: 999px; font-size: .8rem; font-weight: 600;
+      background: var(--bg); border: 1px solid var(--line);
+    }
+    .status.ok { background: #e6f5ec; color: var(--ok); border-color: #b8e0c5; }
+    .status.warn { background: #fff0e0; color: var(--warn); border-color: #f5c89a; }
+    .status.err { background: #fde8e6; color: var(--err); border-color: #f3b9b5; }
+
+    .meta { display: flex; align-items: center; gap: 10px; font-size: .85rem; color: var(--ink-soft); margin-top: 8px; flex-wrap: wrap; }
+    .inv-summary { display: flex; gap: 16px; font-size: 1.1rem; font-weight: 600; }
+    .inv-summary span { font-variant-numeric: tabular-nums; }
+
+    details > summary { cursor: pointer; font-weight: 600; font-size: .9rem; color: var(--ink-soft); }
+    details[open] > summary { color: var(--ink); }
+
+    .log { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: .8rem; max-height: 240px; overflow: auto; margin: 8px 0 0; }
+    .log .line { padding: 4px 0; border-bottom: 1px dashed var(--line); display: flex; gap: 8px; }
+    .log .line:last-child { border: 0; }
+    .log .t { color: var(--ink-soft); }
+    .log .m { font-weight: 600; }
+    .log .s.ok { color: var(--ok); } .log .s.err { color: var(--err); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🍫 Spenser FHIR Tester</h1>
+    <div class="url-bar">
+      <input id="baseUrl" type="text" placeholder="http://spenser.local" />
+      <button class="ghost" onclick="testConnection()">Test</button>
+    </div>
+    <div class="pill"><span class="dot" id="connDot"></span><span id="connText">unchecked</span></div>
+  </header>
+
+  <div class="grid">
+
+    <section class="card">
+      <h2>Capability Statement</h2>
+      <p class="meta">GET /metadata — what does the server claim to support?</p>
+      <div class="btn-row">
+        <button onclick="getMetadata()">GET /metadata</button>
+      </div>
+      <div id="metaStatus"></div>
+      <pre id="metaOut">—</pre>
+    </section>
+
+    <section class="card">
+      <h2>Inventory</h2>
+      <p class="meta">GET /InventoryReport — current stock</p>
+      <div class="btn-row">
+        <button onclick="getInventory()">GET /InventoryReport</button>
+      </div>
+      <div id="invStatus"></div>
+      <div class="inv-summary" id="invSummary" style="margin-top:8px;display:none">
+        <div>🍫 Dark: <span id="invDark">—</span></div>
+        <div>🥛 Milk: <span id="invMilk">—</span></div>
+      </div>
+      <details style="margin-top:8px"><summary>Raw response</summary><pre id="invOut">—</pre></details>
+    </section>
+
+    <section class="card">
+      <h2>Dispense (POST MedicationRequest)</h2>
+      <p class="meta">Sends a FHIR R5 MedicationRequest. Expected: <code>200</code> + MedicationDispense (completed) or <code>201</code> + MedicationDispense (declined / out of stock).</p>
+      <label>Chocolate</label>
+      <select id="medCode">
+        <option value="chocolate-dark">chocolate-dark (Dark Chocolate)</option>
+        <option value="chocolate-milk">chocolate-milk (Milk Chocolate)</option>
+      </select>
+      <label>Patient reference</label>
+      <input id="patientRef" type="text" value="Patient/123" />
+      <label>Request id (auto)</label>
+      <input id="reqId" type="text" />
+      <div class="btn-row">
+        <button onclick="dispense()">POST /MedicationRequest</button>
+        <button class="ghost" onclick="newReqId()">New id</button>
+      </div>
+      <div id="dispStatus"></div>
+      <details style="margin-top:8px"><summary>Request body</summary><pre id="dispReq">—</pre></details>
+      <details open style="margin-top:8px"><summary>Response</summary><pre id="dispRes">—</pre></details>
+    </section>
+
+    <section class="card">
+      <h2>Update Inventory (POST InventoryReport)</h2>
+      <p class="meta">snapshot = absolute counts; difference = delta to apply.</p>
+      <label>Count type</label>
+      <select id="invType">
+        <option value="snapshot">snapshot</option>
+        <option value="difference">difference</option>
+      </select>
+      <div class="row">
+        <div>
+          <label>Dark qty</label>
+          <input id="invDarkVal" type="number" value="15" />
+        </div>
+        <div>
+          <label>Milk qty</label>
+          <input id="invMilkVal" type="number" value="15" />
+        </div>
+      </div>
+      <div class="btn-row">
+        <button onclick="postInventory()">POST /InventoryReport</button>
+      </div>
+      <div id="postInvStatus"></div>
+      <details style="margin-top:8px"><summary>Request body</summary><pre id="postInvReq">—</pre></details>
+      <details open style="margin-top:8px"><summary>Response</summary><pre id="postInvRes">—</pre></details>
+    </section>
+
+  </div>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Activity log</h2>
+    <div class="log" id="log"></div>
+  </section>
+
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const baseUrlInput = $('baseUrl');
+  baseUrlInput.value = localStorage.getItem('spenserBase') || 'http://spenser.local';
+  baseUrlInput.addEventListener('change', () => localStorage.setItem('spenserBase', base()));
+  function base() { return baseUrlInput.value.replace(/\/+$/, ''); }
+
+  function newReqId() { $('reqId').value = 'req-' + Math.random().toString(36).slice(2, 10); return $('reqId').value; }
+  newReqId();
+
+  function logLine(method, path, status, ms, kind) {
+    const log = $('log');
+    const line = document.createElement('div'); line.className = 'line';
+    const now = new Date().toLocaleTimeString();
+    line.innerHTML = `<span class="t">${now}</span><span class="m">${method}</span><span>${path}</span><span class="s ${kind||''}">${status}</span><span class="t">${ms}ms</span>`;
+    log.prepend(line);
+    while (log.children.length > 50) log.lastChild.remove();
+  }
+
+  function setStatus(elId, status, kind) {
+    const el = $(elId);
+    el.innerHTML = `<span class="status ${kind||''}">${status}</span>`;
+  }
+
+  function pretty(text, ct) {
+    if (!text) return '(empty)';
+    if ((ct||'').includes('json')) {
+      try { return JSON.stringify(JSON.parse(text), null, 2); } catch { return text; }
+    }
+    return text;
+  }
+
+  async function call(method, path, body, headers) {
+    const url = base() + path;
+    const t0 = performance.now();
+    const init = { method, headers: { 'Accept': 'application/fhir+json', ...(headers||{}) } };
+    if (body !== undefined) {
+      init.body = typeof body === 'string' ? body : JSON.stringify(body);
+      init.headers['Content-Type'] = init.headers['Content-Type'] || 'application/fhir+json';
+    }
+    let res, text = '', ct = '', status = 0, ok = false, errMsg = null;
+    try {
+      res = await fetch(url, init);
+      status = res.status; ok = res.ok;
+      ct = res.headers.get('content-type') || '';
+      text = await res.text();
+    } catch (e) {
+      errMsg = e.message || String(e);
+    }
+    const ms = Math.round(performance.now() - t0);
+    const kind = errMsg ? 'err' : (ok ? 'ok' : (status === 201 ? 'warn' : 'err'));
+    logLine(method, path, errMsg ? 'NETWORK' : status, ms, kind);
+    return { status, ok, ct, text, ms, errMsg };
+  }
+
+  async function testConnection() {
+    setStatus('connDot', '', '');
+    $('connText').textContent = 'checking…';
+    const r = await call('GET', '/metadata');
+    if (r.errMsg) {
+      $('connDot').className = 'dot err';
+      $('connText').textContent = 'unreachable: ' + r.errMsg;
+    } else if (r.ok) {
+      $('connDot').className = 'dot ok';
+      $('connText').textContent = 'connected (' + r.ms + 'ms)';
+    } else {
+      $('connDot').className = 'dot err';
+      $('connText').textContent = 'HTTP ' + r.status;
+    }
+  }
+
+  async function getMetadata() {
+    setStatus('metaStatus', '…', 'warn');
+    const r = await call('GET', '/metadata');
+    if (r.errMsg) { setStatus('metaStatus', r.errMsg, 'err'); $('metaOut').textContent = '—'; return; }
+    setStatus('metaStatus', 'HTTP ' + r.status, r.ok ? 'ok' : 'err');
+    $('metaOut').textContent = pretty(r.text, r.ct);
+  }
+
+  async function getInventory() {
+    setStatus('invStatus', '…', 'warn');
+    const r = await call('GET', '/InventoryReport');
+    if (r.errMsg) { setStatus('invStatus', r.errMsg, 'err'); $('invSummary').style.display = 'none'; $('invOut').textContent = '—'; return; }
+    setStatus('invStatus', 'HTTP ' + r.status, r.ok ? 'ok' : 'err');
+    $('invOut').textContent = pretty(r.text, r.ct);
+    try {
+      const j = JSON.parse(r.text);
+      let dark = 0, milk = 0;
+      (j.inventoryListing || []).forEach(l => (l.item || []).forEach(e => {
+        const code = e.item?.coding?.[0]?.code;
+        const q = e.quantity?.value ?? 0;
+        if (code === 'chocolate-dark') dark = q;
+        else if (code === 'chocolate-milk') milk = q;
+      }));
+      $('invDark').textContent = dark;
+      $('invMilk').textContent = milk;
+      $('invSummary').style.display = '';
+    } catch { $('invSummary').style.display = 'none'; }
+  }
+
+  async function dispense() {
+    const code = $('medCode').value;
+    const display = code === 'chocolate-dark' ? 'Dark Chocolate' : 'Milk Chocolate';
+    const id = $('reqId').value || newReqId();
+    const body = {
+      resourceType: 'MedicationRequest',
+      id,
+      status: 'active',
+      intent: 'instance-order',
+      medicationCodeableConcept: { coding: [{ code, display }] },
+      dosageInstruction: [{ text: 'One bite' }],
+      subject: { reference: $('patientRef').value || 'Patient/123' }
+    };
+    $('dispReq').textContent = JSON.stringify(body, null, 2);
+    setStatus('dispStatus', '…', 'warn');
+    const r = await call('POST', '/MedicationRequest', body);
+    if (r.errMsg) { setStatus('dispStatus', r.errMsg, 'err'); $('dispRes').textContent = '—'; return; }
+    const kind = r.status === 200 ? 'ok' : (r.status === 201 ? 'warn' : 'err');
+    setStatus('dispStatus', 'HTTP ' + r.status + (r.status === 200 ? ' dispensed' : r.status === 201 ? ' declined (out of stock)' : ' error'), kind);
+    $('dispRes').textContent = pretty(r.text, r.ct);
+    newReqId();
+    if (r.ok || r.status === 201) getInventory();
+  }
+
+  async function postInventory() {
+    const countType = $('invType').value;
+    const dark = Number($('invDarkVal').value);
+    const milk = Number($('invMilkVal').value);
+    const body = {
+      resourceType: 'InventoryReport',
+      status: 'current',
+      countType,
+      reportedDate: new Date().toISOString(),
+      inventoryListing: [
+        { location: { display: 'Bin 1' }, item: [{ item: { coding: [{ system: 'http://example.org/choco-codes', code: 'chocolate-dark', display: 'Dark Chocolate' }] }, quantity: { value: dark, unit: 'pieces' }, itemStatus: 'available' }] },
+        { location: { display: 'Bin 2' }, item: [{ item: { coding: [{ system: 'http://example.org/choco-codes', code: 'chocolate-milk', display: 'Milk Chocolate' }] }, quantity: { value: milk, unit: 'pieces' }, itemStatus: 'available' }] }
+      ]
+    };
+    $('postInvReq').textContent = JSON.stringify(body, null, 2);
+    setStatus('postInvStatus', '…', 'warn');
+    const r = await call('POST', '/InventoryReport', body);
+    if (r.errMsg) { setStatus('postInvStatus', r.errMsg, 'err'); $('postInvRes').textContent = '—'; return; }
+    setStatus('postInvStatus', 'HTTP ' + r.status, r.ok ? 'ok' : 'err');
+    $('postInvRes').textContent = pretty(r.text, r.ct);
+    if (r.ok) getInventory();
+  }
+
+  // Initial probe
+  testConnection();
+</script>
+</body>
+</html>

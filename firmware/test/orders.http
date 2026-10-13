@@ -24,6 +24,10 @@
 ###############################################################################
 
 @device = http://spenser.local
+# Reads are open; anything that changes the unit needs its key. It is printed on
+# the serial console at boot, and GET {{device}}/key returns it for five minutes
+# after a restart.
+@key = put-this-unit-key-here
 @fhir = https://spenser.178.104.103.200.sslip.io/fhir/r5
 @patient = Patient/123
 @meds = http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds
@@ -44,10 +48,12 @@ Accept: application/json
 
 ### Point it at the server, accepting both routes, polling every 30s
 GET {{device}}/setSettings?serverUrl={{fhir}}&orderMode=both&pollEnabled=1&pollSeconds=30&writeBack=1&giveUpOnStockEmpty=0
+X-Spenser-Key: {{key}}
 Accept: application/json
 
 ### Make sure both lanes have stock
 GET {{device}}/resetInventory?dark=10&milk=10
+X-Spenser-Key: {{key}}
 
 ### Both roles it now claims
 GET {{device}}/metadata
@@ -89,6 +95,7 @@ Accept: application/fhir+json
 
 ### Ask the device to check now (202, it queues the work)
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 Accept: application/json
 
 ### A few seconds later: what it did, as the dispense it produced
@@ -127,6 +134,7 @@ Content-Type: application/fhir+json
 
 ### Check again - nothing new should be dispensed
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 
 ### expect nothing new on top, the OperationOutcome saying "No new orders",
 ### and the order below still active
@@ -146,6 +154,7 @@ Accept: application/fhir+json
 ### narrows it to Tasks only, so the plain order below is demonstrably ignored
 ### until its Task exists.
 GET {{device}}/setSettings?orderMode=task
+X-Spenser-Key: {{key}}
 Accept: application/json
 
 ### A plain order - not actionable on its own
@@ -194,6 +203,7 @@ Accept: application/fhir+json
 
 ### Check now
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 
 ### A few seconds later
 # expect a new completed MedicationDispense on top, and the OperationOutcome
@@ -220,10 +230,12 @@ Accept: application/fhir+json
 
 ### Back to accepting both routes, and empty the dark lane
 GET {{device}}/setSettings?orderMode=both
+X-Spenser-Key: {{key}}
 Accept: application/json
 
 ###
 GET {{device}}/resetInventory?dark=0
+X-Spenser-Key: {{key}}
 
 ### An order it cannot fill
 # @name placeStarvedOrder
@@ -251,6 +263,7 @@ Content-Type: application/fhir+json
 
 ###
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 
 ### expect a MedicationDispense with status = declined and notPerformedReason
 ### outofstock on top, and the OperationOutcome (severity = warning) saying
@@ -270,9 +283,11 @@ Accept: application/fhir+json
 
 ### Refill and check again
 GET {{device}}/resetInventory?dark=10
+X-Spenser-Key: {{key}}
 
 ###
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 
 ### The same order now goes through
 # expect status = completed
@@ -289,10 +304,12 @@ Accept: application/fhir+json
 
 ### Turn it on
 GET {{device}}/setSettings?giveUpOnStockEmpty=1
+X-Spenser-Key: {{key}}
 Accept: application/json
 
 ###
 GET {{device}}/resetInventory?milk=0
+X-Spenser-Key: {{key}}
 
 ### @name placeAbandonedOrder
 POST {{fhir}}/MedicationRequest
@@ -319,6 +336,7 @@ Content-Type: application/fhir+json
 
 ###
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 
 ### expect a declined dispense on top and the OperationOutcome saying
 ### "... (told the server, abandoned)"
@@ -327,9 +345,11 @@ Accept: application/fhir+json
 
 ### Refill, check, and confirm it is NOT picked up again
 GET {{device}}/resetInventory?milk=10
+X-Spenser-Key: {{key}}
 
 ###
 GET {{device}}/checkOrders
+X-Spenser-Key: {{key}}
 
 ### expect no completed dispense for it and the OperationOutcome saying
 ### "No new orders": the unit has written this order off
@@ -338,6 +358,7 @@ Accept: application/fhir+json
 
 ### Back to retrying
 GET {{device}}/setSettings?giveUpOnStockEmpty=0
+X-Spenser-Key: {{key}}
 Accept: application/json
 
 
@@ -347,11 +368,14 @@ Accept: application/json
 
 ### Forget which orders were already dealt with (lets them be dispensed again)
 GET {{device}}/forgetOrders
+X-Spenser-Key: {{key}}
 Accept: application/json
 
-### Dispense straight at the device, no server involved
-POST {{device}}/MedicationRequest
-Content-Type: application/json
+### Dispense straight at the device, no server involved. $dispense is an
+### operation, so the answer is the MedicationDispense itself.
+POST {{device}}/$dispense
+X-Spenser-Key: {{key}}
+Content-Type: application/fhir+json
 
 {
   "resourceType": "MedicationRequest",
@@ -372,8 +396,52 @@ Content-Type: application/json
 GET {{device}}/MedicationDispense/rest-client-direct-dispense
 Accept: application/fhir+json
 
+### The same order as a create instead: 201, a Location header, and the created
+### order as the body. No id needed - the device assigns one.
+POST {{device}}/MedicationRequest
+X-Spenser-Key: {{key}}
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "instance-order",
+  "medication": {
+    "concept": {
+      "coding": [
+        { "system": "{{meds}}", "code": "chocolate-milk", "display": "Milk Chocolate" }
+      ]
+    }
+  },
+  "subject": { "reference": "{{patient}}" }
+}
+
+### The orders this unit kept, and one of them by id
+GET {{device}}/MedicationRequest?_count=10
+X-Spenser-Key: {{key}}
+Accept: application/fhir+json
+
+### Only the dispenses for one patient, newest first
+GET {{device}}/MedicationDispense?subject=123&status=completed&_count=5
+Accept: application/fhir+json
+
+### What this unit is running, and whether it can be rolled back
+GET {{device}}/ota/status
+X-Spenser-Key: {{key}}
+Accept: application/json
+
+### Replace just the dashboard, no rebuild and no restart
+# POST {{device}}/ota/file?path=/index.html
+# Content-Type: application/octet-stream
+#
+# < ../data/index.html
+
+### Point it at a published release and let it keep itself current
+# GET {{device}}/setSettings?updateUrl=https://github.com/costateixeira/spenser/releases/latest/download/manifest.json&updateCheckHours=24
+
 ### Stock as a FHIR InventoryReport
 GET {{device}}/InventoryReport
+X-Spenser-Key: {{key}}
 Accept: application/fhir+json
 
 ### Clear the server between runs

@@ -1,4 +1,5 @@
 @host = http://spenser.local
+@key = put-this-unit-key-here
 @host = http://192.168.4.1
 
 
