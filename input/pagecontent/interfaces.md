@@ -153,7 +153,8 @@ minute with a network, and the previous one stays available to roll back to.
 | `POST /ota/firmware` | the firmware image as the request body |
 | `POST /ota/filesystem` | the filesystem image, which carries the web files |
 | `POST /ota/file?path=/index.html` | one file, with no restart |
-| `POST /ota/check` | fetch the release manifest and install it if it is newer |
+| `POST /ota/check` | fetch the release manifest and report what is waiting |
+| `POST /ota/install` | take what the check found |
 | `POST /ota/rollback` | go back to the previous image |
 
 A release publishes a small manifest beside the binaries, and a unit pointed at
@@ -168,6 +169,14 @@ it keeps itself current:
 ```
 GET /setSettings?updateUrl=https://.../manifest.json&updateCheckHours=24
 ```
+
+Looking and taking are separate. `updateMode=notify`, the default, has a check
+report what is waiting and stop there: `/ota/status` then carries
+`updateAvailable` and `availableVersion`, the dashboard offers an Install
+button, and nothing reboots unasked. `updateMode=install` has the unit take it
+by itself, which suits a unit nobody can reach. Anything other than the exact
+word `install` counts as notify, so a mistyped setting cannot turn a fleet into
+one that updates itself unannounced.
 
 Each unit reports what it is running as `software.version` in its
 CapabilityStatement and as `firmwareVersion` in its settings, so a fleet can be

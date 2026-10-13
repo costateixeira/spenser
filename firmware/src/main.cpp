@@ -79,6 +79,8 @@ struct Settings
   // workflow publishes next to the binaries; see /ota/status. ---
   String updateUrl;     // manifest URL, empty to disable pull updates
   int updateCheckHours; // hours between automatic checks, 0 = only when asked
+  String updateMode;    // "notify" (the default) reports what it found and waits
+                        // for /ota/install; "install" takes it there and then
 };
 
 const Settings DEFAULT_SETTINGS = {
@@ -87,7 +89,7 @@ const Settings DEFAULT_SETTINGS = {
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
     true, 30, true, false,
-    "", 0};
+    "", 0, "notify"};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
@@ -195,6 +197,7 @@ void loadSettings()
   settings.giveUpOnStockEmpty = prefs.getBool("giveUpEmpty", settings.giveUpOnStockEmpty);
   settings.updateUrl = prefs.getString("updateUrl", settings.updateUrl);
   settings.updateCheckHours = prefs.getInt("updateHrs", settings.updateCheckHours);
+  settings.updateMode = prefs.getString("updateMode", settings.updateMode);
   prefs.end();
 
   Serial.printf("Settings: servoDark=%d servoMilk=%d rest=%d push=%d returnMs=%d\n",
@@ -219,6 +222,7 @@ void saveSettings()
   prefs.putBool("giveUpEmpty", settings.giveUpOnStockEmpty);
   prefs.putString("updateUrl", settings.updateUrl);
   prefs.putInt("updateHrs", settings.updateCheckHours);
+  prefs.putString("updateMode", settings.updateMode);
   prefs.end();
 }
 
@@ -240,6 +244,7 @@ String settingsJson()
   doc["giveUpOnStockEmpty"] = settings.giveUpOnStockEmpty;
   doc["updateUrl"] = settings.updateUrl;
   doc["updateCheckHours"] = settings.updateCheckHours;
+  doc["updateMode"] = settings.updateMode;
   doc["firmwareVersion"] = FIRMWARE_VERSION;
 
   String out;
@@ -2066,8 +2071,15 @@ struct OtaState
 OtaState ota = {false, false, "", File(), 0, ""};
 unsigned long restartAt = 0;          // loop() restarts the unit when this passes
 volatile bool updateCheckRequested = false;
+volatile bool updateInstallRequested = false;
 unsigned long lastUpdateCheck = 0;
 String lastUpdateResult = "never checked";
+
+// What the last check found waiting, if anything. Kept so that looking and
+// taking are two separate decisions.
+String availableVersion;
+String availableFirmwareUrl;
+String availableFilesystemUrl;
 bool appMarkedValid = false;
 
 void scheduleRestart(unsigned long inMs)
@@ -2103,6 +2115,10 @@ String otaStatusJson()
   doc["sketchBytes"] = ESP.getSketchSize();
   doc["updateUrl"] = settings.updateUrl;
   doc["updateCheckHours"] = settings.updateCheckHours;
+  doc["updateMode"] = settings.updateMode;
+  doc["updateAvailable"] = availableVersion.length() > 0;
+  if (availableVersion.length())
+    doc["availableVersion"] = availableVersion;
   doc["lastResult"] = lastUpdateResult;
   doc["clock"] = clockReady() ? nowIso() : "unset";
 
@@ -2111,24 +2127,28 @@ String otaStatusJson()
   return out;
 }
 
-// Pull an update the unit fetches for itself, from a manifest a release
-// workflow publishes beside the binaries:
+// A unit can fetch its own updates from a manifest that a release workflow
+// publishes beside the binaries:
 //   { "version": "1.2.0",
 //     "firmware": "https://.../firmware.bin",
 //     "filesystem": "https://.../spiffs.bin" }
-// The filesystem goes first: a new dashboard served by old firmware is a
-// smaller problem than new firmware looking for files that are not there.
-void runUpdateCheck()
+//
+// Looking and taking are deliberately separate. A check reports what is
+// waiting and stops there, because a dispenser that reboots itself in the
+// middle of somebody's afternoon is not a well behaved appliance. Set
+// updateMode=install for a unit you would rather not visit at all.
+
+bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl)
 {
   if (settings.updateUrl.isEmpty())
   {
     lastUpdateResult = "no manifest URL configured";
-    return;
+    return false;
   }
   if (WiFi.status() != WL_CONNECTED)
   {
     lastUpdateResult = "no network";
-    return;
+    return false;
   }
 
   WiFiClientSecure secureClient;
@@ -2138,7 +2158,7 @@ void runUpdateCheck()
   if (!beginHttp(http, secureClient, plainClient, settings.updateUrl))
   {
     lastUpdateResult = "could not open the manifest URL";
-    return;
+    return false;
   }
 
   http.addHeader("Accept", "application/json");
@@ -2147,12 +2167,13 @@ void runUpdateCheck()
   // binaries below have to be followed rather than reported as a 302.
   http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
   int status = http.GET();
+
   if (status != 200)
   {
     http.end();
     lastUpdateResult = "manifest HTTP " + String(status);
     Serial.println("[OTA] " + lastUpdateResult);
-    return;
+    return false;
   }
 
   String payload = http.getString();
@@ -2162,39 +2183,97 @@ void runUpdateCheck()
   if (deserializeJson(manifest, payload))
   {
     lastUpdateResult = "manifest is not readable JSON";
-    return;
+    return false;
   }
 
-  String offered = manifest["version"] | "";
-  if (offered.isEmpty())
+  version = String(manifest["version"] | "");
+  firmwareUrl = String(manifest["firmware"] | "");
+  filesystemUrl = String(manifest["filesystem"] | "");
+
+  if (version.isEmpty())
   {
     lastUpdateResult = "manifest has no version";
-    return;
+    return false;
   }
-  if (offered == FIRMWARE_VERSION)
+  return true;
+}
+
+// Look only. Records what is waiting, and installs it only when this unit has
+// been told to do that for itself.
+void runUpdateCheck()
+{
+  String version, firmwareUrl, filesystemUrl;
+  if (!fetchManifest(version, firmwareUrl, filesystemUrl))
   {
-    lastUpdateResult = "up to date at " + offered;
     Serial.println("[OTA] " + lastUpdateResult);
     return;
   }
 
-  Serial.println("[OTA] manifest offers " + offered + ", this unit runs " FIRMWARE_VERSION);
+  if (version == FIRMWARE_VERSION)
+  {
+    availableVersion = "";
+    availableFirmwareUrl = "";
+    availableFilesystemUrl = "";
+    lastUpdateResult = "up to date at " + version;
+    Serial.println("[OTA] " + lastUpdateResult);
+    return;
+  }
 
-  String fsUrl = manifest["filesystem"] | "";
-  String fwUrl = manifest["firmware"] | "";
+  availableVersion = version;
+  availableFirmwareUrl = firmwareUrl;
+  availableFilesystemUrl = filesystemUrl;
+  lastUpdateResult = version + " is available, this unit runs " FIRMWARE_VERSION;
+  Serial.println("[OTA] " + lastUpdateResult);
+
+  if (settings.updateMode == "install")
+  {
+    Serial.println("[OTA] updateMode=install, taking it now");
+    updateInstallRequested = true;
+  }
+}
+
+// Take what the last check found. The filesystem goes first: a new dashboard
+// served by old firmware is a smaller problem than new firmware looking for
+// files that are not there.
+void runUpdateInstall()
+{
+  if (availableVersion.isEmpty())
+  {
+    // Nothing known yet, so look before refusing: /ota/install on a unit that
+    // has never checked should still do the obvious thing.
+    String version, firmwareUrl, filesystemUrl;
+    if (!fetchManifest(version, firmwareUrl, filesystemUrl))
+    {
+      Serial.println("[OTA] " + lastUpdateResult);
+      return;
+    }
+    if (version == FIRMWARE_VERSION)
+    {
+      lastUpdateResult = "up to date at " + version + ", nothing to install";
+      Serial.println("[OTA] " + lastUpdateResult);
+      return;
+    }
+    availableVersion = version;
+    availableFirmwareUrl = firmwareUrl;
+    availableFilesystemUrl = filesystemUrl;
+  }
+
+  String version = availableVersion;
+  Serial.println("[OTA] installing " + version);
 
   httpUpdate.rebootOnUpdate(false);
   httpUpdate.setLedPin(-1, LOW);
   httpUpdate.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
 
-  if (fsUrl.length())
+  if (availableFilesystemUrl.length())
   {
     WiFiClientSecure fsSecure;
     WiFiClient fsPlain;
-    WiFiClient &client = fsUrl.startsWith("https://") ? (fsSecure.setInsecure(), (WiFiClient &)fsSecure)
-                                                      : (WiFiClient &)fsPlain;
+    WiFiClient &client = availableFilesystemUrl.startsWith("https://")
+                             ? (fsSecure.setInsecure(), (WiFiClient &)fsSecure)
+                             : (WiFiClient &)fsPlain;
     SPIFFS.end();
-    t_httpUpdate_return r = httpUpdate.updateSpiffs(client, fsUrl);
+    t_httpUpdate_return r = httpUpdate.updateSpiffs(client, availableFilesystemUrl);
     if (r == HTTP_UPDATE_FAILED)
     {
       lastUpdateResult = "filesystem update failed: " + httpUpdate.getLastErrorString();
@@ -2205,13 +2284,14 @@ void runUpdateCheck()
     Serial.println("[OTA] filesystem updated");
   }
 
-  if (fwUrl.length())
+  if (availableFirmwareUrl.length())
   {
     WiFiClientSecure fwSecure;
     WiFiClient fwPlain;
-    WiFiClient &client = fwUrl.startsWith("https://") ? (fwSecure.setInsecure(), (WiFiClient &)fwSecure)
-                                                      : (WiFiClient &)fwPlain;
-    t_httpUpdate_return r = httpUpdate.update(client, fwUrl);
+    WiFiClient &client = availableFirmwareUrl.startsWith("https://")
+                             ? (fwSecure.setInsecure(), (WiFiClient &)fwSecure)
+                             : (WiFiClient &)fwPlain;
+    t_httpUpdate_return r = httpUpdate.update(client, availableFirmwareUrl);
     if (r == HTTP_UPDATE_FAILED)
     {
       lastUpdateResult = "firmware update failed: " + httpUpdate.getLastErrorString();
@@ -2220,7 +2300,7 @@ void runUpdateCheck()
     }
   }
 
-  lastUpdateResult = "updated to " + offered + ", restarting";
+  lastUpdateResult = "updated to " + version + ", restarting";
   Serial.println("[OTA] " + lastUpdateResult);
   scheduleRestart(500);
 }
@@ -2659,6 +2739,12 @@ void setup()
       settings.updateCheckHours = constrain(value, 0, 24 * 7);
       updated = true;
     }
+    if (paramStr(request, "updateMode", text)) {
+      // Anything that is not an explicit "install" means notify, so a typo
+      // cannot turn a fleet into one that reboots itself unannounced.
+      settings.updateMode = (text == "install") ? "install" : "notify";
+      updated = true;
+    }
 
     if (!updated) {
       sendOutcome(request, 400, "invalid", "No setting this unit recognises was in the request");
@@ -2788,6 +2874,8 @@ void setup()
     request->send(200, "application/json", "{\"status\":\"rolling back\",\"restarting\":true}");
     scheduleRestart(1200); });
 
+  // Look. Reports what is waiting in /ota/status; installs it only when this
+  // unit is set to updateMode=install.
   server.on("/ota/check", HTTP_POST | HTTP_GET, [](AsyncWebServerRequest *request)
             {
     if (!requireKey(request)) return;
@@ -2796,7 +2884,29 @@ void setup()
       return;
     }
     updateCheckRequested = true;
-    request->send(202, "application/json", "{\"status\":\"scheduled\"}"); });
+    request->send(202, "application/json", "{\"status\":\"checking\"}"); });
+
+  // Take. A unit that has never checked looks first, so this does the obvious
+  // thing either way.
+  server.on("/ota/install", HTTP_POST | HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    if (!requireKey(request)) return;
+    if (settings.updateUrl.isEmpty()) {
+      sendOutcome(request, 400, "required", "Set updateUrl first, e.g. /setSettings?updateUrl=https://.../manifest.json");
+      return;
+    }
+    if (orderCheck.busy) {
+      sendOutcome(request, 409, "lock-error", "This unit is mid-check; try again in a moment");
+      return;
+    }
+
+    updateInstallRequested = true;
+    StaticJsonDocument<192> doc;
+    doc["status"] = "installing";
+    doc["version"] = availableVersion.length() ? availableVersion : String("whatever the manifest offers");
+    String out;
+    serializeJson(doc, out);
+    request->send(202, "application/json", out); });
 
   // Whole images: the firmware, or the filesystem that holds the web files.
   // The body is the .bin itself, streamed straight into the spare slot.
@@ -3624,6 +3734,12 @@ void loop()
     updateCheckRequested = false;
     lastUpdateCheck = now;
     runUpdateCheck();
+  }
+
+  if (updateInstallRequested && WiFi.status() == WL_CONNECTED)
+  {
+    updateInstallRequested = false;
+    runUpdateInstall();
   }
 
   // A build that has been up for a minute with a network and a web server is

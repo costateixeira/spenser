@@ -570,10 +570,17 @@
             <label class="field">Check every (h, 0 = never)
               <input type="number" id="updateCheckHours" min="0" max="168" />
             </label>
+            <label class="field">When one is found
+              <select id="updateMode">
+                <option value="notify">tell me, and wait</option>
+                <option value="install">install it</option>
+              </select>
+            </label>
           </div>
           <div class="settings-row">
             <button onclick="saveUpdateSettings()">Save</button>
             <button onclick="checkForUpdate()">Check now</button>
+            <button id="installBtn" onclick="installUpdate()" disabled>Install</button>
             <button onclick="rollBack()">Roll back</button>
           </div>
         </div>
@@ -1009,7 +1016,9 @@
       try {
         const r = await api('/ota/status');
         const d = await r.json();
-        const parts = ['firmware ' + d.firmwareVersion];
+        const parts = [];
+        if (d.updateAvailable) parts.push('\u2b06 ' + d.availableVersion + ' available');
+        parts.push('firmware ' + d.firmwareVersion);
         if (d.runningSlot) parts.push('slot ' + d.runningSlot);
         if (d.sketchBytes && d.slotBytes) {
           parts.push(Math.round((d.sketchBytes / d.slotBytes) * 100) + '% of the slot used');
@@ -1019,6 +1028,9 @@
         $('ota-status').textContent = parts.join(' \u00b7 ');
         $('updateUrl').value = d.updateUrl || '';
         $('updateCheckHours').value = d.updateCheckHours ?? 0;
+        $('updateMode').value = d.updateMode || 'notify';
+        $('installBtn').disabled = !d.updateAvailable;
+        $('installBtn').textContent = d.updateAvailable ? 'Install ' + d.availableVersion : 'Install';
       } catch (e) { $('ota-status').textContent = 'Update status unavailable'; }
     }
 
@@ -1026,6 +1038,7 @@
       const params = new URLSearchParams();
       params.set('updateUrl', $('updateUrl').value.trim());
       params.set('updateCheckHours', $('updateCheckHours').value || '0');
+      params.set('updateMode', $('updateMode').value);
       try {
         const r = await api('/setSettings?' + params.toString());
         showToast(r.ok ? 'Update settings saved' : 'Could not save', r.ok ? 'ok' : 'err');
@@ -1038,7 +1051,30 @@
         const r = await api('/ota/check', { method: 'POST' });
         showToast(r.ok ? 'Checking for an update' : 'Check refused', r.ok ? 'ok' : 'err');
         setTimeout(refreshOta, 6000);
+        setTimeout(refreshOta, 15000);
       } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    async function installUpdate() {
+      const btn = $('installBtn');
+      if (!confirm(btn.textContent + '? The unit will download it and restart.')) return;
+      btn.disabled = true;
+      $('ota-status').textContent = 'Installing. This takes a minute, and the unit restarts.';
+      try {
+        const r = await api('/ota/install', { method: 'POST' });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) {
+          showToast('Installing ' + (j.version || ''), 'ok');
+          setTimeout(refreshOta, 45000);
+        } else {
+          $('ota-status').textContent = outcomeText(j) || ('Install refused: ' + r.status);
+          showToast('Install refused', 'err');
+          btn.disabled = false;
+        }
+      } catch (e) {
+        $('ota-status').textContent = 'Install failed: ' + e.message;
+        btn.disabled = false;
+      }
     }
 
     async function rollBack() {

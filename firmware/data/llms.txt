@@ -188,9 +188,15 @@ POST /ota/file?path=/index.html                          [key]
   the one to use while iterating on the dashboard or on this guide.
 
 POST /ota/check                                          [key]
-  Fetch the manifest at updateUrl and install it when its version differs from
-  this unit's. Returns 202: like a check for orders, the work happens in the
-  main loop.
+  Fetch the manifest at updateUrl and report what is waiting. It does not
+  install anything unless the unit is set to updateMode=install. Returns 202:
+  like a check for orders, the work happens in the main loop, so read
+  /ota/status a few seconds later for the answer.
+  Afterwards /ota/status carries updateAvailable and availableVersion.
+
+POST /ota/install                                        [key]
+  Take what the last check found. A unit that has never checked looks first.
+  Returns 202 and restarts when it lands.
 
 POST /ota/rollback                                       [key]
   Go back to the previous image and restart.
@@ -203,6 +209,20 @@ to date:
       "filesystem": "https://.../spiffs.bin" }
 
     GET /setSettings?updateUrl=https://.../manifest.json&updateCheckHours=24
+
+Looking and taking are separate on purpose. updateMode=notify, the default,
+means a check reports what is waiting and stops there, so nothing reboots in
+the middle of somebody's afternoon. updateMode=install means the unit takes it
+without asking, which is what you want for a unit nobody can visit. Anything
+other than the exact word install counts as notify, so a typo cannot turn a
+fleet into one that updates itself.
+
+To find out whether a unit is behind without touching it:
+
+    GET /ota/status     ->  { "firmwareVersion": "1.1.0",
+                              "updateAvailable": true,
+                              "availableVersion": "1.2.0",
+                              "updateMode": "notify", ... }
 
 A new image is marked good only after it has been up a minute with a network,
 so a build that cannot get that far leaves the previous one in place.
