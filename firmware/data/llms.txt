@@ -198,6 +198,16 @@ POST /ota/install                                        [key]
   Take what the last check found. A unit that has never checked looks first.
   Returns 202 and restarts when it lands.
 
+What a check found is remembered across a power cycle, so updateAvailable and
+availableVersion in /ota/status survive a restart, and the dashboard still shows
+its notice afterwards. An update that was waiting before the plug came out is
+still waiting after it goes back in. The record clears itself when a later check
+finds nothing newer, or when the unit comes up running the version that was
+offered.
+
+/ota/status also carries lastCheckSecondsAgo, so a reader can tell a fresh
+answer from a stale one.
+
 POST /ota/rollback                                       [key]
   Go back to the previous image and restart.
 
@@ -209,6 +219,10 @@ to date:
       "filesystem": "https://.../spiffs.bin" }
 
     GET /setSettings?updateUrl=https://.../manifest.json&updateCheckHours=24
+
+updateCheckHours defaults to 1, so a unit with a manifest URL notices a release
+within the hour by itself. With no manifest URL a check has nothing to ask and
+costs nothing. 0 turns the automatic check off entirely.
 
 Looking and taking are separate on purpose. updateMode=notify, the default,
 means a check reports what is waiting and stops there, so nothing reboots in

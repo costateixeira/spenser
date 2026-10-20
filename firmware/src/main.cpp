@@ -89,7 +89,7 @@ const Settings DEFAULT_SETTINGS = {
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
     true, 30, true, false,
-    "", 0, "notify"};
+    "", 1, "notify"};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
@@ -2076,10 +2076,60 @@ unsigned long lastUpdateCheck = 0;
 String lastUpdateResult = "never checked";
 
 // What the last check found waiting, if anything. Kept so that looking and
-// taking are two separate decisions.
+// taking are two separate decisions, and persisted so that the notice does not
+// quietly disappear when the unit is power cycled: an update that was waiting
+// before the plug came out is still waiting afterwards.
 String availableVersion;
 String availableFirmwareUrl;
 String availableFilesystemUrl;
+
+void loadUpdateState()
+{
+  prefs.begin("spenser", true);
+  availableVersion = prefs.getString("availVer", "");
+  availableFirmwareUrl = prefs.getString("availFw", "");
+  availableFilesystemUrl = prefs.getString("availFs", "");
+  prefs.end();
+
+  if (availableVersion.length())
+  {
+    if (availableVersion == FIRMWARE_VERSION)
+    {
+      // We are now running what was offered, so there is nothing to announce
+      availableVersion = "";
+      availableFirmwareUrl = "";
+      availableFilesystemUrl = "";
+      prefs.begin("spenser", false);
+      prefs.remove("availVer");
+      prefs.remove("availFw");
+      prefs.remove("availFs");
+      prefs.end();
+    }
+    else
+    {
+      lastUpdateResult = availableVersion + " is available, this unit runs " FIRMWARE_VERSION;
+      Serial.println("[OTA] still waiting: " + lastUpdateResult);
+    }
+  }
+}
+
+void saveUpdateState()
+{
+  prefs.begin("spenser", false);
+  if (availableVersion.length())
+  {
+    prefs.putString("availVer", availableVersion);
+    prefs.putString("availFw", availableFirmwareUrl);
+    prefs.putString("availFs", availableFilesystemUrl);
+  }
+  else
+  {
+    prefs.remove("availVer");
+    prefs.remove("availFw");
+    prefs.remove("availFs");
+  }
+  prefs.end();
+}
 bool appMarkedValid = false;
 
 void scheduleRestart(unsigned long inMs)
@@ -2111,14 +2161,20 @@ String otaStatusJson()
     doc["runningSlot"] = running->label;
     doc["slotBytes"] = running->size;
   }
-  doc["canRollback"] = esp_ota_get_next_update_partition(nullptr) != nullptr;
+  doc["canRollback"] = Update.canRollBack();
+  doc["markedValid"] = appMarkedValid; // false until this image has proved itself
+  doc["uptimeSeconds"] = (millis() - bootMillis) / 1000;
   doc["sketchBytes"] = ESP.getSketchSize();
   doc["updateUrl"] = settings.updateUrl;
   doc["updateCheckHours"] = settings.updateCheckHours;
   doc["updateMode"] = settings.updateMode;
   doc["updateAvailable"] = availableVersion.length() > 0;
   if (availableVersion.length())
+  {
     doc["availableVersion"] = availableVersion;
+    doc["availableFirmwareUrl"] = availableFirmwareUrl;
+  }
+  doc["lastCheckSecondsAgo"] = lastUpdateCheck ? (int)((millis() - lastUpdateCheck) / 1000) : -1;
   doc["lastResult"] = lastUpdateResult;
   doc["clock"] = clockReady() ? nowIso() : "unset";
 
@@ -2214,6 +2270,7 @@ void runUpdateCheck()
     availableVersion = "";
     availableFirmwareUrl = "";
     availableFilesystemUrl = "";
+    saveUpdateState();
     lastUpdateResult = "up to date at " + version;
     Serial.println("[OTA] " + lastUpdateResult);
     return;
@@ -2222,6 +2279,7 @@ void runUpdateCheck()
   availableVersion = version;
   availableFirmwareUrl = firmwareUrl;
   availableFilesystemUrl = filesystemUrl;
+  saveUpdateState();
   lastUpdateResult = version + " is available, this unit runs " FIRMWARE_VERSION;
   Serial.println("[OTA] " + lastUpdateResult);
 
@@ -2256,6 +2314,7 @@ void runUpdateInstall()
     availableVersion = version;
     availableFirmwareUrl = firmwareUrl;
     availableFilesystemUrl = filesystemUrl;
+    saveUpdateState();
   }
 
   String version = availableVersion;
@@ -2337,6 +2396,7 @@ void setup()
   loadSeenIds();
   loadInventory();
   loadDeviceKey();
+  loadUpdateState();
 
   // The one place the key is always available to whoever can reach the board
   Serial.println("----------------------------------------------------------");
