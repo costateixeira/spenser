@@ -287,6 +287,20 @@
       font: inherit; font-size: .85rem; background: var(--card); color: var(--ink);
     }
     .settings-row input[type="url"] { flex: 1; min-width: 220px; }
+    /* The update notice. Deliberately outside the collapsed Settings panel:
+       an update nobody can see is an update nobody installs. */
+    .update-notice {
+      display: none; margin: 0 0 16px; padding: 12px 14px; border-radius: 10px;
+      border: 1px solid #c88a00; background: #fff6e0; color: #6b4b00;
+      align-items: center; gap: 12px; flex-wrap: wrap;
+      font-size: .9rem; line-height: 1.4;
+    }
+    .update-notice.show { display: flex; }
+    .update-notice strong { font-weight: 600; }
+    .update-notice button { margin-left: auto; }
+    @media (prefers-color-scheme: dark) {
+      .update-notice { background: #3a2d0a; border-color: #8a6500; color: #ffd98a; }
+    }
     .order-status {
       font-size: .8rem; color: var(--ink-soft); line-height: 1.5;
       background: var(--bg); border: 1px solid var(--line);
@@ -394,6 +408,11 @@
     <!-- What!?.. panel -->
     <section class="panel" id="panel-what" role="tabpanel">
       <p style="text-align:center;color:var(--ink-soft);font-size:.95rem;margin:0 0 16px;font-style:italic">…is all that FHIR stuff for? I just want chocolate. 🍫</p>
+
+      <div class="update-notice" id="update-notice">
+        <span id="update-notice-text"></span>
+        <button onclick="installUpdate()">Install now</button>
+      </div>
       <div class="grid">
 
         <div class="card dark">
@@ -1025,6 +1044,8 @@
         }
         parts.push('clock ' + d.clock);
         parts.push(d.lastResult);
+        if (!d.updateUrl) parts.push('no release manifest set, so a check has nothing to ask');
+        showUpdateNotice(d);
         $('ota-status').textContent = parts.join(' \u00b7 ');
         $('updateUrl').value = d.updateUrl || '';
         $('updateCheckHours').value = d.updateCheckHours ?? 0;
@@ -1034,6 +1055,29 @@
       } catch (e) { $('ota-status').textContent = 'Update status unavailable'; }
     }
 
+    // Shown whenever the unit has something waiting, on every page load, and
+    // after a power cycle, because the unit remembers what it found.
+    function showUpdateNotice(d) {
+      const notice = $('update-notice');
+      if (!d || !d.updateAvailable) {
+        notice.classList.remove('show');
+        return;
+      }
+      const ago = d.lastCheckSecondsAgo >= 0 ? describeAge(d.lastCheckSecondsAgo) : '';
+      $('update-notice-text').innerHTML =
+        '<strong>New firmware available: ' + d.availableVersion + '</strong>' +
+        ' \u00b7 this unit runs ' + d.firmwareVersion +
+        (ago ? ' \u00b7 found ' + ago : '');
+      notice.classList.add('show');
+    }
+
+    function describeAge(seconds) {
+      if (seconds < 90) return 'just now';
+      if (seconds < 5400) return Math.round(seconds / 60) + ' min ago';
+      if (seconds < 172800) return Math.round(seconds / 3600) + ' h ago';
+      return Math.round(seconds / 86400) + ' days ago';
+    }
+
     async function saveUpdateSettings() {
       const params = new URLSearchParams();
       params.set('updateUrl', $('updateUrl').value.trim());
@@ -1041,18 +1085,32 @@
       params.set('updateMode', $('updateMode').value);
       try {
         const r = await api('/setSettings?' + params.toString());
-        showToast(r.ok ? 'Update settings saved' : 'Could not save', r.ok ? 'ok' : 'err');
-        refreshOta();
+        if (r.ok) { showToast('Update settings saved', 'ok'); refreshOta(); return; }
+        showToast(refusalReason(r, await r.json().catch(() => ({}))), 'err');
       } catch (e) { showToast('Request failed', 'err'); }
     }
 
     async function checkForUpdate() {
       try {
         const r = await api('/ota/check', { method: 'POST' });
-        showToast(r.ok ? 'Checking for an update' : 'Check refused', r.ok ? 'ok' : 'err');
-        setTimeout(refreshOta, 6000);
-        setTimeout(refreshOta, 15000);
+        if (r.ok) {
+          showToast('Checking for an update', 'ok');
+          $('ota-status').textContent = 'Checking\u2026';
+          setTimeout(refreshOta, 6000);
+          setTimeout(refreshOta, 15000);
+          return;
+        }
+        const why = refusalReason(r, await r.json().catch(() => ({})));
+        $('ota-status').textContent = why;
+        showToast(why, 'err');
       } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    // A refusal is never a mystery: 401 means the key, and anything else carries
+    // an OperationOutcome saying what the unit wanted instead.
+    function refusalReason(r, body) {
+      if (r.status === 401) return 'This unit needs its key. Paste it under the key panel.';
+      return outcomeText(body) || ('Refused: HTTP ' + r.status);
     }
 
     async function installUpdate() {
@@ -1081,7 +1139,8 @@
       if (!confirm('Roll back to the previous firmware and restart?')) return;
       try {
         const r = await api('/ota/rollback', { method: 'POST' });
-        showToast(r.ok ? 'Rolling back, the unit is restarting' : 'Rollback refused', r.ok ? 'ok' : 'err');
+        if (r.ok) { showToast('Rolling back, the unit is restarting', 'ok'); return; }
+        showToast(refusalReason(r, await r.json().catch(() => ({}))), 'err');
       } catch (e) { showToast('Request failed', 'err'); }
     }
 
@@ -1247,6 +1306,7 @@
     setInterval(refreshInventory, 5000);
     setInterval(refreshBattery, 15000);
     setInterval(refreshOrders, 5000);
+    setInterval(refreshOta, 60000); // the notice appears without a reload
   </script>
 </body>
 </html>
