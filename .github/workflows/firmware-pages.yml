@@ -23,7 +23,11 @@ name: Firmware to Pages
 
 on:
   push:
-    branches: [master]
+    # TEMPORARY: the test branch is here so a build can be published and the
+    # dashboard notice tried out before this reaches master. Remove the branch
+    # once it is merged - a branch build should not be what the site serves as
+    # the current firmware.
+    branches: [master, 'firmware/key-persistence-ota']
     paths:
       - 'firmware/**'
       - '.github/workflows/firmware-pages.yml'
