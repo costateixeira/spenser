@@ -287,6 +287,25 @@
       font: inherit; font-size: .85rem; background: var(--card); color: var(--ink);
     }
     .settings-row input[type="url"] { flex: 1; min-width: 220px; }
+    /* What the update contains, shown before it is taken. An update you cannot
+       read the notes for is an update you install blind. */
+    .modal-back {
+      display: none; position: fixed; inset: 0; z-index: 50;
+      background: #0009; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-back.show { display: flex; }
+    .modal {
+      background: var(--card); color: var(--ink); border: 1px solid var(--line);
+      border-radius: 14px; max-width: 34rem; width: 100%; max-height: 80vh;
+      overflow: auto; padding: 20px; box-shadow: 0 20px 50px #0006;
+    }
+    .modal h3 { margin: 0 0 4px; }
+    .modal .sub { color: var(--ink-soft); font-size: .85rem; margin: 0 0 14px; }
+    .modal ul { margin: 0 0 14px; padding-left: 1.2rem; font-size: .9rem; line-height: 1.5; }
+    .modal li { margin-bottom: 4px; }
+    .modal .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .modal .row a { margin-right: auto; font-size: .85rem; }
+
     /* The update notice. Deliberately outside the collapsed Settings panel:
        an update nobody can see is an update nobody installs. */
     .update-notice {
@@ -411,7 +430,7 @@
 
       <div class="update-notice" id="update-notice">
         <span id="update-notice-text"></span>
-        <button onclick="installUpdate()">Install now</button>
+        <button onclick="openUpdateDetails()">What is in it?</button>
       </div>
       <div class="grid">
 
@@ -599,7 +618,7 @@
           <div class="settings-row">
             <button onclick="saveUpdateSettings()">Save</button>
             <button onclick="checkForUpdate()">Check now</button>
-            <button id="installBtn" onclick="installUpdate()" disabled>Install</button>
+            <button id="installBtn" onclick="openUpdateDetails()" disabled>Install</button>
             <button onclick="rollBack()">Roll back</button>
           </div>
         </div>
@@ -644,6 +663,19 @@
       </div>
     </details>
 
+  </div>
+
+  <div class="modal-back" id="update-modal" onclick="if (event.target === this) closeUpdateDetails()">
+    <div class="modal">
+      <h3 id="update-modal-title">New firmware</h3>
+      <p class="sub" id="update-modal-sub"></p>
+      <ul id="update-modal-notes"></ul>
+      <div class="row">
+        <a id="update-modal-link" href="#" target="_blank" rel="noopener">Full release notes</a>
+        <button onclick="closeUpdateDetails()">Not now</button>
+        <button class="btn-primary" onclick="confirmInstall()">Install and restart</button>
+      </div>
+    </div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1026,6 +1058,8 @@
     }
 
     /* ---------- Updates ---------- */
+    let lastOta = null; // the last /ota/status, which the details popup reads
+
     function outcomeText(body) {
       if (!body || body.resourceType !== 'OperationOutcome') return '';
       return (body.issue || []).map((i) => i.diagnostics).filter(Boolean).join(' ');
@@ -1045,6 +1079,7 @@
         parts.push('clock ' + d.clock);
         parts.push(d.lastResult);
         if (!d.updateUrl) parts.push('no release manifest set, so a check has nothing to ask');
+        lastOta = d;
         showUpdateNotice(d);
         $('ota-status').textContent = parts.join(' \u00b7 ');
         $('updateUrl').value = d.updateUrl || '';
@@ -1113,9 +1148,60 @@
       return outcomeText(body) || ('Refused: HTTP ' + r.status);
     }
 
-    async function installUpdate() {
+    // The notes the unit kept from the manifest, so this works without the
+    // browser reaching the internet - and after a power cycle, because the unit
+    // remembers them.
+    function openUpdateDetails() {
+      const d = lastOta || {};
+      if (!d.updateAvailable) { showToast('Nothing is waiting', 'ok'); return; }
+
+      $('update-modal-title').textContent = 'Firmware ' + d.availableVersion;
+      $('update-modal-sub').textContent =
+        'This unit runs ' + d.firmwareVersion +
+        (d.lastCheckSecondsAgo >= 0 ? ', found ' + describeAge(d.lastCheckSecondsAgo) : '') +
+        '. Installing downloads it and restarts the unit.';
+
+      const list = $('update-modal-notes');
+      list.innerHTML = '';
+      const lines = String(d.availableNotes || '')
+        .split('\n')
+        .map((l) => l.replace(/^\s*[-*]\s*/, '').trim())
+        .filter(Boolean);
+      if (!lines.length) {
+        const li = document.createElement('li');
+        li.textContent = 'The release did not say what changed.';
+        list.appendChild(li);
+      } else {
+        lines.forEach((l) => {
+          const li = document.createElement('li');
+          li.textContent = l;
+          list.appendChild(li);
+        });
+      }
+
+      const link = $('update-modal-link');
+      if (d.availableNotesUrl) {
+        link.href = d.availableNotesUrl;
+        link.style.display = '';
+      } else {
+        link.style.display = 'none';
+      }
+
+      $('update-modal').classList.add('show');
+    }
+
+    function closeUpdateDetails() {
+      $('update-modal').classList.remove('show');
+    }
+
+    function confirmInstall() {
+      closeUpdateDetails();
+      installUpdate(true);
+    }
+
+    async function installUpdate(confirmed) {
       const btn = $('installBtn');
-      if (!confirm(btn.textContent + '? The unit will download it and restart.')) return;
+      if (!confirmed) { openUpdateDetails(); return; }
       btn.disabled = true;
       $('ota-status').textContent = 'Installing. This takes a minute, and the unit restarts.';
       try {

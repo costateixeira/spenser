@@ -39,7 +39,15 @@ Preferences prefs;
 // What this build is. Reported in /settings, in the CapabilityStatement as
 // software.version, and compared against the release manifest when the unit
 // checks for an update, so a unit in the field can always be identified.
-#define FIRMWARE_VERSION "1.1.0"
+//
+// The publishing workflow overrides this with the base version and the commit
+// it built from, e.g. "1.1.0+a1b2c3d". That matters: the unit decides whether
+// to update by comparing this string with the one in the manifest, so a
+// manifest published per commit needs a version that changes per commit, or a
+// unit would either offer the same update forever or never notice one.
+#ifndef FIRMWARE_VERSION
+#define FIRMWARE_VERSION "1.1.0-dev"
+#endif
 #define FIRMWARE_BUILD __DATE__ " " __TIME__
 
 const int ledPin = 35;
@@ -77,7 +85,10 @@ struct Settings
 
   // --- Over-the-air updates. updateUrl points at a manifest, which a release
   // workflow publishes next to the binaries; see /ota/status. ---
-  String updateUrl;     // manifest URL, empty to disable pull updates
+  String updateUrl;     // manifest URL, empty to disable pull updates. The
+                        // default is the published one, so a unit notices a new
+                        // build without being told where to look; clear it to
+                        // stop a unit checking at all.
   int updateCheckHours; // hours between automatic checks, 0 = only when asked
   String updateMode;    // "notify" (the default) reports what it found and waits
                         // for /ota/install; "install" takes it there and then
@@ -89,7 +100,7 @@ const Settings DEFAULT_SETTINGS = {
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
     true, 30, true, false,
-    "", 1, "notify"};
+    "https://costateixeira.github.io/spenser/firmware/manifest.json", 1, "notify"};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
@@ -2082,6 +2093,12 @@ String lastUpdateResult = "never checked";
 String availableVersion;
 String availableFirmwareUrl;
 String availableFilesystemUrl;
+String availableNotes;    // what changed, short enough to read on a phone
+String availableNotesUrl; // the whole thing, for anyone who wants it
+
+// Keep the notes small: they are held in RAM, persisted to NVS and served in
+// every /ota/status. Anything longer belongs behind availableNotesUrl.
+const size_t NOTES_MAX = 600;
 
 void loadUpdateState()
 {
@@ -2089,6 +2106,8 @@ void loadUpdateState()
   availableVersion = prefs.getString("availVer", "");
   availableFirmwareUrl = prefs.getString("availFw", "");
   availableFilesystemUrl = prefs.getString("availFs", "");
+  availableNotes = prefs.getString("availNotes", "");
+  availableNotesUrl = prefs.getString("availNoteU", "");
   prefs.end();
 
   if (availableVersion.length())
@@ -2099,10 +2118,14 @@ void loadUpdateState()
       availableVersion = "";
       availableFirmwareUrl = "";
       availableFilesystemUrl = "";
+      availableNotes = "";
+      availableNotesUrl = "";
       prefs.begin("spenser", false);
       prefs.remove("availVer");
       prefs.remove("availFw");
       prefs.remove("availFs");
+      prefs.remove("availNotes");
+      prefs.remove("availNoteU");
       prefs.end();
     }
     else
@@ -2121,12 +2144,16 @@ void saveUpdateState()
     prefs.putString("availVer", availableVersion);
     prefs.putString("availFw", availableFirmwareUrl);
     prefs.putString("availFs", availableFilesystemUrl);
+    prefs.putString("availNotes", availableNotes);
+    prefs.putString("availNoteU", availableNotesUrl);
   }
   else
   {
     prefs.remove("availVer");
     prefs.remove("availFw");
     prefs.remove("availFs");
+    prefs.remove("availNotes");
+    prefs.remove("availNoteU");
   }
   prefs.end();
 }
@@ -2151,7 +2178,7 @@ void markRunningAppValid()
 
 String otaStatusJson()
 {
-  StaticJsonDocument<512> doc;
+  DynamicJsonDocument doc(1536);
   doc["firmwareVersion"] = FIRMWARE_VERSION;
   doc["build"] = FIRMWARE_BUILD;
 
@@ -2173,6 +2200,8 @@ String otaStatusJson()
   {
     doc["availableVersion"] = availableVersion;
     doc["availableFirmwareUrl"] = availableFirmwareUrl;
+    doc["availableNotes"] = availableNotes;
+    doc["availableNotesUrl"] = availableNotesUrl;
   }
   doc["lastCheckSecondsAgo"] = lastUpdateCheck ? (int)((millis() - lastUpdateCheck) / 1000) : -1;
   doc["lastResult"] = lastUpdateResult;
@@ -2194,7 +2223,8 @@ String otaStatusJson()
 // middle of somebody's afternoon is not a well behaved appliance. Set
 // updateMode=install for a unit you would rather not visit at all.
 
-bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl)
+bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl,
+                   String &notes, String &notesUrl)
 {
   if (settings.updateUrl.isEmpty())
   {
@@ -2235,7 +2265,7 @@ bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl)
   String payload = http.getString();
   http.end();
 
-  StaticJsonDocument<768> manifest;
+  DynamicJsonDocument manifest(2048);
   if (deserializeJson(manifest, payload))
   {
     lastUpdateResult = "manifest is not readable JSON";
@@ -2245,6 +2275,10 @@ bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl)
   version = String(manifest["version"] | "");
   firmwareUrl = String(manifest["firmware"] | "");
   filesystemUrl = String(manifest["filesystem"] | "");
+  notes = String(manifest["notes"] | "");
+  notesUrl = String(manifest["notesUrl"] | "");
+  if (notes.length() > NOTES_MAX)
+    notes = notes.substring(0, NOTES_MAX) + "...";
 
   if (version.isEmpty())
   {
@@ -2258,8 +2292,8 @@ bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl)
 // been told to do that for itself.
 void runUpdateCheck()
 {
-  String version, firmwareUrl, filesystemUrl;
-  if (!fetchManifest(version, firmwareUrl, filesystemUrl))
+  String version, firmwareUrl, filesystemUrl, notes, notesUrl;
+  if (!fetchManifest(version, firmwareUrl, filesystemUrl, notes, notesUrl))
   {
     Serial.println("[OTA] " + lastUpdateResult);
     return;
@@ -2270,6 +2304,8 @@ void runUpdateCheck()
     availableVersion = "";
     availableFirmwareUrl = "";
     availableFilesystemUrl = "";
+    availableNotes = "";
+    availableNotesUrl = "";
     saveUpdateState();
     lastUpdateResult = "up to date at " + version;
     Serial.println("[OTA] " + lastUpdateResult);
@@ -2279,6 +2315,8 @@ void runUpdateCheck()
   availableVersion = version;
   availableFirmwareUrl = firmwareUrl;
   availableFilesystemUrl = filesystemUrl;
+  availableNotes = notes;
+  availableNotesUrl = notesUrl;
   saveUpdateState();
   lastUpdateResult = version + " is available, this unit runs " FIRMWARE_VERSION;
   Serial.println("[OTA] " + lastUpdateResult);
@@ -2299,8 +2337,8 @@ void runUpdateInstall()
   {
     // Nothing known yet, so look before refusing: /ota/install on a unit that
     // has never checked should still do the obvious thing.
-    String version, firmwareUrl, filesystemUrl;
-    if (!fetchManifest(version, firmwareUrl, filesystemUrl))
+    String version, firmwareUrl, filesystemUrl, notes, notesUrl;
+    if (!fetchManifest(version, firmwareUrl, filesystemUrl, notes, notesUrl))
     {
       Serial.println("[OTA] " + lastUpdateResult);
       return;
@@ -2314,6 +2352,8 @@ void runUpdateInstall()
     availableVersion = version;
     availableFirmwareUrl = firmwareUrl;
     availableFilesystemUrl = filesystemUrl;
+    availableNotes = notes;
+    availableNotesUrl = notesUrl;
     saveUpdateState();
   }
 

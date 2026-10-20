@@ -158,8 +158,11 @@ minute with a network, and the previous one stays available to roll back to.
 | `GET /ota/status` | also reports `updateAvailable`, `availableVersion` and how long ago it looked |
 | `POST /ota/rollback` | go back to the previous image |
 
-A release publishes a small manifest beside the binaries, and a unit pointed at
-it keeps itself current:
+Builds are published beside this specification, at
+[costateixeira.github.io/spenser/firmware/](firmware/), which is where a unit
+looks by default. That page lists what changed in the build it is serving, and
+carries the binaries and the manifest next to it. A manifest describes a build
+for the unit:
 
 ```json
 { "version": "1.2.0",
@@ -180,7 +183,17 @@ A unit checks hourly by default, and **remembers what it found**. The notice
 survives a power cycle, because an update that was waiting before the plug came
 out is still waiting afterwards, and a notice that disappears on a restart is a
 notice nobody acts on. It clears itself when a later check finds nothing newer,
-or once the unit is running the version that was offered. `updateMode=install` has the unit take it
+or once the unit is running the version that was offered.
+
+**What an update contains is readable before it is taken.** The manifest carries
+release notes; the unit keeps them, serves them in `/ota/status` as
+`availableNotes` and `availableNotesUrl`, and the dashboard shows them in a
+popup when you press Install, with the full list a link away. Installing blind
+is not an option a maintainer should be given.
+
+A published version carries the commit it was built from, as `1.2.0+a1b2c3d`.
+That is what lets a unit tell one build from the next, and settle once it has
+installed one. `updateMode=install` has the unit take it
 by itself, which suits a unit nobody can reach. Anything other than the exact
 word `install` counts as notify, so a mistyped setting cannot turn a fleet into
 one that updates itself unannounced.

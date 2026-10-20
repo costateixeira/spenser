@@ -211,12 +211,33 @@ answer from a stale one.
 POST /ota/rollback                                       [key]
   Go back to the previous image and restart.
 
-A release manifest looks like this, and a unit set to check it keeps itself up
-to date:
+Builds are published beside the specification, and that is where a unit looks
+by default:
 
-    { "version": "1.2.0",
+    https://costateixeira.github.io/spenser/firmware/              what changed
+    https://costateixeira.github.io/spenser/firmware/manifest.json what a unit reads
+    https://costateixeira.github.io/spenser/firmware/firmware.bin
+    https://costateixeira.github.io/spenser/firmware/spiffs.bin
+
+The manifest looks like this:
+
+    { "version": "1.2.0+a1b2c3d",
+      "released": "2026-10-20T09:00:00Z",
       "firmware": "https://.../firmware.bin",
-      "filesystem": "https://.../spiffs.bin" }
+      "filesystem": "https://.../spiffs.bin",
+      "firmwareSha256": "...",
+      "notes": "- what changed\n- one line per change",
+      "notesUrl": "https://costateixeira.github.io/spenser/firmware/" }
+
+The version carries the commit it was built from, so each published build is
+distinguishable and a unit settles after installing one rather than being
+offered the same thing forever.
+
+notes and notesUrl are why a unit can tell you what an update contains before
+you take it: it keeps the notes from the manifest, serves them in /ota/status as
+availableNotes and availableNotesUrl, and the dashboard shows them in a popup
+when you press Install. They survive a power cycle with the rest of the
+availability record.
 
     GET /setSettings?updateUrl=https://.../manifest.json&updateCheckHours=24
 
