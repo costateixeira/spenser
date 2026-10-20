@@ -48,7 +48,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: master
+          # A push or a manual run builds the ref it came from, so a branch can
+          # be published for testing. The run that follows an IG build is only
+          # re-asserting what the site should already hold, so it pins master.
+          ref: ${{ github.event_name == 'workflow_run' && 'master' || github.ref }}
           fetch-depth: 0 # the release notes are built from history
 
       - uses: actions/setup-python@v5

@@ -45,6 +45,9 @@ Preferences prefs;
 // to update by comparing this string with the one in the manifest, so a
 // manifest published per commit needs a version that changes per commit, or a
 // unit would either offer the same update forever or never notice one.
+// Published builds live at https://costateixeira.github.io/spenser/firmware/
+// with the notes for each one. A build from a workstation says -dev, so a
+// hand-flashed unit is recognisable in a fleet.
 #ifndef FIRMWARE_VERSION
 #define FIRMWARE_VERSION "1.1.0-dev"
 #endif
