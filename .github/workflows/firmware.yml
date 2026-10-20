@@ -47,17 +47,20 @@ jobs:
         working-directory: firmware
         run: pio run -e esp32s3 -t buildfs
 
-      # The application has to fit the OTA slot it will be written into, which
-      # is half of what the chip has. A build that only just fits is a build
-      # that cannot be updated over the air later.
-      - name: Check it fits its OTA slot
+      # A build that loses the project's build_flags still compiles, still fits
+      # and still runs - it just has no USB serial console and the wrong board
+      # define, and it is far larger. That happened, so it is checked for.
+      - name: Check the build is the build we meant
         working-directory: firmware
         run: |
           size=$(stat -c%s .pio/build/esp32s3/firmware.bin)
-          slot=$((0x330000))
-          pct=$((size * 100 / slot))
-          echo "firmware.bin: $size bytes, $pct% of the $slot byte slot"
+          pct=$((size * 100 / 0x330000))
+          echo "firmware.bin: $size bytes, $pct% of its slot"
           echo "### Firmware $size bytes, $pct% of its OTA slot" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$size" -gt 1700000 ]; then
+            echo "::error::$size bytes is far larger than this firmware should be (~1.39MB). The project build_flags were probably dropped: check SPENSER_VERSION_FLAG rather than PLATFORMIO_BUILD_FLAGS."
+            exit 1
+          fi
           if [ "$pct" -ge 90 ]; then
             echo "::error::The firmware uses $pct% of its OTA slot, leaving no room to grow"
             exit 1

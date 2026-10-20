@@ -908,7 +908,10 @@
         $('dispenseDark').disabled = dark === 0;
         $('dispenseMilk').disabled = milk === 0;
       } catch (e) {
-        showToast('Could not load inventory', 'err');
+        // Say which part failed. "Could not load inventory" sent somebody
+        // hunting through firmware for a problem that was in the page.
+        showToast('Could not load inventory: ' + e.message, 'err');
+        console.error('inventory', e);
       }
     }
 

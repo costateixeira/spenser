@@ -62,7 +62,8 @@ jobs:
       - name: Build
         working-directory: firmware
         env:
-          PLATFORMIO_BUILD_FLAGS: -DFIRMWARE_VERSION=\"${{ steps.version.outputs.version }}\"
+          # not PLATFORMIO_BUILD_FLAGS, which would replace the project's flags
+          SPENSER_VERSION_FLAG: -DFIRMWARE_VERSION=\"${{ steps.version.outputs.version }}\"
         run: |
           pio run -e esp32s3
           pio run -e esp32s3 -t buildfs

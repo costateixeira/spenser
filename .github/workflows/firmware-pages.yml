@@ -109,24 +109,51 @@ jobs:
           echo "--- notes ---"
           cat notes.txt
 
+      # SPENSER_VERSION_FLAG, not PLATFORMIO_BUILD_FLAGS: the latter replaces the
+      # flags in platformio.ini instead of adding to them, which published a
+      # build with no USB serial console and the wrong board define.
       - name: Build
         working-directory: firmware
         env:
-          PLATFORMIO_BUILD_FLAGS: -DFIRMWARE_VERSION=\"${{ steps.meta.outputs.version }}\"
+          SPENSER_VERSION_FLAG: -DFIRMWARE_VERSION=\"${{ steps.meta.outputs.version }}\"
         run: |
           pio run -e esp32s3
           pio run -e esp32s3 -t buildfs
 
-      - name: Check it fits its OTA slot
+      # A build that loses the project's build_flags still compiles, still fits
+      # and still runs - it just has no USB serial console and the wrong board
+      # define, and it is far larger. That happened, so it is checked for.
+      - name: Check the build is the build we meant
         working-directory: firmware
         run: |
           size=$(stat -c%s .pio/build/esp32s3/firmware.bin)
           pct=$((size * 100 / 0x330000))
           echo "firmware.bin: $size bytes, $pct% of its slot"
-          if [ "$pct" -ge 90 ]; then
-            echo "::error::The firmware uses $pct% of its OTA slot"
+          echo "### Firmware $size bytes, $pct% of its OTA slot" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$size" -gt 1700000 ]; then
+            echo "::error::$size bytes is far larger than this firmware should be (~1.39MB). The project build_flags were probably dropped: check SPENSER_VERSION_FLAG rather than PLATFORMIO_BUILD_FLAGS."
             exit 1
           fi
+          if [ "$pct" -ge 90 ]; then
+            echo "::error::The firmware uses $pct% of its OTA slot, leaving no room to grow"
+            exit 1
+          fi
+          if [ "$pct" -ge 75 ]; then
+            echo "::warning::The firmware uses $pct% of its OTA slot"
+          fi
+
+      # The whole point of stamping the version is that a unit can tell builds
+      # apart, so publishing one that is not stamped would be worse than not
+      # publishing.
+      - name: Check the version was stamped into the image
+        working-directory: firmware
+        run: |
+          want='${{ steps.meta.outputs.version }}'
+          if ! grep -qa -- "$want" .pio/build/esp32s3/firmware.bin; then
+            echo "::error::$want is not in the built image, so the version flag did not reach the compiler"
+            exit 1
+          fi
+          echo "the image reports $want"
 
       - name: Assemble the published folder
         run: |
