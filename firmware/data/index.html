@@ -1220,10 +1220,13 @@
       if (!d.updateAvailable) { showToast('Nothing is waiting', 'ok'); return; }
 
       $('update-modal-title').textContent = 'Firmware ' + d.availableVersion;
+      // What you are about to pull, and how fresh it is: the two questions
+      // worth answering before a dispenser takes itself offline for a minute.
+      const bits = ['This unit runs ' + d.firmwareVersion];
+      if (d.availableReleased) bits.push('published ' + d.availableReleased.replace('T', ' ').replace('Z', ' UTC'));
+      if (d.availableBytes) bits.push((d.availableBytes / 1048576).toFixed(1) + ' MB to download');
       $('update-modal-sub').textContent =
-        'This unit runs ' + d.firmwareVersion +
-        (d.lastCheckSecondsAgo >= 0 ? ', found ' + describeAge(d.lastCheckSecondsAgo) : '') +
-        '. Installing downloads it and restarts the unit.';
+        bits.join(' \u00b7 ') + '. Installing it restarts the unit, which takes about a minute.';
 
       const list = $('update-modal-notes');
       list.innerHTML = '';

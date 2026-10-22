@@ -49,7 +49,7 @@ Preferences prefs;
 // with the notes for each one. A build from a workstation says -dev, so a
 // hand-flashed unit is recognisable in a fleet.
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "1.2.3-dev"
+#define FIRMWARE_VERSION "1.2.4-dev"
 #endif
 #define FIRMWARE_BUILD __DATE__ " " __TIME__
 
@@ -2105,6 +2105,8 @@ String availableFirmwareUrl;
 String availableFilesystemUrl;
 String availableNotes;    // what changed, short enough to read on a phone
 String availableNotesUrl; // the whole thing, for anyone who wants it
+String availableReleased; // when it was published
+long availableBytes = 0;  // what installing it will pull down
 
 // Keep the notes small: they are held in RAM, persisted to NVS and served in
 // every /ota/status. Anything longer belongs behind availableNotesUrl.
@@ -2118,6 +2120,8 @@ void loadUpdateState()
   availableFilesystemUrl = prefs.getString("availFs", "");
   availableNotes = prefs.getString("availNotes", "");
   availableNotesUrl = prefs.getString("availNoteU", "");
+  availableReleased = prefs.getString("availWhen", "");
+  availableBytes = prefs.getLong("availSize", 0);
   prefs.end();
 
   if (availableVersion.length())
@@ -2130,6 +2134,8 @@ void loadUpdateState()
       availableFilesystemUrl = "";
       availableNotes = "";
       availableNotesUrl = "";
+      availableReleased = "";
+      availableBytes = 0;
       prefs.begin("spenser", false);
       prefs.remove("availVer");
       prefs.remove("availFw");
@@ -2156,6 +2162,8 @@ void saveUpdateState()
     prefs.putString("availFs", availableFilesystemUrl);
     prefs.putString("availNotes", availableNotes);
     prefs.putString("availNoteU", availableNotesUrl);
+    prefs.putString("availWhen", availableReleased);
+    prefs.putLong("availSize", availableBytes);
   }
   else
   {
@@ -2164,6 +2172,8 @@ void saveUpdateState()
     prefs.remove("availFs");
     prefs.remove("availNotes");
     prefs.remove("availNoteU");
+    prefs.remove("availWhen");
+    prefs.remove("availSize");
   }
   prefs.end();
 }
@@ -2212,6 +2222,8 @@ String otaStatusJson()
     doc["availableFirmwareUrl"] = availableFirmwareUrl;
     doc["availableNotes"] = availableNotes;
     doc["availableNotesUrl"] = availableNotesUrl;
+    doc["availableReleased"] = availableReleased;
+    doc["availableBytes"] = availableBytes;
   }
   doc["lastCheckSecondsAgo"] = lastUpdateCheck ? (int)((millis() - lastUpdateCheck) / 1000) : -1;
 
@@ -2245,7 +2257,7 @@ String otaStatusJson()
 // updateMode=install for a unit you would rather not visit at all.
 
 bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl,
-                   String &notes, String &notesUrl)
+                   String &notes, String &notesUrl, String &released, long &bytes)
 {
   if (settings.updateUrl.isEmpty())
   {
@@ -2298,6 +2310,9 @@ bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl,
   filesystemUrl = String(manifest["filesystem"] | "");
   notes = String(manifest["notes"] | "");
   notesUrl = String(manifest["notesUrl"] | "");
+  released = String(manifest["released"] | "");
+  // What pressing Install will actually pull over the air
+  bytes = (long)(manifest["firmwareBytes"] | 0) + (long)(manifest["filesystemBytes"] | 0);
   if (notes.length() > NOTES_MAX)
     notes = notes.substring(0, NOTES_MAX) + "...";
 
@@ -2313,8 +2328,9 @@ bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl,
 // been told to do that for itself.
 void runUpdateCheck()
 {
-  String version, firmwareUrl, filesystemUrl, notes, notesUrl;
-  if (!fetchManifest(version, firmwareUrl, filesystemUrl, notes, notesUrl))
+  String version, firmwareUrl, filesystemUrl, notes, notesUrl, released;
+  long bytes = 0;
+  if (!fetchManifest(version, firmwareUrl, filesystemUrl, notes, notesUrl, released, bytes))
   {
     Serial.println("[OTA] " + lastUpdateResult);
     return;
@@ -2327,6 +2343,8 @@ void runUpdateCheck()
     availableFilesystemUrl = "";
     availableNotes = "";
     availableNotesUrl = "";
+    availableReleased = "";
+    availableBytes = 0;
     saveUpdateState();
     lastUpdateResult = "up to date at " + version;
     Serial.println("[OTA] " + lastUpdateResult);
@@ -2338,6 +2356,8 @@ void runUpdateCheck()
   availableFilesystemUrl = filesystemUrl;
   availableNotes = notes;
   availableNotesUrl = notesUrl;
+  availableReleased = released;
+  availableBytes = bytes;
   saveUpdateState();
   lastUpdateResult = version + " is available, this unit runs " FIRMWARE_VERSION;
   Serial.println("[OTA] " + lastUpdateResult);
@@ -2358,8 +2378,9 @@ void runUpdateInstall()
   {
     // Nothing known yet, so look before refusing: /ota/install on a unit that
     // has never checked should still do the obvious thing.
-    String version, firmwareUrl, filesystemUrl, notes, notesUrl;
-    if (!fetchManifest(version, firmwareUrl, filesystemUrl, notes, notesUrl))
+    String version, firmwareUrl, filesystemUrl, notes, notesUrl, released;
+    long bytes = 0;
+    if (!fetchManifest(version, firmwareUrl, filesystemUrl, notes, notesUrl, released, bytes))
     {
       Serial.println("[OTA] " + lastUpdateResult);
       return;
@@ -2375,6 +2396,8 @@ void runUpdateInstall()
     availableFilesystemUrl = filesystemUrl;
     availableNotes = notes;
     availableNotesUrl = notesUrl;
+    availableReleased = released;
+    availableBytes = bytes;
     saveUpdateState();
   }
 
