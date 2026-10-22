@@ -1,0 +1,39 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/Task/FulfillPlainMilkOrder> a fhir:Task ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "FulfillPlainMilkOrder"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: Task FulfillPlainMilkOrder</b></p><a name=\"FulfillPlainMilkOrder\"> </a><a name=\"hcFulfillPlainMilkOrder\"> </a><p><b>identifier</b>: <code>http://example.org/spenser-orders</code>/demo-1</p><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Codes:{http://hl7.org/fhir/CodeSystem/task-code fulfill}\">Fulfill the focal request</span></p><p><b>focus</b>: <a href=\"MedicationRequest-PlainMilkOrder.html\">MedicationRequest: status = active; intent = instance-order</a></p><p><b>for</b>: <a href=\"Patient/123\">Patient/123</a></p></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:identifier ( [
+     fhir:system [ fhir:v "http://example.org/spenser-orders"^^xsd:anyURI ] ;
+     fhir:value [ fhir:v "demo-1" ]
+  ] ) ; # 
+  fhir:status [ fhir:v "requested"] ; # 
+  fhir:intent [ fhir:v "order"] ; # 
+  fhir:code [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://hl7.org/fhir/CodeSystem/task-code"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "fulfill" ] ;
+       fhir:display [ fhir:v "Fulfill the focal request" ]
+     ] )
+  ] ; # 
+  fhir:focus [
+     fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainMilkOrder> ;
+     fhir:reference [ fhir:v "MedicationRequest/PlainMilkOrder" ]
+  ] ; # 
+  fhir:for [
+     fhir:link <http://costateixeira.github.io/spenser/Patient/123> ;
+     fhir:reference [ fhir:v "Patient/123" ]
+  ] . # 
+
+# -------------------------------------------------------------------------------------
+

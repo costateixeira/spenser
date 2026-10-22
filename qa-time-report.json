@@ -1,0 +1,619 @@
+{
+  "date" : "Sun, 20 Sep, 2026 09:14:24 +0000",
+  "doco" : "For each file: start is seconds after start activity occurred. Length = milliseconds activity took",
+  "files" : [{
+    "name" : "/fsh-generated/resources/ImplementationGuide-jct.fhir.spenser.json",
+    "size" : 7531,
+    "processes" : [{
+      "activity" : "load",
+      "start" : 32,
+      "length" : 9
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 32,
+      "length" : 10
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 50
+    },
+    {
+      "activity" : "validate",
+      "start" : 34,
+      "length" : 1284
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 59
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 53
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 43,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement.json",
+    "size" : 3057,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 5
+    },
+    {
+      "activity" : "load",
+      "start" : 32,
+      "length" : 4
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 17
+    },
+    {
+      "activity" : "validate",
+      "start" : 34,
+      "length" : 33
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 38
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 43
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 43,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/CodeSystem-SpenserMeds.json",
+    "size" : 519,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "load",
+      "start" : 32,
+      "length" : 6
+    },
+    {
+      "activity" : "load-configure",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 5
+    },
+    {
+      "activity" : "validate",
+      "start" : 32,
+      "length" : 188
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 8
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 56
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/InventoryReport-Add5Milk.json",
+    "size" : 836,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 4
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 10
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 1
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 8
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 6
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 5
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/InventoryReport-SetDarkTo17.json",
+    "size" : 838,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "load",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 2
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 3
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 6
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 5
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationDispense-DeclinedDispenseOutOfStock.json",
+    "size" : 790,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 3
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 9
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 15
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 8
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationDispense-DispenseForActionableDarkOrder.json",
+    "size" : 519,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 4
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 7
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 6
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 6
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-ActionableDarkOrder.json",
+    "size" : 752,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 4
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 62
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 6
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 11
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-PlainMilkOrder.json",
+    "size" : 544,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 2
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 4
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 5
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 5
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-med-request-1234.json",
+    "size" : 618,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 4
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 5
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 6
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 6
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/StructureDefinition-SpenserRequest.json",
+    "size" : 1351,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 3
+    },
+    {
+      "activity" : "load",
+      "start" : 32,
+      "length" : 3
+    },
+    {
+      "activity" : "generateSnapshots",
+      "start" : 32,
+      "length" : 63
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 98
+    },
+    {
+      "activity" : "validate",
+      "start" : 33,
+      "length" : 1352
+    },
+    {
+      "activity" : "checkConformanceResources",
+      "start" : 35,
+      "length" : 1
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 35,
+      "length" : 2
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 265
+    },
+    {
+      "activity" : "generate2",
+      "start" : 38,
+      "length" : 1099
+    },
+    {
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 763
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 43,
+      "length" : 15
+    },
+    {
+      "activity" : "scanExamplesForR5",
+      "start" : 53,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/Task-FulfillPlainMilkOrder.json",
+    "size" : 528,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 3
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 32,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 175
+    },
+    {
+      "activity" : "validate",
+      "start" : 35,
+      "length" : 6
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 6
+    },
+    {
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 10
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ValueSet-SpenserMedsVS.json",
+    "size" : 441,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 32,
+      "length" : 2
+    },
+    {
+      "activity" : "load",
+      "start" : 32,
+      "length" : 3
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 32,
+      "length" : 51
+    },
+    {
+      "activity" : "validate",
+      "start" : 33,
+      "length" : 15
+    },
+    {
+      "activity" : "generate1",
+      "start" : 36,
+      "length" : 5
+    },
+    {
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 69
+    }]
+  },
+  {
+    "name" : "/fsh-generated/includes/menu.xml",
+    "size" : 2087,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/fsh-generated/includes/fsh-link-references.md",
+    "size" : 734
+  },
+  {
+    "name" : "/input/data/features.yml",
+    "size" : 5
+  },
+  {
+    "name" : "/input/pagecontent/hardware-bom.md",
+    "size" : 757,
+    "processes" : [{
+      "activity" : "scan",
+      "start" : 32,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/copyright.md",
+    "size" : 0
+  },
+  {
+    "name" : "/input/pagecontent/fhir-intro.md",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/interfaces.md",
+    "size" : 10438
+  },
+  {
+    "name" : "/input/pagecontent/downloads.md",
+    "size" : 0
+  },
+  {
+    "name" : "/input/pagecontent/firmware.md",
+    "size" : 6166,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/usage.md",
+    "size" : 6249,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/hardware-3ddesign.md",
+    "size" : 1110
+  },
+  {
+    "name" : "/input/pagecontent/authors.md",
+    "size" : 81
+  },
+  {
+    "name" : "/input/pagecontent/index.md",
+    "size" : 1445
+  },
+  {
+    "name" : "/input/pagecontent/roadmap.md",
+    "size" : 0
+  },
+  {
+    "name" : "/input/pagecontent/implementing.md",
+    "size" : 0
+  },
+  {
+    "name" : "/template/config",
+    "size" : 0
+  },
+  {
+    "name" : "/template/config/_config.yml",
+    "size" : 140
+  },
+  {
+    "name" : "/input/images",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-arm.png",
+    "size" : 127191
+  },
+  {
+    "name" : "/input/images/spenser-arm.stl",
+    "size" : 191084
+  },
+  {
+    "name" : "/input/images/spenser-pin.stl",
+    "size" : 19684
+  },
+  {
+    "name" : "/input/images/spenser-pusher.png",
+    "size" : 274510
+  },
+  {
+    "name" : "/input/images/spenser-body.stl",
+    "size" : 73184
+  },
+  {
+    "name" : "/input/images/spenser-pin.png",
+    "size" : 17457
+  },
+  {
+    "name" : "/input/images/spenser-body.png",
+    "size" : 197933,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 39,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pusher.stl",
+    "size" : 4084
+  },
+  {
+    "name" : "/temp/pages/_includes/artifacts.xml",
+    "size" : 7853
+  }]
+}

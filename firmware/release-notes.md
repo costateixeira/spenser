@@ -1,0 +1,1 @@
+- ota: say how fresh and how large an update is before taking it (7968b47, 2026-10-22)

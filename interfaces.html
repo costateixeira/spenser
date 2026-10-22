@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Interfaces - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/project.css" rel="stylesheet"/>
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+  	<link href="assets/css/cqf.css" rel="stylesheet" />
+    <!-- Placeholder for child template CSS declarations -->
+<!-- <link href="assets/css/hl7.css" rel="stylesheet"/> -->
+<link href="assets/css/hl7eu.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script src="assets/js/prism.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"4"}
+    h3,h4,h5,h6{--heading-prefix:"4"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+        
+        <div id="project-nav">
+          <a id="project-logo" no-external="true" href="#"><img height="60" alt="Spenser" src="assets/images/spenser-logo.png"/> </a>
+        </div>
+
+
+
+
+
+        <div id="ig-status">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - a developer&#39;s companion</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International flag" src="assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <!-- menu.xml  -->
+
+<ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Home</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">3D design</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Bill of Materials</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">About
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Authors</a>
+      </li>
+      <li>
+        <a href="downloads.html">Downloads</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artifacts</a>
+  </li>
+</ul>
+            </div>  <!-- /.nav-collapse -->
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Table of Contents</b></a></li><li><b>Interfaces</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, published by Zeora. This guide is not an authorized publication; it is the continuous build for version 1.0.0  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> and changes regularly. See the <a href='history.html'>Directory of published versions</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/1fbb0f743561be09be5663a7490673fb87182b43"><code>1fbb0f74</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Interfaces</h2>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#two-roles" id="markdown-toc-two-roles">Two roles</a></li>
+  <li><a href="#what-makes-an-order-actionable" id="markdown-toc-what-makes-an-order-actionable">What makes an order actionable</a></li>
+  <li><a href="#fhir-interface" id="markdown-toc-fhir-interface">FHIR interface</a></li>
+  <li><a href="#what-spenser-asks-of-an-order-server" id="markdown-toc-what-spenser-asks-of-an-order-server">What Spenser asks of an order server</a></li>
+  <li><a href="#orders-you-can-copy" id="markdown-toc-orders-you-can-copy">Orders you can copy</a></li>
+  <li><a href="#non-fhir-interface" id="markdown-toc-non-fhir-interface">Non-FHIR interface</a></li>
+  <li><a href="#interfaces-that-are-not-http" id="markdown-toc-interfaces-that-are-not-http">Interfaces that are not HTTP</a></li>
+  <li><a href="#working-with-an-ai-agent" id="markdown-toc-working-with-an-ai-agent">Working with an AI agent</a></li>
+</ul>
+
+</div>
+<p>This page documents every interface a Spenser unit exposes: the FHIR ones, the
+private HTTP API it uses for its own configuration, and the interfaces that are
+not HTTP at all. It is the reference behind the <a href="usage.html">Using Spenser</a>
+page, and the source of truth is the CapabilityStatement each unit publishes at
+its own <code class="language-plaintext highlighter-rouge">/metadata</code>.</p>
+
+<p>A unit is reachable on the local network as <code class="language-plaintext highlighter-rouge">http://spenser.local</code>, which it
+advertises over mDNS, or at whatever address its router hands it.</p>
+
+<h3 id="two-roles">Two roles</h3>
+
+<p>Spenser is a FHIR <strong>server</strong> and a FHIR <strong>client</strong> at the same time, and the
+difference matters when deciding where to send something.</p>
+
+<ul>
+  <li><strong>As a server</strong>, it accepts an order posted straight at it and dispenses on
+the spot. Posting to the device is itself the authorization to dispense.</li>
+  <li><strong>As a client</strong>, it polls an order server for orders it should fulfil, and
+reports back what it did. Here an order is <em>not</em> an instruction, and Spenser
+acts only on orders that have been made actionable.</li>
+</ul>
+
+<p>Both roles are declared in its
+<a href="CapabilityStatement-SpenserFHIRCapabilityStatement.html">CapabilityStatement</a>.</p>
+
+<h3 id="what-makes-an-order-actionable">What makes an order actionable</h3>
+
+<p>Following the HL7 Clinical Orders Workflow guidance, a MedicationRequest sitting
+on a server is an authorization, not a command. Spenser fulfils it only when one
+of two things is true:</p>
+
+<ol>
+  <li><strong>A tag.</strong> The request carries <code class="language-plaintext highlighter-rouge">meta.tag</code>
+<code class="language-plaintext highlighter-rouge">http://terminology.hl7.org/CodeSystem/common-tags#actionable</code>.
+See <a href="MedicationRequest-ActionableDarkOrder.html">Order made actionable by a tag</a>.</li>
+  <li><strong>A Task.</strong> A Task with status <code class="language-plaintext highlighter-rouge">requested</code> points at the request in
+<code class="language-plaintext highlighter-rouge">Task.focus</code>.
+See <a href="Task-FulfillPlainMilkOrder.html">Task asking for an order to be fulfilled</a>,
+which makes <a href="MedicationRequest-PlainMilkOrder.html">this plain order</a>
+actionable.</li>
+</ol>
+
+<p>These are <strong>not two modes of the device</strong>. Spenser looks for both on every check
+and acts on whichever turns up. When an order arrives by both routes at once the
+Task takes precedence, and the order is still dispensed exactly once. A unit can
+be narrowed to one route with the <code class="language-plaintext highlighter-rouge">orderMode</code> setting, which is useful for
+demonstrating the difference and for little else.</p>
+
+<p>Who closes the order out depends on which route was used:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>route</th>
+      <th>what Spenser sets</th>
+      <th>what it leaves alone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tag, no Task</td>
+      <td>the MedicationRequest to <code class="language-plaintext highlighter-rouge">completed</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>a Task</td>
+      <td>the Task to <code class="language-plaintext highlighter-rouge">completed</code>, with the dispense in <code class="language-plaintext highlighter-rouge">Task.output</code></td>
+      <td>the MedicationRequest, which stays <code class="language-plaintext highlighter-rouge">active</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The second row is deliberate. With a Task coordinating the work, closing the
+request is the placer's job, not the filler's, and a completed Task is the
+placer's cue to do it.</p>
+
+<h3 id="fhir-interface">FHIR interface</h3>
+
+<p>Served by the device itself.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Interaction</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /metadata</code></td>
+      <td>CapabilityStatement for this unit, declaring both roles</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST /MedicationRequest</code></td>
+      <td>dispense now, answering with the MedicationDispense</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /MedicationDispense</code></td>
+      <td>searchset of recent dispenses, newest first, with an OperationOutcome about the last check</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /MedicationDispense/{id}</code></td>
+      <td>read one of them</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /InventoryReport</code></td>
+      <td>current stock, one listing per lane</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST /InventoryReport</code></td>
+      <td>set stock from a report</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">POST /MedicationRequest</code> answers <code class="language-plaintext highlighter-rouge">200</code> with a completed
+<a href="MedicationDispense-DispenseForActionableDarkOrder.html">MedicationDispense</a> when
+a piece came out, and <code class="language-plaintext highlighter-rouge">201</code> with a declined one when the lane is empty. R5
+removed <code class="language-plaintext highlighter-rouge">MedicationDispense.statusReason</code>, so a refusal carries its reason in
+<code class="language-plaintext highlighter-rouge">notPerformedReason</code>, which is a <code class="language-plaintext highlighter-rouge">CodeableReference</code>. See
+<a href="MedicationDispense-DeclinedDispenseOutOfStock.html">the declined example</a>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">GET /MedicationDispense</code> is how you ask a unit what it has been doing. Besides
+the dispenses themselves, the Bundle carries one entry with <code class="language-plaintext highlighter-rouge">search.mode</code> set to
+<code class="language-plaintext highlighter-rouge">outcome</code>: an OperationOutcome whose severity, <code class="language-plaintext highlighter-rouge">issue.diagnostics</code> and
+<code class="language-plaintext highlighter-rouge">issue.details.text</code> describe the last check of the order server, including
+which routes the unit is accepting and how long ago it looked.</p>
+
+<p>Stock is reported as an
+<a href="InventoryReport-SetDarkTo17.html">InventoryReport</a>, and can be set the same
+way, either as a <code class="language-plaintext highlighter-rouge">snapshot</code> or as a <code class="language-plaintext highlighter-rouge">difference</code>.</p>
+
+<h3 id="what-spenser-asks-of-an-order-server">What Spenser asks of an order server</h3>
+
+<p>Point a unit at a server, and on every check it runs two searches and writes
+back what happened:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET  {server}/Task?status=requested&amp;_include=Task:focus&amp;_count=5
+GET  {server}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags|actionable&amp;status=active&amp;intent=instance-order&amp;_count=5
+POST {server}/MedicationDispense
+PUT  {server}/Task/{id}
+PUT  {server}/MedicationRequest/{id}
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">_include</code> matters: Spenser resolves <code class="language-plaintext highlighter-rouge">Task.focus</code> from the entries of that
+one Bundle rather than fetching each order separately, so a Task whose focus is
+not returned with it is reported as a problem and skipped.</p>
+
+<p><code class="language-plaintext highlighter-rouge">_count=5</code> matters when testing. Only the first five results of each search are
+considered per check, so with a longer queue a given order may not be picked up
+on a particular check.</p>
+
+<p>Both <code class="language-plaintext highlighter-rouge">http://</code> and <code class="language-plaintext highlighter-rouge">https://</code> work. Certificates are not validated, so treat the
+link as you would any other unauthenticated local traffic.</p>
+
+<h3 id="orders-you-can-copy">Orders you can copy</h3>
+
+<p>The IG carries these as formal examples:</p>
+
+<ul>
+  <li><a href="MedicationRequest-ActionableDarkOrder.html">Order made actionable by a tag</a></li>
+  <li><a href="MedicationRequest-PlainMilkOrder.html">Order that is not actionable on its own</a></li>
+  <li><a href="Task-FulfillPlainMilkOrder.html">Task asking for it to be fulfilled</a></li>
+  <li><a href="MedicationDispense-DispenseForActionableDarkOrder.html">Dispense reported back</a></li>
+  <li><a href="MedicationDispense-DeclinedDispenseOutOfStock.html">Dispense that did not happen</a></li>
+  <li><a href="InventoryReport-SetDarkTo17.html">Set inventory</a> and
+<a href="InventoryReport-Add5Milk.html">add to inventory</a></li>
+</ul>
+
+<p>The smallest useful order, placed on the order server:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"resourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MedicationRequest"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"tag"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w"> </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://terminology.hl7.org/CodeSystem/common-tags"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actionable"</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"intent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instance-order"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"medication"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"concept"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"coding"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chocolate-dark"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dark Chocolate"</span><span class="w"> </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"subject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Patient/123"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"dosageInstruction"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One bite"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The same body without <code class="language-plaintext highlighter-rouge">meta.tag</code> is the negative case: Spenser must leave it
+alone. Drop the tag, add a Task pointing at it, and it becomes actionable again
+by the other route.</p>
+
+<p>Medications come from the
+<a href="CodeSystem-SpenserMeds.html">SpenserMeds code system</a>: <code class="language-plaintext highlighter-rouge">chocolate-dark</code> and
+<code class="language-plaintext highlighter-rouge">chocolate-milk</code>, one piece per order. R5 puts the code in
+<code class="language-plaintext highlighter-rouge">medication.concept</code>; a directly posted order may also use the R4
+<code class="language-plaintext highlighter-rouge">medicationCodeableConcept</code> spelling, which this firmware still accepts.</p>
+
+<h3 id="non-fhir-interface">Non-FHIR interface</h3>
+
+<p>Everything below is the unit's own administrative API. It is plain JSON or text,
+it is not FHIR, and it is not meant for exchanging clinical data. It exists to
+configure a unit, to drive it during a demo, and to serve the built-in
+dashboard.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Group</th>
+      <th>Endpoints</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Orders</td>
+      <td><code class="language-plaintext highlighter-rouge">/checkOrders</code> queues a check and returns <code class="language-plaintext highlighter-rouge">202</code>, <code class="language-plaintext highlighter-rouge">/orders</code> reports the last check for the dashboard, <code class="language-plaintext highlighter-rouge">/forgetOrders</code> clears the list of orders already dealt with</td>
+    </tr>
+    <tr>
+      <td>Settings</td>
+      <td><code class="language-plaintext highlighter-rouge">/settings</code>, <code class="language-plaintext highlighter-rouge">/setSettings</code>, <code class="language-plaintext highlighter-rouge">/resetSettings</code></td>
+    </tr>
+    <tr>
+      <td>Stock and hardware</td>
+      <td><code class="language-plaintext highlighter-rouge">/inventory</code>, <code class="language-plaintext highlighter-rouge">/setInventory</code>, <code class="language-plaintext highlighter-rouge">/resetInventory</code>, <code class="language-plaintext highlighter-rouge">/setServos</code>, <code class="language-plaintext highlighter-rouge">/flashServo1</code>, <code class="language-plaintext highlighter-rouge">/flashServo2</code>, <code class="language-plaintext highlighter-rouge">/setColor</code>, <code class="language-plaintext highlighter-rouge">/battery</code>, <code class="language-plaintext highlighter-rouge">/reset</code></td>
+    </tr>
+    <tr>
+      <td>Wi-Fi and identity</td>
+      <td><code class="language-plaintext highlighter-rouge">/</code>, <code class="language-plaintext highlighter-rouge">/scan</code>, <code class="language-plaintext highlighter-rouge">/cfg</code>, <code class="language-plaintext highlighter-rouge">/save</code>, <code class="language-plaintext highlighter-rouge">/wifi-settings</code>, <code class="language-plaintext highlighter-rouge">/wifi-reset</code>, <code class="language-plaintext highlighter-rouge">/wifi-reboot-config</code>, <code class="language-plaintext highlighter-rouge">/getMac</code>, <code class="language-plaintext highlighter-rouge">/setMac</code>, <code class="language-plaintext highlighter-rouge">/clearMac</code></td>
+    </tr>
+    <tr>
+      <td>Captive portal</td>
+      <td><code class="language-plaintext highlighter-rouge">/generate_204</code>, <code class="language-plaintext highlighter-rouge">/hotspot-detect.html</code>, <code class="language-plaintext highlighter-rouge">/fwlink</code>, <code class="language-plaintext highlighter-rouge">/ncsi.txt</code>, <code class="language-plaintext highlighter-rouge">/connecttest.txt</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">/setSettings</code> accepts any of <code class="language-plaintext highlighter-rouge">serverUrl</code>, <code class="language-plaintext highlighter-rouge">orderMode</code> with values <code class="language-plaintext highlighter-rouge">both</code>, <code class="language-plaintext highlighter-rouge">tag</code>
+or <code class="language-plaintext highlighter-rouge">task</code>, <code class="language-plaintext highlighter-rouge">orderQuery</code>, <code class="language-plaintext highlighter-rouge">taskQuery</code>, <code class="language-plaintext highlighter-rouge">pollEnabled</code>, <code class="language-plaintext highlighter-rouge">pollSeconds</code> between 5 and
+3600, <code class="language-plaintext highlighter-rouge">writeBack</code>, <code class="language-plaintext highlighter-rouge">giveUpOnStockEmpty</code>, and the servo parameters. It answers
+with the full settings document.</p>
+
+<p>A unit checks its order server every <code class="language-plaintext highlighter-rouge">pollSeconds</code>, 30 by default, while
+<code class="language-plaintext highlighter-rouge">pollEnabled</code> is on. <code class="language-plaintext highlighter-rouge">/checkOrders</code> forces a check immediately. It returns
+before the work is done, because the HTTP work happens in the main loop and
+never inside a request handler, so a client should wait for the check to finish
+rather than assume it has.</p>
+
+<p><code class="language-plaintext highlighter-rouge">giveUpOnStockEmpty</code> decides what happens to an order that cannot be filled.
+Off, the order is reported once as out of stock and left open, so refilling the
+lane fulfils it on a later check. On, it is reported once and abandoned, and a
+coordinating Task is set to <code class="language-plaintext highlighter-rouge">failed</code>.</p>
+
+<p>Anything not matched falls back to a static file from the device filesystem,
+which is how the dashboard is served. <code class="language-plaintext highlighter-rouge">OPTIONS</code> returns <code class="language-plaintext highlighter-rouge">200</code> for CORS
+preflight.</p>
+
+<h3 id="interfaces-that-are-not-http">Interfaces that are not HTTP</h3>
+
+<ul>
+  <li><strong>mDNS.</strong> The unit advertises itself as <code class="language-plaintext highlighter-rouge">spenser</code> with an HTTP service on port
+80, so <code class="language-plaintext highlighter-rouge">http://spenser.local</code> works without knowing its address.</li>
+  <li><strong>Access point and captive portal.</strong> With no Wi-Fi configured it serves an
+open network and answers every DNS name, so a phone or laptop opens the setup
+page by itself.</li>
+  <li><strong>Serial.</strong> Logs at 115200 baud, including every order search and write-back.</li>
+  <li><strong>The button.</strong> A short press dispenses. Three seconds is a soft reset. Ten
+seconds wipes the stored credentials, and the LED turns red while held to warn
+you before you let go.</li>
+</ul>
+
+<h3 id="working-with-an-ai-agent">Working with an AI agent</h3>
+
+<p>Each unit serves a guide written for AI agents at
+<strong><code class="language-plaintext highlighter-rouge">http://spenser.local/llms.txt</code></strong>. It describes every endpoint, the exact
+shapes accepted and produced, worked examples, a test that exercises the whole
+loop, and the mistakes that catch people out. Point an agent at that URL and it
+can write examples, tests or a client without guessing, against the unit in
+front of it rather than against documentation that may have drifted.</p>
+
+<p>It is discoverable from FHIR: the CapabilityStatement at <code class="language-plaintext highlighter-rouge">/metadata</code> names it in
+<code class="language-plaintext highlighter-rouge">implementation.description</code>, so an agent that starts at the FHIR entry point
+finds it.</p>
+
+<p>Two things pair well with it. The <code class="language-plaintext highlighter-rouge">AGENTS.md</code> file in the source repository
+covers the repository itself, how to build and flash, where the routes live, and
+how to run the tests. The Bruno collection under <code class="language-plaintext highlighter-rouge">bruno/</code> is an executable
+version of this page: it is split into the order server on one side and the
+device on the other, and every scenario asserts on FHIR rather than on prose.</p>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+          IG &#169; 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="http://example.com/committees">Zeora</a>.  Package jct.fhir.spenser#1.0.0 based on <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>. Generated <span title="Sun, Sep 20, 2026 09:14+0000">2026-09-20</span>
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+            <div style="color: #333333">
+
+  Links: <a style="color: #81BEF7" href="toc.html">Table of Contents</a> |
+  <a style="color: #81BEF7" href="qa.html">QA Report</a>
+  <!--
+                 <a style="color: #81BEF7" target="_blank" href="history.html">Version History <img alt="external" style="vertical-align: baseline" src="external.png"/></a></a> |
+-->
+  <a style="color: #81BEF7" rel="license" href="http://hl7.org/fhir/R5/license.html"><img style="border-style: none;"
+      alt="CC0" src="cc0.png" /></a>
+  <!--<a style="color: #81BEF7" href="todo.html">Search</a> | -->
+  <a style="color: #81BEF7" target="_blank" href="http://jira.hl7.org">Propose a change<img alt="external"
+      style="vertical-align: baseline" src="external.png" /></a>
+
+  <div>
+  </div>
+
+</div>
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

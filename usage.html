@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Usage - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/project.css" rel="stylesheet"/>
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+  	<link href="assets/css/cqf.css" rel="stylesheet" />
+    <!-- Placeholder for child template CSS declarations -->
+<!-- <link href="assets/css/hl7.css" rel="stylesheet"/> -->
+<link href="assets/css/hl7eu.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script src="assets/js/prism.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"10"}
+    h3,h4,h5,h6{--heading-prefix:"10"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+        
+        <div id="project-nav">
+          <a id="project-logo" no-external="true" href="#"><img height="60" alt="Spenser" src="assets/images/spenser-logo.png"/> </a>
+        </div>
+
+
+
+
+
+        <div id="ig-status">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - a developer&#39;s companion</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International flag" src="assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <!-- menu.xml  -->
+
+<ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Home</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">3D design</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Bill of Materials</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">About
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Authors</a>
+      </li>
+      <li>
+        <a href="downloads.html">Downloads</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artifacts</a>
+  </li>
+</ul>
+            </div>  <!-- /.nav-collapse -->
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Table of Contents</b></a></li><li><b>Usage</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, published by Zeora. This guide is not an authorized publication; it is the continuous build for version 1.0.0  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> and changes regularly. See the <a href='history.html'>Directory of published versions</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/1fbb0f743561be09be5663a7490673fb87182b43"><code>1fbb0f74</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Usage</h2>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#where-the-order-goes" id="markdown-toc-where-the-order-goes">Where the order goes</a></li>
+  <li><a href="#the-order" id="markdown-toc-the-order">The order</a></li>
+  <li><a href="#why-the-tag" id="markdown-toc-why-the-tag">Why the tag</a></li>
+  <li><a href="#the-other-way-to-say-it" id="markdown-toc-the-other-way-to-say-it">The other way to say it</a></li>
+  <li><a href="#what-comes-back" id="markdown-toc-what-comes-back">What comes back</a></li>
+  <li><a href="#when-it-cannot" id="markdown-toc-when-it-cannot">When it cannot</a></li>
+  <li><a href="#watching-a-unit" id="markdown-toc-watching-a-unit">Watching a unit</a></li>
+  <li><a href="#the-settings-that-matter" id="markdown-toc-the-settings-that-matter">The settings that matter</a></li>
+  <li><a href="#when-you-are-standing-next-to-it" id="markdown-toc-when-you-are-standing-next-to-it">When you are standing next to it</a></li>
+</ul>
+
+</div>
+<p>Spenser dispenses chocolate, and it treats chocolate as a medication. So you do
+not press a button to get some. You place an order, and the dispenser decides
+whether it is allowed to act on it.</p>
+
+<p>This page walks through that from the outside in. The
+<a href="interfaces.html">Interfaces</a> page is the reference behind it.</p>
+
+<h3 id="where-the-order-goes">Where the order goes</h3>
+
+<p>A unit sitting on your desk can be talked to directly. A unit somewhere else
+cannot, so the arrangement that matters is the one where orders live on a FHIR
+server and the dispenser comes looking for them.</p>
+
+<p>The dispenser polls its order server every thirty seconds. You place an order
+there, and within about half a minute a piece of chocolate falls out of the
+machine. Nothing pushes anything to the dispenser, and nothing needs to know
+where it is.</p>
+
+<h3 id="the-order">The order</h3>
+
+<p>Post a MedicationRequest to the order server, using the
+<a href="CodeSystem-SpenserMeds.html">SpenserMeds</a> codes: <code class="language-plaintext highlighter-rouge">chocolate-dark</code> or
+<code class="language-plaintext highlighter-rouge">chocolate-milk</code>. One piece at a time, which is the only quantity the
+<a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a> profile allows.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"resourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MedicationRequest"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"tag"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w"> </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://terminology.hl7.org/CodeSystem/common-tags"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actionable"</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"intent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instance-order"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"medication"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"concept"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"coding"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chocolate-dark"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dark Chocolate"</span><span class="w"> </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"subject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Patient/123"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"dosageInstruction"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One bite"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The whole example is
+<a href="MedicationRequest-ActionableDarkOrder.html">here</a>. The part that does the work
+is <code class="language-plaintext highlighter-rouge">meta.tag</code>.</p>
+
+<h3 id="why-the-tag">Why the tag</h3>
+
+<p>A MedicationRequest is an authorization, not an instruction. Somebody may have
+an order on file without anyone intending it to be filled right now, and a
+dispenser that empties itself into the room every time an order is written is
+not much use to anybody.</p>
+
+<p>So Spenser waits to be told that an order is ready to be acted on, which is what
+the Clinical Orders Workflow guidance calls an actionable order. Remove the tag
+from the example above and you have
+<a href="MedicationRequest-PlainMilkOrder.html">an order Spenser will ignore</a>: still a
+perfectly valid order, just not one anybody has asked to be filled.</p>
+
+<h3 id="the-other-way-to-say-it">The other way to say it</h3>
+
+<p>Sometimes the order is written by one person and the request to fill it comes
+later, or from somewhere else. That is what a Task is for. Leave the order
+plain, and post
+<a href="Task-FulfillPlainMilkOrder.html">a Task pointing at it</a> with status
+<code class="language-plaintext highlighter-rouge">requested</code> and the order in <code class="language-plaintext highlighter-rouge">Task.focus</code>.</p>
+
+<p>Both routes work, and the dispenser looks for both on every poll. You do not
+configure it into one mode or the other. If an order shows up with a tag and a
+Task at the same time, it is still dispensed once.</p>
+
+<p>The difference shows up afterwards, in who closes what:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>how the order was made actionable</th>
+      <th>what Spenser sets</th>
+      <th>what it leaves for you</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>the tag</td>
+      <td>the order to <code class="language-plaintext highlighter-rouge">completed</code></td>
+      <td>nothing</td>
+    </tr>
+    <tr>
+      <td>a Task</td>
+      <td>the Task to <code class="language-plaintext highlighter-rouge">completed</code>, with the dispense in <code class="language-plaintext highlighter-rouge">Task.output</code></td>
+      <td>the order, which stays <code class="language-plaintext highlighter-rouge">active</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The second row is deliberate. When a Task is coordinating the work, finishing
+the order is the placer's business, and a completed Task is the signal to do it.</p>
+
+<h3 id="what-comes-back">What comes back</h3>
+
+<p>Every piece of chocolate produces a
+<a href="MedicationDispense-DispenseForActionableDarkOrder.html">MedicationDispense</a> on
+the server, pointing back at the order through <code class="language-plaintext highlighter-rouge">authorizingPrescription</code>. That
+is the record that something physically happened, and it is the thing to look
+for when you want to know whether your order was filled:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET {server}/MedicationDispense?_count=20
+</code></pre></div></div>
+
+<h3 id="when-it-cannot">When it cannot</h3>
+
+<p>A lane runs out. Spenser says so rather than going quiet: it posts
+<a href="MedicationDispense-DeclinedDispenseOutOfStock.html">a dispense that did not happen</a>,
+with status <code class="language-plaintext highlighter-rouge">declined</code> and the reason in <code class="language-plaintext highlighter-rouge">notPerformedReason</code>. It reports this
+once, not on every poll.</p>
+
+<p>What happens to the order then is a setting. By default the order stays open, so
+refilling the lane fulfils it on a later poll without anybody re-posting
+anything. The other choice is to abandon it, and if a Task was coordinating the
+work that Task is set to <code class="language-plaintext highlighter-rouge">failed</code>.</p>
+
+<h3 id="watching-a-unit">Watching a unit</h3>
+
+<p>The dispenser keeps its own record of what it has done, in FHIR, whether the
+order arrived from a server or was handed to it directly:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET http://spenser.local/MedicationDispense
+</code></pre></div></div>
+
+<p>The Bundle holds its recent dispenses, newest first. It also carries one entry
+with <code class="language-plaintext highlighter-rouge">search.mode</code> of <code class="language-plaintext highlighter-rouge">outcome</code>: an OperationOutcome saying how the last poll
+went, which server it talked to, how long ago, how many orders it found and how
+many it filled. If nothing is coming out, read that entry first. It usually says
+why, and it distinguishes a dispenser that cannot reach its server from one that
+is working correctly and has simply been given nothing it is allowed to act on.</p>
+
+<p>The dispenser's own screen shows the same two things, which are the two that
+matter: what is in each lane, and what the last check did.</p>
+
+<h3 id="the-settings-that-matter">The settings that matter</h3>
+
+<p>Most of a unit's configuration is about servos, Wi-Fi and LEDs. These are the
+ones that change how orders behave:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>What it decides</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Order server</td>
+      <td>the FHIR base URL it polls</td>
+    </tr>
+    <tr>
+      <td>Accepted routes</td>
+      <td>both a tag and a Task, which is the default, or narrowed to one to demonstrate the difference</td>
+    </tr>
+    <tr>
+      <td>Check every</td>
+      <td>seconds between polls, 30 by default</td>
+    </tr>
+    <tr>
+      <td>Report back</td>
+      <td>whether it writes the dispense and the close-out to the server</td>
+    </tr>
+    <tr>
+      <td>Give up when the lane is empty</td>
+      <td>abandon an unfillable order, or keep it open for a refill</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="when-you-are-standing-next-to-it">When you are standing next to it</h3>
+
+<p>You can post an order straight at the dispenser. There is no tag and no Task in
+that case, because posting it by hand is itself the decision to dispense, and it
+answers with the MedicationDispense:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST http://spenser.local/MedicationRequest
+</code></pre></div></div>
+
+<p>And there is the button on the front, which dispenses without any FHIR at all.</p>
+
+<p class="stu-note"><strong>For emergencies, Spenser has a "Hit me" button for dispensing some chocolate.</strong><br />
+<strong>This feature should be used with caution.</strong></p>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+          IG &#169; 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="http://example.com/committees">Zeora</a>.  Package jct.fhir.spenser#1.0.0 based on <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>. Generated <span title="Sun, Sep 20, 2026 09:14+0000">2026-09-20</span>
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+            <div style="color: #333333">
+
+  Links: <a style="color: #81BEF7" href="toc.html">Table of Contents</a> |
+  <a style="color: #81BEF7" href="qa.html">QA Report</a>
+  <!--
+                 <a style="color: #81BEF7" target="_blank" href="history.html">Version History <img alt="external" style="vertical-align: baseline" src="external.png"/></a></a> |
+-->
+  <a style="color: #81BEF7" rel="license" href="http://hl7.org/fhir/R5/license.html"><img style="border-style: none;"
+      alt="CC0" src="cc0.png" /></a>
+  <!--<a style="color: #81BEF7" href="todo.html">Search</a> | -->
+  <a style="color: #81BEF7" target="_blank" href="http://jira.hl7.org">Propose a change<img alt="external"
+      style="vertical-align: baseline" src="external.png" /></a>
+
+  <div>
+  </div>
+
+</div>
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+
