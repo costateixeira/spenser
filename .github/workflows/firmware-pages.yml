@@ -28,6 +28,7 @@ on:
     # once it is merged - a branch build should not be what the site serves as
     # the current firmware.
     branches: [master, 'firmware/key-persistence-ota']
+    tags: ['firmware-v*'] # republishes the same commit as a clean version
     paths:
       - 'firmware/**'
       - '.github/workflows/firmware-pages.yml'
@@ -80,8 +81,28 @@ jobs:
           base=$(sed -n 's/^#define FIRMWARE_VERSION "\(.*\)"/\1/p' firmware/src/main.cpp | head -1)
           base=${base%-dev}
           sha=$(git rev-parse --short=7 HEAD)
-          version="${base}+${sha}"
+
+          # A commit carrying a firmware-v tag is published as that version,
+          # with nothing appended: a release somebody can name. Every other
+          # commit is published as a build of the same line, identified by the
+          # commit it came from, because a unit tells builds apart by this
+          # string and every published build needs its own.
+          tag=$(git tag --points-at HEAD --list 'firmware-v*' | head -1)
+          if [ -n "$tag" ]; then
+            version="${tag#firmware-v}"
+            channel=release
+            if [ "$version" != "$base" ]; then
+              echo "::error::Tag $tag does not match FIRMWARE_VERSION $base in firmware/src/main.cpp"
+              exit 1
+            fi
+          else
+            version="${base}+${sha}"
+            channel=build
+          fi
+
+          echo "Publishing $channel $version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
           echo "base=$base" >> "$GITHUB_OUTPUT"
           echo "built=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
 
@@ -175,15 +196,17 @@ jobs:
           # The short notes travel in the manifest, because the unit holds them
           # and shows them before an update is taken. The whole list stays a
           # link away.
-          python3 - "$version" "$built" "$base" "$fw_sha" "$fs_sha" "$fw_size" "$fs_size" <<'PY'
+          python3 - "$version" "$built" "$base" "$fw_sha" "$fs_sha" "$fw_size" "$fs_size" \
+            '${{ steps.meta.outputs.channel }}' <<'PY'
           import json, sys
-          version, built, base, fw_sha, fs_sha, fw_size, fs_size = sys.argv[1:8]
+          version, built, base, fw_sha, fs_sha, fw_size, fs_size, channel = sys.argv[1:9]
           lines = [l.rstrip() for l in open('notes.txt', encoding='utf-8') if l.strip()]
           short = '\n'.join(lines[:6])
           if len(short) > 560:
               short = short[:557] + '...'
           manifest = {
               'version': version,
+              'channel': channel, # "release" for a tagged version, else "build"
               'released': built,
               'firmware': base + '/firmware.bin',
               'filesystem': base + '/spiffs.bin',
@@ -199,9 +222,11 @@ jobs:
           PY
 
           # A page for people, not devices
-          python3 - "$version" "$built" "${{ steps.meta.outputs.since }}" "$fw_size" "$fs_size" <<'PY'
+          python3 - "$version" "$built" "${{ steps.meta.outputs.since }}" "$fw_size" "$fs_size" \
+            '${{ steps.meta.outputs.channel }}' <<'PY'
           import html, sys
-          version, built, since, fw_size, fs_size = sys.argv[1:6]
+          version, built, since, fw_size, fs_size, channel = sys.argv[1:7]
+          heading = 'Release' if channel == 'release' else 'Build'
           notes = [l.rstrip() for l in open('notes.txt', encoding='utf-8') if l.strip()]
           items = '\n'.join('    <li>%s</li>' % html.escape(l.lstrip('- ')) for l in notes)
           page = f"""<!doctype html>
@@ -222,7 +247,7 @@ jobs:
           </head>
           <body>
           <h1>Spenser firmware</h1>
-          <p class="meta">Version <strong>{html.escape(version)}</strong>, built {html.escape(built)}.
+          <p class="meta">{heading} <strong>{html.escape(version)}</strong>, built {html.escape(built)}.
           Changes since {html.escape(since)}.</p>
 
           <h2>What changed</h2>
