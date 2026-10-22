@@ -320,6 +320,10 @@
     @media (prefers-color-scheme: dark) {
       .update-notice { background: #3a2d0a; border-color: #8a6500; color: #ffd98a; }
     }
+    .brand small {
+      display: block; font-size: .7rem; font-weight: 400; color: var(--ink-soft);
+      letter-spacing: 0; margin-top: 2px;
+    }
     .order-status {
       font-size: .8rem; color: var(--ink-soft); line-height: 1.5;
       background: var(--bg); border: 1px solid var(--line);
@@ -378,7 +382,9 @@
   <div class="wrap">
 
     <header>
-      <div class="brand"><span class="logo">🍫</span> Spenser</div>
+      <div class="brand"><span class="logo">🍫</span> Spenser
+        <small id="runningVersion" title="The firmware this unit is running"></small>
+      </div>
       <div class="status-bar">
         <span class="pill" id="batteryPill" title="Battery">
           <span class="bolt" id="batteryBolt"></span>
@@ -1081,6 +1087,7 @@
         }
         parts.push('clock ' + d.clock);
         parts.push(d.lastResult);
+        $('runningVersion').textContent = d.firmwareVersion || '';
         if (!d.updateUrl) parts.push('no release manifest set, so a check has nothing to ask');
         lastOta = d;
         showUpdateNotice(d);
