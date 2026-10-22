@@ -106,10 +106,18 @@ jobs:
           echo "base=$base" >> "$GITHUB_OUTPUT"
           echo "built=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
 
-          # What changed in the firmware, since the last tagged release if there
-          # is one, otherwise the recent history. Subjects only: the full message
-          # is a click away on the commit itself.
-          last_tag=$(git tag --list 'firmware-v*' --sort=-creatordate | head -1)
+          # What changed in the firmware, since the previous tagged release.
+          # Subjects only: the full message is a click away on the commit.
+          #
+          # When this build IS a tagged release, the baseline is the tag before
+          # it, not itself - otherwise a release announces nothing, having been
+          # compared against the commit it is.
+          if [ -n "$tag" ]; then
+            last_tag=$(git tag --list 'firmware-v*' --sort=-creatordate | grep -vFx "$tag" | head -1)
+          else
+            last_tag=$(git tag --list 'firmware-v*' --sort=-creatordate | head -1)
+          fi
+
           if [ -n "$last_tag" ]; then
             range="${last_tag}..HEAD"
             echo "since=$last_tag" >> "$GITHUB_OUTPUT"

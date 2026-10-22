@@ -49,7 +49,7 @@ Preferences prefs;
 // with the notes for each one. A build from a workstation says -dev, so a
 // hand-flashed unit is recognisable in a fleet.
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "1.2.0-dev"
+#define FIRMWARE_VERSION "1.2.1-dev"
 #endif
 #define FIRMWARE_BUILD __DATE__ " " __TIME__
 

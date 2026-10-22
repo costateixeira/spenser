@@ -306,8 +306,35 @@
     .modal .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .modal .row a { margin-right: auto; font-size: .85rem; }
 
-    /* The update notice. Deliberately outside the collapsed Settings panel:
-       an update nobody can see is an update nobody installs. */
+    /* The update notice, and the two smaller signs of it. It started inside a
+       tab panel, which meant it only existed on a tab nobody had open: an
+       update nobody can see is an update nobody installs. It now sits above
+       the tabs, with a dot in the header and a dot on the collapsed Settings
+       box, so there is no view of this page that hides it. */
+    .update-notice .dot, .pill-update .dot {
+      width: 9px; height: 9px; border-radius: 50%; background: #e0a000;
+      box-shadow: 0 0 0 0 #e0a00099; animation: pulse 2s infinite; flex: none;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 #e0a00099; }
+      70%  { box-shadow: 0 0 0 7px #e0a00000; }
+      100% { box-shadow: 0 0 0 0 #e0a00000; }
+    }
+    .pill-update {
+      cursor: pointer; border-color: #c88a00; background: #fff6e0; color: #6b4b00;
+      gap: 6px; font-weight: 600;
+    }
+    /* A dot on the collapsed box, so a closed Settings panel still says there
+       is something inside worth opening. */
+    #settingsBox.has-update > summary::after {
+      content: ''; display: inline-block; vertical-align: middle;
+      width: 9px; height: 9px; border-radius: 50%; margin-left: 8px;
+      background: #e0a000; box-shadow: 0 0 0 0 #e0a00099; animation: pulse 2s infinite;
+    }
+    @media (prefers-color-scheme: dark) {
+      .pill-update { background: #3a2d0a; border-color: #8a6500; color: #ffd98a; }
+    }
+
     .update-notice {
       display: none; margin: 0 0 16px; padding: 12px 14px; border-radius: 10px;
       border: 1px solid #c88a00; background: #fff6e0; color: #6b4b00;
@@ -386,6 +413,9 @@
         <small id="runningVersion" title="The firmware this unit is running"></small>
       </div>
       <div class="status-bar">
+        <span class="pill pill-update" id="updatePill" style="display:none"
+              title="A new firmware build is waiting. Click to see what is in it."
+              onclick="openUpdateDetails()"><span class="dot"></span><span id="updatePillText"></span></span>
         <span class="pill" id="batteryPill" title="Battery">
           <span class="bolt" id="batteryBolt"></span>
           <span class="batt" id="batteryIcon"><i id="batteryFill"></i></span>
@@ -393,6 +423,12 @@
         </span>
       </div>
     </header>
+
+    <div class="update-notice" id="update-notice">
+      <span class="dot"></span>
+      <span id="update-notice-text"></span>
+      <button onclick="openUpdateDetails()">What is in it?</button>
+    </div>
 
     <div class="tabs" role="tablist">
       <button class="tab active" role="tab" data-tab="fhir">FHIR</button>
@@ -434,10 +470,6 @@
     <section class="panel" id="panel-what" role="tabpanel">
       <p style="text-align:center;color:var(--ink-soft);font-size:.95rem;margin:0 0 16px;font-style:italic">…is all that FHIR stuff for? I just want chocolate. 🍫</p>
 
-      <div class="update-notice" id="update-notice">
-        <span id="update-notice-text"></span>
-        <button onclick="openUpdateDetails()">What is in it?</button>
-      </div>
       <div class="grid">
 
         <div class="card dark">
@@ -468,7 +500,7 @@
     </section>
 
     <!-- Collapsed settings -->
-    <details class="settings">
+    <details class="settings" id="settingsBox">
       <summary>Settings</summary>
       <div class="settings-body">
 
@@ -1104,16 +1136,26 @@
     // after a power cycle, because the unit remembers what it found.
     function showUpdateNotice(d) {
       const notice = $('update-notice');
-      if (!d || !d.updateAvailable) {
-        notice.classList.remove('show');
-        return;
-      }
+      const pill = $('updatePill');
+      const box = $('settingsBox');
+      const available = !!(d && d.updateAvailable);
+
+      // Four places, because one of them is always in view: the bar above the
+      // tabs, a dot in the header, a dot on the collapsed Settings box, and a
+      // marker in the browser tab title.
+      notice.classList.toggle('show', available);
+      if (box) box.classList.toggle('has-update', available);
+      pill.style.display = available ? '' : 'none';
+      document.title = (available ? '\u2022 ' : '') + 'Spenser';
+
+      if (!available) return;
+
+      $('updatePillText').textContent = d.availableVersion;
       const ago = d.lastCheckSecondsAgo >= 0 ? describeAge(d.lastCheckSecondsAgo) : '';
       $('update-notice-text').innerHTML =
         '<strong>New firmware available: ' + d.availableVersion + '</strong>' +
         ' \u00b7 this unit runs ' + d.firmwareVersion +
         (ago ? ' \u00b7 found ' + ago : '');
-      notice.classList.add('show');
     }
 
     function describeAge(seconds) {
