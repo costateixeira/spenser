@@ -49,7 +49,7 @@ Preferences prefs;
 // with the notes for each one. A build from a workstation says -dev, so a
 // hand-flashed unit is recognisable in a fleet.
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "1.2.2-dev"
+#define FIRMWARE_VERSION "1.2.3-dev"
 #endif
 #define FIRMWARE_BUILD __DATE__ " " __TIME__
 
@@ -92,7 +92,11 @@ struct Settings
                         // default is the published one, so a unit notices a new
                         // build without being told where to look; clear it to
                         // stop a unit checking at all.
-  int updateCheckHours; // hours between automatic checks, 0 = only when asked
+  int updateCheckMinutes; // minutes between automatic checks, 0 = only when asked.
+                          // Minutes rather than hours because an interval you
+                          // cannot set shorter than an hour is one nobody can
+                          // watch working, and a manifest fetch is under a
+                          // kilobyte.
   String updateMode;    // "notify" (the default) reports what it found and waits
                         // for /ota/install; "install" takes it there and then
 };
@@ -103,7 +107,7 @@ const Settings DEFAULT_SETTINGS = {
     "status=active&intent=instance-order&_count=5",
     "status=requested&_include=Task:focus&_count=5",
     true, 30, true, false,
-    "https://costateixeira.github.io/spenser/firmware/manifest.json", 1, "notify"};
+    "https://costateixeira.github.io/spenser/firmware/manifest.json", 15, "notify"};
 Settings settings = DEFAULT_SETTINGS;
 
 int inventoryDark = 15;
@@ -210,7 +214,10 @@ void loadSettings()
   settings.writeBack = prefs.getBool("writeBack", settings.writeBack);
   settings.giveUpOnStockEmpty = prefs.getBool("giveUpEmpty", settings.giveUpOnStockEmpty);
   settings.updateUrl = prefs.getString("updateUrl", settings.updateUrl);
-  settings.updateCheckHours = prefs.getInt("updateHrs", settings.updateCheckHours);
+  settings.updateCheckMinutes = prefs.getInt("updateMins", settings.updateCheckMinutes);
+  // Units set up before this was measured in minutes carry the old key
+  if (prefs.isKey("updateHrs") && !prefs.isKey("updateMins"))
+    settings.updateCheckMinutes = prefs.getInt("updateHrs", 1) * 60;
   settings.updateMode = prefs.getString("updateMode", settings.updateMode);
   prefs.end();
 
@@ -235,7 +242,7 @@ void saveSettings()
   prefs.putBool("writeBack", settings.writeBack);
   prefs.putBool("giveUpEmpty", settings.giveUpOnStockEmpty);
   prefs.putString("updateUrl", settings.updateUrl);
-  prefs.putInt("updateHrs", settings.updateCheckHours);
+  prefs.putInt("updateMins", settings.updateCheckMinutes);
   prefs.putString("updateMode", settings.updateMode);
   prefs.end();
 }
@@ -257,7 +264,7 @@ String settingsJson()
   doc["writeBack"] = settings.writeBack;
   doc["giveUpOnStockEmpty"] = settings.giveUpOnStockEmpty;
   doc["updateUrl"] = settings.updateUrl;
-  doc["updateCheckHours"] = settings.updateCheckHours;
+  doc["updateCheckMinutes"] = settings.updateCheckMinutes;
   doc["updateMode"] = settings.updateMode;
   doc["firmwareVersion"] = FIRMWARE_VERSION;
 
@@ -2196,7 +2203,7 @@ String otaStatusJson()
   doc["uptimeSeconds"] = (millis() - bootMillis) / 1000;
   doc["sketchBytes"] = ESP.getSketchSize();
   doc["updateUrl"] = settings.updateUrl;
-  doc["updateCheckHours"] = settings.updateCheckHours;
+  doc["updateCheckMinutes"] = settings.updateCheckMinutes;
   doc["updateMode"] = settings.updateMode;
   doc["updateAvailable"] = availableVersion.length() > 0;
   if (availableVersion.length())
@@ -2207,6 +2214,17 @@ String otaStatusJson()
     doc["availableNotesUrl"] = availableNotesUrl;
   }
   doc["lastCheckSecondsAgo"] = lastUpdateCheck ? (int)((millis() - lastUpdateCheck) / 1000) : -1;
+
+  // When it will look again, so an absent notice reads as "has not looked yet"
+  // rather than "looked and found nothing".
+  int nextIn = -1;
+  if (settings.updateCheckMinutes > 0 && settings.updateUrl.length())
+  {
+    unsigned long period = (unsigned long)settings.updateCheckMinutes * 60UL * 1000UL;
+    unsigned long since = millis() - lastUpdateCheck;
+    nextIn = lastUpdateCheck == 0 ? 0 : (since >= period ? 0 : (int)((period - since) / 1000));
+  }
+  doc["nextCheckSeconds"] = nextIn;
   doc["lastResult"] = lastUpdateResult;
   doc["clock"] = clockReady() ? nowIso() : "unset";
 
@@ -2838,8 +2856,14 @@ void setup()
       settings.updateUrl = text;
       updated = true;
     }
+    if (paramInt(request, "updateCheckMinutes", value)) {
+      settings.updateCheckMinutes = constrain(value, 0, 7 * 24 * 60);
+      updated = true;
+    }
+    // Still accepted, because it is in the published documentation and in
+    // whatever anyone has already scripted
     if (paramInt(request, "updateCheckHours", value)) {
-      settings.updateCheckHours = constrain(value, 0, 24 * 7);
+      settings.updateCheckMinutes = constrain(value * 60, 0, 7 * 24 * 60);
       updated = true;
     }
     if (paramStr(request, "updateMode", text)) {
@@ -3847,9 +3871,9 @@ void loop()
 
   // Updates, like order polling, are blocking HTTP work and belong here rather
   // than in a request handler.
-  bool updateDue = settings.updateCheckHours > 0 && !settings.updateUrl.isEmpty() &&
+  bool updateDue = settings.updateCheckMinutes > 0 && !settings.updateUrl.isEmpty() &&
                    (lastUpdateCheck == 0 ||
-                    now - lastUpdateCheck >= (unsigned long)settings.updateCheckHours * 3600UL * 1000UL);
+                    now - lastUpdateCheck >= (unsigned long)settings.updateCheckMinutes * 60UL * 1000UL);
 
   if (updateCheckRequested || (WiFi.status() == WL_CONNECTED && updateDue))
   {

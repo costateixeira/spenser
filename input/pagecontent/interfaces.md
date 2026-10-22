@@ -171,15 +171,19 @@ for the unit:
 ```
 
 ```
-GET /setSettings?updateUrl=https://.../manifest.json&updateCheckHours=24
+GET /setSettings?updateUrl=https://.../manifest.json&updateCheckMinutes=15
 ```
+
+A unit looks every 15 minutes by default, and `/ota/status` reports when it last
+looked and when it will look again. An interval measured in hours could not be
+watched working, and a manifest is under a kilobyte.
 
 Looking and taking are separate. `updateMode=notify`, the default, has a check
 report what is waiting and stop there: `/ota/status` then carries
 `updateAvailable` and `availableVersion`, the dashboard shows a notice reading
 "New firmware available" with an Install button, and nothing reboots unasked.
 
-A unit checks hourly by default, and **remembers what it found**. The notice
+A unit checks every 15 minutes by default, and **remembers what it found**. The notice
 survives a power cycle, because an update that was waiting before the plug came
 out is still waiting afterwards, and a notice that disappears on a restart is a
 notice nobody acts on. It clears itself when a later check finds nothing newer,

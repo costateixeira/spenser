@@ -643,8 +643,8 @@
             <label class="field" style="flex:1">Release manifest URL
               <input type="url" id="updateUrl" placeholder="https://…/manifest.json" />
             </label>
-            <label class="field">Check every (h, 0 = never)
-              <input type="number" id="updateCheckHours" min="0" max="168" />
+            <label class="field">Check every (min, 0 = never)
+              <input type="number" id="updateCheckMinutes" min="0" max="10080" />
             </label>
             <label class="field">When one is found
               <select id="updateMode">
@@ -1120,12 +1120,13 @@
         parts.push('clock ' + d.clock);
         parts.push(d.lastResult);
         $('runningVersion').textContent = d.firmwareVersion || '';
+        parts.push(describeChecking(d));
         if (!d.updateUrl) parts.push('no release manifest set, so a check has nothing to ask');
         lastOta = d;
         showUpdateNotice(d);
         $('ota-status').textContent = parts.join(' \u00b7 ');
         $('updateUrl').value = d.updateUrl || '';
-        $('updateCheckHours').value = d.updateCheckHours ?? 0;
+        $('updateCheckMinutes').value = d.updateCheckMinutes ?? 0;
         $('updateMode').value = d.updateMode || 'notify';
         $('installBtn').disabled = !d.updateAvailable;
         $('installBtn').textContent = d.updateAvailable ? 'Install ' + d.availableVersion : 'Install';
@@ -1158,6 +1159,17 @@
         (ago ? ' \u00b7 found ' + ago : '');
     }
 
+    // An absent notice should read as "it has not looked yet", not as "there is
+    // nothing". Those are different, and only one of them means waiting.
+    function describeChecking(d) {
+      if (!d.updateUrl) return 'not watching for updates';
+      const looked = d.lastCheckSecondsAgo >= 0 ? 'looked ' + describeAge(d.lastCheckSecondsAgo) : 'not looked yet';
+      if (!d.updateCheckMinutes) return looked + ', and will not look again by itself';
+      if (d.nextCheckSeconds === undefined || d.nextCheckSeconds < 0) return looked;
+      const next = d.nextCheckSeconds <= 5 ? 'next look due now' : 'next in ' + describeAge(d.nextCheckSeconds).replace(' ago', '');
+      return looked + ', ' + next;
+    }
+
     function describeAge(seconds) {
       if (seconds < 90) return 'just now';
       if (seconds < 5400) return Math.round(seconds / 60) + ' min ago';
@@ -1168,7 +1180,7 @@
     async function saveUpdateSettings() {
       const params = new URLSearchParams();
       params.set('updateUrl', $('updateUrl').value.trim());
-      params.set('updateCheckHours', $('updateCheckHours').value || '0');
+      params.set('updateCheckMinutes', $('updateCheckMinutes').value || '0');
       params.set('updateMode', $('updateMode').value);
       try {
         const r = await api('/setSettings?' + params.toString());

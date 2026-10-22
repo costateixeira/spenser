@@ -239,11 +239,15 @@ availableNotes and availableNotesUrl, and the dashboard shows them in a popup
 when you press Install. They survive a power cycle with the rest of the
 availability record.
 
-    GET /setSettings?updateUrl=https://.../manifest.json&updateCheckHours=24
+    GET /setSettings?updateUrl=https://.../manifest.json&updateCheckMinutes=15
 
-updateCheckHours defaults to 1, so a unit with a manifest URL notices a release
-within the hour by itself. With no manifest URL a check has nothing to ask and
-costs nothing. 0 turns the automatic check off entirely.
+updateCheckMinutes defaults to 15, so a unit with a manifest URL notices a
+release by itself without anybody pressing anything. 0 turns the automatic check
+off. updateCheckHours is still accepted and multiplied by 60.
+
+/ota/status reports lastCheckSecondsAgo and nextCheckSeconds, so a reader can
+tell "has not looked yet" from "looked and found nothing" - which are different
+answers, and only one of them means waiting.
 
 Looking and taking are separate on purpose. updateMode=notify, the default,
 means a check reports what is waiting and stops there, so nothing reboots in
