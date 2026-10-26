@@ -17,6 +17,29 @@ the CapabilityStatement this unit publishes.
 Specification and examples: http://costateixeira.github.io/spenser
 
 
+## The key
+
+Reads are open. Everything that changes this unit needs its key: dispensing,
+settings, Wi-Fi, inventory, updates. Without it those routes answer 401 with an
+OperationOutcome.
+
+Send it any of three ways:
+
+    Authorization: Bearer <key>
+    X-Spenser-Key: <key>
+    ?key=<key>
+
+The key is 32 hex characters, generated on the unit's first boot and printed on
+its serial console at every boot. GET /key returns it for five minutes after a
+restart, and at any time while the unit is in setup mode, which is the window
+its owner has and nobody else does. After that window, restart the unit or read
+the console.
+
+A unit in setup mode, serving its own access point, accepts everything without
+a key: there is no network to defend and whoever is standing next to it has
+already won.
+
+
 ## The one thing to understand first
 
 A FHIR request is an authorization, not an instruction. Spenser will not
@@ -57,36 +80,60 @@ still accepts the R4 spelling on a directly posted order.
 
 ## FHIR interface, served by this device
 
-GET /metadata
-  CapabilityStatement. Declares both roles: server for posted orders and
-  inventory, client for polling an order server.
+Errors are always an OperationOutcome with application/fhir+json. There is no
+second error format.
 
-POST /MedicationRequest
-  Dispense now. Body is a MedicationRequest. No tag or Task needed: posting
-  straight at the device IS the authorization.
-  200 with a MedicationDispense when it dispensed.
-  201 with a MedicationDispense, status "declined", when the lane is empty.
-  400 with a JSON error when the body is unusable.
+GET /metadata
+  CapabilityStatement. Declares both roles, the search parameters below, the
+  $dispense operation, software.version, and how the key works.
+
+POST /MedicationRequest                                  [key]
+  A create that also dispenses, because posting an order at this unit is
+  itself the decision to fill it.
+  You do not need to supply an id; the unit assigns one when you leave it out.
+  201 with a Location header pointing at the created order, an ETag, and the
+  created MedicationRequest as the body.
+  Prefer: return=minimal gives an empty body, Prefer: return=OperationOutcome
+  gives a summary of what happened.
+  The order is kept, so GET it back afterwards. What came out of the machine is
+  a separate resource at /MedicationDispense/{id}-dispense, or
+  /MedicationDispense/{id}-declined when the lane was empty.
+  400 with an OperationOutcome when the body is not a usable order.
+
+POST /$dispense                                          [key]
+  The one-call path, and the one to use when what you want back is the
+  dispense. Body is a MedicationRequest, or Parameters carrying one.
+  200 with the MedicationDispense, completed or declined. An operation reports
+  itself in the resource it returns, so an empty lane is still a 200.
+  Also answers at /MedicationRequest/$dispense.
+
+GET /MedicationRequest
+GET /MedicationRequest/{id}
+  The orders posted to this unit, which it keeps. Searchable by _id, status,
+  subject and _count. Orders it polled from a server are not here: they live on
+  that server.
 
 GET /MedicationDispense
-  Searchset Bundle of the last few dispenses this unit produced, newest first,
-  from polled orders and direct posts alike. It also carries an
-  OperationOutcome entry with search.mode "outcome" describing the last check
-  of the order server: severity information, warning or error, the message in
-  issue.diagnostics, and the server, accepted routes, age and counts in
-  issue.details.text. Read that entry to find out what the device is doing.
-
 GET /MedicationDispense/{id}
-  One dispense from that log. Ids are "<order id>-dispense" for a completed
-  one and "<order id>-declined" for a refused one. 404 with an
-  OperationOutcome when it is not in the log.
+  What this unit dispensed or refused to dispense, newest first, from polled
+  orders and direct posts alike. Searchable by _id, status, subject,
+  authorizingPrescription and _count, where a reference matches either in full
+  or by id alone, so subject=Patient/123 and subject=123 both work.
+  The searchset also carries an OperationOutcome entry with search.mode
+  "outcome" describing the last check of the order server: severity
+  information, warning or error, the message in issue.diagnostics, and the
+  server, accepted routes, age and counts in issue.details.text. Read that
+  entry to find out what the device is doing.
+  Both stores live on the unit's filesystem, so a restart or an update does not
+  erase them. The oldest records are dropped when a store fills.
 
 GET /InventoryReport
   Current stock as an InventoryReport, one inventoryListing per lane.
+  reportedDateTime is the real time when the unit has a clock.
 
-POST /InventoryReport
+POST /InventoryReport                                    [key]
   Set stock from a report. countType "snapshot" sets the count, "difference"
-  adds to it.
+  adds to it. Stock is persisted, so it survives a restart.
 
 
 ## What this device asks of an order server
@@ -111,10 +158,120 @@ not be picked up on a given check.
 Both http:// and https:// work. Certificates are not validated.
 
 
+## Time
+
+A dispense carries recorded, whenPrepared and whenHandedOver, and a refusal
+carries recorded, as soon as the unit has reached an NTP server. Until then
+those elements are left out rather than guessed, so an absent timestamp means
+"this unit had no clock", never "this happened at the epoch". GET /ota/status
+reports the clock.
+
+
+## Updates, over the air
+
+The firmware and these web files are both replaceable over Wi-Fi. The chip
+keeps two application slots; an upload goes into the one that is not running
+and the unit reboots into it.
+
+GET /ota/status
+  Version, build, which slot is running, how much of it the image uses, whether
+  a rollback is possible, the manifest URL, the clock, and the last result.
+
+POST /ota/firmware                                       [key]
+  Body is firmware.bin itself, not a form. The unit restarts on success.
+
+POST /ota/filesystem                                     [key]
+  Body is spiffs.bin, the image holding these web files. The unit restarts.
+
+POST /ota/file?path=/index.html                          [key]
+  Body is one file, written to that path. No restart, nothing rebuilt. This is
+  the one to use while iterating on the dashboard or on this guide.
+
+POST /ota/check                                          [key]
+  Fetch the manifest at updateUrl and report what is waiting. It does not
+  install anything unless the unit is set to updateMode=install. Returns 202:
+  like a check for orders, the work happens in the main loop, so read
+  /ota/status a few seconds later for the answer.
+  Afterwards /ota/status carries updateAvailable and availableVersion.
+
+POST /ota/install                                        [key]
+  Take what the last check found. A unit that has never checked looks first.
+  Returns 202 and restarts when it lands.
+
+What a check found is remembered across a power cycle, so updateAvailable and
+availableVersion in /ota/status survive a restart, and the dashboard still shows
+its notice afterwards. An update that was waiting before the plug came out is
+still waiting after it goes back in. The record clears itself when a later check
+finds nothing newer, or when the unit comes up running the version that was
+offered.
+
+/ota/status also carries lastCheckSecondsAgo, so a reader can tell a fresh
+answer from a stale one.
+
+POST /ota/rollback                                       [key]
+  Go back to the previous image and restart.
+
+Builds are published beside the specification, and that is where a unit looks
+by default:
+
+    https://costateixeira.github.io/spenser/firmware/              what changed
+    https://costateixeira.github.io/spenser/firmware/manifest.json what a unit reads
+    https://costateixeira.github.io/spenser/firmware/firmware.bin
+    https://costateixeira.github.io/spenser/firmware/spiffs.bin
+
+The manifest looks like this:
+
+    { "version": "1.2.0+a1b2c3d",
+      "released": "2026-10-20T09:00:00Z",
+      "firmware": "https://.../firmware.bin",
+      "filesystem": "https://.../spiffs.bin",
+      "firmwareSha256": "...",
+      "notes": "- what changed\n- one line per change",
+      "notesUrl": "https://costateixeira.github.io/spenser/firmware/" }
+
+The version carries the commit it was built from, so each published build is
+distinguishable and a unit settles after installing one rather than being
+offered the same thing forever.
+
+notes and notesUrl are why a unit can tell you what an update contains before
+you take it: it keeps the notes from the manifest, serves them in /ota/status as
+availableNotes and availableNotesUrl, and the dashboard shows them in a popup
+when you press Install. They survive a power cycle with the rest of the
+availability record.
+
+    GET /setSettings?updateUrl=https://.../manifest.json&updateCheckMinutes=15
+
+updateCheckMinutes defaults to 15, so a unit with a manifest URL notices a
+release by itself without anybody pressing anything. 0 turns the automatic check
+off. updateCheckHours is still accepted and multiplied by 60.
+
+/ota/status reports lastCheckSecondsAgo and nextCheckSeconds, so a reader can
+tell "has not looked yet" from "looked and found nothing" - which are different
+answers, and only one of them means waiting.
+
+Looking and taking are separate on purpose. updateMode=notify, the default,
+means a check reports what is waiting and stops there, so nothing reboots in
+the middle of somebody's afternoon. updateMode=install means the unit takes it
+without asking, which is what you want for a unit nobody can visit. Anything
+other than the exact word install counts as notify, so a typo cannot turn a
+fleet into one that updates itself.
+
+To find out whether a unit is behind without touching it:
+
+    GET /ota/status     ->  { "firmwareVersion": "1.1.0",
+                              "updateAvailable": true,
+                              "availableVersion": "1.2.0",
+                              "updateMode": "notify", ... }
+
+A new image is marked good only after it has been up a minute with a network,
+so a build that cannot get that far leaves the previous one in place.
+
+
 ## Non-FHIR interface, this unit's own admin API
 
 Everything here is JSON or plain text, and none of it is FHIR. It exists to
-configure and drive the unit, not to exchange clinical data.
+configure and drive the unit, not to exchange clinical data. Everything that
+changes something needs the key.
 
 Orders
   GET /checkOrders        Ask for a check now. Returns 202 immediately: the
@@ -135,9 +292,11 @@ Settings
   GET /setSettings?...    Any of: serverUrl, orderMode (both, tag or task),
                           orderQuery, taskQuery, pollEnabled (0 or 1),
                           pollSeconds (5 to 3600), writeBack (0 or 1),
-                          giveUpOnStockEmpty (0 or 1), servoDark, servoMilk,
-                          angleRest, anglePush, returnDelayMs. Answers with
-                          the full settings JSON. 400 when nothing is known.
+                          giveUpOnStockEmpty (0 or 1), updateUrl,
+                          updateCheckHours, servoDark, servoMilk, angleRest,
+                          anglePush, returnDelayMs. Answers with the full
+                          settings JSON, which includes firmwareVersion and
+                          never includes the key. 400 when nothing is known.
   GET /resetSettings      Back to the compiled-in defaults.
 
 Stock and hardware
@@ -154,6 +313,7 @@ Stock and hardware
 Wi-Fi and identity
   GET /, /scan, /cfg, POST /save, /wifi-settings, /wifi-reset,
   /wifi-reboot-config, /getMac, /setMac, /clearMac
+  GET /key               This unit's key, during the window described above.
 
 Captive portal
   /generate_204, /hotspot-detect.html, /fwlink, /ncsi.txt, /connecttest.txt
@@ -230,10 +390,12 @@ with its real id in focus.
       "for": { "reference": "Patient/123" }
     }
 
-An order posted straight at the device, which dispenses on the spot:
+An order posted straight at the device, which dispenses on the spot. This is
+the operation, so the answer is the MedicationDispense itself:
 
-    curl -X POST http://spenser.local/MedicationRequest \
+    curl -X POST http://spenser.local/\$dispense \
       -H "Content-Type: application/fhir+json" \
+      -H "X-Spenser-Key: $KEY" \
       -d '{"resourceType":"MedicationRequest","id":"demo-direct",
            "status":"active","intent":"instance-order",
            "medication":{"concept":{"coding":[
@@ -242,7 +404,9 @@ An order posted straight at the device, which dispenses on the spot:
            "subject":{"reference":"Patient/123"}}'
 
 It answers with the MedicationDispense, and you can read it back afterwards at
-GET /MedicationDispense/demo-direct-dispense.
+GET /MedicationDispense/demo-direct-dispense. POST the same body to
+/MedicationRequest instead and you get a 201 with a Location, the created order
+as the body, and the dispense waiting at that same place.
 
 What a refusal looks like. R5 removed MedicationDispense.statusReason, so the
 reason lives in notPerformedReason, which is a CodeableReference, hence the
@@ -269,16 +433,21 @@ reason lives in notPerformedReason, which is a CodeableReference, hence the
 
 ## A test that exercises the whole loop
 
+    # 0. the key, once: read it from the serial console, or within five
+    #    minutes of a restart
+    KEY=$(curl -s http://spenser.local/key | sed -n 's/.*"key":"\([a-f0-9]*\)".*/\1/p')
+    AUTH="-H \"X-Spenser-Key: $KEY\""
+
     # 1. a known state: both routes accepted, stock in both lanes, no polling
-    curl "http://spenser.local/setSettings?serverUrl=$SERVER&orderMode=both&writeBack=1&pollEnabled=0&giveUpOnStockEmpty=0"
-    curl "http://spenser.local/resetInventory?dark=10&milk=10"
-    curl "http://spenser.local/forgetOrders"
+    curl -H "X-Spenser-Key: $KEY" "http://spenser.local/setSettings?serverUrl=$SERVER&orderMode=both&writeBack=1&pollEnabled=0&giveUpOnStockEmpty=0"
+    curl -H "X-Spenser-Key: $KEY" "http://spenser.local/resetInventory?dark=10&milk=10"
+    curl -H "X-Spenser-Key: $KEY" "http://spenser.local/forgetOrders"
 
     # 2. place an actionable order on the server, keep its id
     curl -X POST "$SERVER/MedicationRequest" -H "Content-Type: application/fhir+json" -d @order.json
 
     # 3. ask for a check, then wait for it to finish
-    curl "http://spenser.local/checkOrders"
+    curl -H "X-Spenser-Key: $KEY" "http://spenser.local/checkOrders"
 
     # 4. what the device did, and whether the check itself was clean
     curl -H "Accept: application/fhir+json" "http://spenser.local/MedicationDispense"
@@ -311,3 +480,11 @@ from an order that was correctly left alone.
 - Placing an order with an unresolved template variable leaves a Task pointing
   at nothing. The device will report it and move on, and it will sit on the
   server forever.
+- A 401 is about the key, not the body. Reads never need it, writes always do.
+- A create answers 201 and returns the order, not the dispense. Use /$dispense
+  when you want the dispense in one call.
+- An absent timestamp means the unit has no clock yet, not that the event had
+  no time. The clock is reported in /ota/status.
+- An update reboots the unit. Stock, the dispense record and the order record
+  all survive it. A check in progress does not, and an upload is refused while
+  one is running.

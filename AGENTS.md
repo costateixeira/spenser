@@ -35,7 +35,34 @@ until `llms.txt`, the interfaces page and the CapabilityStatement in
 
 **Firmware.** PlatformIO, environment `esp32s3`. `pio run --target upload`
 flashes the code, `pio run --target uploadfs` uploads `firmware/data/`. A change
-to `llms.txt` or the dashboard needs the second one, which is easy to forget.
+to `llms.txt` or the dashboard needs the second one, which is easy to forget,
+although both can now go over the air instead: see the update routes.
+
+The build runs in CI on every push that touches `firmware/`, including a check
+that the image still fits its OTA slot with room to grow. `firmware-v<version>`
+tags publish a draft release carrying `firmware.bin`, `spiffs.bin` and the
+`manifest.json` that units check. The tag and `FIRMWARE_VERSION` in `main.cpp`
+have to agree, and the release job fails if they do not.
+
+Dependencies are pinned, deliberately, and so is the platform. They were
+floating, and it cost twice: FastLED 3.10 does not compile against this core, so
+a fresh checkout stopped building while a machine with a warm cache carried on
+fine; and an unpinned `platform` let CI build against Espressif 32 8.0.0 while a
+workstation had 7.1.3, which is a different Arduino core and a 780KB larger
+image from identical source. A build that "works here" says nothing if the
+toolchain is whatever came out latest. FastLED is unused by this code but
+`M5AtomS3` includes it, so it is pinned rather than removed.
+
+The version is stamped through `${sysenv.SPENSER_VERSION_FLAG}`, the last entry
+in `build_flags`. Do not use `PLATFORMIO_BUILD_FLAGS` for it: that environment
+variable *replaces* `build_flags` instead of adding to it, which published a
+build with no USB serial console and the wrong board define. Both build jobs
+now fail if the image is far larger than it should be, which is what that looked
+like from outside.
+
+The partition table is `default_8MB.csv`, which the firmware now needs: the
+image is larger than the 1.25 MB slot the 4 MB default table provides. Changing
+the table requires one upload over the cable and erases the filesystem.
 
 **Implementation Guide.** `_genonce.sh` or `_genonce.bat` runs the IG Publisher.
 To check only that the FSH compiles, which is much faster, run
@@ -74,6 +101,14 @@ needs one falls back to.
   page.
 * The firmware does its blocking HTTP work in `loop()`, never inside a request
   handler. A route that needs network work raises a flag and returns `202`.
+  Order checks, update checks and the restart after an update all work this way.
+* Reads are open; anything that changes the unit goes behind `requireKey`. A new
+  mutating route without that guard is a bug.
+* Records live in two newline-delimited JSON files on the device filesystem,
+  reached only through the store helpers, which take a mutex because `loop()`
+  writes while the web task reads.
+* Errors from FHIR routes are built with `outcomeJson` or `sendOutcome`. There is
+  no second error format.
 * Anything the web task reads while `loop()` writes it uses a plain buffer, not
   an Arduino `String`, to avoid a reallocation under a reader.
 
@@ -102,3 +137,9 @@ needs one falls back to.
 * **Running a test dispenses real chocolate.** Every fulfilled order moves a
   servo and consumes stock. Check what is queued on the order server before
   letting a unit poll it.
+* **A test that writes needs the key.** Set `spenserKey` in the Bruno
+  environment, or expect 401s. Read it from the serial console, or from `/key`
+  within five minutes of a restart.
+* **An absent timestamp is an unset clock.** The unit leaves `whenHandedOver`
+  and friends out rather than inventing a time, so a dispense without one means
+  NTP has not answered yet.

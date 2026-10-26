@@ -287,6 +287,70 @@
       font: inherit; font-size: .85rem; background: var(--card); color: var(--ink);
     }
     .settings-row input[type="url"] { flex: 1; min-width: 220px; }
+    /* What the update contains, shown before it is taken. An update you cannot
+       read the notes for is an update you install blind. */
+    .modal-back {
+      display: none; position: fixed; inset: 0; z-index: 50;
+      background: #0009; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-back.show { display: flex; }
+    .modal {
+      background: var(--card); color: var(--ink); border: 1px solid var(--line);
+      border-radius: 14px; max-width: 34rem; width: 100%; max-height: 80vh;
+      overflow: auto; padding: 20px; box-shadow: 0 20px 50px #0006;
+    }
+    .modal h3 { margin: 0 0 4px; }
+    .modal .sub { color: var(--ink-soft); font-size: .85rem; margin: 0 0 14px; }
+    .modal ul { margin: 0 0 14px; padding-left: 1.2rem; font-size: .9rem; line-height: 1.5; }
+    .modal li { margin-bottom: 4px; }
+    .modal .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .modal .row a { margin-right: auto; font-size: .85rem; }
+
+    /* The update notice, and the two smaller signs of it. It started inside a
+       tab panel, which meant it only existed on a tab nobody had open: an
+       update nobody can see is an update nobody installs. It now sits above
+       the tabs, with a dot in the header and a dot on the collapsed Settings
+       box, so there is no view of this page that hides it. */
+    .update-notice .dot, .pill-update .dot {
+      width: 9px; height: 9px; border-radius: 50%; background: #e0a000;
+      box-shadow: 0 0 0 0 #e0a00099; animation: pulse 2s infinite; flex: none;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 #e0a00099; }
+      70%  { box-shadow: 0 0 0 7px #e0a00000; }
+      100% { box-shadow: 0 0 0 0 #e0a00000; }
+    }
+    .pill-update {
+      cursor: pointer; border-color: #c88a00; background: #fff6e0; color: #6b4b00;
+      gap: 6px; font-weight: 600;
+    }
+    /* A dot on the collapsed box, so a closed Settings panel still says there
+       is something inside worth opening. */
+    #settingsBox.has-update > summary::after {
+      content: ''; display: inline-block; vertical-align: middle;
+      width: 9px; height: 9px; border-radius: 50%; margin-left: 8px;
+      background: #e0a000; box-shadow: 0 0 0 0 #e0a00099; animation: pulse 2s infinite;
+    }
+    @media (prefers-color-scheme: dark) {
+      .pill-update { background: #3a2d0a; border-color: #8a6500; color: #ffd98a; }
+    }
+
+    .update-notice {
+      display: none; margin: 0 0 16px; padding: 12px 14px; border-radius: 10px;
+      border: 1px solid #c88a00; background: #fff6e0; color: #6b4b00;
+      align-items: center; gap: 12px; flex-wrap: wrap;
+      font-size: .9rem; line-height: 1.4;
+    }
+    .update-notice.show { display: flex; }
+    .update-notice strong { font-weight: 600; }
+    .update-notice button { margin-left: auto; }
+    @media (prefers-color-scheme: dark) {
+      .update-notice { background: #3a2d0a; border-color: #8a6500; color: #ffd98a; }
+    }
+    .brand small {
+      display: block; font-size: .7rem; font-weight: 400; color: var(--ink-soft);
+      letter-spacing: 0; margin-top: 2px;
+    }
     .order-status {
       font-size: .8rem; color: var(--ink-soft); line-height: 1.5;
       background: var(--bg); border: 1px solid var(--line);
@@ -345,8 +409,13 @@
   <div class="wrap">
 
     <header>
-      <div class="brand"><span class="logo">🍫</span> Spenser</div>
+      <div class="brand"><span class="logo">🍫</span> Spenser
+        <small id="runningVersion" title="The firmware this unit is running"></small>
+      </div>
       <div class="status-bar">
+        <span class="pill pill-update" id="updatePill" style="display:none"
+              title="A new firmware build is waiting. Click to see what is in it."
+              onclick="openUpdateDetails()"><span class="dot"></span><span id="updatePillText"></span></span>
         <span class="pill" id="batteryPill" title="Battery">
           <span class="bolt" id="batteryBolt"></span>
           <span class="batt" id="batteryIcon"><i id="batteryFill"></i></span>
@@ -354,6 +423,12 @@
         </span>
       </div>
     </header>
+
+    <div class="update-notice" id="update-notice">
+      <span class="dot"></span>
+      <span id="update-notice-text"></span>
+      <button onclick="openUpdateDetails()">What is in it?</button>
+    </div>
 
     <div class="tabs" role="tablist">
       <button class="tab active" role="tab" data-tab="fhir">FHIR</button>
@@ -394,6 +469,7 @@
     <!-- What!?.. panel -->
     <section class="panel" id="panel-what" role="tabpanel">
       <p style="text-align:center;color:var(--ink-soft);font-size:.95rem;margin:0 0 16px;font-style:italic">…is all that FHIR stuff for? I just want chocolate. 🍫</p>
+
       <div class="grid">
 
         <div class="card dark">
@@ -424,7 +500,7 @@
     </section>
 
     <!-- Collapsed settings -->
-    <details class="settings">
+    <details class="settings" id="settingsBox">
       <summary>Settings</summary>
       <div class="settings-body">
 
@@ -481,6 +557,111 @@
         </div>
 
         <div class="settings-section">
+          <h3>Servos</h3>
+          <p>Which motor drives each lane, how far the arm swings, and how long it
+          holds there before coming back. Tune with the buttons below: hold an arm
+          at the push angle to find the one that moves a single piece, then run a
+          full cycle to check it.</p>
+
+          <div class="settings-row">
+            <label class="field">Motor for dark (red)
+              <input type="number" id="servoDark" min="0" max="3" />
+            </label>
+            <label class="field">Motor for milk (blue)
+              <input type="number" id="servoMilk" min="0" max="3" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <label class="field">Angle at rest
+              <input type="number" id="angleRest" min="0" max="360" />
+            </label>
+            <label class="field">Angle at max push
+              <input type="number" id="anglePush" min="0" max="360" />
+            </label>
+            <label class="field">Hold before returning (ms)
+              <input type="number" id="returnDelayMs" min="0" max="5000" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <button onclick="saveServoSettings()">Save</button>
+            <button onclick="servoAction('/reset', 'Both arms back to rest')">Move both to rest</button>
+            <button onclick="holdAtPush('dark')">Hold dark at push angle</button>
+            <button onclick="holdAtPush('milk')">Hold milk at push angle</button>
+          </div>
+          <div class="settings-row">
+            <button onclick="servoAction('/flashServo1', 'Dark arm cycled')">Test dark cycle</button>
+            <button onclick="servoAction('/flashServo2', 'Milk arm cycled')">Test milk cycle</button>
+            <small>A full cycle pushes a piece out and does not change the stock count.</small>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>This unit's key</h3>
+          <p>Reads are open. Everything that changes this unit - dispensing,
+          settings, Wi-Fi, updates - needs its key. It is printed on the serial
+          console at boot, and this unit will hand it over for five minutes
+          after a restart.</p>
+          <div class="settings-row">
+            <label class="field" style="flex:1">Key
+              <input type="text" id="deviceKey" placeholder="32 characters" autocomplete="off" />
+            </label>
+          </div>
+          <div class="settings-row">
+            <button onclick="saveKey()">Use this key</button>
+            <button onclick="fetchKey()">Ask the unit for it</button>
+            <small id="key-status">Kept in this browser only.</small>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Updates</h3>
+          <div class="order-status" id="ota-status">Checking…</div>
+          <p>The firmware and these web files can both be replaced over Wi-Fi.
+          A whole image reboots the unit; a single file does not.</p>
+          <div class="settings-row">
+            <label class="field">Firmware image (.bin)
+              <input type="file" id="fwFile" accept=".bin" />
+            </label>
+            <button onclick="uploadImage('firmware')">Upload firmware</button>
+          </div>
+          <div class="settings-row">
+            <label class="field">Filesystem image (spiffs.bin)
+              <input type="file" id="fsFile" accept=".bin" />
+            </label>
+            <button onclick="uploadImage('filesystem')">Upload filesystem</button>
+          </div>
+          <div class="settings-row">
+            <label class="field">Single file
+              <input type="file" id="oneFile" />
+            </label>
+            <label class="field">Path on the unit
+              <input type="text" id="onePath" value="/index.html" />
+            </label>
+            <button onclick="uploadOneFile()">Upload file</button>
+          </div>
+          <div class="settings-row">
+            <label class="field" style="flex:1">Release manifest URL
+              <input type="url" id="updateUrl" placeholder="https://…/manifest.json" />
+            </label>
+            <label class="field">Check every (min, 0 = never)
+              <input type="number" id="updateCheckMinutes" min="0" max="10080" />
+            </label>
+            <label class="field">When one is found
+              <select id="updateMode">
+                <option value="notify">tell me, and wait</option>
+                <option value="install">install it</option>
+              </select>
+            </label>
+          </div>
+          <div class="settings-row">
+            <button onclick="saveUpdateSettings()">Save</button>
+            <button onclick="checkForUpdate()">Check now</button>
+            <button id="installBtn" onclick="openUpdateDetails()" disabled>Install</button>
+            <button onclick="rollBack()">Roll back</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
           <h3>Wi-Fi</h3>
           <div class="settings-row">
             <button onclick="wifiAction('/wifi-settings', 'Rebooting to Wi-Fi config…')">Configure Wi-Fi</button>
@@ -522,11 +703,59 @@
 
   </div>
 
+  <div class="modal-back" id="update-modal" onclick="if (event.target === this) closeUpdateDetails()">
+    <div class="modal">
+      <h3 id="update-modal-title">New firmware</h3>
+      <p class="sub" id="update-modal-sub"></p>
+      <ul id="update-modal-notes"></ul>
+      <div class="row">
+        <a id="update-modal-link" href="#" target="_blank" rel="noopener">Full release notes</a>
+        <button onclick="closeUpdateDetails()">Not now</button>
+        <button class="btn-primary" onclick="confirmInstall()">Install and restart</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script src="/qrcode.min.js"></script>
   <script>
     const $ = (id) => document.getElementById(id);
+
+    /* ---------- The unit's key ----------
+       Reads work without it; anything that changes the unit does not. Kept in
+       this browser's local storage and sent as a header, so it stays out of
+       URLs and out of anything that logs them. */
+    let deviceKey = '';
+    try { deviceKey = localStorage.getItem('spenserKey') || ''; } catch (e) {}
+
+    function api(path, opts = {}) {
+      const headers = Object.assign({}, opts.headers || {});
+      if (deviceKey) headers['X-Spenser-Key'] = deviceKey;
+      return fetch(path, Object.assign({}, opts, { headers }));
+    }
+
+    function saveKey() {
+      deviceKey = $('deviceKey').value.trim();
+      try { localStorage.setItem('spenserKey', deviceKey); } catch (e) {}
+      $('key-status').textContent = deviceKey ? 'Key stored in this browser.' : 'Key cleared.';
+      showToast(deviceKey ? 'Key saved' : 'Key cleared', 'ok');
+      refreshOta();
+    }
+
+    async function fetchKey() {
+      try {
+        const r = await api('/key');
+        if (!r.ok) {
+          $('key-status').textContent = 'The unit would not hand it over. Restart it, or read the serial console.';
+          showToast('Key not available', 'err');
+          return;
+        }
+        const d = await r.json();
+        $('deviceKey').value = d.key || '';
+        saveKey();
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
 
     function showToast(msg, kind = '') {
       const t = $('toast');
@@ -665,7 +894,7 @@
       $('sendBtn').disabled = true;
       const t0 = performance.now();
       try {
-        const r = await fetch(tpl.path, opts);
+        const r = await api(tpl.path, opts);
         const ms = Math.round(performance.now() - t0);
         const text = await r.text();
         let body;
@@ -702,7 +931,7 @@
 
     async function refreshInventory() {
       try {
-        const r = await fetch('/InventoryReport');
+        const r = await api('/InventoryReport');
         const data = await r.json();
         const listings = data.inventoryListing || [];
         let dark = 0, milk = 0;
@@ -717,7 +946,10 @@
         $('dispenseDark').disabled = dark === 0;
         $('dispenseMilk').disabled = milk === 0;
       } catch (e) {
-        showToast('Could not load inventory', 'err');
+        // Say which part failed. "Could not load inventory" sent somebody
+        // hunting through firmware for a problem that was in the page.
+        showToast('Could not load inventory: ' + e.message, 'err');
+        console.error('inventory', e);
       }
     }
 
@@ -729,22 +961,31 @@
         id: Math.random().toString(36).slice(2),
         status: 'active',
         intent: 'instance-order',
-        medicationCodeableConcept: {
-          coding: [{ code: type, display: type === 'chocolate-dark' ? 'Dark Chocolate' : 'Milk Chocolate' }]
+        medication: {
+          concept: {
+            coding: [{
+              system: 'http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds',
+              code: type,
+              display: type === 'chocolate-dark' ? 'Dark Chocolate' : 'Milk Chocolate'
+            }]
+          }
         },
         dosageInstruction: [{ text: 'One bite' }],
         subject: { reference: 'Patient/123' }
       };
       try {
-        const r = await fetch('/MedicationRequest', {
+        // $dispense rather than a create: an operation answers with the
+        // MedicationDispense, which is what tells us whether a piece came out.
+        const r = await api('/$dispense', {
           method: 'POST',
           headers: { 'Content-Type': 'application/fhir+json' },
           body: JSON.stringify(body)
         });
         const j = await r.json().catch(() => ({}));
-        if (r.status === 200) showToast('Dispensed 🎉', 'ok');
-        else if (r.status === 201) showToast('Out of stock', 'err');
-        else showToast(j.message || `Error ${r.status}`, 'err');
+        if (r.status === 401) showToast('This unit needs its key', 'err');
+        else if (j.resourceType === 'MedicationDispense' && j.status === 'completed') showToast('Dispensed 🎉', 'ok');
+        else if (j.resourceType === 'MedicationDispense') showToast('Out of stock', 'err');
+        else showToast(outcomeText(j) || `Error ${r.status}`, 'err');
       } catch (e) {
         showToast('Network error', 'err');
       } finally {
@@ -757,7 +998,7 @@
       const val = $(type + 'Input').value;
       if (val === '') return false;
       try {
-        await fetch(`/resetInventory?${type}=${encodeURIComponent(val)}`);
+        await api(`/resetInventory?${type}=${encodeURIComponent(val)}`);
         $(type + 'Input').value = '';
         await refreshInventory();
         showToast('Inventory updated', 'ok');
@@ -771,7 +1012,7 @@
     async function refreshBattery() {
       const pill = $('batteryPill');
       try {
-        const r = await fetch('/battery');
+        const r = await api('/battery');
         if (!r.ok) throw new Error('sensor unavailable');
         const j = await r.json();
         const onUsb = j.source === 'usb' || j.source === 'charging';
@@ -801,13 +1042,13 @@
     /* ---------- Wi-Fi + MAC ---------- */
     async function wifiAction(url, msg) {
       if (!confirm(msg.endsWith('…') ? msg + ' Continue?' : msg + '. Continue?')) return;
-      try { await fetch(url); showToast(msg, 'ok'); }
+      try { await api(url); showToast(msg, 'ok'); }
       catch (e) { showToast('Request failed', 'err'); }
     }
 
     async function loadMacInfo() {
       try {
-        const r = await fetch('/getMac');
+        const r = await api('/getMac');
         const j = await r.json();
         $('current-mac').textContent = j.currentMac || 'unknown';
         $('stored-mac').textContent = j.storedMac || 'None (factory MAC)';
@@ -825,7 +1066,7 @@
       if (cleaned.length !== 12) { showToast('Invalid MAC (need 12 hex chars)', 'err'); return; }
       if (parseInt(cleaned.slice(0, 2), 16) & 1) { showToast('First byte must be even (unicast)', 'err'); return; }
       try {
-        const r = await fetch('/setMac?mac=' + encodeURIComponent(v));
+        const r = await api('/setMac?mac=' + encodeURIComponent(v));
         const j = await r.json();
         if (r.ok) { showToast('Saved. Reboot to apply.', 'ok'); $('macInput').value = ''; loadMacInfo(); }
         else showToast(j.error || 'Save failed', 'err');
@@ -835,7 +1076,7 @@
     async function clearCustomMac() {
       if (!confirm('Clear custom MAC and revert to factory MAC on next reboot?')) return;
       try {
-        await fetch('/clearMac');
+        await api('/clearMac');
         showToast('Custom MAC cleared. Reboot to apply.', 'ok');
         loadMacInfo();
       } catch (e) { showToast('Request failed', 'err'); }
@@ -857,6 +1098,286 @@
       } catch (e) { qrEl.textContent = 'QR error: ' + e.message; }
     }
 
+    /* ---------- Updates ---------- */
+    let lastOta = null; // the last /ota/status, which the details popup reads
+
+    function outcomeText(body) {
+      if (!body || body.resourceType !== 'OperationOutcome') return '';
+      return (body.issue || []).map((i) => i.diagnostics).filter(Boolean).join(' ');
+    }
+
+    async function refreshOta() {
+      try {
+        const r = await api('/ota/status');
+        const d = await r.json();
+        const parts = [];
+        if (d.updateAvailable) parts.push('\u2b06 ' + d.availableVersion + ' available');
+        parts.push('firmware ' + d.firmwareVersion);
+        if (d.runningSlot) parts.push('slot ' + d.runningSlot);
+        if (d.sketchBytes && d.slotBytes) {
+          parts.push(Math.round((d.sketchBytes / d.slotBytes) * 100) + '% of the slot used');
+        }
+        parts.push('clock ' + d.clock);
+        parts.push(d.lastResult);
+        $('runningVersion').textContent = d.firmwareVersion || '';
+        parts.push(describeChecking(d));
+        if (!d.updateUrl) parts.push('no release manifest set, so a check has nothing to ask');
+        lastOta = d;
+        showUpdateNotice(d);
+        $('ota-status').textContent = parts.join(' \u00b7 ');
+        $('updateUrl').value = d.updateUrl || '';
+        $('updateCheckMinutes').value = d.updateCheckMinutes ?? 0;
+        $('updateMode').value = d.updateMode || 'notify';
+        $('installBtn').disabled = !d.updateAvailable;
+        $('installBtn').textContent = d.updateAvailable ? 'Install ' + d.availableVersion : 'Install';
+      } catch (e) { $('ota-status').textContent = 'Update status unavailable'; }
+    }
+
+    // Shown whenever the unit has something waiting, on every page load, and
+    // after a power cycle, because the unit remembers what it found.
+    function showUpdateNotice(d) {
+      const notice = $('update-notice');
+      const pill = $('updatePill');
+      const box = $('settingsBox');
+      const available = !!(d && d.updateAvailable);
+
+      // Four places, because one of them is always in view: the bar above the
+      // tabs, a dot in the header, a dot on the collapsed Settings box, and a
+      // marker in the browser tab title.
+      notice.classList.toggle('show', available);
+      if (box) box.classList.toggle('has-update', available);
+      pill.style.display = available ? '' : 'none';
+      document.title = (available ? '\u2022 ' : '') + 'Spenser';
+
+      if (!available) return;
+
+      $('updatePillText').textContent = d.availableVersion;
+      const ago = d.lastCheckSecondsAgo >= 0 ? describeAge(d.lastCheckSecondsAgo) : '';
+      $('update-notice-text').innerHTML =
+        '<strong>New firmware available: ' + d.availableVersion + '</strong>' +
+        ' \u00b7 this unit runs ' + d.firmwareVersion +
+        (ago ? ' \u00b7 found ' + ago : '');
+    }
+
+    // An absent notice should read as "it has not looked yet", not as "there is
+    // nothing". Those are different, and only one of them means waiting.
+    function describeChecking(d) {
+      if (!d.updateUrl) return 'not watching for updates';
+      const looked = d.lastCheckSecondsAgo >= 0 ? 'looked ' + describeAge(d.lastCheckSecondsAgo) : 'not looked yet';
+      if (!d.updateCheckMinutes) return looked + ', and will not look again by itself';
+      if (d.nextCheckSeconds === undefined || d.nextCheckSeconds < 0) return looked;
+      const next = d.nextCheckSeconds <= 5 ? 'next look due now' : 'next in ' + describeAge(d.nextCheckSeconds).replace(' ago', '');
+      return looked + ', ' + next;
+    }
+
+    function describeAge(seconds) {
+      if (seconds < 90) return 'just now';
+      if (seconds < 5400) return Math.round(seconds / 60) + ' min ago';
+      if (seconds < 172800) return Math.round(seconds / 3600) + ' h ago';
+      return Math.round(seconds / 86400) + ' days ago';
+    }
+
+    async function saveUpdateSettings() {
+      const params = new URLSearchParams();
+      params.set('updateUrl', $('updateUrl').value.trim());
+      params.set('updateCheckMinutes', $('updateCheckMinutes').value || '0');
+      params.set('updateMode', $('updateMode').value);
+      try {
+        const r = await api('/setSettings?' + params.toString());
+        if (r.ok) { showToast('Update settings saved', 'ok'); refreshOta(); return; }
+        showToast(refusalReason(r, await r.json().catch(() => ({}))), 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    async function checkForUpdate() {
+      try {
+        const r = await api('/ota/check', { method: 'POST' });
+        if (r.ok) {
+          showToast('Checking for an update', 'ok');
+          $('ota-status').textContent = 'Checking\u2026';
+          setTimeout(refreshOta, 6000);
+          setTimeout(refreshOta, 15000);
+          return;
+        }
+        const why = refusalReason(r, await r.json().catch(() => ({})));
+        $('ota-status').textContent = why;
+        showToast(why, 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    // A refusal is never a mystery: 401 means the key, and anything else carries
+    // an OperationOutcome saying what the unit wanted instead.
+    function refusalReason(r, body) {
+      if (r.status === 401) return 'This unit needs its key. Paste it under the key panel.';
+      return outcomeText(body) || ('Refused: HTTP ' + r.status);
+    }
+
+    // The notes the unit kept from the manifest, so this works without the
+    // browser reaching the internet - and after a power cycle, because the unit
+    // remembers them.
+    function openUpdateDetails() {
+      const d = lastOta || {};
+      if (!d.updateAvailable) { showToast('Nothing is waiting', 'ok'); return; }
+
+      $('update-modal-title').textContent = 'Firmware ' + d.availableVersion;
+      // What you are about to pull, and how fresh it is: the two questions
+      // worth answering before a dispenser takes itself offline for a minute.
+      const bits = ['This unit runs ' + d.firmwareVersion];
+      if (d.availableReleased) bits.push('published ' + d.availableReleased.replace('T', ' ').replace('Z', ' UTC'));
+      if (d.availableBytes) bits.push((d.availableBytes / 1048576).toFixed(1) + ' MB to download');
+      $('update-modal-sub').textContent =
+        bits.join(' \u00b7 ') + '. Installing it restarts the unit, which takes about a minute.';
+
+      const list = $('update-modal-notes');
+      list.innerHTML = '';
+      const lines = String(d.availableNotes || '')
+        .split('\n')
+        .map((l) => l.replace(/^\s*[-*]\s*/, '').trim())
+        .filter(Boolean);
+      if (!lines.length) {
+        const li = document.createElement('li');
+        li.textContent = 'The release did not say what changed.';
+        list.appendChild(li);
+      } else {
+        lines.forEach((l) => {
+          const li = document.createElement('li');
+          li.textContent = l;
+          list.appendChild(li);
+        });
+      }
+
+      const link = $('update-modal-link');
+      if (d.availableNotesUrl) {
+        link.href = d.availableNotesUrl;
+        link.style.display = '';
+      } else {
+        link.style.display = 'none';
+      }
+
+      $('update-modal').classList.add('show');
+    }
+
+    function closeUpdateDetails() {
+      $('update-modal').classList.remove('show');
+    }
+
+    function confirmInstall() {
+      closeUpdateDetails();
+      installUpdate(true);
+    }
+
+    async function installUpdate(confirmed) {
+      const btn = $('installBtn');
+      if (!confirmed) { openUpdateDetails(); return; }
+      btn.disabled = true;
+      $('ota-status').textContent = 'Installing. This takes a minute, and the unit restarts.';
+      try {
+        const r = await api('/ota/install', { method: 'POST' });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) {
+          showToast('Installing ' + (j.version || ''), 'ok');
+          setTimeout(refreshOta, 45000);
+        } else {
+          $('ota-status').textContent = outcomeText(j) || ('Install refused: ' + r.status);
+          showToast('Install refused', 'err');
+          btn.disabled = false;
+        }
+      } catch (e) {
+        $('ota-status').textContent = 'Install failed: ' + e.message;
+        btn.disabled = false;
+      }
+    }
+
+    async function rollBack() {
+      if (!confirm('Roll back to the previous firmware and restart?')) return;
+      try {
+        const r = await api('/ota/rollback', { method: 'POST' });
+        if (r.ok) { showToast('Rolling back, the unit is restarting', 'ok'); return; }
+        showToast(refusalReason(r, await r.json().catch(() => ({}))), 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    // The body is the image itself. The unit streams it straight into the
+    // slot it is not running from, so nothing large is held in memory here.
+    async function uploadImage(target) {
+      const picker = target === 'firmware' ? $('fwFile') : $('fsFile');
+      const file = picker.files && picker.files[0];
+      if (!file) { showToast('Pick a .bin first', 'err'); return; }
+      if (!confirm('Upload ' + file.name + ' as the ' + target + '? The unit will restart.')) return;
+
+      $('ota-status').textContent = 'Uploading ' + file.name + '…';
+      try {
+        const r = await api('/ota/' + target, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: file
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) {
+          $('ota-status').textContent = 'Uploaded. The unit is restarting.';
+          showToast('Update accepted', 'ok');
+          setTimeout(refreshOta, 12000);
+        } else {
+          $('ota-status').textContent = outcomeText(j) || ('Upload failed: ' + r.status);
+          showToast('Update refused', 'err');
+        }
+      } catch (e) {
+        $('ota-status').textContent = 'Upload failed: ' + e.message;
+      }
+    }
+
+    async function uploadOneFile() {
+      const file = $('oneFile').files && $('oneFile').files[0];
+      const path = $('onePath').value.trim();
+      if (!file) { showToast('Pick a file first', 'err'); return; }
+      if (!path.startsWith('/')) { showToast('The path must start with /', 'err'); return; }
+
+      try {
+        const r = await api('/ota/file?path=' + encodeURIComponent(path), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: file
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) showToast('Wrote ' + (j.bytes || '') + ' bytes to ' + path, 'ok');
+        else showToast(outcomeText(j) || ('Upload failed: ' + r.status), 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    /* ---------- Servos ---------- */
+    const SERVO_FIELDS = ['servoDark', 'servoMilk', 'angleRest', 'anglePush', 'returnDelayMs'];
+
+    function showServoSettings(data) {
+      SERVO_FIELDS.forEach((f) => { $(f).value = data[f] ?? ''; });
+    }
+
+    async function saveServoSettings() {
+      const params = new URLSearchParams();
+      SERVO_FIELDS.forEach((f) => params.set(f, $(f).value));
+      try {
+        const r = await api('/setSettings?' + params.toString());
+        if (r.ok) { showServoSettings(await r.json()); showToast('Servo settings saved', 'ok'); }
+        else showToast('Could not save servo settings', 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    async function servoAction(path, done) {
+      try {
+        const r = await api(path);
+        showToast(r.ok ? done : 'Request refused', r.ok ? 'ok' : 'err');
+      } catch (e) { showToast('Request failed', 'err'); }
+    }
+
+    // Park an arm at the angle in the form without saving it, to find the angle
+    // that moves one piece. /setServos names the lanes servo4 (dark) and servo3.
+    async function holdAtPush(lane) {
+      const angle = $('anglePush').value;
+      if (angle === '') { showToast('Set a push angle first', 'err'); return; }
+      const param = lane === 'dark' ? 'servo4' : 'servo3';
+      await servoAction('/setServos?' + param + '=' + encodeURIComponent(angle),
+                        'Holding ' + lane + ' at ' + angle + '\u00b0');
+    }
+
     /* ---------- Orders ---------- */
     const ORDER_FIELDS = ['serverUrl', 'orderMode', 'orderQuery', 'taskQuery', 'pollSeconds'];
     const ORDER_FLAGS = ['pollEnabled', 'writeBack', 'giveUpOnStockEmpty'];
@@ -869,8 +1390,10 @@
 
     async function loadOrderSettings() {
       try {
-        const r = await fetch('/settings');
-        showOrderSettings(await r.json());
+        const r = await api('/settings');
+        const data = await r.json();
+        showOrderSettings(data);
+        showServoSettings(data); // /settings carries both, so one fetch fills both panels
       } catch (e) { console.error('settings load failed', e); }
     }
 
@@ -879,7 +1402,7 @@
       ORDER_FIELDS.forEach((f) => params.set(f, $(f).value));
       ORDER_FLAGS.forEach((f) => params.set(f, $(f).checked ? '1' : '0'));
       try {
-        const r = await fetch('/setSettings?' + params.toString());
+        const r = await api('/setSettings?' + params.toString());
         if (r.ok) { showOrderSettings(await r.json()); showToast('Order settings saved', 'ok'); }
         else showToast('Could not save order settings', 'err');
       } catch (e) { showToast('Request failed', 'err'); }
@@ -888,7 +1411,7 @@
     async function checkOrders() {
       // the device does the actual HTTP call from its main loop
       try {
-        await fetch('/checkOrders');
+        await api('/checkOrders');
         showToast('Checking for orders');
         setTimeout(refreshOrders, 1000);
         setTimeout(refreshOrders, 3000);
@@ -897,7 +1420,7 @@
 
     async function forgetOrders() {
       try {
-        await fetch('/forgetOrders');
+        await api('/forgetOrders');
         lastHandled = null;
         refreshOrders();
         showToast('Handled orders forgotten', 'ok');
@@ -906,7 +1429,7 @@
 
     async function refreshOrders() {
       try {
-        const r = await fetch('/orders');
+        const r = await api('/orders');
         const d = await r.json();
 
         const parts = [];
@@ -931,9 +1454,12 @@
     renderQR();
     loadOrderSettings();
     refreshOrders();
+    $('deviceKey').value = deviceKey;
+    refreshOta();
     setInterval(refreshInventory, 5000);
     setInterval(refreshBattery, 15000);
     setInterval(refreshOrders, 5000);
+    setInterval(refreshOta, 60000); // the notice appears without a reload
   </script>
 </body>
 </html>

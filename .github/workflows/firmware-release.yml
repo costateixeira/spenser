@@ -1,0 +1,117 @@
+name: Firmware release
+
+# A tagged, archival release: the binaries for a named version, kept as release
+# assets with their checksums.
+#
+# Day to day a unit does not use this. It reads the manifest that
+# firmware-pages.yml publishes on every change, at
+# costateixeira.github.io/spenser/firmware/manifest.json, which is the default
+# updateUrl in the firmware. This workflow is for marking a version worth
+# keeping, and for anyone who would rather install from a release than from the
+# site:
+#
+#   /setSettings?updateUrl=https://github.com/<owner>/<repo>/releases/latest/download/manifest.json
+#
+# Tag a release as firmware-v<version>, where <version> matches
+# FIRMWARE_VERSION in main.cpp. The job refuses to publish if they disagree,
+# because a unit compares versions to decide whether to update: a mismatch
+# would leave it either updating on every check or never at all.
+
+on:
+  push:
+    tags: ['firmware-v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to build and publish'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Work out the version
+        id: version
+        run: |
+          tag="${{ github.event.inputs.tag || github.ref_name }}"
+          tag_version="${tag#firmware-v}"
+          src_version=$(sed -n 's/^#define FIRMWARE_VERSION "\(.*\)"/\1/p' firmware/src/main.cpp | head -1)
+          src_version=${src_version%-dev}   # the define carries -dev for local builds
+          echo "Tag says $tag_version, main.cpp says $src_version"
+          if [ "$tag_version" != "$src_version" ]; then
+            echo "::error::Tag $tag does not match FIRMWARE_VERSION $src_version in firmware/src/main.cpp"
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$src_version" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        working-directory: firmware
+        env:
+          # not PLATFORMIO_BUILD_FLAGS, which would replace the project's flags
+          SPENSER_VERSION_FLAG: -DFIRMWARE_VERSION=\"${{ steps.version.outputs.version }}\"
+        run: |
+          pio run -e esp32s3
+          pio run -e esp32s3 -t buildfs
+
+      - name: Collect the release files
+        id: files
+        run: |
+          mkdir -p release
+          cp firmware/.pio/build/esp32s3/firmware.bin release/firmware.bin
+          cp firmware/.pio/build/esp32s3/spiffs.bin release/spiffs.bin
+
+          version="${{ steps.version.outputs.version }}"
+          tag="${{ steps.version.outputs.tag }}"
+          base="${{ github.server_url }}/${{ github.repository }}/releases/download/$tag"
+
+          cat > release/manifest.json <<JSON
+          {
+            "version": "$version",
+            "firmware": "$base/firmware.bin",
+            "filesystem": "$base/spiffs.bin",
+            "firmwareSha256": "$(sha256sum release/firmware.bin | cut -d' ' -f1)",
+            "filesystemSha256": "$(sha256sum release/spiffs.bin | cut -d' ' -f1)",
+            "released": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          JSON
+
+          cat release/manifest.json
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Firmware ${{ steps.version.outputs.version }}
+          draft: true
+          files: |
+            release/firmware.bin
+            release/spiffs.bin
+            release/manifest.json
+          body: |
+            Spenser firmware ${{ steps.version.outputs.version }}.
+
+            A unit pointed at the manifest installs this by itself:
+
+                /setSettings?updateUrl=${{ github.server_url }}/${{ github.repository }}/releases/latest/download/manifest.json&updateCheckHours=24
+
+            Or upload `firmware.bin` and `spiffs.bin` from the unit's own
+            dashboard, under Settings, Updates.
+
+            The filesystem image carries the dashboard and the agent guide, so
+            upload it whenever those change. The firmware keeps its previous
+            image, and the dashboard can roll back to it.

@@ -7,6 +7,25 @@ its own `/metadata`.
 A unit is reachable on the local network as `http://spenser.local`, which it
 advertises over mDNS, or at whatever address its router hands it.
 
+### What needs a key
+
+Reading a unit is open: its CapabilityStatement, its dispenses, its orders, its
+inventory and its dashboard are all available to anyone who can reach it.
+Everything that *changes* a unit needs that unit's key: dispensing, settings,
+Wi-Fi, stock, and firmware updates. Those routes answer `401` with an
+OperationOutcome when it is missing.
+
+The key is generated on the unit's first boot and printed on its serial console
+at every boot. It travels as `Authorization: Bearer <key>`, as an
+`X-Spenser-Key` header, or as `?key=` for a client that cannot set headers.
+`GET /key` returns it for five minutes after a restart, and at any time while
+the unit is in setup mode, which is the window its owner has and a passer-by
+does not. A unit serving its own access point accepts everything without a key,
+because there is no network there to defend.
+
+`rest.security.description` in each unit's CapabilityStatement says the same
+thing, so a client can discover it.
+
 ### Two roles
 
 Spenser is a FHIR **server** and a FHIR **client** at the same time, and the
@@ -57,31 +76,135 @@ placer's cue to do it.
 
 Served by the device itself.
 
-| Interaction | Meaning |
-|---|---|
-| `GET /metadata` | CapabilityStatement for this unit, declaring both roles |
-| `POST /MedicationRequest` | dispense now, answering with the MedicationDispense |
-| `GET /MedicationDispense` | searchset of recent dispenses, newest first, with an OperationOutcome about the last check |
-| `GET /MedicationDispense/{id}` | read one of them |
-| `GET /InventoryReport` | current stock, one listing per lane |
-| `POST /InventoryReport` | set stock from a report |
+| Interaction | Needs a key | Meaning |
+|---|---|---|
+| `GET /metadata` | | CapabilityStatement for this unit, declaring both roles, the search parameters, the operation and the security scheme |
+| `POST /MedicationRequest` | yes | create an order, which dispenses it |
+| `GET /MedicationRequest` and `/{id}` | | the orders this unit accepted |
+| `POST /$dispense` | yes | dispense in one call, answering with the MedicationDispense |
+| `GET /MedicationDispense` and `/{id}` | | what this unit dispensed or refused |
+| `GET /InventoryReport` | | current stock, one listing per lane |
+| `POST /InventoryReport` | yes | set stock from a report |
 
-`POST /MedicationRequest` answers `200` with a completed
-[MedicationDispense](MedicationDispense-DispenseForActionableDarkOrder.html) when
-a piece came out, and `201` with a declined one when the lane is empty. R5
+**The create behaves like a create.** You need not supply an `id`: the unit
+assigns one when you leave it out, which is what a FHIR server is supposed to
+do. The answer is `201` with a `Location` header pointing at the created order,
+an `ETag`, and the created
+[MedicationRequest](MedicationRequest-ActionableDarkOrder.html) as the body.
+`Prefer: return=minimal` and `Prefer: return=OperationOutcome` are both
+honoured. The order is kept, so it can be read back afterwards.
+
+**The dispense is a separate resource**, at `/MedicationDispense/{id}-dispense`
+when a piece came out, or `/MedicationDispense/{id}-declined` when the lane was
+empty. When what you want is the dispense rather than the order, use the
+operation: `POST /$dispense` takes a MedicationRequest, or Parameters carrying
+one, and answers `200` with the
+[MedicationDispense](MedicationDispense-DispenseForActionableDarkOrder.html). An
+operation reports itself in the resource it returns, so an empty lane is still a
+`200`, carrying
+[a declined dispense](MedicationDispense-DeclinedDispenseOutOfStock.html). R5
 removed `MedicationDispense.statusReason`, so a refusal carries its reason in
-`notPerformedReason`, which is a `CodeableReference`. See
-[the declined example](MedicationDispense-DeclinedDispenseOutOfStock.html).
+`notPerformedReason`, which is a `CodeableReference`.
 
-`GET /MedicationDispense` is how you ask a unit what it has been doing. Besides
-the dispenses themselves, the Bundle carries one entry with `search.mode` set to
-`outcome`: an OperationOutcome whose severity, `issue.diagnostics` and
-`issue.details.text` describe the last check of the order server, including
-which routes the unit is accepting and how long ago it looked.
+**Searches are real searches.** Both stores honour `_id`, `status`, `subject`
+and `_count`, and dispenses also honour `authorizingPrescription`. A reference
+matches either in full or by its id alone, so `subject=Patient/123` and
+`subject=123` find the same records. The parameters are declared in the
+CapabilityStatement, and the Bundle's self link records what the unit
+understood.
+
+**The records survive a restart.** Orders, dispenses and stock are kept on the
+unit's filesystem rather than in memory, so rebooting it, or updating it, does
+not erase what it did. The oldest records are dropped when a store fills.
+
+`GET /MedicationDispense` is also how you ask a unit what it has been doing.
+Besides the dispenses themselves, the Bundle carries one entry with
+`search.mode` set to `outcome`: an OperationOutcome whose severity,
+`issue.diagnostics` and `issue.details.text` describe the last check of the
+order server, including which routes the unit is accepting and how long ago it
+looked.
+
+**Errors are always an OperationOutcome** with `application/fhir+json`. There is
+no second error format anywhere in the FHIR interface.
 
 Stock is reported as an
 [InventoryReport](InventoryReport-SetDarkTo17.html), and can be set the same
 way, either as a `snapshot` or as a `difference`.
+
+### Time
+
+A dispense carries `recorded`, `whenPrepared` and `whenHandedOver`, and a
+refusal carries `recorded`, as soon as the unit has reached an NTP server.
+Until then those elements are left out rather than guessed: an absent timestamp
+means the unit had no clock, never that the event happened at the epoch. The
+same applies to `InventoryReport.reportedDateTime`.
+
+### Updates
+
+A unit's firmware and its web files are both replaceable over Wi-Fi, which is
+what makes a remote dispenser supportable. The chip keeps two application
+slots, so an upload is written to the one that is not running and the unit
+reboots into it; a new image is marked good only once it has been up for a
+minute with a network, and the previous one stays available to roll back to.
+
+| Route | Meaning |
+|---|---|
+| `GET /ota/status` | version, running slot, how full it is, rollback availability, clock, last result |
+| `POST /ota/firmware` | the firmware image as the request body |
+| `POST /ota/filesystem` | the filesystem image, which carries the web files |
+| `POST /ota/file?path=/index.html` | one file, with no restart |
+| `POST /ota/check` | fetch the release manifest and report what is waiting |
+| `POST /ota/install` | take what the check found |
+| `GET /ota/status` | also reports `updateAvailable`, `availableVersion` and how long ago it looked |
+| `POST /ota/rollback` | go back to the previous image |
+
+Builds are published beside this specification, at
+[costateixeira.github.io/spenser/firmware/](firmware/), which is where a unit
+looks by default. That page lists what changed in the build it is serving, and
+carries the binaries and the manifest next to it. A manifest describes a build
+for the unit:
+
+```json
+{ "version": "1.2.0",
+  "firmware": "https://.../firmware.bin",
+  "filesystem": "https://.../spiffs.bin" }
+```
+
+```
+GET /setSettings?updateUrl=https://.../manifest.json&updateCheckMinutes=15
+```
+
+A unit looks every 15 minutes by default, and `/ota/status` reports when it last
+looked and when it will look again. An interval measured in hours could not be
+watched working, and a manifest is under a kilobyte.
+
+Looking and taking are separate. `updateMode=notify`, the default, has a check
+report what is waiting and stop there: `/ota/status` then carries
+`updateAvailable` and `availableVersion`, the dashboard shows a notice reading
+"New firmware available" with an Install button, and nothing reboots unasked.
+
+A unit checks every 15 minutes by default, and **remembers what it found**. The notice
+survives a power cycle, because an update that was waiting before the plug came
+out is still waiting afterwards, and a notice that disappears on a restart is a
+notice nobody acts on. It clears itself when a later check finds nothing newer,
+or once the unit is running the version that was offered.
+
+**What an update contains is readable before it is taken.** The manifest carries
+release notes; the unit keeps them, serves them in `/ota/status` as
+`availableNotes` and `availableNotesUrl`, and the dashboard shows them in a
+popup when you press Install, with the full list a link away. Installing blind
+is not an option a maintainer should be given.
+
+A published version carries the commit it was built from, as `1.2.0+a1b2c3d`.
+That is what lets a unit tell one build from the next, and settle once it has
+installed one. `updateMode=install` has the unit take it
+by itself, which suits a unit nobody can reach. Anything other than the exact
+word `install` counts as notify, so a mistyped setting cannot turn a fleet into
+one that updates itself unannounced.
+
+Each unit reports what it is running as `software.version` in its
+CapabilityStatement and as `firmwareVersion` in its settings, so a fleet can be
+told apart.
 
 ### What Spenser asks of an order server
 
@@ -167,14 +290,17 @@ dashboard.
 |---|---|
 | Orders | `/checkOrders` queues a check and returns `202`, `/orders` reports the last check for the dashboard, `/forgetOrders` clears the list of orders already dealt with |
 | Settings | `/settings`, `/setSettings`, `/resetSettings` |
+| Updates | `/ota/status`, `/ota/firmware`, `/ota/filesystem`, `/ota/file`, `/ota/check`, `/ota/rollback` |
+| The key | `/key`, within the window described above |
 | Stock and hardware | `/inventory`, `/setInventory`, `/resetInventory`, `/setServos`, `/flashServo1`, `/flashServo2`, `/setColor`, `/battery`, `/reset` |
 | Wi-Fi and identity | `/`, `/scan`, `/cfg`, `/save`, `/wifi-settings`, `/wifi-reset`, `/wifi-reboot-config`, `/getMac`, `/setMac`, `/clearMac` |
 | Captive portal | `/generate_204`, `/hotspot-detect.html`, `/fwlink`, `/ncsi.txt`, `/connecttest.txt` |
 
 `/setSettings` accepts any of `serverUrl`, `orderMode` with values `both`, `tag`
 or `task`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds` between 5 and
-3600, `writeBack`, `giveUpOnStockEmpty`, and the servo parameters. It answers
-with the full settings document.
+3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckHours`, and
+the servo parameters. It answers with the full settings document, which includes
+the firmware version and never includes the key.
 
 A unit checks its order server every `pollSeconds`, 30 by default, while
 `pollEnabled` is on. `/checkOrders` forces a check immediately. It returns

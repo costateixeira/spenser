@@ -130,6 +130,11 @@ is working correctly and has simply been given nothing it is allowed to act on.
 The dispenser's own screen shows the same two things, which are the two that
 matter: what is in each lane, and what the last check did.
 
+Nothing above needs permission. Changing a unit does: dispensing by hand,
+settings, stock, Wi-Fi and updates all need that unit's key, which it prints on
+its serial console at boot and will hand over for five minutes after a restart.
+Reading what it did never does.
+
 ### The settings that matter
 
 Most of a unit's configuration is about servos, Wi-Fi and LEDs. These are the
@@ -154,6 +159,10 @@ POST http://spenser.local/MedicationRequest
 ```
 
 And there is the button on the front, which dispenses without any FHIR at all.
+
+A unit out of reach is still maintainable: its firmware and its web files can
+both be replaced over Wi-Fi, and it can keep itself up to date from a published
+release. The [Interfaces](interfaces.html) page has the details.
 
 **For emergencies, Spenser has a "Hit me" button for dispensing some chocolate.**  
 **This feature should be used with caution.**  

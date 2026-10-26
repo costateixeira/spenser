@@ -1,0 +1,79 @@
+name: Firmware build
+
+# Nothing used to compile the firmware, so a change that did not build could be
+# merged without anyone noticing. This job is the gate: it resolves the pinned
+# dependencies from scratch, which is also what catches a library release that
+# stops working with the core we target.
+
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware.yml'
+  pull_request:
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            firmware/.pio
+          key: pio-${{ runner.os }}-${{ hashFiles('firmware/platformio.ini') }}
+          restore-keys: pio-${{ runner.os }}-
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Build firmware
+        working-directory: firmware
+        run: pio run -e esp32s3
+
+      - name: Build filesystem image
+        working-directory: firmware
+        run: pio run -e esp32s3 -t buildfs
+
+      # A build that loses the project's build_flags still compiles, still fits
+      # and still runs - it just has no USB serial console and the wrong board
+      # define, and it is far larger. That happened, so it is checked for.
+      - name: Check the build is the build we meant
+        working-directory: firmware
+        run: |
+          size=$(stat -c%s .pio/build/esp32s3/firmware.bin)
+          pct=$((size * 100 / 0x330000))
+          echo "firmware.bin: $size bytes, $pct% of its slot"
+          echo "### Firmware $size bytes, $pct% of its OTA slot" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$size" -gt 1700000 ]; then
+            echo "::error::$size bytes is far larger than this firmware should be (~1.39MB). The project build_flags were probably dropped: check SPENSER_VERSION_FLAG rather than PLATFORMIO_BUILD_FLAGS."
+            exit 1
+          fi
+          if [ "$pct" -ge 90 ]; then
+            echo "::error::The firmware uses $pct% of its OTA slot, leaving no room to grow"
+            exit 1
+          fi
+          if [ "$pct" -ge 75 ]; then
+            echo "::warning::The firmware uses $pct% of its OTA slot"
+          fi
+
+      - name: Keep the binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ github.sha }}
+          path: |
+            firmware/.pio/build/esp32s3/firmware.bin
+            firmware/.pio/build/esp32s3/spiffs.bin
+          if-no-files-found: error

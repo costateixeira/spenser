@@ -1,0 +1,323 @@
+name: Firmware to Pages
+
+# Publishes the firmware next to the implementation guide, so a unit can update
+# itself from the project's own site and a human can read what changed:
+#
+#   https://costateixeira.github.io/spenser/firmware/              the notes
+#   https://costateixeira.github.io/spenser/firmware/manifest.json what a unit reads
+#   https://costateixeira.github.io/spenser/firmware/firmware.bin
+#   https://costateixeira.github.io/spenser/firmware/spiffs.bin
+#
+# Two things about this repository shape the job.
+#
+# The IG build deploys to the root of gh-pages with clean-exclude limited to
+# branches and sitepreview, so it removes anything else at the root - including
+# this firmware folder. That is why this workflow also runs after the IG build
+# finishes: it re-asserts the folder each time, rather than fighting over it.
+# Both deploys use single-commit, so gh-pages keeps one commit and the binaries
+# never accumulate in its history.
+#
+# The version a unit compares against must change per published build, or a unit
+# would offer the same update forever. So the build stamps FIRMWARE_VERSION with
+# the base version from main.cpp plus the commit it was built from.
+
+on:
+  push:
+    # TEMPORARY: the test branch is here so a build can be published and the
+    # dashboard notice tried out before this reaches master. Remove the branch
+    # once it is merged - a branch build should not be what the site serves as
+    # the current firmware.
+    branches: [master, 'firmware/key-persistence-ota']
+    tags: ['firmware-v*'] # republishes the same commit as a clean version
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware-pages.yml'
+  workflow_run:
+    workflows: ['GitHub Pages build']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: firmware-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # On a workflow_run, only re-assert the folder for the default branch: a
+    # feature branch's IG preview must not publish its firmware as the current one.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # A push or a manual run builds the ref it came from, so a branch can
+          # be published for testing. The run that follows an IG build is only
+          # re-asserting what the site should already hold, so it pins master.
+          ref: ${{ github.event_name == 'workflow_run' && 'master' || github.ref }}
+          fetch-depth: 0 # the release notes are built from history
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            firmware/.pio
+          key: pio-${{ runner.os }}-${{ hashFiles('firmware/platformio.ini') }}
+          restore-keys: pio-${{ runner.os }}-
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Work out the version and the notes
+        id: meta
+        run: |
+          base=$(sed -n 's/^#define FIRMWARE_VERSION "\(.*\)"/\1/p' firmware/src/main.cpp | head -1)
+          base=${base%-dev}
+          sha=$(git rev-parse --short=7 HEAD)
+
+          # A commit carrying a firmware-v tag is published as that version,
+          # with nothing appended: a release somebody can name. Every other
+          # commit is published as a build of the same line, identified by the
+          # commit it came from, because a unit tells builds apart by this
+          # string and every published build needs its own.
+          tag=$(git tag --points-at HEAD --list 'firmware-v*' | head -1)
+          if [ -n "$tag" ]; then
+            version="${tag#firmware-v}"
+            channel=release
+            if [ "$version" != "$base" ]; then
+              echo "::error::Tag $tag does not match FIRMWARE_VERSION $base in firmware/src/main.cpp"
+              exit 1
+            fi
+          else
+            version="${base}+${sha}"
+            channel=build
+          fi
+
+          echo "Publishing $channel $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "built=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
+          # What changed in the firmware, since the previous tagged release.
+          # Subjects only: the full message is a click away on the commit.
+          #
+          # When this build IS a tagged release, the baseline is the tag before
+          # it, not itself - otherwise a release announces nothing, having been
+          # compared against the commit it is.
+          if [ -n "$tag" ]; then
+            last_tag=$(git tag --list 'firmware-v*' --sort=-creatordate | grep -vFx "$tag" | head -1)
+          else
+            last_tag=$(git tag --list 'firmware-v*' --sort=-creatordate | head -1)
+          fi
+
+          if [ -n "$last_tag" ]; then
+            range="${last_tag}..HEAD"
+            echo "since=$last_tag" >> "$GITHUB_OUTPUT"
+          else
+            range="-15"
+            echo "since=the last 15 changes" >> "$GITHUB_OUTPUT"
+          fi
+
+          {
+            git log $range --no-merges --pretty='- %s (%h, %ad)' --date=short -- firmware/ \
+              | sed 's/[[:space:]]*$//'
+          } > notes.txt
+
+          if [ ! -s notes.txt ]; then
+            echo "- no firmware changes recorded for this build" > notes.txt
+          fi
+
+          echo "--- notes ---"
+          cat notes.txt
+
+      # SPENSER_VERSION_FLAG, not PLATFORMIO_BUILD_FLAGS: the latter replaces the
+      # flags in platformio.ini instead of adding to them, which published a
+      # build with no USB serial console and the wrong board define.
+      - name: Build
+        working-directory: firmware
+        env:
+          SPENSER_VERSION_FLAG: -DFIRMWARE_VERSION=\"${{ steps.meta.outputs.version }}\"
+        run: |
+          pio run -e esp32s3
+          pio run -e esp32s3 -t buildfs
+
+      # A build that loses the project's build_flags still compiles, still fits
+      # and still runs - it just has no USB serial console and the wrong board
+      # define, and it is far larger. That happened, so it is checked for.
+      - name: Check the build is the build we meant
+        working-directory: firmware
+        run: |
+          size=$(stat -c%s .pio/build/esp32s3/firmware.bin)
+          pct=$((size * 100 / 0x330000))
+          echo "firmware.bin: $size bytes, $pct% of its slot"
+          echo "### Firmware $size bytes, $pct% of its OTA slot" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$size" -gt 1700000 ]; then
+            echo "::error::$size bytes is far larger than this firmware should be (~1.39MB). The project build_flags were probably dropped: check SPENSER_VERSION_FLAG rather than PLATFORMIO_BUILD_FLAGS."
+            exit 1
+          fi
+          if [ "$pct" -ge 90 ]; then
+            echo "::error::The firmware uses $pct% of its OTA slot, leaving no room to grow"
+            exit 1
+          fi
+          if [ "$pct" -ge 75 ]; then
+            echo "::warning::The firmware uses $pct% of its OTA slot"
+          fi
+
+      # The whole point of stamping the version is that a unit can tell builds
+      # apart, so publishing one that is not stamped would be worse than not
+      # publishing.
+      - name: Check the version was stamped into the image
+        working-directory: firmware
+        run: |
+          want='${{ steps.meta.outputs.version }}'
+          if ! grep -qa -- "$want" .pio/build/esp32s3/firmware.bin; then
+            echo "::error::$want is not in the built image, so the version flag did not reach the compiler"
+            exit 1
+          fi
+          echo "the image reports $want"
+
+      - name: Assemble the published folder
+        run: |
+          set -euo pipefail
+          mkdir -p site
+          cp firmware/.pio/build/esp32s3/firmware.bin site/firmware.bin
+          cp firmware/.pio/build/esp32s3/spiffs.bin site/spiffs.bin
+
+          version='${{ steps.meta.outputs.version }}'
+          built='${{ steps.meta.outputs.built }}'
+          base='https://costateixeira.github.io/spenser/firmware'
+          fw_size=$(stat -c%s site/firmware.bin)
+          fs_size=$(stat -c%s site/spiffs.bin)
+          fw_sha=$(sha256sum site/firmware.bin | cut -d' ' -f1)
+          fs_sha=$(sha256sum site/spiffs.bin | cut -d' ' -f1)
+
+          cp notes.txt site/release-notes.md
+
+          # The short notes travel in the manifest, because the unit holds them
+          # and shows them before an update is taken. The whole list stays a
+          # link away.
+          python3 - "$version" "$built" "$base" "$fw_sha" "$fs_sha" "$fw_size" "$fs_size" \
+            '${{ steps.meta.outputs.channel }}' <<'PY'
+          import json, sys
+          version, built, base, fw_sha, fs_sha, fw_size, fs_size, channel = sys.argv[1:9]
+          lines = [l.rstrip() for l in open('notes.txt', encoding='utf-8') if l.strip()]
+          short = '\n'.join(lines[:6])
+          if len(short) > 560:
+              short = short[:557] + '...'
+          manifest = {
+              'version': version,
+              'channel': channel, # "release" for a tagged version, else "build"
+              'released': built,
+              'firmware': base + '/firmware.bin',
+              'filesystem': base + '/spiffs.bin',
+              'firmwareSha256': fw_sha,
+              'filesystemSha256': fs_sha,
+              'firmwareBytes': int(fw_size),
+              'filesystemBytes': int(fs_size),
+              'notes': short,
+              'notesUrl': base + '/',
+          }
+          open('site/manifest.json', 'w', encoding='utf-8').write(json.dumps(manifest, indent=2) + '\n')
+          print(json.dumps(manifest, indent=2))
+          PY
+
+          # A page for people, not devices
+          python3 - "$version" "$built" "${{ steps.meta.outputs.since }}" "$fw_size" "$fs_size" \
+            '${{ steps.meta.outputs.channel }}' <<'PY'
+          import html, sys
+          version, built, since, fw_size, fs_size, channel = sys.argv[1:7]
+          heading = 'Release' if channel == 'release' else 'Build'
+          notes = [l.rstrip() for l in open('notes.txt', encoding='utf-8') if l.strip()]
+          items = '\n'.join('    <li>%s</li>' % html.escape(l.lstrip('- ')) for l in notes)
+          page = f"""<!doctype html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Spenser firmware {html.escape(version)}</title>
+          <style>
+            :root {{ color-scheme: light dark; }}
+            body {{ font: 16px/1.55 system-ui, -apple-system, Segoe UI, sans-serif;
+                   max-width: 46rem; margin: 0 auto; padding: 2rem 1rem; }}
+            code, pre {{ font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }}
+            pre {{ background: #8881; padding: .8rem; border-radius: .5rem; overflow-x: auto; }}
+            .meta {{ color: #777; font-size: .9rem; }}
+            a.dl {{ display: inline-block; margin: .2rem .6rem .2rem 0; }}
+          </style>
+          </head>
+          <body>
+          <h1>Spenser firmware</h1>
+          <p class="meta">{heading} <strong>{html.escape(version)}</strong>, built {html.escape(built)}.
+          Changes since {html.escape(since)}.</p>
+
+          <h2>What changed</h2>
+          <ul>
+          {items}
+          </ul>
+
+          <h2>Download</h2>
+          <p>
+            <a class="dl" href="firmware.bin">firmware.bin</a> ({int(fw_size):,} bytes)
+            <a class="dl" href="spiffs.bin">spiffs.bin</a> ({int(fs_size):,} bytes)
+            <a class="dl" href="manifest.json">manifest.json</a>
+          </p>
+
+          <h2>Installing it</h2>
+          <p>A unit checks this page for itself, hourly by default, and shows a
+          notice on its own dashboard when a build is waiting. Press Install
+          there, after reading what it contains.</p>
+
+          <p>To point a unit here by hand, or to a different build:</p>
+          <pre>GET http://spenser.local/setSettings?updateUrl=https://costateixeira.github.io/spenser/firmware/manifest.json&amp;updateCheckHours=1
+          POST http://spenser.local/ota/check
+          POST http://spenser.local/ota/install</pre>
+
+          <p>Those need the unit's key, as <code>X-Spenser-Key</code>. To push an
+          image at a unit instead, without a manifest:</p>
+          <pre>curl -X POST -H "X-Spenser-Key: $KEY" --data-binary @firmware.bin \\
+            http://spenser.local/ota/firmware</pre>
+
+          <p>The filesystem image carries the dashboard and the agent guide, so
+          install it when those change. A unit keeps the image it was running and
+          can roll back to it.</p>
+
+          <p class="meta"><a href="../">Back to the implementation guide</a></p>
+          </body>
+          </html>
+          """
+          open('site/index.html', 'w', encoding='utf-8').write('\n'.join(
+              l[10:] if l.startswith(' ' * 10) else l for l in page.split('\n')))
+          PY
+
+          ls -l site
+
+      # clean: false leaves the IG site alone; single-commit keeps the binaries
+      # out of gh-pages history, which would otherwise grow by 3MB per build.
+      - name: Publish to gh-pages under /firmware
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: site
+          target-folder: firmware
+          clean: false
+          single-commit: true
+          commit-message: 'Firmware ${{ steps.meta.outputs.version }}'
+
+      - name: Say where it went
+        run: |
+          {
+            echo "### Firmware ${{ steps.meta.outputs.version }} published"
+            echo
+            echo "- https://costateixeira.github.io/spenser/firmware/"
+            echo "- manifest: https://costateixeira.github.io/spenser/firmware/manifest.json"
+            echo
+            echo "Units checking that manifest will offer it within the hour."
+          } >> "$GITHUB_STEP_SUMMARY"

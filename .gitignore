@@ -22,3 +22,9 @@ Thumbs.db
 # backup files #
 ################
 *.bak
+
+# PlatformIO build output
+firmware/.pio/
+
+# Local deployment config, which holds the site address
+.env
