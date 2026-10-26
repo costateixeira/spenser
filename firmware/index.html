@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spenser firmware 1.2.4+0615b91</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 16px/1.55 system-ui, -apple-system, Segoe UI, sans-serif;
+         max-width: 46rem; margin: 0 auto; padding: 2rem 1rem; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  pre { background: #8881; padding: .8rem; border-radius: .5rem; overflow-x: auto; }
+  .meta { color: #777; font-size: .9rem; }
+  a.dl { display: inline-block; margin: .2rem .6rem .2rem 0; }
+</style>
+</head>
+<body>
+<h1>Spenser firmware</h1>
+<p class="meta">Build <strong>1.2.4+0615b91</strong>, built 2026-10-26T18:00:28Z.
+Changes since firmware-v1.2.4.</p>
+
+<h2>What changed</h2>
+<ul>
+    <li>no firmware changes recorded for this build</li>
+</ul>
+
+<h2>Download</h2>
+<p>
+  <a class="dl" href="firmware.bin">firmware.bin</a> (1,393,856 bytes)
+  <a class="dl" href="spiffs.bin">spiffs.bin</a> (1,572,864 bytes)
+  <a class="dl" href="manifest.json">manifest.json</a>
+</p>
+
+<h2>Installing it</h2>
+<p>A unit checks this page for itself, hourly by default, and shows a
+notice on its own dashboard when a build is waiting. Press Install
+there, after reading what it contains.</p>
+
+<p>To point a unit here by hand, or to a different build:</p>
+<pre>GET http://spenser.local/setSettings?updateUrl=https://costateixeira.github.io/spenser/firmware/manifest.json&amp;updateCheckHours=1
+POST http://spenser.local/ota/check
+POST http://spenser.local/ota/install</pre>
+
+<p>Those need the unit's key, as <code>X-Spenser-Key</code>. To push an
+image at a unit instead, without a manifest:</p>
+<pre>curl -X POST -H "X-Spenser-Key: $KEY" --data-binary @firmware.bin \
+  http://spenser.local/ota/firmware</pre>
+
+<p>The filesystem image carries the dashboard and the agent guide, so
+install it when those change. A unit keeps the image it was running and
+can roll back to it.</p>
+
+<p class="meta"><a href="../">Back to the implementation guide</a></p>
+</body>
+</html>

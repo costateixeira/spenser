@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MedicationDispense xmlns="http://hl7.org/fhir">
+  <id value="DispenseForActionableDarkOrder"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p class="res-header-id"><b>Generated Narrative: MedicationDispense DispenseForActionableDarkOrder</b></p><a name="DispenseForActionableDarkOrder"> </a><a name="hcDispenseForActionableDarkOrder"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href="Patient/123">Patient/123</a></p><p><b>authorizingPrescription</b>: <a href="MedicationRequest-ActionableDarkOrder.html">MedicationRequest: status = active; intent = instance-order</a></p></div>
+  </text>
+  <status value="completed"/>
+  <medication>
+    <concept>
+      <coding>
+        <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+        <code value="chocolate-dark"/>
+        <display value="Dark Chocolate"/>
+      </coding>
+    </concept>
+  </medication>
+  <subject>
+    <reference value="Patient/123"/>
+  </subject>
+  <authorizingPrescription>
+    <reference value="MedicationRequest/ActionableDarkOrder"/>
+  </authorizingPrescription>
+</MedicationDispense>

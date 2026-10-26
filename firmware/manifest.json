@@ -1,0 +1,13 @@
+{
+  "version": "1.2.4+0615b91",
+  "channel": "build",
+  "released": "2026-10-26T18:00:28Z",
+  "firmware": "https://costateixeira.github.io/spenser/firmware/firmware.bin",
+  "filesystem": "https://costateixeira.github.io/spenser/firmware/spiffs.bin",
+  "firmwareSha256": "86ed1fe6331a3728371606460e5e481e7983338f3eff01d876118f1d94b60ae7",
+  "filesystemSha256": "e274076354cde518f7d091f767a550e8df0a4d96b32a00f09f394db25b9a9330",
+  "firmwareBytes": 1393856,
+  "filesystemBytes": 1572864,
+  "notes": "- no firmware changes recorded for this build",
+  "notesUrl": "https://costateixeira.github.io/spenser/firmware/"
+}

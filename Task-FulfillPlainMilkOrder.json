@@ -1,0 +1,27 @@
+{
+  "resourceType" : "Task",
+  "id" : "FulfillPlainMilkOrder",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: Task FulfillPlainMilkOrder</b></p><a name=\"FulfillPlainMilkOrder\"> </a><a name=\"hcFulfillPlainMilkOrder\"> </a><p><b>identifier</b>: <code>http://example.org/spenser-orders</code>/demo-1</p><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Codes:{http://hl7.org/fhir/CodeSystem/task-code fulfill}\">Fulfill the focal request</span></p><p><b>focus</b>: <a href=\"MedicationRequest-PlainMilkOrder.html\">MedicationRequest: status = active; intent = instance-order</a></p><p><b>for</b>: <a href=\"Patient/123\">Patient/123</a></p></div>"
+  },
+  "identifier" : [{
+    "system" : "http://example.org/spenser-orders",
+    "value" : "demo-1"
+  }],
+  "status" : "requested",
+  "intent" : "order",
+  "code" : {
+    "coding" : [{
+      "system" : "http://hl7.org/fhir/CodeSystem/task-code",
+      "code" : "fulfill",
+      "display" : "Fulfill the focal request"
+    }]
+  },
+  "focus" : {
+    "reference" : "MedicationRequest/PlainMilkOrder"
+  },
+  "for" : {
+    "reference" : "Patient/123"
+  }
+}
