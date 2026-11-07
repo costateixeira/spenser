@@ -4,14 +4,14 @@
 
 .DESCRIPTION
   Places a MedicationRequest on the order server, then a Task asking for it to be
-  fulfilled by the unit named in Task.owner. Waits
+  fulfilled by the unit named in Task.requestedPerformer. Waits
   for the unit to pick the Task up on its next poll, then shows the dispense.
 
   The unit is Device/<name> on the server, registered here if it is not there
-  yet. Task.owner assigns the order to it and Task.requestedPerformer says the
-  same as a preference. A unit takes only its own Tasks once its task search is
-  status=requested&owner=Device/<name>&_include=Task:focus&_count=5; without
-  that, any unit polling this server may take any Task.
+  yet. requestedPerformer is the only Task element R5 lets name a Device.
+  From firmware 1.3 a unit skips a Task meant for another unit and claims one
+  that names no unit; to keep it off those too, set its task search to
+  status=requested&requestedperformer-reference=Device/<name>&_include=Task:focus&_count=5.
 
   The unit is not put in MedicationRequest.performer: in R5 that element is the
   performer of the administration, and does not accept a Device.
@@ -63,7 +63,6 @@ $task = @"
  "focus":{"reference":"MedicationRequest/$orderId"},
  "for":{"reference":"Patient/123"},
  "authoredOn":"$((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'))",
- "owner":{"reference":"Device/$Unit","display":"$Unit"},
  "requestedPerformer":[{"reference":{"reference":"Device/$Unit","display":"$Unit"}}]}
 "@
 $taskId = (Invoke-RestMethod -Method Post -Uri "$Server/Task" -ContentType $type -Headers $h -Body $task).id

@@ -7,14 +7,14 @@
 # A unit's name is its setup Wi-Fi name: Spenser- and the last two bytes of its MAC.
 #
 # Places a MedicationRequest on the order server, then a Task asking for it to be
-# fulfilled by the unit named in Task.owner. Waits
+# fulfilled by the unit named in Task.requestedPerformer. Waits
 # for the unit to pick the Task up on its next poll, then shows the dispense.
 #
 # The unit is Device/<name> on the server, registered here if it is not there
-# yet. Task.owner assigns the order to it and Task.requestedPerformer says the
-# same as a preference. A unit takes only its own Tasks once its task search is
-# status=requested&owner=Device/<name>&_include=Task:focus&_count=5; without
-# that, any unit polling this server may take any Task.
+# yet. requestedPerformer is the only Task element R5 lets name a Device.
+# From firmware 1.3 a unit skips a Task meant for another unit and claims one
+# that names no unit; to keep it off those too, set its task search to
+# status=requested&requestedperformer-reference=Device/<name>&_include=Task:focus&_count=5.
 #
 # The unit is not put in MedicationRequest.performer: in R5 that element is the
 # performer of the administration, and does not accept a Device.
@@ -65,7 +65,6 @@ TASK_ID=$(curl -sS -X POST "$SERVER/Task" -H "$TYPE" -H "$ACCEPT" -d '{
   "focus": {"reference": "MedicationRequest/'"$ORDER_ID"'"},
   "for": {"reference": "Patient/123"},
   "authoredOn": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'",
-  "owner": {"reference": "Device/'"$UNIT"'", "display": "'"$UNIT"'"},
   "requestedPerformer": [{"reference": {"reference": "Device/'"$UNIT"'", "display": "'"$UNIT"'"}}]}' | first id)
 [ -n "$TASK_ID" ] || { echo "The server did not return an id for the Task." >&2; exit 1; }
 echo "Task     Task/$TASK_ID, for unit $UNIT"
