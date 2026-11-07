@@ -53,6 +53,7 @@ Usage: #example
 * status = #completed
 * medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
 * subject = Reference(Patient/123)
+* performer.actor = Reference(Spenser-E3D4) "Spenser-E3D4"
 * authorizingPrescription = Reference(ActionableDarkOrder)
 
 
@@ -66,3 +67,41 @@ Usage: #example
 * medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
 * subject = Reference(Patient/123)
 * authorizingPrescription = Reference(ActionableDarkOrder)
+
+
+Instance: Spenser-E3D4
+InstanceOf: Device
+Title: "Example - A Spenser unit on the order server"
+Description: "The Device a unit writes on the order server once per boot. Its id is the unit's name, the network it shows in setup mode: Spenser- and the last two bytes of its factory MAC."
+Usage: #example
+* identifier.system = "http://costateixeira.github.io/spenser/unit"
+* identifier.value = "Spenser-E3D4"
+* status = #active
+* manufacturer = "Spenser"
+* name.value = "Spenser-E3D4"
+* name.type = #user-friendly-name
+* version.value = "1.3.0"
+
+
+Instance: PlainDarkOrderForOneUnit
+InstanceOf: SpenserRequest
+Title: "Example - Order meant for one unit"
+Description: "A plain order, made actionable by the Task that addresses it to one unit. The order itself does not name the unit: MedicationRequest.performer is the performer of the administration, and does not accept a Device."
+Usage: #example
+* status = #active
+* intent = #instance-order
+* medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
+* subject = Reference(Patient/123)
+
+
+Instance: FulfillForOneUnit
+InstanceOf: Task
+Title: "Example - Task addressed to one unit"
+Description: "Task.requestedPerformer names the unit that is to fill the order: the one Task element R5 lets name a Device. Every other unit skips this Task; the unit it names dispenses it and closes it."
+Usage: #example
+* status = #requested
+* intent = #order
+* code = $TaskCode#fulfill "Fulfill the focal request"
+* focus = Reference(PlainDarkOrderForOneUnit)
+* for = Reference(Patient/123)
+* requestedPerformer.reference = Reference(Spenser-E3D4) "Spenser-E3D4"

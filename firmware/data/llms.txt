@@ -141,7 +141,9 @@ POST /InventoryReport                                    [key]
 Set the server with GET /setSettings?serverUrl=... Then, on every check, it
 runs two searches and writes back what happened.
 
+  PUT  {server}/Device/{unit name}        (once per boot: this unit, see below)
   GET  {server}/Task?status=requested&_include=Task:focus&_count=5
+  PUT  {server}/Task/{id}                 (claim: this unit added to requestedPerformer, If-Match)
   GET  {server}/MedicationRequest?_tag=http%3A%2F%2Fterminology.hl7.org%2FCodeSystem%2Fcommon-tags%7Cactionable&status=active&intent=instance-order&_count=5
   POST {server}/MedicationDispense
   PUT  {server}/Task/{id}                 (completed, or failed when it gives up)
@@ -156,6 +158,57 @@ search are considered per check, so with a longer queue a specific order may
 not be picked up on a given check.
 
 Both http:// and https:// work. Certificates are not validated.
+
+
+## Addressing an order to one unit
+
+Every unit has a name: the network it shows in setup mode, Spenser- and the
+last two bytes of its factory MAC, such as Spenser-E3D4. GET /settings returns
+it as unitName. On the order server the unit is Device/<name>, which it writes
+itself once per boot (only with writeBack on):
+
+    { "resourceType": "Device", "id": "Spenser-E3D4",
+      "identifier": [ { "system": "http://costateixeira.github.io/spenser/unit",
+                        "value": "Spenser-E3D4" } ],
+      "status": "active", "manufacturer": "Spenser",
+      "name": [ { "value": "Spenser-E3D4", "type": "user-friendly-name" } ],
+      "version": [ { "value": "<firmware version>" } ] }
+
+To send an order to one unit, list it in Task.requestedPerformer. That is the
+only Task element R5 lets name a Device: Task.owner and Task.performer.actor do
+not accept one.
+
+    "requestedPerformer": [
+      { "reference": { "reference": "Device/Spenser-E3D4", "display": "Spenser-E3D4" } } ]
+
+Only Devices listed there count; an Organization or a kind of performer says
+nothing about which unit. On every check the unit then:
+
+- skips a Task whose requestedPerformer names other units but not this one;
+- dispenses a Task that names this unit;
+- claims a Task that names no unit before dispensing it: a PUT that adds this
+  unit to requestedPerformer, with If-Match on the version it just read. Only if
+  that write succeeds does it dispense. A unit that loses the race is refused
+  and leaves the Task alone; on the next check the Task names the winner. The
+  status stays requested while claimed, so a Task waiting on an empty lane is
+  retried after a refill, by the unit that claimed it.
+
+Without writeBack there is no claim, and an unowned Task is dispensed as before.
+
+A tagged MedicationRequest names nobody, so with several units on one server it
+goes to whichever unit checks first. Use Tasks there, with orderMode=task.
+
+To keep a unit off unaddressed Tasks altogether, narrow its Task search:
+
+    GET /setSettings?taskQuery=status%3Drequested%26requestedperformer-reference%3DDevice%2FSpenser-E3D4%26_include%3DTask%3Afocus%26_count%3D5
+
+Every MedicationDispense names the unit that wrote it:
+
+    "performer": [ { "actor": { "reference": "Device/Spenser-E3D4",
+                                "display": "Spenser-E3D4" } } ]
+
+MedicationRequest.performer is not used for this: in R5 it is the performer of
+the administration, and it does not accept a Device.
 
 
 ## Time
@@ -296,7 +349,8 @@ Settings
                           updateCheckHours, servoDark, servoMilk, angleRest,
                           anglePush, returnDelayMs. Answers with the full
                           settings JSON, which includes firmwareVersion and
-                          never includes the key. 400 when nothing is known.
+                          unitName, and never includes the key. 400 when
+                          nothing is known.
   GET /resetSettings      Back to the compiled-in defaults.
 
 Stock and hardware

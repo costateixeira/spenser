@@ -222,12 +222,18 @@ Point a unit at a server, and on every check it runs two searches and writes
 back what happened:
 
 ```
+PUT  {server}/Device/{unit name}
 GET  {server}/Task?status=requested&_include=Task:focus&_count=5
+PUT  {server}/Task/{id}
 GET  {server}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags|actionable&status=active&intent=instance-order&_count=5
 POST {server}/MedicationDispense
 PUT  {server}/Task/{id}
 PUT  {server}/MedicationRequest/{id}
 ```
+
+The first `PUT` to a Task is the claim described under
+[Addressing an order to one unit](#addressing-an-order-to-one-unit); the second
+closes it.
 
 The `_include` matters: Spenser resolves `Task.focus` from the entries of that
 one Bundle rather than fetching each order separately, so a Task whose focus is
@@ -239,6 +245,59 @@ on a particular check.
 
 Both `http://` and `https://` work. Certificates are not validated, so treat the
 link as you would any other unauthenticated local traffic.
+
+### Addressing an order to one unit
+
+Many units can share one order server, so an order can say which of them is to
+fill it.
+
+**Each unit has a name**, the network it shows in setup mode: `Spenser-` and the
+last two bytes of its factory MAC address, such as `Spenser-E3D4`. It is
+`unitName` in `GET /settings`, and the dashboard shows it in its header. On the
+order server the unit is `Device/<name>`, which it writes itself once per boot,
+with its identifier in `http://costateixeira.github.io/spenser/unit` and its
+firmware version. It does so only with `writeBack` on.
+
+**The order names the unit in the Task**, in `Task.requestedPerformer`, the one
+Task element that R5 lets name a Device: `Task.owner` and `Task.performer.actor`
+do not accept one. Only Devices listed there count; an Organization or a kind of
+performer says nothing about which unit.
+
+```json
+"requestedPerformer": [
+  { "reference": { "reference": "Device/Spenser-E3D4", "display": "Spenser-E3D4" } }
+]
+```
+
+See [a Task addressed to one unit](Task-FulfillForOneUnit.html), the [plain order](MedicationRequest-PlainDarkOrderForOneUnit.html) it points at, and [the unit](Device-Spenser-E3D4.html) as it appears on the server.
+
+`MedicationRequest.performer` is not used: in R5 it is the intended performer of
+the administration, and it does not accept a Device. The request authorizes the
+dispense; the Task says who is to do it.
+
+**On every check the unit reads `requestedPerformer`:**
+
+| The Devices in `Task.requestedPerformer` | What the unit does |
+|---|---|
+| other units, not this one | skips the Task |
+| this unit, with or without others | dispenses it |
+| none | claims it, then dispenses it if the claim succeeded |
+
+The claim is a `PUT` of the Task with this unit added to `requestedPerformer`,
+conditional on the version just read (`If-Match`). Of two units racing for the same Task, one
+write lands and the other is refused, and the loser leaves the Task alone: on
+its next check the Task names the winner. The status stays `requested` while the
+Task is claimed, so a Task waiting on an empty lane is retried after a refill,
+by the unit that claimed it. Without `writeBack` nothing can be claimed, and an
+unowned Task is dispensed as before.
+
+A tagged MedicationRequest names nobody, so with several units on one server it
+goes to whichever checks first. Use Tasks there, with `orderMode=task`. To keep
+a unit off unaddressed Tasks altogether, add
+`requestedperformer-reference=Device/<name>` to its `taskQuery`.
+
+**Every MedicationDispense names the unit that made it**, in
+`performer.actor`, so the server shows which unit filled which order.
 
 ### Orders you can copy
 
