@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spenser Orders</title>
+  <!--
+    Order a chocolate from a specific Spenser, anywhere, through the order server.
+
+    Open this file in a browser. It talks to the FHIR server directly (the server
+    allows any origin), never to a unit: units poll the server, so the one you
+    name picks the order up wherever it is.
+
+    For one order it writes, in this order:
+      Device/<unit>           only if the unit is not registered yet
+      MedicationRequest       the authorization, no actionable tag
+      Task                    fulfil that request; owner and requestedPerformer
+                              name the unit
+
+    The unit goes in the Task, not in MedicationRequest.performer: in R5 that
+    element is the performer of the administration, and does not accept a Device.
+
+    A unit takes only Tasks addressed to it once its "Extra search parameters
+    (tasks)" setting is
+      status=requested&owner=Device/<unit>&_include=Task:focus&_count=5
+    Without that, any unit polling the server may take any Task.
+  -->
+  <style>
+    :root {
+      --chocolate: #2a1810;
+      --chocolate-mid: #4a2c1d;
+      --flame: #e4602a;
+      --flame-deep: #a8431a;
+      --paper: #fff8f1;
+      --line: #e6d6c8;
+      --muted: #7a6558;
+      --ok: #2e7d4f;
+      --err: #b3261e;
+      --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1b120d;
+        --card: #261a13;
+        --line: #3d2c22;
+        --chocolate: #f3e6dc;
+        --chocolate-mid: #d9c4b6;
+        --muted: #a8968a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--chocolate);
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    h2 { font-size: 1.1rem; margin: 0 0 12px; }
+    .lead { color: var(--muted); margin: 0 0 24px; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 12px; }
+    input, select {
+      display: block; width: 100%; margin-top: 4px; padding: 9px 10px;
+      font: inherit; color: inherit; background: var(--paper);
+      border: 1px solid var(--line); border-radius: 8px;
+    }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row > * { flex: 1 1 200px; }
+    .choices { display: flex; gap: 10px; margin: 4px 0 16px; }
+    .choice {
+      flex: 1; padding: 14px; border-radius: 10px; cursor: pointer;
+      border: 2px solid var(--line); background: var(--paper); color: inherit; font: inherit; font-weight: 600;
+    }
+    .choice[aria-pressed="true"] { border-color: var(--flame); box-shadow: 0 0 0 3px rgba(228, 96, 42, .18); }
+    button.primary {
+      width: 100%; padding: 13px; border: 0; border-radius: 10px; cursor: pointer;
+      background: var(--flame); color: #fff; font: inherit; font-weight: 700; font-size: 1.05rem;
+    }
+    button.primary:hover { background: var(--flame-deep); }
+    button.primary:disabled { opacity: .55; cursor: default; }
+    button.small {
+      padding: 5px 10px; border-radius: 6px; border: 1px solid var(--line);
+      background: transparent; color: inherit; font: inherit; font-size: .85rem; cursor: pointer;
+    }
+    .hint { font-size: .85rem; color: var(--muted); margin: -4px 0 12px; }
+    .hint code, td code, li code { font-size: .8rem; word-break: break-all; }
+    ol.log { margin: 14px 0 0; padding-left: 20px; }
+    ol.log li { margin: 4px 0; }
+    .ok { color: var(--ok); font-weight: 600; }
+    .err { color: var(--err); font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    .table-wrap { overflow-x: auto; }
+    .empty { color: var(--muted); font-style: italic; }
+    a { color: var(--flame-deep); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Order a chocolate</h1>
+  <p class="lead">Places the order on the FHIR server, addressed to one Spenser. That unit picks it up on its next poll, wherever it is.</p>
+
+  <section>
+    <div class="row">
+      <label>Order server (FHIR base URL)
+        <input id="server" type="url" />
+      </label>
+      <label>Spenser unit
+        <input id="unit" list="units" placeholder="Spenser-E3D4" autocomplete="off" />
+        <datalist id="units"></datalist>
+      </label>
+    </div>
+    <p class="hint">A unit's name is the Wi-Fi network it shows in setup mode: <code>Spenser-</code> and the last four characters of its MAC address.</p>
+
+    <div class="choices" role="group" aria-label="Chocolate">
+      <button class="choice" data-code="chocolate-dark" aria-pressed="true">Dark</button>
+      <button class="choice" data-code="chocolate-milk" aria-pressed="false">Milk</button>
+    </div>
+
+    <button class="primary" id="order">Order</button>
+    <ol class="log" id="log" hidden></ol>
+  </section>
+
+  <section>
+    <div class="row" style="align-items:center;margin-bottom:8px">
+      <h2 style="margin:0">Waiting on the server</h2>
+      <div style="flex:0 0 auto"><button class="small" id="refresh">Refresh</button></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Placed</th><th>Chocolate</th><th>For unit</th><th>Task</th><th></th></tr></thead>
+        <tbody id="queue"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="hint" style="margin-top:12px">Every waiting order will be dispensed by some unit. A Task without a unit can be taken by any unit that is not filtering on <code>owner</code>.</p>
+  </section>
+
+  <section>
+    <h2>Making a unit take only its own orders</h2>
+    <p class="hint" style="margin:0 0 8px">On the unit's dashboard, under Settings, then Orders, set <em>Accept orders made actionable by</em> to <em>a Task asking for fulfilment only</em>, and <em>Extra search parameters (tasks)</em> to:</p>
+    <code id="query" style="display:block;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:8px;word-break:break-all"></code>
+  </section>
+</main>
+
+<script>
+  const DEFAULT_SERVER = 'https://spenser.178.104.103.200.sslip.io/fhir/r5';
+  const UNIT_SYSTEM = 'http://costateixeira.github.io/spenser/unit';
+  const MEDS = 'http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds';
+  const DISPLAY = { 'chocolate-dark': 'Dark Chocolate', 'chocolate-milk': 'Milk Chocolate' };
+  const FHIR = 'application/fhir+json';
+
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  $('server').value = store.get('spenserOrderServer', DEFAULT_SERVER);
+  $('unit').value = store.get('spenserOrderUnit', '');
+  let code = 'chocolate-dark';
+
+  const base = () => $('server').value.trim().replace(/\/+$/, '');
+  const unitName = () => $('unit').value.trim();
+  // A FHIR id allows letters, digits, '-' and '.', up to 64 characters.
+  const validUnit = name => /^[A-Za-z0-9\-.]{1,64}$/.test(name);
+
+  async function fhir(method, path, body, extraHeaders) {
+    const headers = Object.assign({ Accept: FHIR }, extraHeaders || {});
+    if (body) headers['Content-Type'] = FHIR;
+    const r = await fetch(base() + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    const text = await r.text();
+    let json = null;
+    try { json = text ? JSON.parse(text) : null; } catch (e) {}
+    if (!r.ok) {
+      const why = json && json.issue ? json.issue.map(i => i.diagnostics || i.code).join('; ') : text.slice(0, 200);
+      const err = new Error(`${method} ${path} → HTTP ${r.status}${why ? ': ' + why : ''}`);
+      err.status = r.status;
+      throw err;
+    }
+    return json;
+  }
+
+  function log(html, cls) {
+    const li = document.createElement('li');
+    li.innerHTML = html;
+    if (cls) li.className = cls;
+    $('log').appendChild(li);
+    return li;
+  }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function showQuery() {
+    const name = unitName() || 'Spenser-XXXX';
+    $('query').textContent = `status=requested&owner=Device/${name}&_include=Task:focus&_count=5`;
+  }
+
+  // The unit as a Device on the server, so Task.owner points at something real.
+  async function ensureDevice(name) {
+    try {
+      await fhir('GET', '/Device/' + encodeURIComponent(name));
+      return false;
+    } catch (e) {
+      if (e.status !== 404 && e.status !== 410) throw e;
+    }
+    await fhir('PUT', '/Device/' + encodeURIComponent(name), {
+      resourceType: 'Device',
+      id: name,
+      identifier: [{ system: UNIT_SYSTEM, value: name }],
+      status: 'active',
+      name: [{ value: name, type: 'user-friendly-name' }],
+      manufacturer: 'Spenser'
+    });
+    return true;
+  }
+
+  async function placeOrder() {
+    const name = unitName();
+    if (!validUnit(name)) {
+      alert('Name the unit, for example Spenser-E3D4.');
+      $('unit').focus();
+      return;
+    }
+    store.set('spenserOrderServer', base());
+    store.set('spenserOrderUnit', name);
+    $('order').disabled = true;
+    $('log').hidden = false;
+    $('log').innerHTML = '';
+
+    try {
+      if (await ensureDevice(name)) log(`Registered <code>Device/${esc(name)}</code> on the server`);
+
+      const order = await fhir('POST', '/MedicationRequest', {
+        resourceType: 'MedicationRequest',
+        status: 'active',
+        intent: 'instance-order',
+        medication: { concept: { coding: [{ system: MEDS, code, display: DISPLAY[code] }] } },
+        subject: { reference: 'Patient/123' },
+        dosageInstruction: [{ text: 'One bite' }]
+      });
+      log(`Order <code>MedicationRequest/${esc(order.id)}</code>: ${esc(DISPLAY[code])}`);
+
+      const device = { reference: 'Device/' + name, display: name };
+      const task = await fhir('POST', '/Task', {
+        resourceType: 'Task',
+        status: 'requested',
+        intent: 'order',
+        code: { coding: [{ system: 'http://hl7.org/fhir/CodeSystem/task-code', code: 'fulfill' }] },
+        focus: { reference: 'MedicationRequest/' + order.id },
+        for: { reference: 'Patient/123' },
+        authoredOn: new Date().toISOString(),
+        owner: device,
+        requestedPerformer: [{ reference: device }]
+      });
+      log(`Task <code>Task/${esc(task.id)}</code>, addressed to <strong>${esc(name)}</strong>`);
+      refreshQueue();
+      await watch(task.id, order.id);
+    } catch (e) {
+      log(esc(e.message), 'err');
+    } finally {
+      $('order').disabled = false;
+    }
+  }
+
+  // Wait for the unit to take the Task. It polls every 30 seconds by default.
+  async function watch(taskId, orderId) {
+    const line = log('Waiting for the unit… <span id="waited">0</span> s');
+    const started = Date.now();
+    let status = 'requested';
+    while (Date.now() - started < 180000) {
+      await new Promise(r => setTimeout(r, 5000));
+      const w = document.getElementById('waited');
+      if (w) w.textContent = Math.round((Date.now() - started) / 1000);
+      try { status = (await fhir('GET', '/Task/' + taskId)).status; } catch (e) { continue; }
+      if (status !== 'requested') break;
+    }
+    line.textContent = `Task is ${status}`;
+
+    let dispenses = [];
+    try {
+      const b = await fhir('GET', '/MedicationDispense?prescription=MedicationRequest/' + orderId);
+      dispenses = (b.entry || []).map(e => e.resource);
+    } catch (e) {}
+    for (const d of dispenses) {
+      const reason = d.notPerformedReason && d.notPerformedReason.concept && d.notPerformedReason.concept.coding
+        ? ' (' + d.notPerformedReason.concept.coding[0].code + ')' : '';
+      log(`Dispense <code>MedicationDispense/${esc(d.id)}</code>: ${esc(d.status)}${esc(reason)}`,
+          d.status === 'completed' ? 'ok' : 'err');
+    }
+
+    if (status === 'completed') log('Done: the chocolate is in the tray.', 'ok');
+    else if (status === 'failed') log('The unit gave up on it. The dispense above says why.', 'err');
+    else if (status === 'requested') log('No unit has taken it yet. It stays in the queue below until one does: check that the unit is online, polling, and pointed at this server.', 'err');
+    refreshQueue();
+  }
+
+  async function refreshQueue() {
+    const body = $('queue');
+    let bundle;
+    try {
+      bundle = await fhir('GET', '/Task?status=requested&_include=Task:focus&_count=50');
+    } catch (e) {
+      body.innerHTML = `<tr><td colspan="5" class="err">${esc(e.message)}</td></tr>`;
+      return;
+    }
+    const entries = (bundle.entry || []).map(e => e.resource);
+    const orders = {};
+    entries.filter(r => r.resourceType === 'MedicationRequest').forEach(r => orders['MedicationRequest/' + r.id] = r);
+    const tasks = entries.filter(r => r.resourceType === 'Task');
+    if (!tasks.length) {
+      body.innerHTML = '<tr><td colspan="5" class="empty">Nothing waiting.</td></tr>';
+      return;
+    }
+    body.innerHTML = '';
+    for (const t of tasks) {
+      const order = orders[(t.focus || {}).reference] || {};
+      const coding = (((order.medication || {}).concept || {}).coding || [{}])[0];
+      const unit = (t.owner && (t.owner.display || t.owner.reference)) || '<span class="empty">any</span>';
+      const when = new Date(t.authoredOn || (t.meta || {}).lastUpdated || Date.now());
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${esc(when.toLocaleString())}</td><td>${esc(coding.display || coding.code || '?')}</td>`
+        + `<td>${t.owner ? esc(unit) : unit}</td><td><code>${esc(t.id.slice(0, 8))}</code></td>`
+        + `<td><button class="small">Cancel</button></td>`;
+      tr.querySelector('button').onclick = () => cancel(t);
+      body.appendChild(tr);
+    }
+  }
+
+  // Cancelling the Task withdraws the request to fulfil; the order itself stays
+  // with whoever placed it, as COW has it.
+  async function cancel(task) {
+    if (!confirm('Cancel this order? No unit will dispense it.')) return;
+    const updated = Object.assign({}, task, { status: 'cancelled' });
+    const version = task.meta && task.meta.versionId;
+    try {
+      await fhir('PUT', '/Task/' + task.id, updated, version ? { 'If-Match': `W/"${version}"` } : null);
+    } catch (e) {
+      alert(e.message);
+    }
+    refreshQueue();
+  }
+
+  async function loadUnits() {
+    try {
+      const b = await fhir('GET', '/Device?identifier=' + encodeURIComponent(UNIT_SYSTEM + '|') + '&_count=100');
+      $('units').innerHTML = (b.entry || [])
+        .map(e => `<option value="${esc(e.resource.id)}">`).join('');
+    } catch (e) {}
+  }
+
+  document.querySelectorAll('.choice').forEach(btn => btn.onclick = () => {
+    code = btn.dataset.code;
+    document.querySelectorAll('.choice').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+  });
+  $('order').onclick = placeOrder;
+  $('refresh').onclick = refreshQueue;
+  $('unit').oninput = showQuery;
+  $('server').onchange = () => { refreshQueue(); loadUnits(); };
+
+  showQuery();
+  refreshQueue();
+  loadUnits();
+</script>
+</body>
+</html>
