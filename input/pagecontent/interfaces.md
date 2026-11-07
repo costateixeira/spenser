@@ -301,13 +301,15 @@ conditional on the version just read (`If-Match`). Of two units racing for the s
 write lands and the other is refused, and the loser leaves the Task alone: on
 its next check the Task names the winner. The status stays `requested` while the
 Task is claimed, so a Task waiting on an empty lane is retried after a refill,
-by the unit that claimed it. Without `writeBack` nothing can be claimed, and an
-unowned Task is dispensed as before.
+by the unit that claimed it. Without `writeBack` nothing can be claimed, and a
+Task that names no unit is dispensed as before.
 
 A tagged order with no Task can name its unit only in the extension. With several
 units on one server, give tagged orders the extension or use Tasks, with
 `orderMode=task`. To keep a unit off unaddressed Tasks altogether, add
-`requestedperformer-reference=Device/<name>` to its `taskQuery`.
+`requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<name>`
+to its `taskQuery`. A search matches one form only: Tasks that name the unit as
+`Device/<name>` need `requestedperformer-reference=Device/<name>` instead.
 
 **Every MedicationDispense names the unit that made it**, in
 `performer.actor`, so the server shows which unit filled which order.

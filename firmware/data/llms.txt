@@ -223,9 +223,13 @@ A tagged order with no Task can only name its unit in the extension, so with
 several units on one server, either give tagged orders the extension or use
 Tasks, with orderMode=task.
 
-To keep a unit off unaddressed Tasks altogether, narrow its Task search:
+To keep a unit off unaddressed Tasks altogether, narrow its Task search to the
+Tasks that name it. For a logical reference, the form the order tools use:
 
-    GET /setSettings?taskQuery=status%3Drequested%26requestedperformer-reference%3DDevice%2FSpenser-E3D4%26_include%3DTask%3Afocus%26_count%3D5
+    GET /setSettings?taskQuery=status%3Drequested%26requestedperformer-reference%3Aidentifier%3Dhttp%3A%2F%2Fcostateixeira.github.io%2Fspenser%2Funit%7CSpenser-E3D4%26_include%3DTask%3Afocus%26_count%3D5
+
+A search matches one form only: Tasks that name the unit as Device/<name>
+need requestedperformer-reference=Device/Spenser-E3D4 instead.
 
 Every MedicationDispense names the unit that wrote it:
 
