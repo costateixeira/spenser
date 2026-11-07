@@ -10,14 +10,14 @@
 # fulfilled by the unit named in Task.requestedPerformer. Waits
 # for the unit to pick the Task up on its next poll, then shows the dispense.
 #
-# The unit is Device/<name> on the server, registered here if it is not there
-# yet. requestedPerformer is the only Task element R5 lets name a Device.
-# From firmware 1.3 a unit skips a Task meant for another unit and claims one
-# that names no unit; to keep it off those too, set its task search to
-# status=requested&requestedperformer-reference=Device/<name>&_include=Task:focus&_count=5.
-#
-# The unit is not put in MedicationRequest.performer: in R5 that element is the
-# performer of the administration, and does not accept a Device.
+# Both name the unit by a logical reference, its identifier in
+# http://costateixeira.github.io/spenser/unit, so nothing has to exist on the
+# server first: Task.requestedPerformer, the only Task element R5 lets name a
+# Device, and the IG's dispensingDevice extension on the MedicationRequest,
+# which has no such element. From firmware 1.3 a unit skips an order meant for
+# another unit and claims a Task that names no unit; to keep it off those too,
+# set its task search to
+# status=requested&requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<name>&_include=Task:focus&_count=5
 #
 # Needs only curl. SERVER and WAIT_SECONDS can be set in the environment.
 
@@ -40,23 +40,19 @@ ACCEPT="Accept: application/fhir+json"
 # The first "id" in a resource is its own: the server writes it right after resourceType.
 first() { tr -d '\n' | sed -n "s/^[^{]*{[^}]*\"$1\" *: *\"\([^\"]*\)\".*/\1/p"; }
 
-# 0. The unit, as a Device the Task can point at.
-if [ "$(curl -s -o /dev/null -w '%{http_code}' "$SERVER/Device/$UNIT" -H "$ACCEPT")" != 200 ]; then
-  curl -sS -o /dev/null -X PUT "$SERVER/Device/$UNIT" -H "$TYPE" -H "$ACCEPT" -d '{
-    "resourceType": "Device", "id": "'"$UNIT"'", "status": "active", "manufacturer": "Spenser",
-    "identifier": [{"system": "http://costateixeira.github.io/spenser/unit", "value": "'"$UNIT"'"}],
-    "name": [{"value": "'"$UNIT"'", "type": "user-friendly-name"}]}'
-  echo "Unit     Device/$UNIT registered"
-fi
+# The unit, by a logical reference: its identifier, which needs nothing on the server.
+UNIT_REF='{"identifier": {"system": "http://costateixeira.github.io/spenser/unit", "value": "'"$UNIT"'"}, "display": "'"$UNIT"'"}'
 
 # 1. The order. No actionable tag: the Task is what makes it actionable.
 ORDER_ID=$(curl -sS -X POST "$SERVER/MedicationRequest" -H "$TYPE" -H "$ACCEPT" -d '{
   "resourceType": "MedicationRequest", "status": "active", "intent": "instance-order",
+  "extension": [{"url": "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+    "valueReference": '"$UNIT_REF"'}],
   "medication": {"concept": {"coding": [{"system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
     "code": "chocolate-'"$CHOCOLATE"'", "display": "'"$DISPLAY_NAME"'"}]}},
   "subject": {"reference": "Patient/123"}, "dosageInstruction": [{"text": "One bite"}]}' | first id)
 [ -n "$ORDER_ID" ] || { echo "The server did not return an id for the order." >&2; exit 1; }
-echo "Order    MedicationRequest/$ORDER_ID ($DISPLAY_NAME)"
+echo "Order    MedicationRequest/$ORDER_ID ($DISPLAY_NAME), dispensingDevice $UNIT"
 
 # 2. The Task: fulfil that order, by this unit.
 TASK_ID=$(curl -sS -X POST "$SERVER/Task" -H "$TYPE" -H "$ACCEPT" -d '{
@@ -65,9 +61,9 @@ TASK_ID=$(curl -sS -X POST "$SERVER/Task" -H "$TYPE" -H "$ACCEPT" -d '{
   "focus": {"reference": "MedicationRequest/'"$ORDER_ID"'"},
   "for": {"reference": "Patient/123"},
   "authoredOn": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'",
-  "requestedPerformer": [{"reference": {"reference": "Device/'"$UNIT"'", "display": "'"$UNIT"'"}}]}' | first id)
+  "requestedPerformer": [{"reference": '"$UNIT_REF"'}]}' | first id)
 [ -n "$TASK_ID" ] || { echo "The server did not return an id for the Task." >&2; exit 1; }
-echo "Task     Task/$TASK_ID, for unit $UNIT"
+echo "Task     Task/$TASK_ID, requestedPerformer $UNIT"
 
 # 3. Wait for a unit to take it. It polls every 30 seconds by default.
 WAITED=0

@@ -30,7 +30,7 @@ until `llms.txt`, the interfaces page and the CapabilityStatement in
 | `input/translations/<lang>/` | Portuguese, Dutch and French: pages in `pagecontent/`, the menu in `includes/menu.xml`, resource strings in `.po` files |
 | `ig-template/` | the IG template, which extends the pinned `fhir2.base.template` |
 | `tools/assembly/` | draws the assembly sheets in `input/images/assembly-*.svg` from the STL files |
-| `tools/order/` | `order.html`, `order-chocolate.ps1` and `.sh`: place an order on the order server, addressed to one unit through `Task.requestedPerformer`, then watch it fill it |
+| `tools/order/` | `order.html`, `order-chocolate.ps1` and `.sh`: place an order on the order server, naming one unit in `Task.requestedPerformer` and the `dispensingDevice` extension, then watch it fill it |
 | `bruno/` | executable tests: an API collection split into the order server and the device |
 | `server/` | a small Express stand-in for an order server, for working offline |
 | `docker-compose*.yml`, `Caddyfile*` | the deployed order server, fhir-candle behind Caddy |

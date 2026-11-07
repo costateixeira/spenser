@@ -11,20 +11,21 @@
     allows any origin), never to a unit: units poll the server, so the one you
     name picks the order up wherever it is.
 
-    For one order it writes, in this order:
-      Device/<unit>           only if the unit is not registered yet
-      MedicationRequest       the authorization, no actionable tag
+    For one order it writes:
+      MedicationRequest       the authorization, no actionable tag; names the
+                              unit in the dispensingDevice extension
       Task                    fulfil that request; requestedPerformer names
                               the unit
 
-    The unit goes in Task.requestedPerformer, the only Task element R5 lets name
-    a Device: Task.owner does not accept one, and MedicationRequest.performer is
-    the performer of the administration.
+    Both name the unit by a logical reference, its identifier in
+    http://costateixeira.github.io/spenser/unit, so nothing has to exist on the
+    server first. requestedPerformer is the only Task element R5 lets name a
+    Device, and MedicationRequest has none at all, hence the IG's extension.
 
-    From firmware 1.3 a unit skips a Task meant for another unit, and claims a
+    From firmware 1.3 a unit skips an order meant for another unit, and claims a
     Task that names no unit before dispensing it. To keep a unit off those
     altogether, its "Extra search parameters (tasks)" setting can be
-      status=requested&requestedperformer-reference=Device/<unit>&_include=Task:focus&_count=5
+      status=requested&requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<unit>&_include=Task:focus&_count=5
   -->
   <style>
     :root {
@@ -155,6 +156,7 @@
 <script>
   const DEFAULT_SERVER = 'https://spenser.178.104.103.200.sslip.io/fhir/r5';
   const UNIT_SYSTEM = 'http://costateixeira.github.io/spenser/unit';
+  const DISPENSING_DEVICE = 'http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice';
   const MEDS = 'http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds';
   const DISPLAY = { 'chocolate-dark': 'Dark Chocolate', 'chocolate-milk': 'Milk Chocolate' };
   const FHIR = 'application/fhir+json';
@@ -201,27 +203,11 @@
 
   function showQuery() {
     const name = unitName() || 'Spenser-XXXX';
-    $('query').textContent = `status=requested&requestedperformer-reference=Device/${name}&_include=Task:focus&_count=5`;
+    $('query').textContent = `status=requested&requestedperformer-reference:identifier=${UNIT_SYSTEM}|${name}&_include=Task:focus&_count=5`;
   }
 
-  // The unit as a Device on the server, so requestedPerformer points at something real.
-  async function ensureDevice(name) {
-    try {
-      await fhir('GET', '/Device/' + encodeURIComponent(name));
-      return false;
-    } catch (e) {
-      if (e.status !== 404 && e.status !== 410) throw e;
-    }
-    await fhir('PUT', '/Device/' + encodeURIComponent(name), {
-      resourceType: 'Device',
-      id: name,
-      identifier: [{ system: UNIT_SYSTEM, value: name }],
-      status: 'active',
-      name: [{ value: name, type: 'user-friendly-name' }],
-      manufacturer: 'Spenser'
-    });
-    return true;
-  }
+  // The unit, by a logical reference: its identifier, which needs nothing on the server.
+  const unitReference = name => ({ identifier: { system: UNIT_SYSTEM, value: name }, display: name });
 
   async function placeOrder() {
     const name = unitName();
@@ -237,19 +223,17 @@
     $('log').innerHTML = '';
 
     try {
-      if (await ensureDevice(name)) log(`Registered <code>Device/${esc(name)}</code> on the server`);
-
       const order = await fhir('POST', '/MedicationRequest', {
         resourceType: 'MedicationRequest',
+        extension: [{ url: DISPENSING_DEVICE, valueReference: unitReference(name) }],
         status: 'active',
         intent: 'instance-order',
         medication: { concept: { coding: [{ system: MEDS, code, display: DISPLAY[code] }] } },
         subject: { reference: 'Patient/123' },
         dosageInstruction: [{ text: 'One bite' }]
       });
-      log(`Order <code>MedicationRequest/${esc(order.id)}</code>: ${esc(DISPLAY[code])}`);
+      log(`Order <code>MedicationRequest/${esc(order.id)}</code>: ${esc(DISPLAY[code])}, dispensingDevice <strong>${esc(name)}</strong>`);
 
-      const device = { reference: 'Device/' + name, display: name };
       const task = await fhir('POST', '/Task', {
         resourceType: 'Task',
         status: 'requested',
@@ -258,9 +242,9 @@
         focus: { reference: 'MedicationRequest/' + order.id },
         for: { reference: 'Patient/123' },
         authoredOn: new Date().toISOString(),
-        requestedPerformer: [{ reference: device }]
+        requestedPerformer: [{ reference: unitReference(name) }]
       });
-      log(`Task <code>Task/${esc(task.id)}</code>, addressed to <strong>${esc(name)}</strong>`);
+      log(`Task <code>Task/${esc(task.id)}</code>, requestedPerformer <strong>${esc(name)}</strong>`);
       refreshQueue();
       await watch(task.id, order.id);
     } catch (e) {
@@ -323,9 +307,13 @@
     for (const t of tasks) {
       const order = orders[(t.focus || {}).reference] || {};
       const coding = (((order.medication || {}).concept || {}).coding || [{}])[0];
-      const devices = (t.requestedPerformer || []).map(p => p.reference || {})
-        .filter(r => /(^|\/)Device\//.test(r.reference || ''))
-        .map(r => r.display || r.reference.replace(/^.*Device\//, ''));
+      const units = refs => refs
+        .filter(r => /(^|\/)Device\//.test(r.reference || '') || (r.identifier && r.identifier.system === UNIT_SYSTEM))
+        .map(r => r.display || (r.identifier && r.identifier.value) || r.reference.replace(/^.*Device\//, ''));
+      // The Task speaks first; without a unit there, the request's extension.
+      let devices = units((t.requestedPerformer || []).map(p => p.reference || {}));
+      if (!devices.length) devices = units((order.extension || [])
+        .filter(e => e.url === DISPENSING_DEVICE).map(e => e.valueReference || {}));
       const when = new Date(t.authoredOn || (t.meta || {}).lastUpdated || Date.now());
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${esc(when.toLocaleString())}</td><td>${esc(coding.display || coding.code || '?')}</td>`
