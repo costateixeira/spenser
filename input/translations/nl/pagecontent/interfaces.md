@@ -224,12 +224,18 @@ Wijs een unit naar een server, en bij elke controle voert hij twee zoekopdrachte
 en schrijft hij terug wat er is gebeurd:
 
 ```
+PUT  {server}/Device/{unit name}
 GET  {server}/Task?status=requested&_include=Task:focus&_count=5
+PUT  {server}/Task/{id}
 GET  {server}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags|actionable&status=active&intent=instance-order&_count=5
 POST {server}/MedicationDispense
 PUT  {server}/Task/{id}
 PUT  {server}/MedicationRequest/{id}
 ```
+
+De eerste `PUT` naar een Task is de claim die wordt beschreven onder
+[Een order aan één unit richten](#addressing-an-order-to-one-unit); de tweede sluit
+hem af.
 
 De `_include` is belangrijk: Spenser zoekt `Task.focus` op in de entries van die ene
 Bundle in plaats van elke order apart op te halen, dus een Task waarvan de focus niet
@@ -242,6 +248,62 @@ bepaalde order bij een bepaalde controle niet wordt opgepikt.
 Zowel `http://` als `https://` werken. Certificaten worden niet gevalideerd, dus
 behandel de verbinding zoals u elk ander niet-geauthenticeerd lokaal verkeer zou
 behandelen.
+
+### Een order aan één unit richten {#addressing-an-order-to-one-unit}
+
+Veel units kunnen één orderserver delen, dus een order kan zeggen welke ervan hem moet
+uitvoeren.
+
+**Elke unit heeft een naam**, het netwerk dat hij in configuratiemodus toont:
+`Spenser-` en de laatste twee bytes van zijn MAC-adres af fabriek, zoals
+`Spenser-E3D4`. Het is `unitName` in `GET /settings`, en het dashboard toont hem in de
+kop. Op de orderserver is de unit `Device/<naam>`, die hij zelf één keer per opstart
+schrijft, met zijn identifier in `http://costateixeira.github.io/spenser/unit` en zijn
+firmwareversie. Dat doet hij alleen met `writeBack` aan.
+
+**De order noemt de unit in de Task**, in `Task.requestedPerformer`, het enige
+element van de Task waarmee R5 een Device laat noemen: `Task.owner` en
+`Task.performer.actor` accepteren er geen. Alleen de Devices die daar staan tellen;
+een Organization of een soort uitvoerder zegt niets over welke unit.
+
+```json
+"requestedPerformer": [
+  { "reference": { "reference": "Device/Spenser-E3D4", "display": "Spenser-E3D4" } }
+]
+```
+
+Zie [een Task die aan één unit is gericht](Task-FulfillForOneUnit.html), de
+[gewone order](MedicationRequest-PlainDarkOrderForOneUnit.html) waarnaar hij wijst,
+en [de unit](Device-Spenser-E3D4.html) zoals hij op de server staat.
+
+`MedicationRequest.performer` wordt niet gebruikt: in R5 is dat de beoogde uitvoerder
+van de toediening, en het accepteert geen Device. Het verzoek machtigt de verstrekking;
+de Task zegt wie die moet doen.
+
+**Bij elke controle leest de unit `requestedPerformer`:**
+
+| De Devices in `Task.requestedPerformer` | Wat de unit doet |
+|---|---|
+| andere units, niet deze | slaat de Task over |
+| deze unit, met of zonder andere | verstrekt hem |
+| geen | claimt hem, en verstrekt hem als de claim gelukt is |
+
+De claim is een `PUT` van de Task waarin deze unit aan `requestedPerformer` is
+toegevoegd, op voorwaarde van de zojuist gelezen versie (`If-Match`). Van twee units
+die om dezelfde Task strijden, komt één schrijfactie door en wordt de andere
+geweigerd, en de verliezer laat de Task met rust: bij zijn volgende controle noemt de
+Task de winnaar. De status blijft `requested` zolang de Task geclaimd is, dus een Task
+die op een lege baan wacht, wordt na het bijvullen opnieuw geprobeerd, door de unit
+die hem claimde. Zonder `writeBack` kan er niets worden geclaimd, en wordt een Task
+die geen unit noemt verstrekt zoals voorheen.
+
+Een MedicationRequest met de tag noemt niemand, dus met meerdere units op één server
+gaat hij naar de unit die het eerst controleert. Gebruik daar Tasks, met
+`orderMode=task`. Om een unit helemaal weg te houden van Tasks zonder geadresseerde,
+voegt u `requestedperformer-reference=Device/<naam>` toe aan zijn `taskQuery`.
+
+**Elke MedicationDispense noemt de unit die hem maakte**, in `performer.actor`, dus de
+server laat zien welke unit welke order heeft uitgevoerd.
 
 ### Orders die u kunt kopiëren {#orders-you-can-copy}
 

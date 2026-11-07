@@ -235,12 +235,18 @@ Pointez une unité vers un serveur, et à chaque vérification elle lance deux
 recherches et écrit en retour ce qui s'est passé :
 
 ```
+PUT  {server}/Device/{unit name}
 GET  {server}/Task?status=requested&_include=Task:focus&_count=5
+PUT  {server}/Task/{id}
 GET  {server}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags|actionable&status=active&intent=instance-order&_count=5
 POST {server}/MedicationDispense
 PUT  {server}/Task/{id}
 PUT  {server}/MedicationRequest/{id}
 ```
+
+Le premier `PUT` vers une Task est la revendication décrite sous
+[Adresser une ordonnance à une unité](#addressing-an-order-to-one-unit) ; le second
+la clôt.
 
 Le `_include` compte : Spenser résout `Task.focus` à partir des entrées de ce seul
 Bundle au lieu de récupérer chaque ordonnance séparément, de sorte qu'une Task dont
@@ -254,6 +260,64 @@ particulière.
 `http://` et `https://` fonctionnent tous les deux. Les certificats ne sont pas
 validés : traitez donc la liaison comme n'importe quel autre trafic local non
 authentifié.
+
+### Adresser une ordonnance à une unité {#addressing-an-order-to-one-unit}
+
+Plusieurs unités peuvent partager un même serveur d'ordonnances : une ordonnance peut
+donc dire laquelle d'entre elles doit l'honorer.
+
+**Chaque unité a un nom**, le réseau qu'elle affiche en mode configuration :
+`Spenser-` et les deux derniers octets de son adresse MAC d'usine, par exemple
+`Spenser-E3D4`. C'est `unitName` dans `GET /settings`, et le tableau de bord l'affiche
+dans son en-tête. Sur le serveur d'ordonnances, l'unité est `Device/<nom>`, qu'elle
+écrit elle-même une fois à chaque démarrage, avec son identifiant dans
+`http://costateixeira.github.io/spenser/unit` et sa version de firmware. Elle ne le
+fait qu'avec `writeBack` activé.
+
+**L'ordonnance nomme l'unité dans la Task**, dans `Task.requestedPerformer`, le seul
+élément de la Task par lequel R5 permet de nommer un Device : `Task.owner` et
+`Task.performer.actor` n'en acceptent aucun. Seuls comptent les Devices qui y
+figurent ; une Organization ou un type d'exécutant ne dit rien de l'unité.
+
+```json
+"requestedPerformer": [
+  { "reference": { "reference": "Device/Spenser-E3D4", "display": "Spenser-E3D4" } }
+]
+```
+
+Voir [une Task adressée à une unité](Task-FulfillForOneUnit.html),
+[l'ordonnance simple](MedicationRequest-PlainDarkOrderForOneUnit.html) qu'elle
+désigne, et [l'unité](Device-Spenser-E3D4.html) telle qu'elle apparaît sur le
+serveur.
+
+`MedicationRequest.performer` n'est pas utilisé : en R5, c'est l'exécutant prévu de
+l'administration, et il n'accepte pas de Device. La demande autorise la délivrance ;
+la Task dit qui doit l'effectuer.
+
+**À chaque vérification, l'unité lit `requestedPerformer` :**
+
+| Les Devices dans `Task.requestedPerformer` | Ce que fait l'unité |
+|---|---|
+| d'autres unités, pas celle-ci | ignore la Task |
+| cette unité, avec ou sans d'autres | la délivre |
+| aucun | la revendique, puis la délivre si la revendication a réussi |
+
+La revendication est un `PUT` de la Task où cette unité est ajoutée à
+`requestedPerformer`, conditionné à la version qui vient d'être lue (`If-Match`). De
+deux unités qui se disputent la même Task, une écriture passe et l'autre est refusée,
+et la perdante laisse la Task tranquille : à sa vérification suivante, la Task nomme
+la gagnante. Le statut reste `requested` tant que la Task est revendiquée, de sorte
+qu'une Task qui attend un couloir vide est retentée après le réapprovisionnement, par
+l'unité qui l'a revendiquée. Sans `writeBack`, rien ne peut être revendiqué, et une
+Task qui ne nomme aucune unité est délivrée comme avant.
+
+Une MedicationRequest portant le tag ne nomme personne : avec plusieurs unités sur un
+même serveur, elle va à celle qui vérifie la première. Utilisez alors des Tasks, avec
+`orderMode=task`. Pour tenir une unité à l'écart des Tasks sans destinataire, ajoutez
+`requestedperformer-reference=Device/<nom>` à sa `taskQuery`.
+
+**Chaque MedicationDispense nomme l'unité qui l'a produite**, dans `performer.actor`,
+de sorte que le serveur montre quelle unité a honoré quelle ordonnance.
 
 ### Ordonnances à copier {#orders-you-can-copy}
 

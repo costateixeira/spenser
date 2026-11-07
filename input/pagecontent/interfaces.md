@@ -288,8 +288,8 @@ conditional on the version just read (`If-Match`). Of two units racing for the s
 write lands and the other is refused, and the loser leaves the Task alone: on
 its next check the Task names the winner. The status stays `requested` while the
 Task is claimed, so a Task waiting on an empty lane is retried after a refill,
-by the unit that claimed it. Without `writeBack` nothing can be claimed, and an
-unowned Task is dispensed as before.
+by the unit that claimed it. Without `writeBack` nothing can be claimed, and a
+Task that names no unit is dispensed as before.
 
 A tagged MedicationRequest names nobody, so with several units on one server it
 goes to whichever checks first. Use Tasks there, with `orderMode=task`. To keep

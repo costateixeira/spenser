@@ -229,12 +229,18 @@ Aponte uma unidade para um servidor e, em cada verificação, ela faz duas pesqu
 e escreve de volta o que aconteceu:
 
 ```
+PUT  {server}/Device/{unit name}
 GET  {server}/Task?status=requested&_include=Task:focus&_count=5
+PUT  {server}/Task/{id}
 GET  {server}/MedicationRequest?_tag=http://terminology.hl7.org/CodeSystem/common-tags|actionable&status=active&intent=instance-order&_count=5
 POST {server}/MedicationDispense
 PUT  {server}/Task/{id}
 PUT  {server}/MedicationRequest/{id}
 ```
+
+O primeiro `PUT` a uma Task é a reivindicação descrita em
+[Dirigir uma prescrição a uma unidade](#addressing-an-order-to-one-unit); o segundo
+fecha-a.
 
 O `_include` importa: o Spenser resolve `Task.focus` a partir das entradas desse
 mesmo Bundle em vez de obter cada prescrição separadamente, pelo que uma Task cujo
@@ -246,6 +252,62 @@ dada prescrição pode não ser apanhada numa determinada verificação.
 
 Tanto `http://` como `https://` funcionam. Os certificados não são validados, por
 isso trate a ligação como qualquer outro tráfego local não autenticado.
+
+### Dirigir uma prescrição a uma unidade {#addressing-an-order-to-one-unit}
+
+Muitas unidades podem partilhar um servidor de prescrições, pelo que uma prescrição
+pode dizer qual delas a deve aviar.
+
+**Cada unidade tem um nome**, a rede que mostra em modo de configuração: `Spenser-`
+e os dois últimos bytes do seu endereço MAC de fábrica, como `Spenser-E3D4`. É o
+`unitName` em `GET /settings`, e o painel mostra-o no cabeçalho. No servidor de
+prescrições a unidade é `Device/<nome>`, que ela própria escreve uma vez em cada
+arranque, com o seu identificador em `http://costateixeira.github.io/spenser/unit`
+e a versão do firmware. Só o faz com `writeBack` ligado.
+
+**A prescrição nomeia a unidade na Task**, em `Task.requestedPerformer`, o único
+elemento da Task que o R5 deixa nomear um Device: `Task.owner` e
+`Task.performer.actor` não aceitam nenhum. Só contam os Devices aí listados; uma
+Organization ou um tipo de executante nada dizem sobre qual unidade.
+
+```json
+"requestedPerformer": [
+  { "reference": { "reference": "Device/Spenser-E3D4", "display": "Spenser-E3D4" } }
+]
+```
+
+Veja [uma Task dirigida a uma unidade](Task-FulfillForOneUnit.html), a
+[prescrição simples](MedicationRequest-PlainDarkOrderForOneUnit.html) para que
+aponta, e [a unidade](Device-Spenser-E3D4.html) tal como aparece no servidor.
+
+`MedicationRequest.performer` não é usado: no R5 é o executante previsto da
+administração, e não aceita um Device. A prescrição autoriza a dispensa; a Task diz
+quem a deve fazer.
+
+**Em cada verificação a unidade lê `requestedPerformer`:**
+
+| Os Devices em `Task.requestedPerformer` | O que a unidade faz |
+|---|---|
+| outras unidades, não esta | ignora a Task |
+| esta unidade, com ou sem outras | dispensa-a |
+| nenhum | reivindica-a, e dispensa-a se a reivindicação resultou |
+
+A reivindicação é um `PUT` da Task com esta unidade acrescentada a
+`requestedPerformer`, condicionado à versão acabada de ler (`If-Match`). De duas
+unidades que disputam a mesma Task, uma escrita passa e a outra é recusada, e a que
+perdeu deixa a Task em paz: na verificação seguinte a Task nomeia a vencedora. O
+estado continua `requested` enquanto a Task está reivindicada, pelo que uma Task à
+espera de uma calha vazia é tentada de novo depois de reabastecer, pela unidade que a
+reivindicou. Sem `writeBack` nada pode ser reivindicado, e uma Task que não nomeia
+nenhuma unidade é dispensada como antes.
+
+Uma MedicationRequest com a tag não nomeia ninguém, pelo que, com várias unidades no
+mesmo servidor, vai para a que verificar primeiro. Use Tasks nesse caso, com
+`orderMode=task`. Para manter uma unidade afastada das Tasks sem destinatário,
+acrescente `requestedperformer-reference=Device/<nome>` à sua `taskQuery`.
+
+**Cada MedicationDispense nomeia a unidade que a fez**, em `performer.actor`, pelo
+que o servidor mostra que unidade aviou cada prescrição.
 
 ### Prescrições que pode copiar {#orders-you-can-copy}
 
