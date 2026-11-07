@@ -541,10 +541,11 @@
           </div>
           <div class="settings-row">
             <small>On the order server this unit is <code id="unitRef">Device/Spenser</code>.
-              A Task is meant for it when its <code>requestedPerformer</code> lists that
-              Device. It skips a Task meant for another unit, and claims a Task that names
-              no unit before dispensing it. To leave those to other units, add
-              <code id="ownerQuery">requestedperformer-reference=Device/Spenser</code>
+              An order is meant for it when the Task's <code>requestedPerformer</code>,
+              or else the request's <code>dispensingDevice</code> extension, names it. It
+              skips an order meant for another unit, and claims a Task that names no unit
+              before dispensing it. To leave those to other units, add
+              <code id="ownerQuery">requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|Spenser</code>
               to the task search.</small>
           </div>
           <div class="settings-row">
@@ -1395,7 +1396,7 @@
       if (data.unitName) {
         $('unitName').textContent = data.unitName;
         $('unitRef').textContent = 'Device/' + data.unitName;
-        $('ownerQuery').textContent = 'requestedperformer-reference=Device/' + data.unitName;
+        $('ownerQuery').textContent = 'requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|' + data.unitName;
         document.title = data.unitName;
       }
       ORDER_FIELDS.forEach((f) => { $(f).value = data[f] ?? ''; });

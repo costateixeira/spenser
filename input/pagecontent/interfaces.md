@@ -317,7 +317,9 @@ Task that names no unit is dispensed as before.
 A tagged order with no Task can name its unit only in the extension. With several
 units on one server, give tagged orders the extension or use Tasks, with
 `orderMode=task`. To keep a unit off unaddressed Tasks altogether, add
-`requestedperformer-reference=Device/<name>` to its `taskQuery`.
+`requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<name>`
+to its `taskQuery`. A search matches one form only: Tasks that name the unit as
+`Device/<name>` need `requestedperformer-reference=Device/<name>` instead.
 
 **Every MedicationDispense names the unit that made it**, in
 `performer.actor`, so the server shows which unit filled which order.
