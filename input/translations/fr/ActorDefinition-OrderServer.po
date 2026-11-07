@@ -1,0 +1,45 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "OrderServer"
+msgstr "OrderServer"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Order Server"
+msgstr "Serveur d'ordonnances"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "A FHIR server that holds orders until a Spenser Unit collects them, and receives what the unit reports back."
+msgstr "Un serveur FHIR qui conserve les ordonnances jusqu'à ce qu'une unité Spenser vienne les chercher, et reçoit les comptes rendus de l'unité."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Monde"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including `_include=Task:focus`. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.
+
+See [What Spenser asks of an order server](interfaces.html#what-spenser-asks-of-an-order-server)."
+msgstr "Répond aux recherches de l'unité portant sur les MedicationRequest avec le tag et sur les Task demandées, y compris `_include=Task:focus`. Accepte la MedicationDispense que l'unité crée et les mises à jour qu'elle apporte à la Task ou à la MedicationRequest.
+
+Voir [Ce que Spenser demande à un serveur d'ordonnances](interfaces.html#what-spenser-asks-of-an-order-server)."
+

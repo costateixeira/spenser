@@ -1,0 +1,41 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "OrderPlacer"
+msgstr "OrderPlacer"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Order Placer"
+msgstr "Orderplaatser"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server."
+msgstr "Het systeem dat om chocolade vraagt, door een order naar een Spenser-unit te posten of er een op een orderserver te plaatsen."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Wereld"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed."
+msgstr "Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid."
+

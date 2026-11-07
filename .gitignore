@@ -5,6 +5,11 @@ template
 output
 input-cache
 fsh-generated
+# Written by the Publisher for translators; what is kept lives in input/translations
+/translations/
+.index.db
+.index.json
+/Requirements-fromNarrative.json
 
 # Don't commit this because it's so large #
 ###########################################
@@ -28,3 +33,4 @@ firmware/.pio/
 
 # Local deployment config, which holds the site address
 .env
+__pycache__/

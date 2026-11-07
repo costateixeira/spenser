@@ -1,0 +1,46 @@
+
+# CodeSystem.name
+#: CodeSystem.name
+msgid "SpenserMeds"
+msgstr "SpenserMeds"
+
+# CodeSystem.title
+#: CodeSystem.title
+msgid "Spenser Medications - Code System"
+msgstr "Spenser-geneesmiddelen - Codesysteem"
+
+# CodeSystem.publisher
+#: CodeSystem.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# CodeSystem.description
+#: CodeSystem.description
+msgid "A code system of medications that Spenser can dispense."
+msgstr "Een codesysteem van geneesmiddelen die Spenser kan verstrekken."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Wereld"
+
+# CodeSystem.concept.display
+#: CodeSystem.concept.display
+msgid "Dark Chocolate"
+msgstr "Pure chocolade"
+
+# CodeSystem.concept.display
+#: CodeSystem.concept.display
+msgid "Milk Chocolate"
+msgstr "Melkchocolade"
+

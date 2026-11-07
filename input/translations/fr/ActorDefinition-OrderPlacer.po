@@ -1,0 +1,41 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "OrderPlacer"
+msgstr "OrderPlacer"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Order Placer"
+msgstr "Émetteur d'ordonnances"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server."
+msgstr "Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Monde"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed."
+msgstr "Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée."
+

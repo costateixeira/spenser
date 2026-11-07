@@ -1,0 +1,45 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "SpenserUnit"
+msgstr "SpenserUnit"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Spenser Unit"
+msgstr "Unité Spenser"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time."
+msgstr "Un distributeur de chocolat, qui agit à la fois comme serveur FHIR et comme client FHIR."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Monde"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "A single dispenser. As a **server** it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a **client** it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.
+
+See [Interfaces](interfaces.html)."
+msgstr "Un seul distributeur. En tant que **serveur**, il accepte une ordonnance qui lui est envoyée directement et dispense sur-le-champ, car l'envoi à l'appareil est en soi l'autorisation de dispenser. En tant que **client**, il interroge un serveur d'ordonnances, n'agit que sur les ordonnances rendues exécutables, et rend compte de ce qu'il a fait.
+
+Voir [Interfaces](interfaces.html)."
+

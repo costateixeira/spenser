@@ -1,0 +1,45 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "UnitOwner"
+msgstr "UnitOwner"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Unit Owner"
+msgstr "Propriétaire de l'unité"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "The person who holds a unit's key, and with it the authority to configure, restock and update the unit."
+msgstr "La personne qui détient la clé d'une unité, et avec elle le pouvoir de configurer, de réapprovisionner et de mettre à jour l'unité."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Monde"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.
+
+See [What needs a key](interfaces.html#what-needs-a-key)."
+msgstr "La lecture d'une unité est libre, mais la modifier nécessite sa clé. Un script qui agit avec la clé agit en tant que propriétaire.
+
+Voir [Ce qui nécessite une clé](interfaces.html#what-needs-a-key)."
+

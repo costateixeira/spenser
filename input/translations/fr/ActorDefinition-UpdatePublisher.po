@@ -1,0 +1,45 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "UpdatePublisher"
+msgstr "UpdatePublisher"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Update Publisher"
+msgstr "Éditeur des mises à jour"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "The site that publishes the release manifest and firmware images a Spenser Unit checks for and installs."
+msgstr "Le site qui publie le manifeste de publication et les images du micrologiciel qu'une unité Spenser vérifie et installe."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Monde"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.
+
+See [Updates](interfaces.html#updates)."
+msgstr "Il s'agit d'un simple échange HTTP plutôt que d'un échange FHIR. L'éditeur sert un manifeste qui indique une version, ses images de micrologiciel et de système de fichiers, et ses notes de version.
+
+Voir [Mises à jour](interfaces.html#updates)."
+

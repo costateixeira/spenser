@@ -1,0 +1,320 @@
+
+# ImplementationGuide.name
+#: ImplementationGuide.name
+msgid "Spenser"
+msgstr ""
+
+# ImplementationGuide.title
+#: ImplementationGuide.title
+msgid "Spenser - a developer's companion"
+msgstr "Spenser - o companheiro do programador"
+
+# ImplementationGuide.publisher
+#: ImplementationGuide.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ImplementationGuide.description
+#: ImplementationGuide.description
+msgid "Spenser - a developer's companion."
+msgstr "Spenser - o companheiro do programador."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Mundo"
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Add to inventory - 5 Milk Chocolates"
+msgstr "Exemplo - Acrescentar ao inventário - 5 chocolates de leite"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "Example - Add to inventory - 5 Milk Chocolates"
+msgstr "Exemplo - Acrescentar ao inventário - 5 chocolates de leite"
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Dispense reported back"
+msgstr "Exemplo - Dispensa comunicada de volta"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "What Spenser creates on the order server once a piece has come out, pointing back at the order in authorizingPrescription. The same resource is the answer to an order posted straight at the device."
+msgstr "O que o Spenser cria no servidor de prescrições depois de sair um pedaço, apontando de volta para a prescrição em authorizingPrescription. O mesmo recurso é a resposta a uma prescrição publicada diretamente no dispositivo."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Dispense that did not happen"
+msgstr "Exemplo - Dispensa que não aconteceu"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "An order Spenser could not fill because the lane is empty. R5 removed MedicationDispense.statusReason, so the reason lives in notPerformedReason, which is a CodeableReference - hence the .concept in the path."
+msgstr "Uma prescrição que o Spenser não conseguiu aviar porque a calha está vazia. O R5 removeu MedicationDispense.statusReason, pelo que o motivo fica em notPerformedReason, que é um CodeableReference - daí o .concept no caminho."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Order made actionable by a tag"
+msgstr "Exemplo - Prescrição tornada acionável por uma tag"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "A MedicationRequest the placer has marked actionable. Spenser dispenses it on its next check and, because no Task is coordinating the work, sets the request itself to completed."
+msgstr "Uma MedicationRequest que o emissor marcou como acionável. O Spenser dispensa-a na verificação seguinte e, como nenhuma Task está a coordenar o trabalho, define ele próprio a MedicationRequest como completed."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Order that is not actionable on its own"
+msgstr "Exemplo - Prescrição que não é acionável por si só"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "The same order without the tag. On its own this is an authorization and nothing more: Spenser ignores it until a Task asks for it to be fulfilled."
+msgstr "A mesma prescrição sem a tag. Por si só, é uma autorização e nada mais: o Spenser ignora-a até que uma Task peça que seja aviada."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Set inventory - 17 Dark Chocolates"
+msgstr "Exemplo - Definir inventário - 17 chocolates negros"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "Example - Set inventory - 17 Dark Chocolates"
+msgstr "Exemplo - Definir inventário - 17 chocolates negros"
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Spenser Request"
+msgstr "Exemplo - Prescrição para o Spenser"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "Example of a MedicationRequest to send to Spenser"
+msgstr "Exemplo de uma MedicationRequest a enviar ao Spenser"
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Example - Task asking for an order to be fulfilled"
+msgstr "Exemplo - Task a pedir que uma prescrição seja aviada"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "A Coordination Task pointing at the order in Task.focus. This is what makes the plain order actionable. Spenser completes the Task with the dispense in Task.output, and leaves the request itself to the placer."
+msgstr "Uma Task de coordenação que aponta para a prescrição em Task.focus. É isto que torna acionável a prescrição simples. O Spenser conclui a Task com a dispensa em Task.output e deixa a própria MedicationRequest ao emissor."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Order Placer"
+msgstr "Emissor de Prescrições"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server."
+msgstr "O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Order Server"
+msgstr "Servidor de Prescrições"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "A FHIR server that holds orders until a Spenser Unit collects them, and receives what the unit reports back."
+msgstr "Um servidor FHIR que guarda as prescrições até uma Unidade Spenser as recolher, e recebe o que a unidade comunica de volta."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Spenser Medications - Code System"
+msgstr "Medicamentos Spenser - Sistema de códigos"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "A code system of medications that Spenser can dispense."
+msgstr "Um sistema de códigos dos medicamentos que o Spenser pode dispensar."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Spenser Medications - ValueSet"
+msgstr "Medicamentos Spenser - Conjunto de valores"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "A value set of medications that Spenser can dispense."
+msgstr "Um conjunto de valores dos medicamentos que o Spenser pode dispensar."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Spenser Unit"
+msgstr "Unidade Spenser"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time."
+msgstr "Um dispensador de chocolate, que atua como servidor FHIR e como cliente FHIR ao mesmo tempo."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "SpenserFHIRCapabilityStatement"
+msgstr ""
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "SpenserRequest"
+msgstr ""
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Unit Owner"
+msgstr "Proprietário da Unidade"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "The person who holds a unit's key, and with it the authority to configure, restock and update the unit."
+msgstr "A pessoa que detém a chave de uma unidade e, com ela, a autoridade para configurar, reabastecer e atualizar a unidade."
+
+# ImplementationGuide.definition.resource.name
+#: ImplementationGuide.definition.resource.name
+msgid "Update Publisher"
+msgstr "Publicador de Atualizações"
+
+# ImplementationGuide.definition.resource.description
+#: ImplementationGuide.definition.resource.description
+msgid "The site that publishes the release manifest and firmware images a Spenser Unit checks for and installs."
+msgstr "O sítio que publica o manifesto da versão e as imagens de firmware que uma Unidade Spenser procura e instala."
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "toc.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Table of Contents"
+msgstr "Índice"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "index.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Home"
+msgstr "Início"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "implementing.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Implementing"
+msgstr "Implementação"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "fhir-intro.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "FHIR"
+msgstr ""
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "interfaces.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Interfaces"
+msgstr "Interfaces"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "firmware.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Firmware"
+msgstr "Firmware"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "hardware-bom.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Hardware Bill of Materials"
+msgstr "Lista de materiais do hardware"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "hardware-3ddesign.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "3D printable parts"
+msgstr "Peças para impressão 3D"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "assembly.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Assembly"
+msgstr "Montagem"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "authors.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Authors"
+msgstr "Autores"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "downloads.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Downloads"
+msgstr "Transferências"
+
+# ImplementationGuide.definition.page.source[x]
+#: ImplementationGuide.definition.page.source[x]
+msgid "usage.html"
+msgstr ""
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Usage"
+msgstr "Utilização"
+
+# ImplementationGuide.definition.page.title
+#: ImplementationGuide.definition.page.title
+msgid "Translations"
+msgstr "Traduções"
