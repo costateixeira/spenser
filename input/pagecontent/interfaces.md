@@ -261,17 +261,40 @@ performer says nothing about which unit.
 
 See [a Task addressed to one unit](Task-FulfillForOneUnit.html), the [plain order](MedicationRequest-PlainDarkOrderForOneUnit.html) it points at, and [the unit](Device-Spenser-E3D4.html) as it appears on the server.
 
-`MedicationRequest.performer` is not used: in R5 it is the intended performer of
-the administration, and it does not accept a Device. The request authorizes the
-dispense; the Task says who is to do it.
+**The request can name the unit too**, in the IG's
+[dispensingDevice](StructureDefinition-dispensingDevice.html) extension. R5 has no
+element on MedicationRequest for it: `performer` and `device` take a
+DeviceDefinition, a kind of device, and `dispenseRequest.dispenser` takes only an
+Organization. The extension holds a logical reference, the unit's identifier, so
+the unit need not be registered on the server:
 
-**On every check the unit reads `requestedPerformer`:**
+```json
+"extension": [ {
+  "url": "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+  "valueReference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" },
+    "display": "Spenser-E3D4"
+  }
+} ]
+```
 
-| The Devices in `Task.requestedPerformer` | What the unit does |
+See [a tagged order for one unit](MedicationRequest-ActionableDarkOrderForOneUnit.html),
+which has no Task and names its unit only in the extension.
+
+A unit can be named by a literal reference, `Device/<name>`, or by a logical one,
+an identifier in `http://costateixeira.github.io/spenser/unit`, both in
+`requestedPerformer` and in the extension.
+
+**On every check the unit works out which unit an order is for**: the units in
+`Task.requestedPerformer` when the Task names any, and otherwise the request's
+`dispensingDevice` extension.
+
+| The order is for | What the unit does |
 |---|---|
-| other units, not this one | skips the Task |
+| other units, not this one | skips it |
 | this unit, with or without others | dispenses it |
-| none | claims it, then dispenses it if the claim succeeded |
+| no unit, with a Task | claims the Task, then dispenses it if the claim succeeded |
+| no unit, tagged with no Task | dispenses it, if it checks first |
 
 The claim is a `PUT` of the Task with this unit added to `requestedPerformer`,
 conditional on the version just read (`If-Match`). Of two units racing for the same Task, one
@@ -281,9 +304,9 @@ Task is claimed, so a Task waiting on an empty lane is retried after a refill,
 by the unit that claimed it. Without `writeBack` nothing can be claimed, and an
 unowned Task is dispensed as before.
 
-A tagged MedicationRequest names nobody, so with several units on one server it
-goes to whichever checks first. Use Tasks there, with `orderMode=task`. To keep
-a unit off unaddressed Tasks altogether, add
+A tagged order with no Task can name its unit only in the extension. With several
+units on one server, give tagged orders the extension or use Tasks, with
+`orderMode=task`. To keep a unit off unaddressed Tasks altogether, add
 `requestedperformer-reference=Device/<name>` to its `taskQuery`.
 
 **Every MedicationDispense names the unit that made it**, in

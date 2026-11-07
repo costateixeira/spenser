@@ -6,6 +6,7 @@ Parent: MedicationRequest
 * medication from SpenserMedsVS
 * dispenseRequest.quantity.value = 1
 * medication.concept.coding.code 1..1
+* extension contains DispensingDevice named dispensingDevice 0..1
 * medication from SpenserMedsVS
 
 
