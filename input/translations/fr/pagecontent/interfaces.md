@@ -290,17 +290,40 @@ Voir [une Task adressée à une unité](Task-FulfillForOneUnit.html),
 désigne, et [l'unité](Device-Spenser-E3D4.html) telle qu'elle apparaît sur le
 serveur.
 
-`MedicationRequest.performer` n'est pas utilisé : en R5, c'est l'exécutant prévu de
-l'administration, et il n'accepte pas de Device. La demande autorise la délivrance ;
-la Task dit qui doit l'effectuer.
+**La demande peut aussi nommer l'unité**, dans l'extension
+[dispensingDevice](StructureDefinition-dispensingDevice.html) de l'IG. R5 n'a aucun
+élément de MedicationRequest pour cela : `performer` et `device` acceptent une
+DeviceDefinition, un type de dispositif, et `dispenseRequest.dispenser` n'accepte
+qu'une Organization. L'extension contient une référence logique, l'identifiant de
+l'unité : l'unité n'a donc pas besoin d'être enregistrée sur le serveur.
 
-**À chaque vérification, l'unité lit `requestedPerformer` :**
+```json
+"extension": [ {
+  "url": "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+  "valueReference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" },
+    "display": "Spenser-E3D4"
+  }
+} ]
+```
 
-| Les Devices dans `Task.requestedPerformer` | Ce que fait l'unité |
+Voir [une ordonnance portant le tag pour une unité](MedicationRequest-ActionableDarkOrderForOneUnit.html),
+qui n'a pas de Task et ne nomme son unité que dans l'extension.
+
+Une unité peut être nommée par une référence littérale, `Device/<nom>`, ou par une
+référence logique, un identifiant dans `http://costateixeira.github.io/spenser/unit`,
+aussi bien dans `requestedPerformer` que dans l'extension.
+
+**À chaque vérification, l'unité détermine à quelle unité l'ordonnance est
+destinée** : les unités de `Task.requestedPerformer` quand la Task en nomme, et sinon
+l'extension `dispensingDevice` de la demande.
+
+| L'ordonnance est pour | Ce que fait l'unité |
 |---|---|
-| d'autres unités, pas celle-ci | ignore la Task |
+| d'autres unités, pas celle-ci | l'ignore |
 | cette unité, avec ou sans d'autres | la délivre |
-| aucun | la revendique, puis la délivre si la revendication a réussi |
+| aucune unité, avec une Task | revendique la Task, puis la délivre si la revendication a réussi |
+| aucune unité, avec le tag et sans Task | la délivre, si elle vérifie la première |
 
 La revendication est un `PUT` de la Task où cette unité est ajoutée à
 `requestedPerformer`, conditionné à la version qui vient d'être lue (`If-Match`). De
@@ -311,10 +334,13 @@ qu'une Task qui attend un couloir vide est retentée après le réapprovisionnem
 l'unité qui l'a revendiquée. Sans `writeBack`, rien ne peut être revendiqué, et une
 Task qui ne nomme aucune unité est délivrée comme avant.
 
-Une MedicationRequest portant le tag ne nomme personne : avec plusieurs unités sur un
-même serveur, elle va à celle qui vérifie la première. Utilisez alors des Tasks, avec
-`orderMode=task`. Pour tenir une unité à l'écart des Tasks sans destinataire, ajoutez
-`requestedperformer-reference=Device/<nom>` à sa `taskQuery`.
+Une ordonnance portant le tag et sans Task ne peut nommer son unité que dans
+l'extension. Avec plusieurs unités sur un même serveur, donnez l'extension aux
+ordonnances portant le tag ou utilisez des Tasks, avec `orderMode=task`. Pour tenir
+une unité à l'écart des Tasks sans destinataire, ajoutez
+`requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<nom>` à sa `taskQuery`. Une recherche ne
+trouve qu'une seule forme : les Tasks qui nomment l'unité en `Device/<nom>` demandent
+plutôt `requestedperformer-reference=Device/<nom>`.
 
 **Chaque MedicationDispense nomme l'unité qui l'a produite**, dans `performer.actor`,
 de sorte que le serveur montre quelle unité a honoré quelle ordonnance.

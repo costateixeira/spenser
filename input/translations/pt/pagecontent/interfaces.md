@@ -280,17 +280,40 @@ Veja [uma Task dirigida a uma unidade](Task-FulfillForOneUnit.html), a
 [prescrição simples](MedicationRequest-PlainDarkOrderForOneUnit.html) para que
 aponta, e [a unidade](Device-Spenser-E3D4.html) tal como aparece no servidor.
 
-`MedicationRequest.performer` não é usado: no R5 é o executante previsto da
-administração, e não aceita um Device. A prescrição autoriza a dispensa; a Task diz
-quem a deve fazer.
+**A prescrição também pode nomear a unidade**, na extensão
+[dispensingDevice](StructureDefinition-dispensingDevice.html) do IG. O R5 não tem
+nenhum elemento na MedicationRequest para isso: `performer` e `device` aceitam uma
+DeviceDefinition, um tipo de dispositivo, e `dispenseRequest.dispenser` só aceita uma
+Organization. A extensão contém uma referência lógica, o identificador da unidade,
+pelo que a unidade não precisa de estar registada no servidor:
 
-**Em cada verificação a unidade lê `requestedPerformer`:**
+```json
+"extension": [ {
+  "url": "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+  "valueReference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" },
+    "display": "Spenser-E3D4"
+  }
+} ]
+```
 
-| Os Devices em `Task.requestedPerformer` | O que a unidade faz |
+Veja [uma prescrição com a tag para uma unidade](MedicationRequest-ActionableDarkOrderForOneUnit.html),
+que não tem Task e nomeia a unidade apenas na extensão.
+
+Uma unidade pode ser nomeada por uma referência literal, `Device/<nome>`, ou por uma
+lógica, um identificador em `http://costateixeira.github.io/spenser/unit`, tanto em
+`requestedPerformer` como na extensão.
+
+**Em cada verificação a unidade determina para que unidade é a prescrição**: as
+unidades em `Task.requestedPerformer` quando a Task nomeia alguma, e caso contrário a
+extensão `dispensingDevice` da prescrição.
+
+| A prescrição é para | O que a unidade faz |
 |---|---|
-| outras unidades, não esta | ignora a Task |
+| outras unidades, não esta | ignora-a |
 | esta unidade, com ou sem outras | dispensa-a |
-| nenhum | reivindica-a, e dispensa-a se a reivindicação resultou |
+| nenhuma unidade, com uma Task | reivindica a Task, e dispensa-a se a reivindicação resultou |
+| nenhuma unidade, com a tag e sem Task | dispensa-a, se verificar primeiro |
 
 A reivindicação é um `PUT` da Task com esta unidade acrescentada a
 `requestedPerformer`, condicionado à versão acabada de ler (`If-Match`). De duas
@@ -301,10 +324,12 @@ espera de uma calha vazia é tentada de novo depois de reabastecer, pela unidade
 reivindicou. Sem `writeBack` nada pode ser reivindicado, e uma Task que não nomeia
 nenhuma unidade é dispensada como antes.
 
-Uma MedicationRequest com a tag não nomeia ninguém, pelo que, com várias unidades no
-mesmo servidor, vai para a que verificar primeiro. Use Tasks nesse caso, com
+Uma prescrição com a tag e sem Task só pode nomear a unidade na extensão. Com várias
+unidades no mesmo servidor, dê a extensão às prescrições com a tag ou use Tasks, com
 `orderMode=task`. Para manter uma unidade afastada das Tasks sem destinatário,
-acrescente `requestedperformer-reference=Device/<nome>` à sua `taskQuery`.
+acrescente `requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<nome>`
+à sua `taskQuery`. Uma pesquisa só encontra uma das formas: as Tasks que nomeiam a
+unidade como `Device/<nome>` precisam antes de `requestedperformer-reference=Device/<nome>`.
 
 **Cada MedicationDispense nomeia a unidade que a fez**, em `performer.actor`, pelo
 que o servidor mostra que unidade aviou cada prescrição.

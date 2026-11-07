@@ -276,17 +276,40 @@ Zie [een Task die aan één unit is gericht](Task-FulfillForOneUnit.html), de
 [gewone order](MedicationRequest-PlainDarkOrderForOneUnit.html) waarnaar hij wijst,
 en [de unit](Device-Spenser-E3D4.html) zoals hij op de server staat.
 
-`MedicationRequest.performer` wordt niet gebruikt: in R5 is dat de beoogde uitvoerder
-van de toediening, en het accepteert geen Device. Het verzoek machtigt de verstrekking;
-de Task zegt wie die moet doen.
+**Het verzoek kan de unit ook zelf noemen**, in de extensie
+[dispensingDevice](StructureDefinition-dispensingDevice.html) van de IG. R5 heeft op
+MedicationRequest geen element daarvoor: `performer` en `device` accepteren een
+DeviceDefinition, een soort apparaat, en `dispenseRequest.dispenser` accepteert alleen
+een Organization. De extensie bevat een logische referentie, de identifier van de
+unit, dus de unit hoeft niet op de server geregistreerd te zijn:
 
-**Bij elke controle leest de unit `requestedPerformer`:**
+```json
+"extension": [ {
+  "url": "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+  "valueReference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" },
+    "display": "Spenser-E3D4"
+  }
+} ]
+```
 
-| De Devices in `Task.requestedPerformer` | Wat de unit doet |
+Zie [een order met de tag voor één unit](MedicationRequest-ActionableDarkOrderForOneUnit.html),
+die geen Task heeft en zijn unit alleen in de extensie noemt.
+
+Een unit kan worden genoemd met een letterlijke referentie, `Device/<naam>`, of met een
+logische, een identifier in `http://costateixeira.github.io/spenser/unit`, zowel in
+`requestedPerformer` als in de extensie.
+
+**Bij elke controle bepaalt de unit voor welke unit een order is**: de units in
+`Task.requestedPerformer` als de Task er een noemt, en anders de extensie
+`dispensingDevice` van het verzoek.
+
+| De order is voor | Wat de unit doet |
 |---|---|
-| andere units, niet deze | slaat de Task over |
+| andere units, niet deze | slaat hem over |
 | deze unit, met of zonder andere | verstrekt hem |
-| geen | claimt hem, en verstrekt hem als de claim gelukt is |
+| geen unit, met een Task | claimt de Task, en verstrekt hem als de claim gelukt is |
+| geen unit, met de tag en zonder Task | verstrekt hem, als hij het eerst controleert |
 
 De claim is een `PUT` van de Task waarin deze unit aan `requestedPerformer` is
 toegevoegd, op voorwaarde van de zojuist gelezen versie (`If-Match`). Van twee units
@@ -297,10 +320,12 @@ die op een lege baan wacht, wordt na het bijvullen opnieuw geprobeerd, door de u
 die hem claimde. Zonder `writeBack` kan er niets worden geclaimd, en wordt een Task
 die geen unit noemt verstrekt zoals voorheen.
 
-Een MedicationRequest met de tag noemt niemand, dus met meerdere units op één server
-gaat hij naar de unit die het eerst controleert. Gebruik daar Tasks, met
-`orderMode=task`. Om een unit helemaal weg te houden van Tasks zonder geadresseerde,
-voegt u `requestedperformer-reference=Device/<naam>` toe aan zijn `taskQuery`.
+Een order met de tag en zonder Task kan zijn unit alleen in de extensie noemen. Met
+meerdere units op één server geeft u orders met de tag de extensie, of gebruikt u
+Tasks, met `orderMode=task`. Om een unit helemaal weg te houden van Tasks zonder
+geadresseerde, voegt u `requestedperformer-reference:identifier=http://costateixeira.github.io/spenser/unit|<naam>`
+toe aan zijn `taskQuery`. Een zoekopdracht vindt maar één vorm: Tasks die de unit als
+`Device/<naam>` noemen, hebben in plaats daarvan `requestedperformer-reference=Device/<naam>` nodig.
 
 **Elke MedicationDispense noemt de unit die hem maakte**, in `performer.actor`, dus de
 server laat zien welke unit welke order heeft uitgevoerd.
