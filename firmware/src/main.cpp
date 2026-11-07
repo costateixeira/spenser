@@ -143,6 +143,8 @@ String apSsid;                       // "Spenser-XXXX" computed from MAC
 // Set once in setup(), before the web server starts, and only read after that.
 char unitName[16] = "Spenser";
 #define UNIT_SYSTEM "http://costateixeira.github.io/spenser/unit"
+// The IG's extension on MedicationRequest naming the unit that is to dispense it.
+#define DISPENSING_DEVICE_URL "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"
 
 String unitReference() { return String("Device/") + unitName; }
 
@@ -1525,24 +1527,63 @@ String serverBase()
 // tries again, and orders are handled either way.
 String registeredWith = ""; // only loop() reads and writes it
 
-// Which units a Task is meant for: the Devices in Task.requestedPerformer.
-// Anything else listed there (an Organization, a kind of performer) says nothing
-// about which unit, and is ignored.
-enum TaskAddress { ADDRESSED_TO_NOBODY, ADDRESSED_TO_THIS_UNIT, ADDRESSED_TO_ANOTHER_UNIT };
+// Which unit an order is meant for. A unit is named either by a literal
+// reference, Device/<name>, or by a logical one, its identifier in UNIT_SYSTEM;
+// a Reference that does neither (an Organization, a kind of performer) says
+// nothing about which unit, and is ignored.
+enum UnitAddress { ADDRESSED_TO_NOBODY, ADDRESSED_TO_THIS_UNIT, ADDRESSED_TO_ANOTHER_UNIT };
 
-TaskAddress taskAddress(JsonObject task)
+UnitAddress referenceAddress(JsonObject reference)
 {
-  bool anyDevice = false;
+  String literal = reference["reference"] | "";
+  if (literal.startsWith("Device/") || literal.indexOf("/Device/") >= 0)
+    return isThisUnit(literal) ? ADDRESSED_TO_THIS_UNIT : ADDRESSED_TO_ANOTHER_UNIT;
+
+  if (String(reference["identifier"]["system"] | "") == UNIT_SYSTEM)
+  {
+    String value = reference["identifier"]["value"] | "";
+    if (value.length())
+      return value.equalsIgnoreCase(unitName) ? ADDRESSED_TO_THIS_UNIT : ADDRESSED_TO_ANOTHER_UNIT;
+  }
+  return ADDRESSED_TO_NOBODY;
+}
+
+// The units in Task.requestedPerformer, the one Task element R5 lets name a Device.
+UnitAddress taskAddress(JsonObject task)
+{
+  bool anotherUnit = false;
   for (JsonObject performer : task["requestedPerformer"].as<JsonArray>())
   {
-    String reference = performer["reference"]["reference"] | "";
-    if (!(reference.startsWith("Device/") || reference.indexOf("/Device/") >= 0))
-      continue;
-    if (isThisUnit(reference))
+    UnitAddress address = referenceAddress(performer["reference"]);
+    if (address == ADDRESSED_TO_THIS_UNIT)
       return ADDRESSED_TO_THIS_UNIT;
-    anyDevice = true;
+    if (address == ADDRESSED_TO_ANOTHER_UNIT)
+      anotherUnit = true;
   }
-  return anyDevice ? ADDRESSED_TO_ANOTHER_UNIT : ADDRESSED_TO_NOBODY;
+  return anotherUnit ? ADDRESSED_TO_ANOTHER_UNIT : ADDRESSED_TO_NOBODY;
+}
+
+// The unit in the request's dispensingDevice extension, R5 having no element
+// on MedicationRequest that takes a Device.
+UnitAddress requestAddress(JsonObject request)
+{
+  for (JsonObject extension : request["extension"].as<JsonArray>())
+    if (String(extension["url"] | "") == DISPENSING_DEVICE_URL)
+      return referenceAddress(extension["valueReference"]);
+  return ADDRESSED_TO_NOBODY;
+}
+
+// The Task speaks first, being what makes the order actionable; when it names
+// no unit, or there is no Task, the request's own extension decides.
+UnitAddress orderAddress(JsonObject task, JsonObject request)
+{
+  if (!task.isNull())
+  {
+    UnitAddress address = taskAddress(task);
+    if (address != ADDRESSED_TO_NOBODY)
+      return address;
+  }
+  return requestAddress(request);
 }
 
 void registerUnit(const String &base)
@@ -1854,10 +1895,6 @@ bool runOrderPage(const String &base, bool taskLane, String &problem, const Stri
         Serial.println(problem);
         continue;
       }
-
-      // A Task addressed to another unit is that unit's to fill.
-      if (taskAddress(task) == ADDRESSED_TO_ANOTHER_UNIT)
-        continue;
     }
     else
     {
@@ -1868,6 +1905,11 @@ bool runOrderPage(const String &base, bool taskLane, String &problem, const Stri
       orderId = "MedicationRequest/" + String(resource["id"] | "");
     }
 
+    // An order meant for another unit is that unit's to fill.
+    UnitAddress address = orderAddress(task, request);
+    if (address == ADDRESSED_TO_ANOTHER_UNIT)
+      continue;
+
     // An order that carries the tag AND has a Task pointing at it turns up in
     // both lanes. The Task lane runs first and remembers the request as well as
     // the Task, so the tag lane skips it below. The reverse guard covers an
@@ -1877,9 +1919,10 @@ bool runOrderPage(const String &base, bool taskLane, String &problem, const Stri
         (taskLane && alreadyHandled("MedicationRequest/" + String(request["id"] | ""))))
       continue;
 
-    // No unit named on the Task: claim it before touching the servo. Without
-    // write-back there is no way to claim, and the unit dispenses as before.
-    if (taskLane && settings.writeBack && taskAddress(task) == ADDRESSED_TO_NOBODY)
+    // No unit named on the Task or the request: claim the Task before touching
+    // the servo. Without write-back there is no way to claim, and the unit
+    // dispenses as before. A tagged order with no Task has nothing to claim.
+    if (taskLane && settings.writeBack && address == ADDRESSED_TO_NOBODY)
     {
       int claimed = claimTask(base, task);
       if (claimed == 409 || claimed == 412)
@@ -3603,14 +3646,14 @@ void setup()
     // ---- client: what this unit asks of an order server ----
     JsonObject rest1 = rest.createNestedObject();
     rest1["mode"] = "client";
-    rest1["documentation"] = "Polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled. Both routes are accepted on every check; a Task takes precedence when an order arrives by both. The orderMode setting narrows this to one route when a demo calls for it. On the server this unit is Device/Spenser-XXXX, its setup network name: a Task whose requestedPerformer names another unit is skipped, and a Task that names no unit is claimed before dispensing";
+    rest1["documentation"] = "Polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled. Both routes are accepted on every check; a Task takes precedence when an order arrives by both. The orderMode setting narrows this to one route when a demo calls for it. On the server this unit is Device/Spenser-XXXX, its setup network name: a Task whose requestedPerformer names another unit is skipped, and a Task that names no unit is claimed before dispensing. Without a unit on the Task, the request's dispensingDevice extension decides";
 
     JsonArray clientResources = rest1.createNestedArray("resource");
 
     // MedicationRequest: the order to dispense
     JsonObject cres1 = clientResources.createNestedObject();
     cres1["type"] = "MedicationRequest";
-    cres1["documentation"] = "Searched for orders tagged as actionable. Set to 'completed' after dispensing, when no Task is coordinating the work";
+    cres1["documentation"] = "Searched for orders tagged as actionable. An order whose dispensingDevice extension names another unit is skipped. Set to 'completed' after dispensing, when no Task is coordinating the work";
     JsonArray cres1_interaction = cres1.createNestedArray("interaction");
     cres1_interaction.createNestedObject()["code"] = "search-type";
     cres1_interaction.createNestedObject()["code"] = "update";

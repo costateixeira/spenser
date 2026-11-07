@@ -86,8 +86,11 @@ Usage: #example
 Instance: PlainDarkOrderForOneUnit
 InstanceOf: SpenserRequest
 Title: "Example - Order meant for one unit"
-Description: "A plain order, made actionable by the Task that addresses it to one unit. The order itself does not name the unit: MedicationRequest.performer is the performer of the administration, and does not accept a Device."
+Description: "A plain order, made actionable by the Task that addresses it to one unit. The order names the unit too, in the dispensingDevice extension, by a logical reference: R5 has no element on MedicationRequest that takes a Device."
 Usage: #example
+* extension[dispensingDevice].valueReference.identifier.system = "http://costateixeira.github.io/spenser/unit"
+* extension[dispensingDevice].valueReference.identifier.value = "Spenser-E3D4"
+* extension[dispensingDevice].valueReference.display = "Spenser-E3D4"
 * status = #active
 * intent = #instance-order
 * medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
@@ -105,3 +108,19 @@ Usage: #example
 * focus = Reference(PlainDarkOrderForOneUnit)
 * for = Reference(Patient/123)
 * requestedPerformer.reference = Reference(Spenser-E3D4) "Spenser-E3D4"
+
+
+Instance: ActionableDarkOrderForOneUnit
+InstanceOf: SpenserRequest
+Title: "Example - Tagged order for one unit"
+Description: "An order made actionable by the tag, with no Task, that names the unit to dispense it in the dispensingDevice extension. Every other unit polling the server skips it."
+Usage: #example
+* meta.tag = $CommonTags#actionable
+* extension[dispensingDevice].valueReference.identifier.system = "http://costateixeira.github.io/spenser/unit"
+* extension[dispensingDevice].valueReference.identifier.value = "Spenser-E3D4"
+* extension[dispensingDevice].valueReference.display = "Spenser-E3D4"
+* status = #active
+* intent = #instance-order
+* medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
+* subject = Reference(Patient/123)
+* dosageInstruction.text = "One bite"

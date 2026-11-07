@@ -195,8 +195,33 @@ nothing about which unit. On every check the unit then:
 
 Without writeBack there is no claim, and an unowned Task is dispensed as before.
 
-A tagged MedicationRequest names nobody, so with several units on one server it
-goes to whichever unit checks first. Use Tasks there, with orderMode=task.
+The request itself can name the unit too, in the IG's dispensingDevice
+extension. R5 has no element on MedicationRequest for it: performer and device
+take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes
+only an Organization. The extension holds a logical reference, the unit's
+identifier, so the unit need not be registered on the server:
+
+    "extension": [ {
+      "url": "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+      "valueReference": {
+        "identifier": { "system": "http://costateixeira.github.io/spenser/unit",
+                        "value": "Spenser-E3D4" },
+        "display": "Spenser-E3D4" } } ]
+
+Which unit an order is for, in this order:
+
+1. the Devices in Task.requestedPerformer, when a Task names any;
+2. otherwise the request's dispensingDevice extension;
+3. otherwise any unit: a Task is claimed first, a tagged order with no Task
+   goes to whichever unit checks first.
+
+A unit is named either by a literal reference, Device/<name>, or by a logical
+one, an identifier in http://costateixeira.github.io/spenser/unit. Both work in
+requestedPerformer and in the extension.
+
+A tagged order with no Task can only name its unit in the extension, so with
+several units on one server, either give tagged orders the extension or use
+Tasks, with orderMode=task.
 
 To keep a unit off unaddressed Tasks altogether, narrow its Task search:
 
@@ -207,8 +232,6 @@ Every MedicationDispense names the unit that wrote it:
     "performer": [ { "actor": { "reference": "Device/Spenser-E3D4",
                                 "display": "Spenser-E3D4" } } ]
 
-MedicationRequest.performer is not used for this: in R5 it is the performer of
-the administration, and it does not accept a Device.
 
 
 ## Time
