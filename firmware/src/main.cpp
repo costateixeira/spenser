@@ -49,7 +49,7 @@ Preferences prefs;
 // with the notes for each one. A build from a workstation says -dev, so a
 // hand-flashed unit is recognisable in a fleet.
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "1.2.4-dev"
+#define FIRMWARE_VERSION "1.3.0-dev"
 #endif
 #define FIRMWARE_BUILD __DATE__ " " __TIME__
 
@@ -135,6 +135,24 @@ void saveInventory()
 enum NetMode { NET_BOOT, NET_STA, NET_AP };
 NetMode netMode = NET_BOOT;
 String apSsid;                       // "Spenser-XXXX" computed from MAC
+
+// This unit's name: the same "Spenser-XXXX" as its setup network, from the last
+// two bytes of the factory MAC. On an order server the unit is Device/<name>,
+// and a Task is addressed to it by listing that Device in requestedPerformer,
+// the one Task element R5 lets name a Device (owner and performer.actor do not).
+// Set once in setup(), before the web server starts, and only read after that.
+char unitName[16] = "Spenser";
+#define UNIT_SYSTEM "http://costateixeira.github.io/spenser/unit"
+
+String unitReference() { return String("Device/") + unitName; }
+
+// Whether a reference names this unit, relative ("Device/Spenser-E3D4") or
+// absolute ("https://host/fhir/Device/Spenser-E3D4").
+bool isThisUnit(const String &reference)
+{
+  String mine = unitReference();
+  return reference == mine || reference.endsWith("/" + mine);
+}
 const IPAddress apIP(192, 168, 4, 1);
 unsigned long apModeStartedAt = 0;
 unsigned long lastStaRetryFromAp = 0;
@@ -249,7 +267,8 @@ void saveSettings()
 
 String settingsJson()
 {
-  StaticJsonDocument<640> doc;
+  StaticJsonDocument<768> doc;
+  doc["unitName"] = String(unitName);
   doc["servoDark"] = settings.servoDark;
   doc["servoMilk"] = settings.servoMilk;
   doc["angleRest"] = settings.angleRest;
@@ -854,9 +873,17 @@ void forceReconnectSTA()
   WiFi.begin(wifiSsid.c_str(), wifiPass.c_str());
 }
 
+// Which unit did it, as the order server knows it.
+void addPerformer(JsonDocument &doc)
+{
+  JsonObject actor = doc.createNestedArray("performer").createNestedObject().createNestedObject("actor");
+  actor["reference"] = unitReference();
+  actor["display"] = String(unitName);
+}
+
 String createMedicationDispense(const String &id, const String &code, const String &patientRef)
 {
-  StaticJsonDocument<640> doc;
+  StaticJsonDocument<896> doc;
   doc["resourceType"] = "MedicationDispense";
   doc["id"] = id + "-dispense";
   doc["status"] = "completed";
@@ -877,6 +904,7 @@ String createMedicationDispense(const String &id, const String &code, const Stri
   coding["code"] = code;
   coding["display"] = (code == "chocolate-dark") ? "Dark Chocolate" : "Milk Chocolate";
   doc["subject"]["reference"] = patientRef;
+  addPerformer(doc);
   doc.createNestedArray("authorizingPrescription").createNestedObject()["reference"] =
       "MedicationRequest/" + id;
 
@@ -891,7 +919,7 @@ String createMedicationDispense(const String &id, const String &code, const Stri
 // outright by an R5 server.
 String createDeclinedDispense(const String &id, const String &medicationCode, const String &medicationDisplay, const String &patientReference)
 {
-  StaticJsonDocument<768> errorDoc;
+  StaticJsonDocument<1024> errorDoc;
   errorDoc["resourceType"] = "MedicationDispense";
   errorDoc["id"] = id + "-declined";
   errorDoc["status"] = "declined";
@@ -913,6 +941,7 @@ String createDeclinedDispense(const String &id, const String &medicationCode, co
   coding["display"] = medicationDisplay;
 
   errorDoc["subject"]["reference"] = patientReference;
+  addPerformer(errorDoc);
   errorDoc.createNestedArray("authorizingPrescription").createNestedObject()["reference"] =
       "MedicationRequest/" + id;
 
@@ -1489,6 +1518,113 @@ String serverBase()
   return base;
 }
 
+// Put this unit on the order server as Device/<name>, once per boot and server,
+// so a Task's requestedPerformer and a dispense's performer point at something real. An
+// update rather than a create: the id is the unit's name, and writing it again
+// keeps the firmware version current. A failure is only logged; the next boot
+// tries again, and orders are handled either way.
+String registeredWith = ""; // only loop() reads and writes it
+
+// Which units a Task is meant for: the Devices in Task.requestedPerformer.
+// Anything else listed there (an Organization, a kind of performer) says nothing
+// about which unit, and is ignored.
+enum TaskAddress { ADDRESSED_TO_NOBODY, ADDRESSED_TO_THIS_UNIT, ADDRESSED_TO_ANOTHER_UNIT };
+
+TaskAddress taskAddress(JsonObject task)
+{
+  bool anyDevice = false;
+  for (JsonObject performer : task["requestedPerformer"].as<JsonArray>())
+  {
+    String reference = performer["reference"]["reference"] | "";
+    if (!(reference.startsWith("Device/") || reference.indexOf("/Device/") >= 0))
+      continue;
+    if (isThisUnit(reference))
+      return ADDRESSED_TO_THIS_UNIT;
+    anyDevice = true;
+  }
+  return anyDevice ? ADDRESSED_TO_ANOTHER_UNIT : ADDRESSED_TO_NOBODY;
+}
+
+void registerUnit(const String &base)
+{
+  if (registeredWith == base)
+    return;
+
+  StaticJsonDocument<768> doc;
+  doc["resourceType"] = "Device";
+  doc["id"] = String(unitName);
+  JsonObject identifier = doc.createNestedArray("identifier").createNestedObject();
+  identifier["system"] = UNIT_SYSTEM;
+  identifier["value"] = String(unitName);
+  doc["status"] = "active";
+  doc["manufacturer"] = "Spenser";
+  JsonObject name = doc.createNestedArray("name").createNestedObject();
+  name["value"] = String(unitName);
+  name["type"] = "user-friendly-name";
+  doc.createNestedArray("version").createNestedObject()["value"] = FIRMWARE_VERSION;
+
+  String body;
+  serializeJson(doc, body);
+  int status = sendResource("PUT", base + "/Device/" + unitName, body, "");
+  Serial.printf("PUT Device/%s -> %d\n", unitName, status);
+  if (status >= 200 && status < 300)
+    registeredWith = base;
+}
+
+// Take an unaddressed Task before dispensing it, so that two units polling the
+// same server cannot both fill it. The claim adds this unit to
+// Task.requestedPerformer, conditional on the version just read: of two units
+// racing, one write lands and the other is refused and leaves the Task to the
+// winner. The status stays "requested", so a Task waiting on an empty lane is
+// still found on the next check - by this unit, since every other one now skips it.
+int claimTask(const String &base, JsonObject task)
+{
+  JsonArray performers = task["requestedPerformer"].as<JsonArray>();
+  if (performers.isNull())
+    performers = task.createNestedArray("requestedPerformer");
+  JsonObject device = performers.createNestedObject().createNestedObject("reference");
+  device["reference"] = unitReference();
+  device["display"] = String(unitName);
+
+  String taskId = task["id"] | "";
+  String version = task["meta"]["versionId"] | "";
+  String body;
+  serializeJson(task, body);
+  String url = base + "/Task/" + taskId;
+
+  WiFiClientSecure secureClient;
+  WiFiClient plainClient;
+  HTTPClient http;
+  if (!beginHttp(http, secureClient, plainClient, url))
+    return -1;
+
+  http.addHeader("Content-Type", "application/fhir+json");
+  http.addHeader("Accept", "application/fhir+json");
+  if (version.length())
+    http.addHeader("If-Match", "W/\"" + version + "\"");
+  const char *keep[] = {"ETag"};
+  http.collectHeaders(keep, 1);
+  http.setTimeout(8000);
+
+  int status = http.sendRequest("PUT", (uint8_t *)body.c_str(), body.length());
+  String etag = http.header("ETag");
+  http.end();
+  Serial.printf("Claim Task/%s -> %d\n", taskId.c_str(), status);
+
+  // The closing write must name the version this claim created, or it would
+  // itself be refused as stale.
+  if (status >= 200 && status < 300)
+  {
+    int open = etag.indexOf('"');
+    int close = etag.lastIndexOf('"');
+    if (open >= 0 && close > open)
+      task["meta"]["versionId"] = etag.substring(open + 1, close);
+    else if (task.containsKey("meta"))
+      task["meta"].as<JsonObject>().remove("versionId");
+  }
+  return status;
+}
+
 JsonObject findResource(JsonArray entries, const String &type, const String &id)
 {
   for (JsonObject entry : entries)
@@ -1718,6 +1854,10 @@ bool runOrderPage(const String &base, bool taskLane, String &problem, const Stri
         Serial.println(problem);
         continue;
       }
+
+      // A Task addressed to another unit is that unit's to fill.
+      if (taskAddress(task) == ADDRESSED_TO_ANOTHER_UNIT)
+        continue;
     }
     else
     {
@@ -1736,6 +1876,26 @@ bool runOrderPage(const String &base, bool taskLane, String &problem, const Stri
     if (alreadyHandled(orderId) ||
         (taskLane && alreadyHandled("MedicationRequest/" + String(request["id"] | ""))))
       continue;
+
+    // No unit named on the Task: claim it before touching the servo. Without
+    // write-back there is no way to claim, and the unit dispenses as before.
+    if (taskLane && settings.writeBack && taskAddress(task) == ADDRESSED_TO_NOBODY)
+    {
+      int claimed = claimTask(base, task);
+      if (claimed == 409 || claimed == 412)
+      {
+        Serial.println(orderId + " was claimed by another unit");
+        continue;
+      }
+      // Anything else is not a claim either: no dispense. fhir-candle answers a
+      // stale If-Match with 500 rather than 412, so a lost race can land here
+      // too; on the next check the Task names its winner and is skipped.
+      if (claimed < 200 || claimed >= 300)
+      {
+        problem = "Could not claim " + orderId + " (HTTP " + String(claimed) + "), left for the next check";
+        continue;
+      }
+    }
 
     orderCheck.found++;
 
@@ -1840,6 +2000,9 @@ void checkOrders()
     finishCheck();
     return;
   }
+
+  if (settings.writeBack)
+    registerUnit(base);
 
   // Both lanes run on every check unless the settings narrow it down. The Task
   // lane goes first: when an order is both tagged and pointed at by a Task, the
@@ -2501,6 +2664,8 @@ void setup()
   char buf[16];
   snprintf(buf, sizeof(buf), "Spenser-%02X%02X", mac[4], mac[5]);
   apSsid = String(buf);
+  strlcpy(unitName, buf, sizeof(unitName));
+  Serial.println("Unit name: " + String(unitName));
 
   // Load saved Wi-Fi creds and decide STA vs AP
   loadWifiConfig();
@@ -3351,7 +3516,7 @@ void setup()
     // Headroom: the documentation strings below are copied into this pool,
     // and an overflowing document serializes as truncated JSON rather than
     // failing loudly.
-    DynamicJsonDocument doc(12288);
+    DynamicJsonDocument doc(16384);
     doc["resourceType"] = "CapabilityStatement";
     doc["status"] = "active";
     doc["date"] = "2025-04-18";
@@ -3438,7 +3603,7 @@ void setup()
     // ---- client: what this unit asks of an order server ----
     JsonObject rest1 = rest.createNestedObject();
     rest1["mode"] = "client";
-    rest1["documentation"] = "Polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled. Both routes are accepted on every check; a Task takes precedence when an order arrives by both. The orderMode setting narrows this to one route when a demo calls for it";
+    rest1["documentation"] = "Polls a server for orders that have been made actionable, either by the 'actionable' tag on the MedicationRequest or by a Task asking for it to be fulfilled. Both routes are accepted on every check; a Task takes precedence when an order arrives by both. The orderMode setting narrows this to one route when a demo calls for it. On the server this unit is Device/Spenser-XXXX, its setup network name: a Task whose requestedPerformer names another unit is skipped, and a Task that names no unit is claimed before dispensing";
 
     JsonArray clientResources = rest1.createNestedArray("resource");
 
@@ -3464,7 +3629,7 @@ void setup()
     // Task: the Coordination Task asking for fulfilment
     JsonObject cres2 = clientResources.createNestedObject();
     cres2["type"] = "Task";
-    cres2["documentation"] = "Coordination Task pointing at the order in Task.focus. Set to 'completed' with the dispense in Task.output, or 'failed' when this unit gives up; the status of the request itself is left to the placer";
+    cres2["documentation"] = "Coordination Task pointing at the order in Task.focus. A Device in Task.requestedPerformer addresses it to one unit; a Task addressed to another unit is skipped. A Task that names no unit is claimed first, by an update that adds this unit to Task.requestedPerformer with If-Match, and is dispensed only if that update succeeds. Set to 'completed' with the dispense in Task.output, or 'failed' when this unit gives up; the status of the request itself is left to the placer";
     JsonArray cres2_interaction = cres2.createNestedArray("interaction");
     cres2_interaction.createNestedObject()["code"] = "search-type";
     cres2_interaction.createNestedObject()["code"] = "update";
@@ -3476,8 +3641,14 @@ void setup()
     // MedicationDispense: what this unit reports back
     JsonObject cres3 = clientResources.createNestedObject();
     cres3["type"] = "MedicationDispense";
-    cres3["documentation"] = "Created on the server once an order has been dispensed or declined, referring to the order in authorizingPrescription";
+    cres3["documentation"] = "Created on the server once an order has been dispensed or declined, referring to the order in authorizingPrescription and to this unit in performer.actor";
     cres3.createNestedArray("interaction").createNestedObject()["code"] = "create";
+
+    // Device: this unit, as Task.requestedPerformer and performer.actor refer to it
+    JsonObject cres4 = clientResources.createNestedObject();
+    cres4["type"] = "Device";
+    cres4["documentation"] = "This unit, written once per boot as Device/Spenser-XXXX with its identifier in " UNIT_SYSTEM " and its firmware version. Task.requestedPerformer and MedicationDispense.performer.actor refer to it";
+    cres4.createNestedArray("interaction").createNestedObject()["code"] = "update";
 
     String response;
     serializeJsonPretty(doc, response);

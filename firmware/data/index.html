@@ -409,7 +409,7 @@
   <div class="wrap">
 
     <header>
-      <div class="brand"><span class="logo">🍫</span> Spenser
+      <div class="brand"><span class="logo">🍫</span> <span id="unitName" title="This unit's name: its setup network, and Device/&lt;name&gt; on the order server">Spenser</span>
         <small id="runningVersion" title="The firmware this unit is running"></small>
       </div>
       <div class="status-bar">
@@ -538,6 +538,14 @@
             <label class="field" style="flex:1">Extra search parameters (tasks)
               <input type="url" id="taskQuery" />
             </label>
+          </div>
+          <div class="settings-row">
+            <small>On the order server this unit is <code id="unitRef">Device/Spenser</code>.
+              A Task is meant for it when its <code>requestedPerformer</code> lists that
+              Device. It skips a Task meant for another unit, and claims a Task that names
+              no unit before dispensing it. To leave those to other units, add
+              <code id="ownerQuery">requestedperformer-reference=Device/Spenser</code>
+              to the task search.</small>
           </div>
           <div class="settings-row">
             <label class="check"><input type="checkbox" id="pollEnabled" /> Check automatically</label>
@@ -1384,6 +1392,12 @@
     let lastHandled = null;
 
     function showOrderSettings(data) {
+      if (data.unitName) {
+        $('unitName').textContent = data.unitName;
+        $('unitRef').textContent = 'Device/' + data.unitName;
+        $('ownerQuery').textContent = 'requestedperformer-reference=Device/' + data.unitName;
+        document.title = data.unitName;
+      }
       ORDER_FIELDS.forEach((f) => { $(f).value = data[f] ?? ''; });
       ORDER_FLAGS.forEach((f) => { $(f).checked = !!data[f]; });
     }
