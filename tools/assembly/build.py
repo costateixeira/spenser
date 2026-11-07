@@ -168,8 +168,26 @@ def usbc_plug_mesh():
     return mesh_of(box(-4.2, 4.2, -1.3, 1.3, 0, 6.5), box(-5.5, 5.5, -3.0, 3.0, 6.5, 22))
 
 
-def chocolate_mesh(t=6.5):
-    return mesh_of(box(0, 57, 0, 37, 0, t))
+def frustum(x0, x1, y0, y1, z0, z1, bevel):
+    """A box whose top is smaller than its base by bevel all round."""
+    p = [(x + (bevel if z == z1 else 0) * (1 if x == x0 else -1),
+          y + (bevel if z == z1 else 0) * (1 if y == y0 else -1), z)
+         for x in (x0, x1) for y in (y0, y1) for z in (z0, z1)]
+    quads = [(0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)]
+    return [[p[a], p[b], p[c]] for a, b, c, d in quads] + [[p[a], p[c], p[d]] for a, b, c, d in quads]
+
+
+def chocolate_mesh(t=6.5, columns=3, rows=2):
+    """A small bar, 57 x 37: a thin base with bevelled squares on top and
+    grooves between them, which is what makes it read as chocolate."""
+    w, h, base, gap = 57.0, 37.0, 4.0, 0.7
+    shapes = [box(0, w, 0, h, 0, base)]
+    cw, ch = (w - gap * (columns + 1)) / columns, (h - gap * (rows + 1)) / rows
+    for i in range(columns):
+        for j in range(rows):
+            x0, y0 = gap + i * (cw + gap), gap + j * (ch + gap)
+            shapes.append(frustum(x0, x0 + cw, y0, y0 + ch, base, t, 1.3))
+    return mesh_of(*shapes)
 
 
 # --------------------------------------------------------------- placing parts
@@ -328,29 +346,66 @@ class Sheet:
                          '<g clip-path="url(#%s)">%s</g></g>' % (cx - r, cy - r, r, r, r, INK, clip, ''.join(paths)))
 
     def person(self, x, y, scale=1.0):
-        """A plain figure in the manner of flat-pack instructions: no face, a round
-        head, and body, arms and legs as one continuous outline, one arm held out.
-        Returns where the outstretched hand is."""
+        """A plain figure in the manner of flat-pack instructions: head, body, arms
+        and legs as one continuous outline drawn with a brush-like line that swells
+        and thins, the head turned a little towards the work, with a big nose, two
+        dot eyes and a small mouth. One arm is held out; returns where its hand is."""
         k = scale
+        hx, hy, hr = 0.0, -57.0, 21.0
+        # The head, from the right of the neck up over the top and down to the left,
+        # with the nose standing out on the side the figure faces.
+        head = []
+        for deg in range(65, -246, -11):
+            r = hr
+            if -19 <= deg <= 25:
+                r += 8.5 * math.cos(math.radians((deg - 3) * 4.1)) ** 2
+            head.append((hx + r * math.cos(math.radians(deg)), hy + r * math.sin(math.radians(deg))))
         # Clockwise from the left of the neck. A smooth curve runs through every point.
         outline = [
-            (-9, -31), (-24, -27), (-33, -14), (-37, 8), (-38, 27), (-34, 34), (-29, 29),
+            (-9, -33), (-24, -27), (-33, -14), (-37, 8), (-38, 27), (-34, 34), (-29, 29),
             (-28, 10), (-26, 24), (-25, 46), (-23, 70), (-22, 91), (-31, 95), (-30, 100), (-8, 100),
             (-6, 74), (-3, 50), (3, 50), (6, 74), (8, 100), (30, 100), (31, 95), (22, 91),
             (23, 70), (25, 46), (27, 20), (29, 2), (46, -3), (61, -6), (67, -12), (63, -19),
-            (46, -19), (30, -23), (22, -29), (9, -31),
-        ]
+            (46, -19), (30, -23), (22, -29), (9, -33),
+        ] + head
         pts = [(x + px * k, y + py * k) for px, py in outline]
         n = len(pts)
-        d = ['M%.1f %.1f' % pts[0]]
+
+        # Sample the closed Catmull-Rom curve, for the fill and for the brush line.
+        curve = []
         for m in range(n):
             p0, p1, p2, p3 = pts[m - 1], pts[m], pts[(m + 1) % n], pts[(m + 2) % n]
-            c1 = (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6)
-            c2 = (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
-            d.append('C%.1f %.1f %.1f %.1f %.1f %.1f' % (c1 + c2 + p2))
-        self.over.append('<path d="%sZ" fill="#ffffff" stroke="%s" stroke-width="2.6" stroke-linejoin="round"/>' % (''.join(d), INK))
-        self.over.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="#ffffff" stroke="%s" stroke-width="2.6"/>'
-                         % (x, y - 53 * k, 19 * k, INK))
+            for step in range(8):
+                t = step / 8.0
+                t2, t3 = t * t, t * t * t
+                curve.append(tuple(0.5 * (2 * p1[i] + (-p0[i] + p2[i]) * t + (2 * p0[i] - 5 * p1[i] + 4 * p2[i] - p3[i]) * t2
+                                          + (-p0[i] + 3 * p1[i] - 3 * p2[i] + p3[i]) * t3) for i in (0, 1)))
+        c = len(curve)
+        outer, inner, run = [], [], 0.0
+        for m in range(c):
+            (ax, ay), (bx, by) = curve[m - 1], curve[(m + 1) % c]
+            tx, ty = bx - ax, by - ay
+            norm = math.hypot(tx, ty) or 1.0
+            nx, ny = -ty / norm, tx / norm
+            run += math.hypot(curve[m][0] - curve[m - 1][0], curve[m][1] - curve[m - 1][1])
+            # Heavier where the line faces down and to the right, as a pen pressed
+            # harder, with a slow wobble along the way.
+            w = (1.9 + 1.8 * max(0.0, ny * 0.6 + nx * 0.5) + 0.6 * math.sin(run / (23 * k))) * k / 1.7 * 1.4
+            px, py = curve[m]
+            outer.append((px + nx * w / 2, py + ny * w / 2))
+            inner.append((px - nx * w / 2, py - ny * w / 2))
+        loop = lambda ps: 'M' + ' L'.join('%.1f %.1f' % p for p in ps) + 'Z'
+        self.over.append('<path d="%s" fill="#ffffff"/>' % loop(curve))
+        self.over.append('<path d="%s %s" fill="%s" fill-rule="evenodd"/>' % (loop(outer), loop(inner), INK))
+
+        # The face, looking towards the outstretched hand.
+        # Three-quarter view: the eyes sit above the nose and towards it, the far
+        # eye a little smaller, and the mouth tucked in below the nose.
+        for ex, size in ((3.0, 0.85), (12.5, 1.0)):
+            self.over.append('<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f" fill="%s"/>'
+                             % (x + ex * k, y - 64 * k, 1.8 * size * k, 2.5 * size * k, INK))
+        self.over.append('<path d="M%.1f %.1f Q%.1f %.1f %.1f %.1f" fill="none" stroke="%s" stroke-width="%.1f" stroke-linecap="round"/>'
+                         % (x + 6 * k, y - 48 * k, x + 10.5 * k, y - 45.5 * k, x + 15 * k, y - 48.5 * k, INK, 1.6 * k))
         return (x + 64 * k, y - 13 * k)
 
     def ribbon(self, points, width=7.0):
