@@ -37,6 +37,7 @@ the middle of it and nothing about the height needs to change:
   arm, pin holes  41.0 mm apart   ->  28.75
   stroke          51.05 mm        ->  37.11
   retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
+  servo ear seat  z 23.089        ->  23.089, put back down after the lift
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    1.247 mm        ->  drill it 2.6; see below
   pin             unchanged
@@ -104,6 +105,20 @@ obstacle becomes the bare wall at x 37.5, which is worth 2.5 mm of lane and
 keeps the full 2.5 mm of overhang that holds the pusher down. The slot the
 chocolate leaves by grows with it, 7.5 mm to 9.5, which changes nothing: two
 7 mm pieces still cannot pass it together.
+
+A slab pushed in at z 8.0 lifts everything above z 8.0, and the ledge is not
+the only thing up there: the shelf the servo's ears rest on, at z 23.089, went
+up with it. The servo sets the height of the horn, the horn sets the height of
+the arm, so the arm rose the same 2.0 mm and the lift bought nothing. The two
+of them kept their old relationship, and the arm's top - 1.0 mm of it - stayed
+inside the ledge, where the sweep puts the arm 0.99 mm under the ledge's inner
+edge at x 40.0. It also cost what had not been wrong before: the pin hangs
+2.0 mm higher in the pusher's slot, which is a through slot 4.71 mm deep, so
+engagement went from 4.69 mm to 2.69. So the seat is moved back down by 2.0 mm
+after the lift, which leaves the ledge lifted and the arm where the built unit
+has it. Nothing else in the part sits on that plane - the 105 vertices on it
+are all inside the servo box, and the nearest other plane is 0.074 mm away -
+and the shoulder under it keeps 7.46 mm of its 9.46.
 
 What that leaves, measured over the whole swing rather than at the centreline:
 1.50 mm from the far wall, 4.72 mm from the face of the chocolate stack, and
@@ -415,13 +430,17 @@ def verify(before, after, axis, a, b, step=1.3):
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
 #   y -10.00..10.20  the front of the rail, bar 1.5 mm the tail now pokes out of
 #   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
+#   z 25.089 - 2.00  puts the servo's ear seat back down, which that lift raised
 # 19.25 mm off the width, 9 off the depth of the lane and 20.2 off the rail.
+# The seat is given at 25.089 because the lift has already moved it by then:
+# it reads 23.089 in the source file, and has to end up there again.
 BODY = [('cut', 'x', 40.00, 47.00),
         ('cut', 'x', 50.00, 52.60),
         ('cut', 'x', 74.00, 83.65),
         ('cut', 'y', 65.00, 74.00),
         ('cut', 'y', -10.00, 10.20),
-        ('lift', 'z', 8.00, 2.00)]
+        ('lift', 'z', 8.00, 2.00),
+        ('plane', 'z', 25.089, -2.00)]
 
 # Pusher. The same 19.25 across, in two bands that miss the three ribs
 # underneath, and 10 mm out of its length. That band lies between the pin slot

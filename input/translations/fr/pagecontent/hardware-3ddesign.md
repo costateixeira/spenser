@@ -40,7 +40,7 @@ par la bouche, ce qui est voulu ; la goupille est la même pièce qu’avant.
 
 | Pièce | Description | Téléchargements |
 |------|-------------|-----------|
-| **Corps** | Un couloir de 41,75 × 31 mm au lieu de 61 × 40 ; 44,75 × 80,8 × 107 mm hors tout. L'épaulement qui retient le poussoir est 2 mm plus haut, pour laisser passer le bras. | [STL](spenser-body-small.stl) |
+| **Corps** | Un couloir de 41,75 × 31 mm au lieu de 61 × 40 ; 44,75 × 80,8 × 107 mm hors tout. L'épaulement qui retient le poussoir est 2 mm plus haut, pour laisser passer le bras, et l'appui sur lequel reposent les oreilles du servo redescend de ces mêmes 2 mm, pour que le bras ne monte pas avec lui. | [STL](spenser-body-small.stl) |
 | **Poussoir** | 40,65 × 46 mm, pour correspondre au couloir plus étroit, avec la rainure de goupille ouverte à 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Bras** | 28,75 mm entre les trous au lieu de 41, ce qui donne une course de 37,11 mm avec `anglePush=81`. | [STL](spenser-arm-small.stl) |
 | **Goupille** | La même pièce que ci-dessus. | [STL](spenser-pin.stl) |

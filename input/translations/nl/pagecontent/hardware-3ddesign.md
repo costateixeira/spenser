@@ -38,7 +38,7 @@ onderdeel als eerder.
 
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|
-| **Behuizing** | Een baan van 41,75 × 31 mm in plaats van 61 × 40; 44,75 × 80,8 × 107 mm in totaal. De richel die de duwer op zijn plaats houdt, zit 2 mm hoger om de arm door te laten. | [STL](spenser-body-small.stl) |
+| **Behuizing** | Een baan van 41,75 × 31 mm in plaats van 61 × 40; 44,75 × 80,8 × 107 mm in totaal. De richel die de duwer op zijn plaats houdt, zit 2 mm hoger om de arm door te laten, en de steun waarop de oren van de servo rusten zakt diezelfde 2 mm weer, zodat de arm niet met hem meestijgt. | [STL](spenser-body-small.stl) |
 | **Duwer** | 40,65 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 28,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 37,11 mm geeft. | [STL](spenser-arm-small.stl) |
 | **Pen** | Hetzelfde onderdeel als hierboven. | [STL](spenser-pin.stl) |
