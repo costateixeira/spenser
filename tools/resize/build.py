@@ -32,15 +32,15 @@ height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
 the middle of it and nothing about the height needs to change:
 
   lane            61.0 x 40.0 mm  ->  41.75 x 31.0
-  body            64 x 110 x 105  ->  44.75 x 85 x 107
-  pusher          59.9 x 56.0     ->  40.65 x 48.5
+  body            64 x 110 x 105  ->  44.75 x 80.8 x 107
+  pusher          59.9 x 56.0     ->  40.65 x 46.0
   arm, pin holes  41.0 mm apart   ->  28.75
-  stroke          51.05 mm        ->  36.96
+  stroke          51.05 mm        ->  37.11
   retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    1.247 mm        ->  drill it 2.6; see below
   pin             unchanged
-  firmware        anglePush 80 on this unit, against the default of 77
+  firmware        anglePush 81, and the arm set 46.9 deg back at rest
 
 Both lane numbers are set by something different, and it is worth knowing
 which. The depth is set by the chocolate and it is exact: 31.0 mm for a 30 mm
@@ -61,8 +61,8 @@ dominates it, so opening the swing costs almost nothing on the side where the
 chocolate is. What it does cost is push: the stroke starts at one end of the
 swing, where the crank's purchase along the travel is cos(swing/2), and that is
 exactly where the bottom piece has to be sheared out from under the column. At
-80 degrees that is 98% of what the built unit starts with. Past about 120 it
-would want trying before trusting.
+81 degrees swung back off centre that is 87% of what the built unit starts
+with. Past about 120 it would want trying before trusting.
 
 How long the rail has to be is a separate sum, and an easy one to get wrong:
 the pushing face does not start at the back of the lane. pusher_placement in
@@ -75,15 +75,26 @@ shortened by, and three numbers move together:
   overtravel past the exit      S - 16.925 + s
   take-up behind the stack      S - 14.075 - s
 
-The first is what can come off the front of the rail. It grows as the stroke
-shrinks, but wanting 4 mm of overtravel and 1 mm of take-up forces 2S >= 36, so
-no more than 16.7 mm of rail can ever go. Note which end each one answers:
-shortening the pusher cuts a band between the slot and the pushing face, so it
-moves the face and not the tail - it buys overtravel and takes it off the
-take-up, and leaves the length of rail needed exactly as it was.
+The first is what can come off the front of the rail, and it grows as the
+stroke shrinks. Those three sums hold only while the swing stays centred on
+the arm pointing straight across, though, and nothing says it has to be:
+the hub bore is round, not splined, so the arm can be clamped anywhere on the
+horn. Set it further round and the whole travel moves back, which puts the
+pushing face behind the stack again without touching the stroke. Centred,
+4 mm of overtravel and 1 mm of take-up force 2S >= 36 and cap the rail at
+16.7 mm; swung back, the pusher can lose 5 mm at the face and the rail 20.2.
 
-16 mm comes off here, at a swing of 80 and a pusher 2.5 mm shorter, which
-leaves 3.96 mm of overtravel against the 3.60 the built unit runs on.
+Note which end each cut answers, because it is easy to get backwards: the
+pusher's band lies between its slot and its pushing face, so shortening it
+moves the face and not the tail.
+
+20.2 mm comes off here, at anglePush 81 with the arm 46.9 degrees back at rest
+and a pusher 10 mm shorter than the original. That leaves 4.11 mm of
+overtravel against the 3.60 the built unit runs on, 1.90 of take-up, and the
+pusher's tail poking 1.66 mm out of the mouth at full advance - which costs
+nothing, because the mouth has no front wall. At the height the arm runs, the
+front face is the two side walls and nothing between them, so the arm and the
+pin move in open air there whatever the pusher is doing.
 
 The far wall the arm must clear used to be the ledge the pusher runs under, at
 x 40.0, because the arm's far end is 3.0 mm thick and its top 1.05 mm fouled
@@ -95,7 +106,7 @@ chocolate leaves by grows with it, 7.5 mm to 9.5, which changes nothing: two
 7 mm pieces still cannot pass it together.
 
 What that leaves, measured over the whole swing rather than at the centreline:
-1.50 mm from the far wall, 7.66 mm from the face of the chocolate stack, and
+1.50 mm from the far wall, 4.72 mm from the face of the chocolate stack, and
 the magazine wall lifted clean out of reach. For scale, the same measurement
 run against the built unit reports it 1.5 mm inside both the magazine wall and
 the servo pocket, so the datum here - ARM_Z, or the pocket - is off by about
@@ -399,25 +410,25 @@ def verify(before, after, axis, a, b, step=1.3):
 #   x 50.00..61.75   the lane's own air, between the rail and the bay
 #   x 74.00..74.50   between the bay and the box the servo sits in
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
-#   y -10.00..6.00   the front of the rail, which the pusher's tail never reaches
+#   y -10.00..10.20  the front of the rail, bar 1.5 mm the tail now pokes out of
 #   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
-# 19.25 mm off the width, 9 off the depth of the lane and 16 off the rail.
+# 19.25 mm off the width, 9 off the depth of the lane and 20.2 off the rail.
 BODY = [('cut', 'x', 40.00, 47.00),
         ('cut', 'x', 50.00, 61.75),
         ('cut', 'x', 74.00, 74.50),
         ('cut', 'y', 65.00, 74.00),
-        ('cut', 'y', -10.00, 6.00),
+        ('cut', 'y', -10.00, 10.20),
         ('lift', 'z', 8.00, 2.00)]
 
 # Pusher. The same 19.25 across, in two bands that miss the three ribs
-# underneath, and 7.5 mm out of its length. That band lies between the pin slot
+# underneath, and 10 mm out of its length. That band lies between the pin slot
 # and the pushing face, so it moves the face and not the tail: 5 mm of it
-# answers the shallower lane and the other 2.5 buys back the overtravel that
-# the shorter stroke would otherwise cost. Then the slot's far wall moves out
-# 0.455, which is what makes room for the pin.
+# answers the shallower lane and the other 5 lets the whole travel sit further
+# back, which is what frees the rail. Then the slot's far wall moves out 0.455,
+# which is what makes room for the pin.
 PUSHER = [('cut', 'x', 27.00, 36.625),
           ('cut', 'x', 48.00, 57.625),
-          ('cut', 'y', -70.00, -62.50),
+          ('cut', 'y', -70.00, -60.00),
           ('plane', 'y', -83.248, -0.455)]
 
 # Arm. 12.25 mm out of the plain bar between the two holes, which is all of it
