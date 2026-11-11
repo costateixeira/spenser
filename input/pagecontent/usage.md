@@ -5,6 +5,72 @@ whether it is allowed to act on it.
 This page walks through that from the outside in. The
 [Interfaces](interfaces.html) page is the reference behind it.
 
+### When to use
+
+**The FHIR meetings.** The requirement is still being read out, and someone
+already has an answer: a Bundle, with three profiles on it. You know who you
+are. Order a chocolate: at least the question gets to the end of its sentence.
+
+*Dosage: one unit at the first Bundle. Repeat as the agenda requires.*
+
+**The developer meeting.** Everyone has read the specification, in the sense of
+having searched for the keyword that justifies their initial design.
+Somebody proposes containing everything. The only contained thing here that
+solves a problem is the chocolate, and only until it is ordered.
+
+*Dosage: one unit each, before the whiteboard comes out.*
+
+**The terminology session.** Ninety minutes on whether something is a code or a
+concept. Those ninety minutes are needed. You know you will revisit the decision 
+in six months anyway, so you may as well enjoy this one. 
+Quickly, before someone suggests the server will take care of it all.
+
+*Dosage: one unit per binding. The discussion is the active ingredient.*
+
+**The workflow discussion.** Somebody will ask whether this really needs a
+Task. Everybody asks it once, and usually about a week before they need one.
+Let them place the order without one, see it on the server, and still have no 
+chocolate. see what they think after that. Add the Task and see the designated
+unit respond, while the others leave it alone.
+
+*Dosage: one unit per Task, dispensed by the unit the Task names.*
+
+**The session you have to chair.** A room, an agenda, and no actual authority.
+Someone has been "a very quick comment" for nineteen minutes. Alternate talking 
+and chocolate: it just gives the room a rhythm.
+
+*Dosage: administer before the discussion becomes circular.*
+
+**The training session.** Somebody's first POST comes back 400, and they ask
+what an OperationOutcome is, then read one properly for the first time. The
+second request moves a servo and a chocolate falls out. They will hit the same
+400 again next week, which is how it sticks. An order is an authorization and
+not an instruction, and nobody quite believes that until they need chocolate.
+
+*Dosage: one unit per successful request. A rejected request is not a dose.*
+
+**The demo, the connectathon, and the slot right after lunch.** The queue forms
+by itself, and everyone wants to send the next order themselves. Somebody will
+ask whether it could dispense insulin. It cannot. One unit, several laptops,
+one shared order server, and each unit takes only the Task addressed to it.
+
+*Dosage: one unit per visitor. An empty lane is a declined dispense.*
+
+What a dispenser really provides is a pause, and the certainty that no bad
+decisions were taken during it. Half a minute in which the architecture cannot
+get any worse.
+
+If more than one of these is in your week, that is the normal number.
+
+**Warnings and precautions.** Keep away from radiators and direct sunlight:
+chocolate softens near body temperature, and a soft lane jams. The lanes hold
+whatever was last loaded into them, which may contain milk or nuts.
+
+**Side effects.** Common: better attendance. Uncommon: questions about how the
+dispenser works. Rare: somebody reads the specification.
+
+**If symptoms persist**, consult the [Interfaces](interfaces.html) page.
+
 ### Where the order goes
 
 A unit sitting on your desk can be talked to directly. A unit somewhere else
