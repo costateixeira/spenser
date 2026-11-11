@@ -407,15 +407,18 @@ def verify(before, after, axis, a, b, step=1.3):
 
 # Body. Three bands across it, one along it, then the lift.
 #   x 40.00..47.00   between the rail the pusher runs under and the bay wall
-#   x 50.00..61.75   the lane's own air, between the rail and the bay
-#   x 74.00..74.50   between the bay and the box the servo sits in
+#   x 50.00..52.60   the lane's own air, between the rail and the bay
+#   x 74.00..83.65   between the bay and the box the servo sits in
+# The first two come off below the window in the back wall and the third above
+# it, 9.60 against 9.65, so that the window - the one feature that was centred
+# on the lane - still is. Take it all off one side and it ends up 9.15 mm out.
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
 #   y -10.00..10.20  the front of the rail, bar 1.5 mm the tail now pokes out of
 #   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
 # 19.25 mm off the width, 9 off the depth of the lane and 20.2 off the rail.
 BODY = [('cut', 'x', 40.00, 47.00),
-        ('cut', 'x', 50.00, 61.75),
-        ('cut', 'x', 74.00, 74.50),
+        ('cut', 'x', 50.00, 52.60),
+        ('cut', 'x', 74.00, 83.65),
         ('cut', 'y', 65.00, 74.00),
         ('cut', 'y', -10.00, 10.20),
         ('lift', 'z', 8.00, 2.00)]
