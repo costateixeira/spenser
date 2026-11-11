@@ -182,12 +182,12 @@ a dispenser sit on a conference network with nothing open to it.
 
 * process[=].step[+].number = "3"
 * process[=].step[=].operation.type = $RestfulInteraction#search-type
-* process[=].step[=].operation.title = "GET /Task?status=requested&_include=Task:focus&_count=5"
+* process[=].step[=].operation.title = "GET /Task"
 * process[=].step[=].operation.initiator = "spenser"
 * process[=].step[=].operation.receiver = "server"
 * process[=].step[=].operation.initiatorActive = true
 * process[=].step[=].operation.receiverActive = true
-* process[=].step[=].operation.description = "The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with."
+* process[=].step[=].operation.description = "`GET /Task?status=requested&_include=Task:focus&_count=5`. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with."
 * process[=].step[=].operation.response.instanceReference = "task"
 * process[=].step[=].operation.response.versionReference = "task-requested"
 
@@ -205,22 +205,22 @@ a dispenser sit on a conference network with nothing open to it.
 
 * process[=].step[+].number = "5"
 * process[=].step[=].operation.type = $RestfulInteraction#update
-* process[=].step[=].operation.title = "PUT /Task/[id]"
+* process[=].step[=].operation.title = "PUT /Task"
 * process[=].step[=].operation.initiator = "spenser"
 * process[=].step[=].operation.receiver = "server"
 * process[=].step[=].operation.initiatorActive = true
 * process[=].step[=].operation.receiverActive = true
-* process[=].step[=].operation.description = "`status` becomes `completed`, with the dispense in `Task.output`. Sent with `If-Match`, so a Task somebody else has moved on is not overwritten."
+* process[=].step[=].operation.description = "`PUT /Task/<id>`: `status` becomes `completed`, with the dispense in `Task.output`. Sent with `If-Match`, so a Task somebody else has moved on is not overwritten."
 * process[=].step[=].operation.request.instanceReference = "task"
 * process[=].step[=].operation.request.versionReference = "task-completed"
 
 * process[=].step[+].number = "6"
 * process[=].step[=].operation.type = $RestfulInteraction#update
-* process[=].step[=].operation.title = "PUT /MedicationRequest/[id]"
+* process[=].step[=].operation.title = "PUT /MedicationRequest"
 * process[=].step[=].operation.initiator = "placer"
 * process[=].step[=].operation.receiver = "server"
 * process[=].step[=].operation.initiatorActive = true
 * process[=].step[=].operation.receiverActive = true
-* process[=].step[=].operation.description = "The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that."
+* process[=].step[=].operation.description = "`PUT /MedicationRequest/<id>`. The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that."
 * process[=].step[=].operation.request.instanceReference = "order"
 * process[=].step[=].operation.request.versionReference = "order-completed"
