@@ -9,16 +9,6 @@ msgstr ""
 msgid "Spenser - a developer's companion"
 msgstr "Spenser - o companheiro do programador"
 
-# ImplementationGuide.publisher
-#: ImplementationGuide.publisher
-msgid "Zeora"
-msgstr ""
-
-# ContactDetail.name
-#: ContactDetail.name
-msgid "Zeora"
-msgstr ""
-
 # ContactDetail.name
 #: ContactDetail.name
 msgid "José Costa Teixeira"

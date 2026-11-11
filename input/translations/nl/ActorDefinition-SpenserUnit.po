@@ -9,16 +9,6 @@ msgstr "SpenserUnit"
 msgid "Spenser Unit"
 msgstr "Spenser-unit"
 
-# ActorDefinition.publisher
-#: ActorDefinition.publisher
-msgid "Zeora"
-msgstr ""
-
-# ContactDetail.name
-#: ContactDetail.name
-msgid "Zeora"
-msgstr ""
-
 # ContactDetail.name
 #: ContactDetail.name
 msgid "José Costa Teixeira"

@@ -37,9 +37,8 @@ releaseLabel: STU1
 # as IG.publisher.  The contact details and/or additional publishers
 # will be translated into IG.contact values.
 publisher:
-  name: Zeora
-  url: http://example.com/committees
-  email: my-group@example.com
+  name: José Costa Teixeira
+  url: https://github.com/costateixeira
 
 # ContactDetail is required by the template.
 contact:

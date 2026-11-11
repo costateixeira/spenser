@@ -9,16 +9,6 @@ msgstr "UpdatePublisher"
 msgid "Update Publisher"
 msgstr "Éditeur des mises à jour"
 
-# ActorDefinition.publisher
-#: ActorDefinition.publisher
-msgid "Zeora"
-msgstr ""
-
-# ContactDetail.name
-#: ContactDetail.name
-msgid "Zeora"
-msgstr ""
-
 # ContactDetail.name
 #: ContactDetail.name
 msgid "José Costa Teixeira"

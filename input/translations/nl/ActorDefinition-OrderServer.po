@@ -9,16 +9,6 @@ msgstr "OrderServer"
 msgid "Order Server"
 msgstr "Orderserver"
 
-# ActorDefinition.publisher
-#: ActorDefinition.publisher
-msgid "Zeora"
-msgstr ""
-
-# ContactDetail.name
-#: ContactDetail.name
-msgid "Zeora"
-msgstr ""
-
 # ContactDetail.name
 #: ContactDetail.name
 msgid "José Costa Teixeira"

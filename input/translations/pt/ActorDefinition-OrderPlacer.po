@@ -9,16 +9,6 @@ msgstr "OrderPlacer"
 msgid "Order Placer"
 msgstr "Emissor de Prescrições"
 
-# ActorDefinition.publisher
-#: ActorDefinition.publisher
-msgid "Zeora"
-msgstr ""
-
-# ContactDetail.name
-#: ContactDetail.name
-msgid "Zeora"
-msgstr ""
-
 # ContactDetail.name
 #: ContactDetail.name
 msgid "José Costa Teixeira"
