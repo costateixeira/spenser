@@ -96,8 +96,9 @@ Deze endpoints sturen door naar `/success` om platformspecifieke captive portals
 ---
 
 ### 🚀 Wi-Fi en opstarten
-Bij het starten probeert de firmware verbinding te maken met het Wi-Fi-netwerk dat in `WiFiCredentials.h` is gedefinieerd. Hij maakt ook een AP aan met de SSID `spenser` en het IP-adres `192.168.4.1`.  
-Om te beginnen maakt u dus gewoon verbinding met het Wi-Fi-netwerk `spenser` en gaat u naar [http://192.168.4.1](http://192.168.4.1).
+Zonder opgeslagen inloggegevens zet de firmware zijn eigen open toegangspunt op, met als naam `Spenser-` en de laatste twee bytes van zijn MAC-adres, op `192.168.4.1`. Maak verbinding met dat netwerk en de instelpagina opent vanzelf; daar krijgt de unit het netwerk waarmee hij verbinding moet maken, en die gegevens blijven bewaard over herstarts heen.  
+Zodra hij op een netwerk zit, is hij bereikbaar op [http://spenser.local](http://spenser.local), dat hij via mDNS aankondigt als `spenser`.  
+Zie [Een unit installeren](setup.html).
 
 
 ---

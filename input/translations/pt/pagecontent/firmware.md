@@ -96,8 +96,9 @@ Estes endpoints redirecionam para `/success`, para lidar com os portais cativos 
 ---
 
 ### 🚀 Wi-Fi e arranque
-Ao iniciar, o firmware tenta ligar-se à rede Wi-Fi definida em `WiFiCredentials.h`. Cria também um AP com o SSID `spenser` e o IP `192.168.4.1`.  
-Assim, para começar, basta ligar-se à rede Wi-Fi `spenser` e aceder a [http://192.168.4.1](http://192.168.4.1).
+Sem credenciais guardadas, o firmware serve o seu próprio ponto de acesso aberto, com o nome `Spenser-` seguido dos dois últimos bytes do seu endereço MAC, em `192.168.4.1`. Ao ligar-se a essa rede, a página de configuração abre sozinha; a partir dela indica-se à unidade a rede a que se deve ligar, e essas credenciais mantêm-se entre arranques.  
+Uma vez ligada a uma rede, fica acessível em [http://spenser.local](http://spenser.local), que anuncia por mDNS como `spenser`.  
+Ver [Configurar uma unidade](setup.html).
 
 
 ---

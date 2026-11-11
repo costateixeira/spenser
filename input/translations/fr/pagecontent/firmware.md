@@ -96,8 +96,9 @@ Ces points de terminaison redirigent vers `/success` pour gérer les portails ca
 ---
 
 ### 🚀 Wi-Fi et démarrage
-Au démarrage, le micrologiciel tente de se connecter au réseau Wi-Fi défini dans `WiFiCredentials.h`. Il crée aussi un point d'accès avec le SSID `spenser` et l'IP `192.168.4.1`.  
-Pour commencer, il suffit donc de vous connecter au réseau Wi-Fi `spenser` et d'aller à [http://192.168.4.1](http://192.168.4.1).
+Sans identifiants enregistrés, le micrologiciel sert son propre point d'accès ouvert, nommé `Spenser-` suivi des deux derniers octets de son adresse MAC, à l'adresse `192.168.4.1`. En rejoignant ce réseau, la page de configuration s'ouvre d'elle-même ; on y indique à l'unité le réseau à rejoindre, et ces identifiants sont conservés d'un démarrage à l'autre.  
+Une fois sur un réseau, elle est joignable à [http://spenser.local](http://spenser.local), qu'elle annonce en mDNS sous le nom `spenser`.  
+Voir [Configurer une unité](setup.html).
 
 
 ---

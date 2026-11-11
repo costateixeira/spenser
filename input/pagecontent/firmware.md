@@ -96,8 +96,9 @@ These endpoints redirect to `/success` to handle platform-specific captive porta
 ---
 
 ### 🚀 Wifi and boot
-When started, the firmware tries to connect to the Wi-Fi network defined in `WiFiCredentials.h`. It also creates an AP with an SSID `spenser`, and an IP `192.168.4.1`.  
-So, to get started, simply connect to the `spenser` Wi-Fi network and go to [http://192.168.4.1](http://192.168.4.1).
+With no stored credentials the firmware serves its own open access point, named `Spenser-` and the last two bytes of its MAC address, at `192.168.4.1`. Join that network and the setup page opens by itself; from it the unit is given a network to join, and it keeps those credentials across restarts.  
+Once it is on a network it is reachable at [http://spenser.local](http://spenser.local), which it advertises over mDNS as `spenser`.  
+See [Setting up a unit](setup.html).
 
 
 ---
