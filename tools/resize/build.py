@@ -128,9 +128,18 @@ the servo pocket, so the datum here - ARM_Z, or the pocket - is off by about
 that much and these figures carry the error. The comparison is the part to
 trust: this variant has more room than the unit that works.
 
-The arm loses 12.25 mm out of the plain bar between the two holes, which is all
-the bar has; everything within 16.5 mm of the servo shaft - all of the part
-that passes through the slot under the servo box - is exactly as it was.
+The arm loses 12.25 mm out of the plain bar between the two holes; everything
+within 16.5 mm of the servo shaft - all of the part that passes through the
+slot under the servo box - is exactly as it was. The bar would give 16.49
+before the hub's walls start, and the second arm here, spenser-arm-small-short,
+takes 3.00 mm more of it for a crank of 25.75. That is a stop-gap for a body
+already printed with the seat 2.0 mm high: it pulls the arm's far end back to
+x 42.0, two clear millimetres short of the ledge, without touching the body.
+It is not the better fix. Stroke falls to 33.44 mm, and since the lane is
+31.0 mm deep, overtravel past the exit and take-up behind the stack share
+whatever the stroke has over 31: 6.11 mm at a crank of 28.75, 2.44 at 25.75,
+against the 3.60 mm of overtravel the built unit runs on. Dropping the seat
+costs no stroke at all.
 
 One thing here is not about the small size at all, and is in the stock files:
 the pin's shaft measures 2.550 mm, the arm's bore 1.247 and the pusher's slot
@@ -453,12 +462,20 @@ PUSHER = [('cut', 'x', 27.00, 36.625),
           ('cut', 'y', -70.00, -60.00),
           ('plane', 'y', -83.248, -0.455)]
 
-# Arm. 12.25 mm out of the plain bar between the two holes, which is all of it
-# that is prismatic: 41 mm apart becomes 28.75, which at anglePush 94 gives the
-# 42 mm stroke the lane wants.
+# Arm. 12.25 mm out of the plain bar between the two holes: 41 mm apart becomes
+# 28.75, which at anglePush 81 gives the 37.11 mm stroke the lane wants.
 ARM = [('cut', 'x', -55.49, -43.24)]
 
-PARTS = [('body', BODY), ('pusher', PUSHER), ('arm', ARM)]
+# And the stop-gap: 3.00 mm more, for a crank of 25.75. Not one band of 15.25,
+# because two triangles lie across x -43.24..-43.00; two bands either side of
+# them come to the same thing, and the far one is cut first, so the near one is
+# still where it was measured when its turn comes.
+ARM_SHORT = ARM + [('cut', 'x', -43.00, -40.00)]
+
+PARTS = [('body', 'body-small', BODY),
+         ('pusher', 'pusher-small', PUSHER),
+         ('arm', 'arm-small', ARM),
+         ('arm', 'arm-small-short', ARM_SHORT)]
 
 
 def main():
@@ -481,16 +498,20 @@ def main():
                          'open edges: %d' % both['open_edges']))
         print('   needs %d pushers, %d arms, %d pins and %d servos' % ((count,) * 4))
         return
-    for name, recipe in PARTS:
+    seen = set()
+    for name, target_name, recipe in PARTS:
         source = os.path.join(IMAGES, 'spenser-%s.stl' % name)
         tris = load(source)
         before = measure(tris)
         print('%s: %d triangles, %.0f mm3, %s%s' % (
-            name, before['tris'], before['volume'],
+            target_name, before['tris'], before['volume'],
             ' x '.join('%.2f..%.2f' % s for s in before['span']),
             '' if before['open_edges'] == 0 else
             '  (%d open edges in the source)' % before['open_edges']))
         if check_only:
+            if name in seen:
+                continue
+            seen.add(name)
             for axis in 'xyz':
                 bands = prismatic_bands(tris, axis)
                 print('   bands in %s: %s' % (axis, ', '.join(
@@ -503,7 +524,7 @@ def main():
             if wrong:
                 raise SystemExit('%s: the cut %s %.2f..%.2f does not hold up: %d of %d '
                                  'lines disagree, first at x %.2f y %.2f'
-                                 % ((name, axis, a, b, len(wrong), checked) + wrong[0][:2]))
+                                 % ((target_name, axis, a, b, len(wrong), checked) + wrong[0][:2]))
             print('   cut %s %.2f..%.2f  (%.2f mm), %d lines through it agree'
                   % (axis, a, b, b - a, checked))
             tris = narrower
@@ -517,7 +538,7 @@ def main():
                 tris = move_plane(tris, axis, at, delta)
                 print('   moved the face at %s = %.3f by %+.3f mm' % (axis, at, delta))
         after = measure(tris)
-        target = os.path.join(IMAGES, 'spenser-%s-small.stl' % name)
+        target = os.path.join(IMAGES, 'spenser-%s.stl' % target_name)
         save(target, tris)
         print('   -> %s: %d triangles, %.0f mm3, %s' % (
             os.path.relpath(target, ROOT).replace('\\', '/'), after['tris'],
