@@ -342,6 +342,10 @@ De IG bevat deze als formele voorbeelden:
 * [Voorraad instellen](InventoryReport-SetDarkTo17.html) en
   [aan de voorraad toevoegen](InventoryReport-Add5Milk.html)
 
+De twee routes zijn ook stap voor stap uitgeschreven: [rechtstreeks bij de unit
+bestellen](ExampleScenario-DirectOrderScenario.html) en [bestellen via een
+orderserver](ExampleScenario-TaskOrderScenario.html).
+
 De kleinste nuttige order, geplaatst op de orderserver:
 
 ```json

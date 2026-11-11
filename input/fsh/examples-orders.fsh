@@ -124,3 +124,27 @@ Usage: #example
 * medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
 * subject = Reference(Patient/123)
 * dosageInstruction.text = "One bite"
+
+
+Instance: DispenseForDirectOrder
+InstanceOf: MedicationDispense
+Title: "Example - Dispense answering an order posted at the unit"
+Description: "What a unit returns to an order posted straight at it. The chocolate is already out by the time the placer reads this."
+Usage: #example
+* status = #completed
+* medication.concept = SpenserMeds#chocolate-milk "Milk Chocolate"
+* subject = Reference(Patient/123)
+* performer.actor = Reference(Spenser-E3D4) "Spenser-E3D4"
+* authorizingPrescription = Reference(PlainMilkOrder)
+
+
+Instance: DispenseForTaskOrder
+InstanceOf: MedicationDispense
+Title: "Example - Dispense reported for a Task"
+Description: "What a unit creates on the order server once a Task has asked it to fill an order. The same resource goes into Task.output when the unit completes the Task."
+Usage: #example
+* status = #completed
+* medication.concept = SpenserMeds#chocolate-dark "Dark Chocolate"
+* subject = Reference(Patient/123)
+* performer.actor = Reference(Spenser-E3D4) "Spenser-E3D4"
+* authorizingPrescription = Reference(PlainDarkOrderForOneUnit)

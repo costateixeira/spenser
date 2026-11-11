@@ -357,6 +357,10 @@ L'IG les fournit comme exemples formels :
 * [Définir le stock](InventoryReport-SetDarkTo17.html) et
   [ajouter au stock](InventoryReport-Add5Milk.html)
 
+Les deux voies sont aussi décrites étape par étape : [commander directement à
+l'unité](ExampleScenario-DirectOrderScenario.html) et [commander via un serveur
+d'ordonnances](ExampleScenario-TaskOrderScenario.html).
+
 La plus petite ordonnance utile, déposée sur le serveur d'ordonnances :
 
 ```json

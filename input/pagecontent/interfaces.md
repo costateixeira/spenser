@@ -336,6 +336,10 @@ The IG carries these as formal examples:
 * [Set inventory](InventoryReport-SetDarkTo17.html) and
   [add to inventory](InventoryReport-Add5Milk.html)
 
+The two routes are also written out step by step: [ordering straight from the
+unit](ExampleScenario-DirectOrderScenario.html) and [ordering through an order
+server](ExampleScenario-TaskOrderScenario.html).
+
 The smallest useful order, placed on the order server:
 
 ```json

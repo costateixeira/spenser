@@ -346,6 +346,10 @@ O IG contém-nas como exemplos formais:
 * [Definir inventário](InventoryReport-SetDarkTo17.html) e
   [acrescentar ao inventário](InventoryReport-Add5Milk.html)
 
+Os dois caminhos estão também descritos passo a passo: [pedir diretamente à
+unidade](ExampleScenario-DirectOrderScenario.html) e [pedir através de um
+servidor de prescrições](ExampleScenario-TaskOrderScenario.html).
+
 A menor prescrição útil, emitida no servidor de prescrições:
 
 ```json
