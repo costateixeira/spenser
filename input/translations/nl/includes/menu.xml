@@ -2,6 +2,9 @@
   <li>
     <a href="index.html">Startpagina</a>
   </li>
+  <li>
+    <a href="setup.html">Installatie</a>
+  </li>
   <li class="dropdown">
     <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
       <b class="caret"></b>

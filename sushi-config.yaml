@@ -144,6 +144,8 @@ pages:
     title: 3D printable parts
   assembly.md:
     title: Assembly
+  setup.md:
+    title: Setup
 
   authors.md:
     title: Authors
