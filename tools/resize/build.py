@@ -133,20 +133,33 @@ within 16.5 mm of the servo shaft - all of the part that passes through the
 slot under the servo box - is exactly as it was.
 
 The second arm here, spenser-arm-small-tall, is the stop-gap for a body already
-printed with the seat 2.0 mm high, and it answers the same two millimetres from
-the other end. The bar gives 16.49 before the hub's walls start, so 3.00 mm
-more comes out for a crank of 25.75, and the hub's top face is then stood off
-2.00 mm on a skirt of its own outline. The tip stays 3.00 mm thick, so none of
-it goes up: what grows is the groove and the bore, 4.70 mm deep and 7.70 tall,
-which is 2.00 mm more of the horn than the arm needs. Push it that far up and
-the whole arm hangs 2.00 mm lower, with the plate back at z 7.05..10.05 - under
-the ledge by 0.95 and over the pusher by 0.05, which is what the built unit
-runs. The hub does not bottom on anything first: swept over the travel it has
-headroom to z0 10.05 before it meets the servo box, so the height is set by
-where the horn is clamped, and the window worth clamping it in is one
-millimetre wide, z0 7.00 to 8.00 - below that the plate touches the pusher,
-above it the plate's top reaches the ledge. The middle of that millimetre is
-the place to aim for.
+printed with the seat 2.0 mm high, and it answers the same millimetres from the
+other end. The bar gives 16.49 before the hub's walls start, so 3.00 mm more
+comes out for a crank of 25.75, and the hub is then stepped up 2.50 mm.
+
+Which surface is raised is the whole of it. The arm hangs on the horn, so the
+horn's seat is a stop in both directions: taller walls let nothing up, because
+the floor the horn rests on arrives first. There are two such surfaces - the
+groove floor at z 3.00 that the horn's bar lies on, and the recess at 1.80 that
+takes its hub - and both have to go up together, with material under them. So
+the step carries everything from z 1.20 up: 3.00 becomes 5.50, 1.80 becomes
+4.30, the walls' top 5.70 becomes 8.20, and the hub comes out the shape it was,
+2.50 mm higher on a plate 2.50 mm thicker.
+
+The tip is left alone, and not only to keep it out of the ledge. The pin's bore
+is as deep as the plate is thick, and its head is 8 mm across and rests on the
+plate's top face: thicken the tip and the pin reaches 2.50 mm less far into the
+pusher's slot, and the head sits on a slope. So the tip stays 3.00 mm, the pin
+still hangs 4.71 mm into a 4.71 mm slot, and it clears the floor by 0.31.
+
+What this puts where, hung 2.50 mm lower than the arm it replaces: the plate at
+z 6.55..9.55, 1.45 under the ledge, and the hub's top at 14.75, which is the
+height the arm already reaches. One number here is worth checking against the
+part rather than this file: the drawing puts the pusher's top at z 7.00, which
+leaves the plate 0.45 mm inside it, and 2.00 would be the step that reproduces
+the built unit exactly. The gap to measure is between the arm's underside and
+the pusher's top - the drawing says 2.05 mm as printed, and whatever it really
+is, that is the step.
 
 The shortening is belt and braces, and it is not free. Stroke falls to
 33.44 mm, and since the lane is 31.0 mm deep, overtravel past the exit and
@@ -360,52 +373,39 @@ def move_plane(tris, axis, at, delta):
     return out
 
 
-def raise_face(tris, axis, at, amount):
-    """Stand one flat face off the part, on a skirt of its own outline.
+def lift_beyond(tris, axis, at, amount, gate_axis, gate):
+    """Insert a slab at `at`, but only beyond `gate`, and ramp across it.
 
-    `lift` cannot do this here. The arm's walls are vertical - its cross section
-    does not move between z 3.4 and 5.68 - but the mesh is float32 and its
-    triangles are large, so a wall built from two triangles reports a normal a
-    thousandth off vertical, and five facets where the hub's walls rise off the
-    plate really do slope. Any seam in the hub crosses all of them, so a lift
-    either refuses or shears what it should not.
+    A step in a part, not a slab through it: past the gate everything at or
+    above the seam goes up, so the material under the seam gets `amount`
+    thicker, and short of the gate nothing moves at all.
 
-    Nothing has to be sheared. The triangles lying exactly on the plane are a
-    flat region; the edges they do not share with each other are its outline.
-    Move the region along the axis, raise a vertical skirt on the outline, and
-    the part is taller by `amount` with the new material exactly prismatic.
-    Every other triangle is untouched - not moved, not stretched - so slopes,
-    fillets and the tip keep the shape they had, and the only surfaces that
-    change are the ones the skirt extends. The outline closes on itself, so the
-    mesh stays closed: each boundary edge keeps its wall triangle and gains the
-    skirt's, the skirt's top edges pair with the moved region, and a hole in the
-    region - the bore through the hub - comes out wound the other way, so its
-    skirt faces into the hole and carries the bore up with the walls.
+    The seam is the same proof as `lift` - a surface crossing it must be
+    parallel to the axis, or it is sheared - but the gate is not. Triangles
+    straddling the gate have some corners raised and some not, and that is
+    what builds the riser: nothing is split and no vertex is added, so a closed
+    mesh stays closed, and what was a vertical face across the gate comes out
+    as a ramp from the old height to the new one. The ramp is as long as those
+    triangles are, so the gate wants choosing where they are small and where a
+    ramp is harmless - and `at` wants choosing below everything the step is
+    meant to carry, so that it is carried rather than stretched.
+
+    Returns the part, and the span the ramp occupies, which is what the
+    verification has to leave out and what the caller should check is clear of
+    anything that matters.
     """
-    i = AXIS[axis]
-    face, rest = [], []
+    i, j = AXIS[axis], AXIS[gate_axis]
+    moved = []
     for t in tris:
-        (face if all(abs(p[i] - at) < 1e-3 for p in t) else rest).append(t)
-    if not face:
-        raise ValueError('no face lies on %s = %.3f' % (axis, at))
-    edges = {}
-    for t in face:
-        for k in range(3):
-            a, b = t[k], t[(k + 1) % 3]
-            key = (tuple(round(c, 4) for c in a), tuple(round(c, 4) for c in b))
-            if (key[1], key[0]) in edges:
-                del edges[(key[1], key[0])]
-            else:
-                edges[key] = (a, b)
-
-    def up(p):
-        return tuple(p[k] + (amount if k == i else 0.0) for k in range(3))
-
-    out = list(rest) + [tuple(up(p) for p in t) for t in face]
-    for a, b in edges.values():
-        out.append((a, b, up(b)))
-        out.append((a, up(b), up(a)))
-    return out, len(face), len(edges)
+        moved.append(tuple(
+            tuple(p[k] + (amount if (k == i and p[i] >= at - 1e-6 and p[j] >= gate)
+                          else 0.0) for k in range(3)) for p in t))
+    ramp = [t for t in tris
+            if min(p[j] for p in t) < gate < max(p[j] for p in t)
+            and max(p[i] for p in t) > at - 1e-6]
+    span = ((min(p[j] for t in ramp for p in t), max(p[j] for t in ramp for p in t))
+            if ramp else (gate, gate))
+    return moved, span, len(ramp)
 
 
 def union(tris, count, overlap=1.5):
@@ -485,33 +485,39 @@ def verify(before, after, axis, a, b, step=1.3):
     return checked, wrong
 
 
-def verify_face(before, after, at, amount, step=0.7):
-    """Prove a raised face the way the cut is proved: by looking at the solid.
+def verify_beyond(before, after, at, amount, gate, ramp, step=0.37):
+    """Prove the step by measuring, on both sides of the ramp.
 
     A line straight up through the part must meet its surface where it did,
-    except that a crossing which was on the plane is now `amount` further
-    along. Nothing else may have moved. Walk a grid of such lines and compare;
-    mismatches are returned, and none means the two solids agree everywhere the
-    grid looked.
+    except that beyond the gate every crossing at or above the seam is `amount`
+    further up - that and nothing else. Short of the gate every crossing is
+    where it was. Lines through the ramp itself are the transition and are
+    skipped; they are counted separately so that it is clear how much of the
+    part went unchecked.
     """
     spanx = (min(p[0] for t in after for p in t), max(p[0] for t in after for p in t))
     spany = (min(p[1] for t in after for p in t), max(p[1] for t in after for p in t))
     wrong = []
-    checked = 0
+    checked = skipped = 0
     y = spany[0] + 0.137
     while y < spany[1]:
         x = spanx[0] + 0.113
         while x < spanx[1]:
+            if ramp[0] - 1e-9 <= x <= ramp[1] + 1e-9:
+                skipped += 1
+                x += step
+                continue
             here = _column(after, x, y)
-            there = [h + amount if abs(h - at) < 1e-3 else h
-                     for h in _column(before, x, y)]
+            there = _column(before, x, y)
+            if x >= gate:
+                there = sorted(h + amount if h >= at - 1e-6 else h for h in there)
             checked += 1
             if len(here) != len(there) or any(
-                    abs(p - q) > 1e-3 for p, q in zip(here, sorted(there))):
-                wrong.append((x, y, here, sorted(there)))
+                    abs(p - q) > 1e-3 for p, q in zip(here, there)):
+                wrong.append((x, y, here, there))
             x += step
         y += step
-    return checked, wrong
+    return checked, skipped, wrong
 
 
 # -------------------------------------------------------------- what to cut out
@@ -560,16 +566,28 @@ PUSHER = [('cut', 'x', 27.00, 36.625),
 ARM = [('cut', 'x', -55.49, -43.24)]
 
 # And the stop-gap, for a body already printed with the seat 2.0 mm high.
-#   x -43.00..-40.00  3.00 mm more out of the bar, for a crank of 25.75
-#   z 5.70 + 2.00     the hub's top face, stood off on a skirt
+#   x -43.00..-40.00           3.00 mm more out of the bar, crank 25.75
+#   z 1.20 + 2.50 past -55.00  the whole hub up, the bar left as it was
 # The cut is in two bands, not one of 15.25, because two triangles lie across
 # x -43.24..-43.00; two bands either side of them come to the same thing, and
 # the far one is cut first, so the near one is still where it was measured when
-# its turn comes. The hub then grows 2.00 mm taller while the tip stays 3.00 mm
-# thick, so pushing the arm up the horn by that much seats it 2.00 mm lower -
-# which is where dropping the seat would have put it.
+# its turn comes.
+#
+# The step's seam is z 1.20 and its gate is x -55.00, and both are measured.
+# The seam has to clear what it carries: the horn sits on two surfaces, the
+# groove floor at z 3.00 and the recess at 1.80 that takes its hub, and a
+# chamfer runs round the outside of the hub from z 1.35 to 2.27. A seam at 1.79
+# cuts that chamfer and stretches it, and the check says so - 75 lines
+# disagree. At 1.20 nothing in the hub crosses with any real slope: 330
+# triangles span it and not one is more than 0.05 off vertical, so the whole
+# hub rides up on 2.50 mm of new material and comes out the shape it was.
+# The gate has to clear the pin's head, which is 8 mm across and so covers
+# x -66..-58. Its ramp is as long as the triangles that straddle it: -55.50
+# ramps from -61.10, under the head, while -55.00 ramps over -56.89..-54.25,
+# which is 2.64 mm of the rib and nothing else. Short of it nothing moves, so
+# the tip keeps its 3.00 mm and the pin bore its depth.
 ARM_TALL = ARM + [('cut', 'x', -43.00, -40.00),
-                  ('face', 'z', 5.70, 2.00)]
+                  ('beyond', 'z', 1.20, 2.50, 'x', -55.00)]
 
 PARTS = [('body', 'body-small', BODY),
          ('pusher', 'pusher-small', PUSHER),
@@ -636,19 +654,23 @@ def main():
                 _, axis, at, delta = op
                 tris = move_plane(tris, axis, at, delta)
                 print('   moved the face at %s = %.3f by %+.3f mm' % (axis, at, delta))
-            elif op[0] == 'face':
-                _, axis, at, amount = op
-                taller, facets, outline = raise_face(tris, axis, at, amount)
-                checked, wrong = verify_face(tris, taller, at, amount)
+            elif op[0] == 'beyond':
+                _, axis, at, amount, gate_axis, gate = op
+                stepped, ramp, facets = lift_beyond(tris, axis, at, amount,
+                                                    gate_axis, gate)
+                checked, skipped, wrong = verify_beyond(tris, stepped, at, amount,
+                                                        gate, ramp)
                 if wrong:
-                    raise SystemExit('%s: raising %s = %.2f by %.2f does not hold up: %d '
-                                     'of %d lines disagree, first at x %.2f y %.2f'
-                                     % ((target_name, axis, at, amount, len(wrong),
-                                         checked) + wrong[0][:2]))
-                print('   raised the face at %s = %.2f by %.2f mm  (%d facets on a %d '
-                      'edge outline), %d lines through it agree'
-                      % (axis, at, amount, facets, outline, checked))
-                tris = taller
+                    raise SystemExit('%s: the step at %s = %.2f beyond %s = %.2f does not '
+                                     'hold up: %d of %d lines disagree, first at x %.2f '
+                                     'y %.2f' % ((target_name, axis, at, gate_axis, gate,
+                                                  len(wrong), checked) + wrong[0][:2]))
+                print('   stepped %s up %.2f mm at %s = %.2f, beyond %s = %.2f'
+                      % (axis, amount, axis, at, gate_axis, gate))
+                print('   %d triangles ramp it over %s %.2f..%.2f; %d lines either side '
+                      'agree, %d through the ramp not looked at'
+                      % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
+                tris = stepped
         after = measure(tris)
         target = os.path.join(IMAGES, 'spenser-%s.stl' % target_name)
         save(target, tris)
