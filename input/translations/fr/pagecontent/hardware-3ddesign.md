@@ -22,18 +22,23 @@ le sens de la poussée est celui qui compte : il suffit à un morceau pour se
 glisser vers l'avant sous la paroi de retenue, où le poussoir le rencontre par
 la tranche.
 
-Ce sont les mêmes pièces, le couloir réduit de 13 mm en largeur et de 9 mm en
-profondeur : elles acceptent un morceau **jusqu'à 47 × 30 mm**, à la même
+Ce sont les mêmes pièces, le couloir réduit de 19,25 mm en largeur et de 9 mm
+en profondeur : elles acceptent un morceau **jusqu'à 40 × 30 mm**, à la même
 épaisseur de 5,5 à 7,5 mm. Mesurez un morceau avant d'imprimer : 30 mm est la
-limite dans le sens de la poussée. Rien d'autre ne change dans la
-construction — la goupille est la même pièce, le réglage du servo est le même,
-et les étapes de montage aussi.
+limite dans le sens de la poussée.
+
+Deux choses changent dans la construction. Réglez `anglePush=94` sur cette
+unité, au lieu de la valeur par défaut de 77 : le bras est plus court, il lui
+faut donc un angle plus grand pour conserver la même course de 42 mm. Et percez
+le trou de goupille du bras à 2,6 mm — il est imprimé comme un avant-trou de
+1,25 mm, où la goupille de 2,55 mm n'entre pas. Pour le reste, les étapes de
+montage ne changent pas, et la goupille est la même pièce.
 
 | Pièce | Description | Téléchargements |
 |------|-------------|-----------|
-| **Corps** | Un couloir de 48 × 31 mm au lieu de 61 × 40 ; 51 × 101 × 105 mm hors tout. | [STL](spenser-body-small.stl) |
-| **Poussoir** | 46,9 × 51 mm, pour correspondre au couloir plus étroit. | [STL](spenser-pusher-small.stl) |
-| **Bras** | 33,7 mm entre les trous au lieu de 41, ce qui donne une course de 42 mm. | [STL](spenser-arm-small.stl) |
+| **Corps** | Un couloir de 41,75 × 31 mm au lieu de 61 × 40 ; 44,75 × 101 × 107 mm hors tout. L'épaulement qui retient le poussoir est 2 mm plus haut, pour laisser passer le bras. | [STL](spenser-body-small.stl) |
+| **Poussoir** | 40,65 × 51 mm, pour correspondre au couloir plus étroit, avec la rainure de goupille ouverte à 2,8 mm. | [STL](spenser-pusher-small.stl) |
+| **Bras** | 28,75 mm entre les trous au lieu de 41, ce qui donne une course de 42 mm avec `anglePush=94`. | [STL](spenser-arm-small.stl) |
 | **Goupille** | La même pièce que ci-dessus. | [STL](spenser-pin.stl) |
 {:.table-bordered}
 

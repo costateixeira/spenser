@@ -21,17 +21,22 @@ and has room to shift in it. The 9 mm of slack along the push is the one that
 matters: it is enough for a piece to creep forward under the retaining wall,
 where the pusher meets it edge on.
 
-These are the same parts with the lane cut 13 mm narrower and 9 mm shallower,
-so they take a piece **up to 47 × 30 mm**, at the same 5.5 to 7.5 mm thick.
-Measure a piece before printing: 30 mm is the limit along the push. Nothing
-else about the build changes — the pin is the same part, the servo setting is
-the same, and so are the assembly steps.
+These are the same parts with the lane cut 19.25 mm narrower and 9 mm
+shallower, so they take a piece **up to 40 × 30 mm**, at the same 5.5 to
+7.5 mm thick. Measure a piece before printing: 30 mm is the limit along the
+push.
+
+Two things change on the build. Set `anglePush=94` on this unit, against the
+default of 77: the arm is shorter, so it needs a wider swing to keep the same
+42 mm stroke. And drill the arm's pin bore out to 2.6 mm — it prints as a
+1.25 mm pilot, which the 2.55 mm pin does not fit. The assembly steps are
+otherwise unchanged, and the pin is the same part.
 
 | Part | Description | Downloads |
 |------|-------------|-----------|
-| **Body** | A lane 48 × 31 mm instead of 61 × 40; 51 × 101 × 105 mm overall. | [STL](spenser-body-small.stl) |
-| **Pusher** | 46.9 × 51 mm, to match the narrower lane. | [STL](spenser-pusher-small.stl) |
-| **Arm** | 33.7 mm between its holes instead of 41, which gives a 42 mm stroke. | [STL](spenser-arm-small.stl) |
+| **Body** | A lane 41.75 × 31 mm instead of 61 × 40; 44.75 × 101 × 107 mm overall. The ledge that holds the pusher down sits 2 mm higher, to clear the arm. | [STL](spenser-body-small.stl) |
+| **Pusher** | 40.65 × 51 mm, to match the narrower lane, with the pin slot opened to 2.8 mm. | [STL](spenser-pusher-small.stl) |
+| **Arm** | 28.75 mm between its holes instead of 41, which gives a 42 mm stroke at `anglePush=94`. | [STL](spenser-arm-small.stl) |
 | **Pin** | The same part as above. | [STL](spenser-pin.stl) |
 {:.table-bordered}
 

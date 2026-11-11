@@ -16,47 +16,85 @@ and screw boss exactly where the original had it, and the tool refuses to cut
 anywhere that is not prismatic rather than producing a part that only looks
 right.
 
+A slab can also be pushed in rather than taken out. Inserting one at a plane
+the surface crosses only side-on lifts everything above it and stretches the
+walls that span it, which is the same proof read backwards, and the same
+refusal applies: a face that is not parallel to the plane would be sheared, so
+it blocks.
+
 The default unit takes a Belgian napolitain, up to 60 x 39 mm. A Swiss one is
 30 x 40 mm and 7 mm thick, which rattles around in a lane built for the larger
-piece: 10 mm of play across the lane and, worse, 9 mm along it, enough for a
+piece: 20 mm of play across the lane and, worse, 9 mm along it, enough for a
 piece to creep forward under the retaining wall and meet the pusher edge on.
 
 The small variant keeps the thickness band the original has - 5.5 mm, the
-height of the pusher, to 7.5 mm, the height of the exit slot - so a 7 mm piece
-sits in the middle of it and nothing about the height needs to change:
+height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
+the middle of it and nothing about the height needs to change:
 
-  lane            61.0 x 40.0 mm  ->  48.0 x 31.0
-  body            64 x 110 x 105  ->  51 x 101 x 105
-  pusher          59.9 x 56.0     ->  46.9 x 51.0
-  arm, pin holes  41.0 mm apart   ->  33.7
-  stroke          51.0 mm         ->  42.0
+  lane            61.0 x 40.0 mm  ->  41.75 x 31.0
+  body            64 x 110 x 105  ->  44.75 x 101 x 107
+  pusher          59.9 x 56.0     ->  40.65 x 51.0
+  arm, pin holes  41.0 mm apart   ->  28.75
+  stroke          51.05 mm        ->  42.05
+  retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
+  pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
+  arm pin bore    1.247 mm        ->  drill it 2.6; see below
   pin             unchanged
-  firmware        unchanged: the swing stays at the default anglePush of 77
+  firmware        anglePush 94 on this unit, against the default of 77
 
-The depth is the number that matters and it is exact: 31.0 mm for a 30 mm
-piece. That play is also what stops a piece turning in the lane, because a
-30 x 40 piece cannot rotate more than a couple of degrees in a lane 31 deep.
+Both lane numbers are set by something different, and it is worth knowing
+which. The depth is set by the chocolate and it is exact: 31.0 mm for a 30 mm
+piece. That is also what stops a piece turning, because a 30 x 40 piece cannot
+rotate more than a couple of degrees in a lane 31 deep, and it was the 9 mm of
+play along the lane that misfed. The width is set by the mechanism.
 
-The width is not free, and 48 mm is as narrow as this mechanism goes. The arm
-has to swing out across the lane far enough to drive the pusher, and at the
-middle of its swing it reaches the pivot less the crank less 3.9 mm of material
-round the pin hole. Beyond that is the rail the pusher runs under, which the
-arm passes 3 mm below the top of and so cannot cross: with the crank at 33.7
-that puts the far wall of the lane at 48 mm and leaves 1.4 mm to spare. A
-narrower lane means a shorter crank, a shorter crank means a wider swing to
-keep the stroke, and a wider swing moves the arm through clearances around the
-servo box that are already tight on the built unit. Not worth 2 mm.
+The arm has to swing out across the lane to drive the pusher, and its two
+reaches from the servo axis are
 
-The play this leaves across the lane - 4 mm each side of a 40 mm piece - does
-no harm. The exit slot is the full width of the lane, so a piece lying against
-either wall still leaves cleanly. It was the play along the lane, 9 mm of it,
-that misfed: enough for a piece to creep forward under the retaining wall and
-meet the pusher edge on.
+  across the lane   stroke / (2 sin(swing/2)) + 5 mm of material past the pin
+  towards the stack stroke / 2 + 5 mm x sin(swing/2)
 
-The arm loses its 7.3 mm out of the plain bar between the two holes, so
-everything within 23.7 mm of the servo shaft - all of the part that passes
-through the slot under the servo box - is exactly as it was, and the sweep of
-the arm, with every clearance already proved on a built unit, is unchanged.
+The first is what the lane width has to clear, and it shrinks as the swing
+opens: a wider swing buys a shorter crank for the same stroke, and a shorter
+crank is a narrower lane. The second barely moves, because half the stroke
+dominates it, so opening the swing costs almost nothing on the side where the
+chocolate is. What it does cost is push: the stroke starts at one end of the
+swing, where the crank's purchase along the travel is cos(swing/2), and that is
+exactly where the bottom piece has to be sheared out from under the column. At
+94 degrees that is 87% of what the built unit starts with. Past about 120 it
+would want trying before trusting.
+
+The far wall the arm must clear used to be the ledge the pusher runs under, at
+x 40.0, because the arm's far end is 3.0 mm thick and its top 1.05 mm fouled
+the ledge's z 9..10. Lifting the ledge 2.0 mm, by pushing a slab in at z 8.0,
+puts its underside at 11.05 and the arm passes a clear 1.0 mm below it. The
+obstacle becomes the bare wall at x 37.5, which is worth 2.5 mm of lane and
+keeps the full 2.5 mm of overhang that holds the pusher down. The slot the
+chocolate leaves by grows with it, 7.5 mm to 9.5, which changes nothing: two
+7 mm pieces still cannot pass it together.
+
+What that leaves, measured over the whole swing rather than at the centreline:
+1.50 mm from the far wall, 3.67 mm from the face of the chocolate stack, and
+the magazine wall lifted clean out of reach. For scale, the same measurement
+run against the built unit reports it 1.5 mm inside both the magazine wall and
+the servo pocket, so the datum here - ARM_Z, or the pocket - is off by about
+that much and these figures carry the error. The comparison is the part to
+trust: this variant has more room than the unit that works.
+
+The arm loses 12.25 mm out of the plain bar between the two holes, which is all
+the bar has; everything within 16.5 mm of the servo shaft - all of the part
+that passes through the slot under the servo box - is exactly as it was.
+
+One thing here is not about the small size at all, and is in the stock files:
+the pin's shaft measures 2.550 mm, the arm's bore 1.247 and the pusher's slot
+2.345, so three parts that have to share one diameter have three. The pin was
+never going to fit either of them, on any printer. The slot this tool widens,
+because its far wall is one flat face and what moved can be measured
+afterwards. The bore it leaves alone: that hole is a fourteen-sided prism, so
+scaling its wall by eye lands somewhere between 2.53 and 2.60 depending on
+whether you read the facets or the corners, which is how you get a part that
+looks right and still does not fit. Drill it 2.6 mm instead - the 1.25 mm bore
+is a pilot and will centre the drill for you.
 """
 
 import os
@@ -201,6 +239,55 @@ def _squash(value, a, b, width):
     return value - width if value >= b else a
 
 
+def lift(tris, axis, at, amount):
+    """Push a slab in at the plane `at` and move everything beyond it out.
+
+    The reverse of cut, and safe under the same condition. A triangle that
+    crosses the plane side-on - parallel to the axis - simply gets longer, which
+    is what a stretched wall should do. One that crosses it at an angle would be
+    sheared into a shape the original never had, so it blocks. Nothing is split
+    and no vertex is added, so a closed mesh stays closed.
+    """
+    i = AXIS[axis]
+    bad = []
+    for t in tris:
+        lo = min(p[i] for p in t)
+        hi = max(p[i] for p in t)
+        if lo < at - 1e-6 and hi > at + 1e-6 and abs(normal(t)[i]) > 1e-4:
+            bad.append(t)
+    if bad:
+        raise ValueError('%s = %.2f is not a clean seam: %d triangles cross it at an '
+                         'angle, first at %r' % (axis, at, len(bad), bad[0]))
+    return [tuple(tuple(p[k] + (amount if (k == i and p[k] > at + 1e-9) else 0.0)
+                        for k in range(3)) for p in t) for t in tris]
+
+
+def move_plane(tris, axis, at, delta):
+    """Slide one flat face along its own normal: a slot gets wider, a wall thinner.
+
+    Every vertex sitting on the plane moves and no other does, so this is only
+    right where that plane carries a single flat face. Unlike a cut it cannot be
+    proved from the mesh, so what it did is measured afterwards instead.
+    """
+    i = AXIS[axis]
+    hits = 0
+    out = []
+    for t in tris:
+        moved = []
+        for p in t:
+            if abs(p[i] - at) < 1e-3:
+                hits += 1
+                q = list(p)
+                q[i] = p[i] + delta
+                moved.append(tuple(q))
+            else:
+                moved.append(p)
+        out.append(tuple(moved))
+    if not hits:
+        raise ValueError('nothing sits on %s = %.3f' % (axis, at))
+    return out
+
+
 def _column(tris, x, y):
     """Heights at which a line straight up through (x, y) meets the surface."""
     out = []
@@ -254,26 +341,38 @@ def verify(before, after, axis, a, b, step=1.3):
 
 # -------------------------------------------------------------- what to cut out
 
-# Every band below is given in the coordinates of the original STL file, which
-# is what the measurements in --check report. Cutting one band moves everything
-# beyond it, so the bands are applied from the far end back: then each one is
-# still where it was measured when its turn comes.
+# Every position below is given in the coordinates of the original STL file,
+# which is what the measurements in --check report. Cutting one band moves
+# everything beyond it, so the cuts are applied from the far end back: then each
+# one is still where it was measured when its turn comes. The other operations
+# follow, on positions that the cuts did not disturb.
 
-# Body. Two bands across it, one along it.
+# Body. Three bands across it, one along it, then the lift.
 #   x 40.00..47.00   between the rail the pusher runs under and the bay wall
-#   x 74.00..80.00   between the bay and the box the servo sits in
+#   x 50.00..61.75   the lane's own air, between the rail and the bay
+#   x 74.00..74.50   between the bay and the box the servo sits in
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
-# 13 mm off the width and 9 mm off the depth of the lane.
-BODY = [('x', 40.00, 47.00), ('x', 74.00, 80.00), ('y', 65.00, 74.00)]
+#   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
+# 19.25 mm off the width and 9 mm off the depth of the lane.
+BODY = [('cut', 'x', 40.00, 47.00),
+        ('cut', 'x', 50.00, 61.75),
+        ('cut', 'x', 74.00, 74.50),
+        ('cut', 'y', 65.00, 74.00),
+        ('lift', 'z', 8.00, 2.00)]
 
-# Pusher. The same 13 mm across, in two bands that miss the three ribs
+# Pusher. The same 19.25 across, in two bands that miss the three ribs
 # underneath, and 5 mm out of its length, which brings the pin slot closer to
-# the pushing edge by just as much as the stroke has shortened.
-PUSHER = [('x', 28.00, 35.00), ('x', 50.00, 56.00), ('y', -70.00, -65.00)]
+# the pushing edge by just as much as the stroke has shortened. Then the slot's
+# far wall moves out 0.455, which is what makes room for the pin.
+PUSHER = [('cut', 'x', 27.00, 36.625),
+          ('cut', 'x', 48.00, 57.625),
+          ('cut', 'y', -70.00, -65.00),
+          ('plane', 'y', -83.248, -0.455)]
 
-# Arm. 7.3 mm out of the plain bar between the two holes: 41 mm apart becomes
-# 33.7, which with the unchanged 77 degree swing gives a 42 mm stroke.
-ARM = [('x', -53.25, -45.95)]
+# Arm. 12.25 mm out of the plain bar between the two holes, which is all of it
+# that is prismatic: 41 mm apart becomes 28.75, which at anglePush 94 gives the
+# 42 mm stroke the lane wants.
+ARM = [('cut', 'x', -55.49, -43.24)]
 
 PARTS = [('body', BODY), ('pusher', PUSHER), ('arm', ARM)]
 
@@ -295,7 +394,8 @@ def main():
                 print('   bands in %s: %s' % (axis, ', '.join(
                     '%.2f..%.2f (%.2f)' % (a, b, b - a) for a, b in bands) or 'none'))
             continue
-        for axis, a, b in sorted(recipe, key=lambda band: -band[1]):
+        cuts = [op for op in recipe if op[0] == 'cut']
+        for _, axis, a, b in sorted(cuts, key=lambda op: -op[2]):
             narrower = cut(tris, axis, a, b)
             checked, wrong = verify(tris, narrower, axis, a, b)
             if wrong:
@@ -305,6 +405,15 @@ def main():
             print('   cut %s %.2f..%.2f  (%.2f mm), %d lines through it agree'
                   % (axis, a, b, b - a, checked))
             tris = narrower
+        for op in recipe:
+            if op[0] == 'lift':
+                _, axis, at, amount = op
+                tris = lift(tris, axis, at, amount)
+                print('   lifted everything above %s = %.2f by %.2f mm' % (axis, at, amount))
+            elif op[0] == 'plane':
+                _, axis, at, delta = op
+                tris = move_plane(tris, axis, at, delta)
+                print('   moved the face at %s = %.3f by %+.3f mm' % (axis, at, delta))
         after = measure(tris)
         target = os.path.join(IMAGES, 'spenser-%s-small.stl' % name)
         save(target, tris)
