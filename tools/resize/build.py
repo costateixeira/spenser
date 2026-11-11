@@ -32,15 +32,15 @@ height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
 the middle of it and nothing about the height needs to change:
 
   lane            61.0 x 40.0 mm  ->  41.75 x 31.0
-  body            64 x 110 x 105  ->  44.75 x 101 x 107
-  pusher          59.9 x 56.0     ->  40.65 x 51.0
+  body            64 x 110 x 105  ->  44.75 x 85 x 107
+  pusher          59.9 x 56.0     ->  40.65 x 48.5
   arm, pin holes  41.0 mm apart   ->  28.75
-  stroke          51.05 mm        ->  42.05
+  stroke          51.05 mm        ->  36.96
   retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    1.247 mm        ->  drill it 2.6; see below
   pin             unchanged
-  firmware        anglePush 94 on this unit, against the default of 77
+  firmware        anglePush 80 on this unit, against the default of 77
 
 Both lane numbers are set by something different, and it is worth knowing
 which. The depth is set by the chocolate and it is exact: 31.0 mm for a 30 mm
@@ -61,8 +61,29 @@ dominates it, so opening the swing costs almost nothing on the side where the
 chocolate is. What it does cost is push: the stroke starts at one end of the
 swing, where the crank's purchase along the travel is cos(swing/2), and that is
 exactly where the bottom piece has to be sheared out from under the column. At
-94 degrees that is 87% of what the built unit starts with. Past about 120 it
+80 degrees that is 98% of what the built unit starts with. Past about 120 it
 would want trying before trusting.
+
+How long the rail has to be is a separate sum, and an easy one to get wrong:
+the pushing face does not start at the back of the lane. pusher_placement in
+tools/assembly puts the pin 82.075 mm from the pusher's slot, so the face sits
+some way behind the stack at rest and the tail reaches some way past the front
+of the lane. Write S for half the stroke and s for how much the pusher is
+shortened by, and three numbers move together:
+
+  rail the tail never reaches   34.675 - S
+  overtravel past the exit      S - 16.925 + s
+  take-up behind the stack      S - 14.075 - s
+
+The first is what can come off the front of the rail. It grows as the stroke
+shrinks, but wanting 4 mm of overtravel and 1 mm of take-up forces 2S >= 36, so
+no more than 16.7 mm of rail can ever go. Note which end each one answers:
+shortening the pusher cuts a band between the slot and the pushing face, so it
+moves the face and not the tail - it buys overtravel and takes it off the
+take-up, and leaves the length of rail needed exactly as it was.
+
+16 mm comes off here, at a swing of 80 and a pusher 2.5 mm shorter, which
+leaves 3.96 mm of overtravel against the 3.60 the built unit runs on.
 
 The far wall the arm must clear used to be the ledge the pusher runs under, at
 x 40.0, because the arm's far end is 3.0 mm thick and its top 1.05 mm fouled
@@ -74,7 +95,7 @@ chocolate leaves by grows with it, 7.5 mm to 9.5, which changes nothing: two
 7 mm pieces still cannot pass it together.
 
 What that leaves, measured over the whole swing rather than at the centreline:
-1.50 mm from the far wall, 3.67 mm from the face of the chocolate stack, and
+1.50 mm from the far wall, 7.66 mm from the face of the chocolate stack, and
 the magazine wall lifted clean out of reach. For scale, the same measurement
 run against the built unit reports it 1.5 mm inside both the magazine wall and
 the servo pocket, so the datum here - ARM_Z, or the pocket - is off by about
@@ -288,6 +309,32 @@ def move_plane(tris, axis, at, delta):
     return out
 
 
+def union(tris, count, overlap=1.5):
+    """N lanes in one printed part, by standing copies in each other's side wall.
+
+    Both outer faces of the body are flat planes over its whole depth and
+    height, and both side walls are the same 1.5 mm slab, so a copy moved along
+    by the width less one wall thickness lands its left wall exactly where the
+    last copy's right wall is. The two slabs then occupy the same space rather
+    than meeting at a surface, which is what a slicer wants: it unions them, and
+    the part comes out with one shared wall between neighbouring lanes instead
+    of two back to back.
+
+    Nothing is cut and nothing is welded. Each copy keeps its own closed
+    surface, so every edge still has exactly the two triangles it had and the
+    file reports watertight; what makes it one part is that the copies overlap
+    in solid material. Lanes come out identical, at a pitch of width - 1.5.
+    """
+    low = min(p[0] for t in tris for p in t)
+    high = max(p[0] for t in tris for p in t)
+    pitch = (high - low) - overlap
+    out = []
+    for k in range(count):
+        shift = k * pitch
+        out += [tuple((p[0] + shift, p[1], p[2]) for p in t) for t in tris]
+    return out, pitch
+
+
 def _column(tris, x, y):
     """Heights at which a line straight up through (x, y) meets the surface."""
     out = []
@@ -352,21 +399,25 @@ def verify(before, after, axis, a, b, step=1.3):
 #   x 50.00..61.75   the lane's own air, between the rail and the bay
 #   x 74.00..74.50   between the bay and the box the servo sits in
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
+#   y -10.00..6.00   the front of the rail, which the pusher's tail never reaches
 #   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
-# 19.25 mm off the width and 9 mm off the depth of the lane.
+# 19.25 mm off the width, 9 off the depth of the lane and 16 off the rail.
 BODY = [('cut', 'x', 40.00, 47.00),
         ('cut', 'x', 50.00, 61.75),
         ('cut', 'x', 74.00, 74.50),
         ('cut', 'y', 65.00, 74.00),
+        ('cut', 'y', -10.00, 6.00),
         ('lift', 'z', 8.00, 2.00)]
 
 # Pusher. The same 19.25 across, in two bands that miss the three ribs
-# underneath, and 5 mm out of its length, which brings the pin slot closer to
-# the pushing edge by just as much as the stroke has shortened. Then the slot's
-# far wall moves out 0.455, which is what makes room for the pin.
+# underneath, and 7.5 mm out of its length. That band lies between the pin slot
+# and the pushing face, so it moves the face and not the tail: 5 mm of it
+# answers the shallower lane and the other 2.5 buys back the overtravel that
+# the shorter stroke would otherwise cost. Then the slot's far wall moves out
+# 0.455, which is what makes room for the pin.
 PUSHER = [('cut', 'x', 27.00, 36.625),
           ('cut', 'x', 48.00, 57.625),
-          ('cut', 'y', -70.00, -65.00),
+          ('cut', 'y', -70.00, -62.50),
           ('plane', 'y', -83.248, -0.455)]
 
 # Arm. 12.25 mm out of the plain bar between the two holes, which is all of it
@@ -379,6 +430,24 @@ PARTS = [('body', BODY), ('pusher', PUSHER), ('arm', ARM)]
 
 def main():
     check_only = '--check' in sys.argv
+    if '--union' in sys.argv:
+        count = int(sys.argv[sys.argv.index('--union') + 1])
+        which = 'body-small' if '--standard' not in sys.argv else 'body'
+        tris = load(os.path.join(IMAGES, 'spenser-%s.stl' % which))
+        one = measure(tris)
+        many, pitch = union(tris, count)
+        both = measure(many)
+        target = os.path.join(IMAGES, 'spenser-%s-x%d.stl' % (which, count))
+        save(target, many)
+        print('%s: %s, lane pitch %.2f mm, one 1.50 mm wall between lanes'
+              % (which, ' x '.join('%.2f' % (s[1] - s[0]) for s in one['span']), pitch))
+        print('-> %s: %d triangles, %.0f mm3, %s' % (
+            os.path.relpath(target, ROOT).replace('\\', '/'), both['tris'],
+            both['volume'], ' x '.join('%.2f' % (s[1] - s[0]) for s in both['span'])))
+        print('   %s' % ('watertight' if both['open_edges'] == 0 else
+                         'open edges: %d' % both['open_edges']))
+        print('   needs %d pushers, %d arms, %d pins and %d servos' % ((count,) * 4))
+        return
     for name, recipe in PARTS:
         source = os.path.join(IMAGES, 'spenser-%s.stl' % name)
         tris = load(source)
