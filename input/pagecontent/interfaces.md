@@ -396,7 +396,7 @@ dashboard.
 
 `/setSettings` accepts any of `serverUrl`, `orderMode` with values `both`, `tag`
 or `task`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds` between 5 and
-3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckHours`, and
+3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckMinutes`, and
 the servo parameters. It answers with the full settings document, which includes
 the firmware version and never includes the key.
 

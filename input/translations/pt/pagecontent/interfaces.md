@@ -406,7 +406,7 @@ painel integrado.
 
 `/setSettings` aceita qualquer um de `serverUrl`, `orderMode` com os valores `both`,
 `tag` ou `task`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds` entre 5 e
-3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckHours` e os
+3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckMinutes` e os
 parâmetros dos servos. Responde com o documento completo das definições, que inclui
 a versão do firmware e nunca inclui a chave.
 

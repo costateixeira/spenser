@@ -402,7 +402,7 @@ dashboard aan te bieden.
 
 `/setSettings` aanvaardt elk van `serverUrl`, `orderMode` met de waarden `both`, `tag`
 of `task`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds` tussen 5 en
-3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckHours`, en de
+3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`, `updateCheckMinutes`, en de
 servoparameters. Het antwoord is het volledige instellingendocument, met daarin de
 firmwareversie en nooit de sleutel.
 

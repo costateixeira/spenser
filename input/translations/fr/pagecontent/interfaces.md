@@ -418,7 +418,7 @@ démonstration et servir le tableau de bord intégré.
 `/setSettings` accepte n'importe lequel des réglages `serverUrl`, `orderMode` avec
 les valeurs `both`, `tag` ou `task`, `orderQuery`, `taskQuery`, `pollEnabled`,
 `pollSeconds` entre 5 et 3600, `writeBack`, `giveUpOnStockEmpty`, `updateUrl`,
-`updateCheckHours`, et les paramètres des servos. Il répond avec le document
+`updateCheckMinutes`, et les paramètres des servos. Il répond avec le document
 complet des réglages, qui inclut la version du micrologiciel et jamais la clé.
 
 Une unité vérifie son serveur d'ordonnances toutes les `pollSeconds`, 30 par
