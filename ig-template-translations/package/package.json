@@ -1,0 +1,12 @@
+{
+  "name": "spenser.fhir.template",
+  "version": "0.1.0",
+  "type": "fhir.template",
+  "license": "CC0-1.0",
+  "description": "Spenser's IG template: the translated FHIR base template in Spenser's colours.",
+  "author": "https://github.com/costateixeira/spenser",
+  "base": "fhir2.base.template",
+  "dependencies": {
+    "fhir2.base.template": "current"
+  }
+}
