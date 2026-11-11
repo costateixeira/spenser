@@ -5,6 +5,9 @@
   <li>
     <a href="setup.html">Configuration</a>
   </li>
+  <li>
+    <a href="usage.html">Utilisation</a>
+  </li>
   <li class="dropdown">
     <a data-toggle="dropdown" href="#" class="dropdown-toggle">Logiciel
       <b class="caret"></b>
