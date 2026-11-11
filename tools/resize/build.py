@@ -130,16 +130,32 @@ trust: this variant has more room than the unit that works.
 
 The arm loses 12.25 mm out of the plain bar between the two holes; everything
 within 16.5 mm of the servo shaft - all of the part that passes through the
-slot under the servo box - is exactly as it was. The bar would give 16.49
-before the hub's walls start, and the second arm here, spenser-arm-small-short,
-takes 3.00 mm more of it for a crank of 25.75. That is a stop-gap for a body
-already printed with the seat 2.0 mm high: it pulls the arm's far end back to
-x 42.0, two clear millimetres short of the ledge, without touching the body.
-It is not the better fix. Stroke falls to 33.44 mm, and since the lane is
-31.0 mm deep, overtravel past the exit and take-up behind the stack share
-whatever the stroke has over 31: 6.11 mm at a crank of 28.75, 2.44 at 25.75,
-against the 3.60 mm of overtravel the built unit runs on. Dropping the seat
-costs no stroke at all.
+slot under the servo box - is exactly as it was.
+
+The second arm here, spenser-arm-small-tall, is the stop-gap for a body already
+printed with the seat 2.0 mm high, and it answers the same two millimetres from
+the other end. The bar gives 16.49 before the hub's walls start, so 3.00 mm
+more comes out for a crank of 25.75, and the hub's top face is then stood off
+2.00 mm on a skirt of its own outline. The tip stays 3.00 mm thick, so none of
+it goes up: what grows is the groove and the bore, 4.70 mm deep and 7.70 tall,
+which is 2.00 mm more of the horn than the arm needs. Push it that far up and
+the whole arm hangs 2.00 mm lower, with the plate back at z 7.05..10.05 - under
+the ledge by 0.95 and over the pusher by 0.05, which is what the built unit
+runs. The hub does not bottom on anything first: swept over the travel it has
+headroom to z0 10.05 before it meets the servo box, so the height is set by
+where the horn is clamped, and the window worth clamping it in is one
+millimetre wide, z0 7.00 to 8.00 - below that the plate touches the pusher,
+above it the plate's top reaches the ledge. The middle of that millimetre is
+the place to aim for.
+
+The shortening is belt and braces, and it is not free. Stroke falls to
+33.44 mm, and since the lane is 31.0 mm deep, overtravel past the exit and
+take-up behind the stack share whatever the stroke has over 31: 6.11 mm at a
+crank of 28.75, 2.44 at 25.75, against the 3.60 mm of overtravel the built unit
+runs on. What it buys is that the far end only reaches x 42.0, two clear
+millimetres short of the ledge's inner edge, so the arm does not bind even if
+it ends up seated high. Dropping the seat costs no stroke at all, and is still
+the fix for a body not yet printed.
 
 One thing here is not about the small size at all, and is in the stock files:
 the pin's shaft measures 2.550 mm, the arm's bore 1.247 and the pusher's slot
@@ -344,6 +360,54 @@ def move_plane(tris, axis, at, delta):
     return out
 
 
+def raise_face(tris, axis, at, amount):
+    """Stand one flat face off the part, on a skirt of its own outline.
+
+    `lift` cannot do this here. The arm's walls are vertical - its cross section
+    does not move between z 3.4 and 5.68 - but the mesh is float32 and its
+    triangles are large, so a wall built from two triangles reports a normal a
+    thousandth off vertical, and five facets where the hub's walls rise off the
+    plate really do slope. Any seam in the hub crosses all of them, so a lift
+    either refuses or shears what it should not.
+
+    Nothing has to be sheared. The triangles lying exactly on the plane are a
+    flat region; the edges they do not share with each other are its outline.
+    Move the region along the axis, raise a vertical skirt on the outline, and
+    the part is taller by `amount` with the new material exactly prismatic.
+    Every other triangle is untouched - not moved, not stretched - so slopes,
+    fillets and the tip keep the shape they had, and the only surfaces that
+    change are the ones the skirt extends. The outline closes on itself, so the
+    mesh stays closed: each boundary edge keeps its wall triangle and gains the
+    skirt's, the skirt's top edges pair with the moved region, and a hole in the
+    region - the bore through the hub - comes out wound the other way, so its
+    skirt faces into the hole and carries the bore up with the walls.
+    """
+    i = AXIS[axis]
+    face, rest = [], []
+    for t in tris:
+        (face if all(abs(p[i] - at) < 1e-3 for p in t) else rest).append(t)
+    if not face:
+        raise ValueError('no face lies on %s = %.3f' % (axis, at))
+    edges = {}
+    for t in face:
+        for k in range(3):
+            a, b = t[k], t[(k + 1) % 3]
+            key = (tuple(round(c, 4) for c in a), tuple(round(c, 4) for c in b))
+            if (key[1], key[0]) in edges:
+                del edges[(key[1], key[0])]
+            else:
+                edges[key] = (a, b)
+
+    def up(p):
+        return tuple(p[k] + (amount if k == i else 0.0) for k in range(3))
+
+    out = list(rest) + [tuple(up(p) for p in t) for t in face]
+    for a, b in edges.values():
+        out.append((a, b, up(b)))
+        out.append((a, up(b), up(a)))
+    return out, len(face), len(edges)
+
+
 def union(tris, count, overlap=1.5):
     """N lanes in one printed part, by standing copies in each other's side wall.
 
@@ -421,6 +485,35 @@ def verify(before, after, axis, a, b, step=1.3):
     return checked, wrong
 
 
+def verify_face(before, after, at, amount, step=0.7):
+    """Prove a raised face the way the cut is proved: by looking at the solid.
+
+    A line straight up through the part must meet its surface where it did,
+    except that a crossing which was on the plane is now `amount` further
+    along. Nothing else may have moved. Walk a grid of such lines and compare;
+    mismatches are returned, and none means the two solids agree everywhere the
+    grid looked.
+    """
+    spanx = (min(p[0] for t in after for p in t), max(p[0] for t in after for p in t))
+    spany = (min(p[1] for t in after for p in t), max(p[1] for t in after for p in t))
+    wrong = []
+    checked = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            here = _column(after, x, y)
+            there = [h + amount if abs(h - at) < 1e-3 else h
+                     for h in _column(before, x, y)]
+            checked += 1
+            if len(here) != len(there) or any(
+                    abs(p - q) > 1e-3 for p, q in zip(here, sorted(there))):
+                wrong.append((x, y, here, sorted(there)))
+            x += step
+        y += step
+    return checked, wrong
+
+
 # -------------------------------------------------------------- what to cut out
 
 # Every position below is given in the coordinates of the original STL file,
@@ -466,16 +559,22 @@ PUSHER = [('cut', 'x', 27.00, 36.625),
 # 28.75, which at anglePush 81 gives the 37.11 mm stroke the lane wants.
 ARM = [('cut', 'x', -55.49, -43.24)]
 
-# And the stop-gap: 3.00 mm more, for a crank of 25.75. Not one band of 15.25,
-# because two triangles lie across x -43.24..-43.00; two bands either side of
-# them come to the same thing, and the far one is cut first, so the near one is
-# still where it was measured when its turn comes.
-ARM_SHORT = ARM + [('cut', 'x', -43.00, -40.00)]
+# And the stop-gap, for a body already printed with the seat 2.0 mm high.
+#   x -43.00..-40.00  3.00 mm more out of the bar, for a crank of 25.75
+#   z 5.70 + 2.00     the hub's top face, stood off on a skirt
+# The cut is in two bands, not one of 15.25, because two triangles lie across
+# x -43.24..-43.00; two bands either side of them come to the same thing, and
+# the far one is cut first, so the near one is still where it was measured when
+# its turn comes. The hub then grows 2.00 mm taller while the tip stays 3.00 mm
+# thick, so pushing the arm up the horn by that much seats it 2.00 mm lower -
+# which is where dropping the seat would have put it.
+ARM_TALL = ARM + [('cut', 'x', -43.00, -40.00),
+                  ('face', 'z', 5.70, 2.00)]
 
 PARTS = [('body', 'body-small', BODY),
          ('pusher', 'pusher-small', PUSHER),
          ('arm', 'arm-small', ARM),
-         ('arm', 'arm-small-short', ARM_SHORT)]
+         ('arm', 'arm-small-tall', ARM_TALL)]
 
 
 def main():
@@ -537,6 +636,19 @@ def main():
                 _, axis, at, delta = op
                 tris = move_plane(tris, axis, at, delta)
                 print('   moved the face at %s = %.3f by %+.3f mm' % (axis, at, delta))
+            elif op[0] == 'face':
+                _, axis, at, amount = op
+                taller, facets, outline = raise_face(tris, axis, at, amount)
+                checked, wrong = verify_face(tris, taller, at, amount)
+                if wrong:
+                    raise SystemExit('%s: raising %s = %.2f by %.2f does not hold up: %d '
+                                     'of %d lines disagree, first at x %.2f y %.2f'
+                                     % ((target_name, axis, at, amount, len(wrong),
+                                         checked) + wrong[0][:2]))
+                print('   raised the face at %s = %.2f by %.2f mm  (%d facets on a %d '
+                      'edge outline), %d lines through it agree'
+                      % (axis, at, amount, facets, outline, checked))
+                tris = taller
         after = measure(tris)
         target = os.path.join(IMAGES, 'spenser-%s.stl' % target_name)
         save(target, tris)
