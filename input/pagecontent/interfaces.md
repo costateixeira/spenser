@@ -40,6 +40,16 @@ difference matters when deciding where to send something.
 Both roles are declared in its
 [CapabilityStatement](CapabilityStatement-SpenserFHIRCapabilityStatement.html).
 
+### Actors
+
+| Actor | What it does |
+|---|---|
+| [Spenser Unit](ActorDefinition-SpenserUnit.html) | dispenses, as a FHIR server and a FHIR client |
+| [Order Placer](ActorDefinition-OrderPlacer.html) | asks for chocolate and decides whether an order is actionable |
+| [Order Server](ActorDefinition-OrderServer.html) | holds orders until a unit collects them, and receives its reports |
+| [Unit Owner](ActorDefinition-UnitOwner.html) | holds the key, and configures, restocks and updates the unit |
+| [Update Publisher](ActorDefinition-UpdatePublisher.html) | publishes the manifest and images a unit installs |
+
 ### What makes an order actionable
 
 Following the HL7 Clinical Orders Workflow guidance, a MedicationRequest sitting
@@ -159,7 +169,7 @@ minute with a network, and the previous one stays available to roll back to.
 | `POST /ota/rollback` | go back to the previous image |
 
 Builds are published beside this specification, at
-[costateixeira.github.io/spenser/firmware/](firmware/), which is where a unit
+[costateixeira.github.io/spenser/firmware/](https://costateixeira.github.io/spenser/firmware/), which is where a unit
 looks by default. That page lists what changed in the build it is serving, and
 carries the binaries and the manifest next to it. A manifest describes a build
 for the unit:

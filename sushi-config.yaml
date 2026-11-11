@@ -143,6 +143,8 @@ pages:
     title: Hardware Bill of Materials
   hardware-3ddesign.md:
     title: 3D printable parts
+  assembly.md:
+    title: Assembly
 
   authors.md:
     title: Authors
@@ -151,6 +153,8 @@ pages:
 
   usage.md:
     title: Usage
+  translationinfo.md:
+    title: Translations
 #  artifacts.md: artifacts.html
 
 
@@ -175,25 +179,8 @@ pages:
 # currently only supports one level deep on sub-menus.
 # To provide a custom menu.xml file, do not include this property and
 # include a `menu.xml` file in input/includes.
-menu:
-  Home: index.html
-#  Guidance: guidance.html
-  Software: 
-    FHIR: fhir-intro.html
-    Interfaces: interfaces.html
-    Firmware: firmware.html
-  Hardware:
-    3D design: hardware-3ddesign.html
-    Bill of Materials: hardware-bom.html
-
-  About: 
-    Authors: authors.html
-    Downloads: downloads.html
-
-  Artifacts: artifacts.html
-#  Downloads: downloads.html
-#  Changes: changes.html
-#  History: ../history.html
+# The menu is input/includes/menu.xml, with its translations under
+# input/translations/<lang>/includes, because a generated one cannot be translated.
 
 # The parameters property represents IG.definition.parameter. Rather
 # than a list of code/value pairs (as in the ImplementationGuide
@@ -201,9 +188,19 @@ menu:
 # values, the value in the YAML should be a sequence/array. For a
 # partial list of allowed parameters see:
 # https://confluence.hl7.org/display/FHIR/Implementation+Guide+Parameters
-#parameters:
-#  excludettl: true
-#  validation: [allow-any-extensions, no-broken-links]
+parameters:
+  # English is the master. A page's translation is the file of the same name
+  # under input/translations/<lang>/pagecontent, and the menu's is under
+  # input/translations/<lang>/includes.
+  i18n-default-lang: en
+  i18n-lang:
+    - pt
+    - nl
+    - fr
+  translation-sources:
+    - input/translations/pt
+    - input/translations/nl
+    - input/translations/fr
 
 # The FSHOnly flag indicates if only FSH resources should be exported.
 # If set to true, no IG related content will be generated.

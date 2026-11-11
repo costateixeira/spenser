@@ -3,7 +3,7 @@
 ### Firmware
 
 The current firmware for a Spenser unit is published at
-[costateixeira.github.io/spenser/firmware/](firmware/), with the release notes
+[costateixeira.github.io/spenser/firmware/](https://costateixeira.github.io/spenser/firmware/), with the release notes
 for the build it is serving, the two images, and the manifest a unit reads:
 
 * `firmware.bin` - the code

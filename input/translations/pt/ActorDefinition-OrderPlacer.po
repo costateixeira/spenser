@@ -1,0 +1,41 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "OrderPlacer"
+msgstr "OrderPlacer"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Order Placer"
+msgstr "Emissor de Prescrições"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server."
+msgstr "O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Mundo"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed."
+msgstr "Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída."
+

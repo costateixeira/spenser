@@ -1,0 +1,45 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "UnitOwner"
+msgstr "UnitOwner"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Unit Owner"
+msgstr "Unit-eigenaar"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "The person who holds a unit's key, and with it the authority to configure, restock and update the unit."
+msgstr "De persoon die de sleutel van een unit heeft, en daarmee de bevoegdheid om de unit te configureren, te bevoorraden en te updaten."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Wereld"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.
+
+See [What needs a key](interfaces.html#what-needs-a-key)."
+msgstr "Een unit lezen is open, maar om hem te wijzigen is zijn sleutel nodig. Een script dat met de sleutel handelt, handelt als de eigenaar.
+
+Zie [Wat een sleutel nodig heeft](interfaces.html#what-needs-a-key)."
+

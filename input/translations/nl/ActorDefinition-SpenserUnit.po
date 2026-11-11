@@ -1,0 +1,45 @@
+
+# ActorDefinition.name
+#: ActorDefinition.name
+msgid "SpenserUnit"
+msgstr "SpenserUnit"
+
+# ActorDefinition.title
+#: ActorDefinition.title
+msgid "Spenser Unit"
+msgstr "Spenser-unit"
+
+# ActorDefinition.publisher
+#: ActorDefinition.publisher
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "Zeora"
+msgstr ""
+
+# ContactDetail.name
+#: ContactDetail.name
+msgid "José Costa Teixeira"
+msgstr ""
+
+# ActorDefinition.description
+#: ActorDefinition.description
+msgid "A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time."
+msgstr "Een chocoladedispenser die tegelijk als FHIR-server en als FHIR-client optreedt."
+
+# Coding.display
+#: Coding.display
+msgid "World"
+msgstr "Wereld"
+
+# ActorDefinition.documentation
+#: ActorDefinition.documentation
+msgid "A single dispenser. As a **server** it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a **client** it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.
+
+See [Interfaces](interfaces.html)."
+msgstr "Eén enkele dispenser. Als **server** aanvaardt hij een order die rechtstreeks naar hem wordt gepost en verstrekt hij ter plekke, want naar het apparaat posten is zelf de machtiging om te verstrekken. Als **client** pollt hij een orderserver, handelt hij alleen op orders die uitvoerbaar zijn gemaakt, en meldt hij terug wat hij heeft gedaan.
+
+Zie [Interfaces](interfaces.html)."
+

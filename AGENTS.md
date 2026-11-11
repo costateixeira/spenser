@@ -26,7 +26,11 @@ until `llms.txt`, the interfaces page and the CapabilityStatement in
 | `firmware/data/` | files uploaded to the device filesystem: the dashboard `index.html`, `llms.txt` |
 | `firmware/test/*.http` | REST Client request files, `orders.http` covers the order client |
 | `input/fsh/` | profiles, value sets and the IG's formal examples |
-| `input/pagecontent/` | IG pages, one markdown file per page, linked from the menu in `sushi-config.yaml` |
+| `input/pagecontent/` | IG pages, one markdown file per page, listed in `sushi-config.yaml` and linked from `input/includes/menu.xml` |
+| `input/translations/<lang>/` | Portuguese, Dutch and French: pages in `pagecontent/`, the menu in `includes/menu.xml`, resource strings in `.po` files |
+| `ig-template/` | the IG template, which extends the pinned `fhir2.base.template` |
+| `tools/assembly/` | draws the assembly sheets in `input/images/assembly-*.svg` from the STL files |
+| `tools/order/` | `order.html`, `order-chocolate.ps1` and `.sh`: place an order on the order server, naming one unit in `Task.requestedPerformer` and the `dispensingDevice` extension, then watch it fill it |
 | `bruno/` | executable tests: an API collection split into the order server and the device |
 | `server/` | a small Express stand-in for an order server, for working offline |
 | `docker-compose*.yml`, `Caddyfile*` | the deployed order server, fhir-candle behind Caddy |
@@ -68,6 +72,19 @@ the table requires one upload over the cable and erases the filesystem.
 To check only that the FSH compiles, which is much faster, run
 `npx fsh-sushi . -o <a temporary directory>` so the checked-in `fsh-generated/`
 is left alone.
+
+English is the master language. A change to a page in `input/pagecontent/` is not
+finished until its copies under `input/translations/` say the same thing. Headings
+in a translated page keep the English anchor, `### Título {#english-anchor}`, so
+links between pages keep working. FHIR element and resource names stay in English
+in every language, including those that read like ordinary words: a tag is `meta.tag`,
+not an "etiqueta" or an "étiquette". The site lives under `/en/`, `/pt/`, `/nl/` and
+`/fr/`, while firmware stays at `/firmware/`, so link to firmware by its full URL.
+The Publisher writes translation catalogues to `translations/`, which is not kept:
+what is translated is copied into `input/translations/<lang>/`.
+
+The assembly sheets carry no words, and every language shares them. After a change
+to an STL file, run `python tools/assembly/build.py`, which needs nothing installed.
 
 **Tests.** The Bruno collection is the real test suite.
 
