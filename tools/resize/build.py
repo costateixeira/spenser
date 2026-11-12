@@ -39,7 +39,7 @@ the middle of it and nothing about the height needs to change:
   retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
   servo ear seat  z 23.089        ->  23.089, put back down after the lift
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
-  arm pin bore    1.247 mm        ->  drill it 2.6; see below
+  arm pin bore    2.760 mm        ->  2.760; 3.00 on the stop-gap arm
   pin             unchanged
   firmware        anglePush 81, and the arm set 46.9 deg back at rest
 
@@ -135,31 +135,43 @@ slot under the servo box - is exactly as it was.
 The second arm here, spenser-arm-small-tall, is the stop-gap for a body already
 printed with the seat 2.0 mm high, and it answers the same millimetres from the
 other end. The bar gives 16.49 before the hub's walls start, so 3.00 mm more
-comes out for a crank of 25.75, and the hub is then stepped up 2.50 mm.
+comes out for a crank of 25.75, and the hub is then stepped up 2.00 mm.
 
 Which surface is raised is the whole of it. The arm hangs on the horn, so the
 horn's seat is a stop in both directions: taller walls let nothing up, because
 the floor the horn rests on arrives first. There are two such surfaces - the
 groove floor at z 3.00 that the horn's bar lies on, and the recess at 1.80 that
 takes its hub - and both have to go up together, with material under them. So
-the step carries everything from z 1.20 up: 3.00 becomes 5.50, 1.80 becomes
-4.30, the walls' top 5.70 becomes 8.20, and the hub comes out the shape it was,
-2.50 mm higher on a plate 2.50 mm thicker.
+the step carries everything from z 1.20 up: 3.00 becomes 5.00, 1.80 becomes
+3.80, the walls' top 5.70 becomes 7.70, and the hub comes out the shape it was,
+2.00 mm higher on a plate 2.00 mm thicker.
+
+The step was 2.50 at first, and the printed part rubbed hard on the pusher -
+which is what the drawing said it would do, since 2.50 puts the plate 0.45 mm
+inside the pusher's top. 2.00 is the step that reproduces the built unit, and
+it is what this part now carries. It leaves 0.05 mm between the plate and the
+pusher, so if it still touches, the next quarter millimetre comes off this one
+number and nothing else moves.
 
 The tip is left alone, and not only to keep it out of the ledge. The pin's bore
 is as deep as the plate is thick, and its head is 8 mm across and rests on the
-plate's top face: thicken the tip and the pin reaches 2.50 mm less far into the
-pusher's slot, and the head sits on a slope. So the tip stays 3.00 mm, the pin
-still hangs 4.71 mm into a 4.71 mm slot, and it clears the floor by 0.31.
+plate's top face: thicken the tip and the pin reaches 2.00 mm less far into the
+pusher's slot, and the head sits on a slope. So the tip stays 3.00 mm and the
+pin still hangs 4.69 mm into a 4.71 mm slot, as it does on the built unit.
 
-What this puts where, hung 2.50 mm lower than the arm it replaces: the plate at
-z 6.55..9.55, 1.45 under the ledge, and the hub's top at 14.75, which is the
-height the arm already reaches. One number here is worth checking against the
-part rather than this file: the drawing puts the pusher's top at z 7.00, which
-leaves the plate 0.45 mm inside it, and 2.00 would be the step that reproduces
-the built unit exactly. The gap to measure is between the arm's underside and
-the pusher's top - the drawing says 2.05 mm as printed, and whatever it really
-is, that is the step.
+What this puts where, hung 2.00 mm lower than the arm it replaces: the plate at
+z 7.05..10.05, 0.95 under the ledge, and the hub's top at 14.75, which is the
+height the arm already reaches.
+
+The pin hole is opened on this arm as well, from 2.760 mm to 3.00. There is
+nothing wrong with 2.760 on paper - the pin's shaft measures 2.550 - but a
+small hole in a printed part comes out under its nominal size, and this one
+came out tight enough to have to be driven. So the change is a print allowance
+rather than a change of fit: 3.00 gives away 0.45 mm in the drawing to get a
+tenth or two in the plastic. The wall around the bore is 2.52 mm and loses 0.12
+of it. The method's limit is nearer than the part's: the next ring of vertices
+out sits 1.63 from the axis, so a rim pushed much past 1.55 would fold the face
+between them.
 
 The shortening is belt and braces, and it is not free. Stroke falls to
 33.44 mm, and since the lane is 31.0 mm deep, overtravel past the exit and
@@ -171,17 +183,18 @@ it ends up seated high. Dropping the seat costs no stroke at all, and is still
 the fix for a body not yet printed.
 
 One thing here is not about the small size at all, and is in the stock files:
-the pin's shaft measures 2.550 mm, the arm's bore 1.247 and the pusher's slot
-2.345, so three parts that have to share one diameter have three. The pin was
-never going to fit either of them, on any printer. The slot this tool widens,
-because its far wall is one flat face and what moved can be measured
-afterwards. The bore it leaves alone: that hole is a fourteen-sided prism, so
-scaling its wall by eye lands somewhere between 2.53 and 2.60 depending on
-whether you read the facets or the corners, which is how you get a part that
-looks right and still does not fit. Drill it 2.6 mm instead - the 1.25 mm bore
-is a pilot and will centre the drill for you.
+the pin's shaft measures 2.550 mm, the arm's bore 2.760 and the pusher's slot
+2.345, so three parts that have to share one diameter have three. The slot is
+the one the pin cannot enter at all, and this tool widens it, because its far
+wall is one flat face and what moved can be measured afterwards. The bore is a
+48-sided prism of radius 1.380 - 2.754 across the flats, 2.760 across the
+corners - so it is round enough to be pushed out along its own radius and come
+out round, which is what the stop-gap arm does with it. On the other two arms
+the bore is left at 2.760, which is nominally clear of the pin and prints
+tight; drill those 2.6 mm.
 """
 
+import math
 import os
 import struct
 import sys
@@ -373,6 +386,37 @@ def move_plane(tris, axis, at, delta):
     return out
 
 
+def widen_hole(tris, cx, cy, radius, to, tol=0.05):
+    """Open a round hole that runs straight through, by pushing its wall outwards.
+
+    The wall of such a hole is a ring of vertices all at one radius from its
+    axis, the same ring repeated at the top and at the bottom. Move each of them
+    out along its own radius and the wall stays vertical and stays a cylinder;
+    both rims move with it, because they are those same vertices; and nothing is
+    split and no vertex is added, so a closed mesh stays closed.
+
+    Only the ring moves. What the tolerance does not catch is left where it is,
+    which is also the limit on how far this can go: the rim must not reach the
+    next ring of vertices out, or the face between them folds over.
+    """
+    moved = set()
+    out = []
+    for t in tris:
+        face = []
+        for p in t:
+            dx, dy = p[0] - cx, p[1] - cy
+            r = math.hypot(dx, dy)
+            if abs(r - radius) <= tol:
+                moved.add(tuple(round(c, 4) for c in p))
+                face.append((cx + dx * to / r, cy + dy * to / r, p[2]))
+            else:
+                face.append(p)
+        out.append(tuple(face))
+    if not moved:
+        raise ValueError('no hole wall at (%.2f, %.2f) r %.2f'
+                         % (cx, cy, radius))
+    return out, len(moved)
+
 def lift_beyond(tris, axis, at, amount, gate_axis, gate):
     """Insert a slab at `at`, but only beyond `gate`, and ramp across it.
 
@@ -520,6 +564,46 @@ def verify_beyond(before, after, at, amount, gate, ramp, step=0.37):
     return checked, skipped, wrong
 
 
+def verify_hole(before, after, cx, cy, radius, to, step=0.23):
+    """Prove the hole, the same way: by measuring the part, not the intention.
+
+    A line straight up through the part must meet its surface exactly where it
+    did, everywhere except the ring of material the hole has just taken. Lines
+    inside that ring are the change itself and are counted, not checked. Then
+    the new wall is found by walking outwards until the material starts, which
+    says what the hole actually came out at rather than what it was asked for.
+    """
+    spanx = (min(p[0] for t in after for p in t), max(p[0] for t in after for p in t))
+    spany = (min(p[1] for t in after for p in t), max(p[1] for t in after for p in t))
+    wrong = []
+    checked = skipped = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            if radius - 0.06 <= math.hypot(x - cx, y - cy) <= to + 0.06:
+                skipped += 1
+                x += step
+                continue
+            here = _column(after, x, y)
+            there = _column(before, x, y)
+            checked += 1
+            if len(here) != len(there) or any(
+                    abs(p - q) > 1e-3 for p, q in zip(here, there)):
+                wrong.append((x, y, here, there))
+            x += step
+        y += step
+    wall = []
+    for deg in range(3, 360, 7):
+        c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+        r = max(0.05, to - 0.40)
+        while r < to + 0.40:
+            if _column(after, cx + r * c, cy + r * s):
+                break
+            r += 0.005
+        wall.append(r)
+    return checked, skipped, wrong, (min(wall), max(wall))
+
 # -------------------------------------------------------------- what to cut out
 
 # Every position below is given in the coordinates of the original STL file,
@@ -567,7 +651,8 @@ ARM = [('cut', 'x', -55.49, -43.24)]
 
 # And the stop-gap, for a body already printed with the seat 2.0 mm high.
 #   x -43.00..-40.00           3.00 mm more out of the bar, crank 25.75
-#   z 1.20 + 2.50 past -55.00  the whole hub up, the bar left as it was
+#   z 1.20 + 2.00 past -55.00  the whole hub up, the bar left as it was
+#   bore 2.760 -> 3.00        the pin hole, opened for the print
 # The cut is in two bands, not one of 15.25, because two triangles lie across
 # x -43.24..-43.00; two bands either side of them come to the same thing, and
 # the far one is cut first, so the near one is still where it was measured when
@@ -580,14 +665,20 @@ ARM = [('cut', 'x', -55.49, -43.24)]
 # cuts that chamfer and stretches it, and the check says so - 75 lines
 # disagree. At 1.20 nothing in the hub crosses with any real slope: 330
 # triangles span it and not one is more than 0.05 off vertical, so the whole
-# hub rides up on 2.50 mm of new material and comes out the shape it was.
+# hub rides up on 2.00 mm of new material and comes out the shape it was.
 # The gate has to clear the pin's head, which is 8 mm across and so covers
 # x -66..-58. Its ramp is as long as the triangles that straddle it: -55.50
 # ramps from -61.10, under the head, while -55.00 ramps over -56.89..-54.25,
 # which is 2.64 mm of the rib and nothing else. Short of it nothing moves, so
 # the tip keeps its 3.00 mm and the pin bore its depth.
+#
+# The bore is opened by pushing its wall out along its own radius, which is
+# only sound because it is a clean 48-sided prism of one radius, 1.380, and
+# because 0.05 of tolerance catches that ring and nothing else: the nearest
+# other vertices are a seam on the face, 1.63 out.
 ARM_TALL = ARM + [('cut', 'x', -43.00, -40.00),
-                  ('beyond', 'z', 1.20, 2.50, 'x', -55.00)]
+                  ('beyond', 'z', 1.20, 2.00, 'x', -55.00),
+                  ('bore', -63.10, -10.00, 1.380, 1.500)]
 
 PARTS = [('body', 'body-small', BODY),
          ('pusher', 'pusher-small', PUSHER),
@@ -671,6 +762,23 @@ def main():
                       'agree, %d through the ramp not looked at'
                       % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
                 tris = stepped
+            elif op[0] == 'bore':
+                _, cx, cy, radius, to = op
+                wider, moved = widen_hole(tris, cx, cy, radius, to)
+                checked, skipped, wrong, wall = verify_hole(
+                    tris, wider, cx, cy, radius, to)
+                if wrong:
+                    raise SystemExit('%s: opening the bore at (%.2f, %.2f) does not '
+                                     'hold up: %d of %d lines disagree, first at '
+                                     'x %.2f y %.2f'
+                                     % ((target_name, cx, cy, len(wrong),
+                                         checked) + wrong[0][:2]))
+                print('   opened the bore at (%.2f, %.2f) from %.3f to %.3f mm across'
+                      % (cx, cy, radius * 2, to * 2))
+                print('   %d vertices moved, its wall now %.3f..%.3f from the axis; '
+                      '%d lines elsewhere agree, %d in the ring it took not looked at'
+                      % (moved, wall[0], wall[1], checked, skipped))
+                tris = wider
         after = measure(tris)
         target = os.path.join(IMAGES, 'spenser-%s.stl' % target_name)
         save(target, tris)
