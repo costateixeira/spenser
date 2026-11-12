@@ -50,8 +50,11 @@ dans ces fichiers, contre 2,76 sur le bras standard, qui s'imprime sous la
 cote et serre sur la goupille de 2,55 mm.
 
 Pour une autre taille de morceau, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) taille ces
-trois pièces à sa mesure — `--piece 40x30x7` est celle-ci — et affiche ce que
-devient la course.
+trois pièces à sa mesure et affiche ce que devient la course. Un morceau se
+donne en largeur du couloir × longueur le long de celui-ci × épaisseur, donc
+`--piece 40x30x7 --name small` est cette variante ; sans rien derrière, le
+script prend la mignonnette belge pour laquelle les pièces ci-dessus sont
+déjà taillées, et dit qu'il n'y a rien à tailler.
 
 | Pièce | Description | Téléchargements |
 |------|-------------|-----------|

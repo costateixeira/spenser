@@ -46,8 +46,11 @@ worden: het pengat in de arm is 3 mm in deze bestanden, tegen 2,76 in de
 standaardarm, die onder de maat print en op de pen van 2,55 mm klemt.
 
 Voor een ander formaat stuk snijdt [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) deze drie
-onderdelen op maat — `--piece 40x30x7` is dit formaat — en laat zien wat het
-traject dan wordt.
+onderdelen op maat en laat zien wat het traject dan wordt. Een stuk wordt
+opgegeven als breedte van de baan × lengte erlangs × dikte, dus
+`--piece 40x30x7 --name small` is deze variant; zonder iets erachter neemt het
+script de Belgische mignonette waarvoor de onderdelen hierboven al gesneden
+zijn, en zegt dat er niets te snijden is.
 
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|

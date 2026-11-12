@@ -1,22 +1,29 @@
 #!/usr/bin/env python3
 """Resize the printed parts for a smaller piece of chocolate.
 
-    python tools/resize/build.py                  # write the small parts
-    python tools/resize/build.py --piece 40x30x7  # for that piece instead
+    python tools/resize/build.py                  # the Belgian mignonette: nothing
+                                                  #   to cut, these parts are it
+    python tools/resize/build.py --piece 40x30x7 --name small
+                                                  # the Swiss napolitain
     python tools/resize/build.py --check          # measure, change nothing
     python tools/resize/build.py --union 2        # two lanes in one printed part
 
 Standard library only.
 
 The parts have no CAD source: the STL files in input/images/ are the design.
-So instead of remodelling them, this cuts slabs out of them. Every slab it
-removes is *prismatic*: over its whole width the shape does not change, every
-surface reaching into it runs straight through it. Cut such a slab out, slide
-the far side up to the near side, and the two cut faces match edge for edge.
-The result is the same part, narrower, with every hole, pocket, rib, chamfer
-and screw boss exactly where the original had it, and the tool refuses to cut
-anywhere that is not prismatic rather than producing a part that only looks
-right.
+Nothing here writes one of them. spenser-body.stl, spenser-pusher.stl,
+spenser-arm.stl and spenser-pin.stl are only ever read, every variant is
+written beside them under a name of its own, and a target that would land on
+one of the four is refused.
+
+Since they are the design, instead of remodelling them this cuts slabs out of
+them. Every slab it removes is *prismatic*: over its whole width the shape does
+not change, every surface reaching into it runs straight through it. Cut such a
+slab out, slide the far side up to the near side, and the two cut faces match
+edge for edge. The result is the same part, narrower, with every hole, pocket,
+rib, chamfer and screw boss exactly where the original had it, and the tool
+refuses to cut anywhere that is not prismatic rather than producing a part that
+only looks right.
 
 A slab can also be pushed in rather than taken out. Inserting one at a plane
 the surface crosses only side-on lifts everything above it and stretches the
@@ -214,8 +221,12 @@ left at 2.760, where it is nominally clear of the pin and prints tight; drill
 that one 2.6 mm.
 
 All of the above is one size of piece. The numbers come from PIECE, three
-dimensions in millimetres - across the lane, along it, and thick - and
---piece 40x30x7 is the whole of what has to change for another one:
+dimensions in millimetres - across the lane, along it, and thick. PIECE itself
+is the Belgian mignonette, 60 x 39 x 7, which is the piece the files in
+input/images are already cut for: run this with nothing after it and it says
+so and writes nothing, because the standard parts are the parts for that
+piece. --piece 40x30x7 --name small is the Swiss one, and any other piece goes
+the same way:
 
   along the lane   the lane's depth, exactly: the piece plus 1.00, so the band
                    out of the magazine wall is 40.0 less that. This is the one
@@ -229,9 +240,11 @@ dimensions in millimetres - across the lane, along it, and thick - and
 
 and from the depth, by way of the stroke: the arm's crank, the band out of its
 bar, how much comes off the pusher's face, and how much of the rail is left.
-plan() does that arithmetic and prints it, with a note wherever the piece asks
-for more than the parts have, and raises rather than write a file it cannot
-stand behind. What no piece moves is the module bay, the channel beside it, the
+Only the depth: a piece that is narrower but no shallower keeps the whole
+travel, the arm and the rail as they come, and anglePush stays at 77. plan()
+does that arithmetic and prints it, with a note wherever the piece asks for
+more than the parts have, and raises rather than write a file it cannot stand
+behind. What no piece moves is the module bay, the channel beside it, the
 servo pocket, the ear seat, the pocket floor or any other height in the body:
 those are the same in every size, which is the whole point of cutting slabs
 rather than remodelling.
@@ -246,6 +259,12 @@ from collections import defaultdict
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 IMAGES = os.path.join(ROOT, 'input', 'images')
 AXIS = {'x': 0, 'y': 1, 'z': 2}
+
+# The four parts everything here is cut from. They have no CAD source: they are
+# the design, so nothing in this file ever writes one of them.
+SOURCES = frozenset(os.path.normcase(os.path.abspath(
+    os.path.join(IMAGES, 'spenser-%s.stl' % part)))
+    for part in ('body', 'pusher', 'arm', 'pin'))
 
 
 # ------------------------------------------------------------------ binary STL
@@ -672,10 +691,13 @@ def verify_hole(before, after, cx, cy, radius, to, step=0.23):
 # follow, on positions that the cuts did not disturb.
 
 # The piece, in millimetres: across the lane, along it, and thick. The default
+# is the Belgian mignonette, the napolitain the files in input/images are
+# already cut for, so build.py with nothing after it has nothing to do. Name
+# another piece and it cuts the three parts down to that one instead:
+#   python tools/resize/build.py --piece 40x30x7 --name small
 # is the Swiss napolitain, laid in with its long side across the lane, which is
-# what keeps the stroke short. Everything else here follows from these three
-# numbers, and --piece 40x30x7 is all it takes to change them.
-PIECE = (40.0, 30.0, 7.0)
+# what keeps its stroke short.
+PIECE = (60.0, 39.0, 7.0)
 
 # The standard parts, measured out of the files these are cut from.
 LANE = (61.0, 40.0, 7.505)   # the lane: width, depth, clear height under the ledge
@@ -700,6 +722,7 @@ BORE = (-63.10, -10.00, 1.380, 1.500)    # the arm's pin hole, opened for the pr
 # How the travel follows from the lane, at anglePush 81 with the arm clamped
 # 46.9 degrees back at rest.
 STROKE_PER_MM = 1.291        # mm of stroke per mm of crank
+STROKE_PER_MM_77 = 1.2451    # and at the standard unit's anglePush 77, square at rest
 TAKE_UP = 1.90               # the face sits this far behind the stack at rest
 OVERTRAVEL = 1.63            # and runs this far past the exit at full advance
 PUSHER_SHORTEN = 10.00       # off the pushing face, which is what frees the rail
@@ -708,7 +731,7 @@ RAIL_SWUNG_BACK = 2.79       # and this much further again, the arm being clampe
 
 
 def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
-         shorten=PUSHER_SHORTEN, name='small'):
+         shorten=PUSHER_SHORTEN, name='small', named=False):
     """Turn the piece's three dimensions into every number the cuts need.
 
     The depth and the height follow the piece exactly. The width does not: it
@@ -751,6 +774,29 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
                      '%.2f mm into the pusher 4.71 mm slot instead of %.2f'
                      % (lift, thick, PIN_IN_SLOT - lift, PIN_IN_SLOT))
 
+    standard_stroke = round(CRANK * STROKE_PER_MM_77, 3)
+    settled = dict(piece=(across, along, thick), x_cut=x_cut, y_cut=y_cut, lift=lift,
+                   take_up=take_up, name=name, notes=notes,
+                   lane=(lane_w, lane_d, LANE[2] + lift))
+
+    if not (x_cut or y_cut or lift):
+        notes.append('this is the piece the parts in input/images are already cut for, '
+                     'so the recipe for it is empty and the parts for it are those '
+                     'files; --piece 40x30x7 --name small is the Swiss napolitain')
+        settled.update(nothing=not named, copies=named, rail_cut=0.0, shorten=0.0,
+                       crank=CRANK, arm_cut=0.0, stroke=standard_stroke,
+                       overtravel=round(standard_stroke - lane_d - take_up, 2))
+        return settled
+
+    if not y_cut:
+        notes.append('the lane keeps its depth, so the travel is the standard\'s: the '
+                     'arm, the rail and the pushing face are left alone, and anglePush '
+                     'stays at its default 77 with the arm square at rest')
+        settled.update(rail_cut=0.0, shorten=0.0, crank=CRANK, arm_cut=0.0,
+                       stroke=standard_stroke,
+                       overtravel=round(standard_stroke - lane_d - take_up, 2))
+        return settled
+
     crank = round((lane_d + take_up + overtravel) / STROKE_PER_MM, 2)
     stroke = round(crank * STROKE_PER_MM, 3)
     arm_cut = round(CRANK - crank, 3)
@@ -763,20 +809,28 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
                          'arm holes gives up only %.2f of its %.2f; a larger '
                          '--overtravel asks for a longer crank'
                          % (crank, arm_room, CRANK))
-    rail_cut = round(min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
-                         RAIL_BAND[1] - RAIL_BAND[0]), 3)
     if overtravel < 0.54:
         notes.append('%.2f mm past the exit is less than any arm this has been printed '
                      'with: the shortest that dispensed had 0.54' % overtravel)
-
-    return dict(piece=(across, along, thick), x_cut=x_cut, y_cut=y_cut, lift=lift,
-                rail_cut=rail_cut, shorten=shorten, crank=crank, arm_cut=arm_cut,
-                stroke=stroke, take_up=take_up, overtravel=overtravel, name=name,
-                lane=(lane_w, lane_d, LANE[2] + lift), notes=notes)
+    notes.append('set anglePush to 81 on this unit and clamp the arm about 47 degrees '
+                 'back from square at rest, which is what the %.2f mm off the rail '
+                 'depends on' % min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
+                                    RAIL_BAND[1] - RAIL_BAND[0]))
+    settled.update(rail_cut=round(min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
+                                      RAIL_BAND[1] - RAIL_BAND[0]), 3),
+                   shorten=shorten, crank=crank, arm_cut=arm_cut, stroke=stroke,
+                   overtravel=overtravel)
+    return settled
 
 
 def recipes(p):
     """The three recipes the plan asks for, in the form main() applies."""
+    if p.get('nothing'):
+        return []
+    if p.get('copies'):
+        # the empty recipe, under a name of its own: the same mesh, re-encoded
+        return [(part, '%s-%s' % (part, p['name']), [])
+                for part in ('body', 'pusher', 'arm')]
     body = []
     if p['x_cut']:
         body.append(('cut', 'x', WIDTH_BAND[0], WIDTH_BAND[0] + p['x_cut']))
@@ -813,19 +867,31 @@ def recipes(p):
 
 def describe(p, parts):
     """What the plan comes to, before anything is cut."""
-    bands = len([op for op in parts[2][2] if op[0] == 'cut'])
     print('a piece %.1f x %.1f x %.1f mm: across the lane, along it, and thick'
           % p['piece'])
-    print('   lane     %6.2f x %6.2f x %5.2f   (the standard lane is %.2f x %.2f x %.2f)'
-          % (p['lane'] + LANE))
-    print('   body     %6.2f x %6.2f x %5.2f'
-          % (p['lane'][0] + 3.0, 110.0 - p['y_cut'] - p['rail_cut'], 105.0 + p['lift']))
-    print('   pusher   %6.2f x %6.2f, %.2f off its pushing face'
-          % (p['lane'][0] - 1.10, 56.0 - p['shorten'], p['shorten']))
-    print('   arm      %6.2f between its holes, %.2f out of the bar in %d band%s'
-          % (p['crank'], p['arm_cut'], bands, '' if bands == 1 else 's'))
-    print('   stroke   %6.2f, with %.2f of take-up behind the stack and %.2f past '
-          'the exit' % (p['stroke'], p['take_up'], p['overtravel']))
+    if parts:
+        bands = len([op for op in parts[2][2] if op[0] == 'cut'])
+        print('   lane     %6.2f x %6.2f x %5.2f   (the standard lane is '
+              '%.2f x %.2f x %.2f)' % (p['lane'] + LANE))
+        print('   body     %6.2f x %6.2f x %5.2f'
+              % (p['lane'][0] + 3.0, 110.0 - p['y_cut'] - p['rail_cut'],
+                 105.0 + p['lift']))
+        print('   pusher   %6.2f x %6.2f%s'
+              % (p['lane'][0] - 1.10, 56.0 - p['shorten'],
+                 ', %.2f off its pushing face' % p['shorten'] if p['shorten']
+                 else ', its length as it comes'))
+        print('   arm      %6.2f between its holes, %s'
+              % (p['crank'], '%.2f out of the bar in %d band%s'
+                 % (p['arm_cut'], bands, '' if bands == 1 else 's') if p['arm_cut']
+                 else 'as it comes; only its pin hole is opened'))
+        print('   stroke   %6.2f, with %.2f of take-up behind the stack and %.2f past '
+              'the exit' % (p['stroke'], p['take_up'], p['overtravel']))
+    else:
+        print('   lane     %6.2f x %6.2f x %5.2f, the lane it already has'
+              % p['lane'])
+        print('   stroke   %6.2f at a crank of %.2f, with %.2f of take-up behind the '
+              'stack and %.2f past the exit'
+              % (p['stroke'], p['crank'], p['take_up'], p['overtravel']))
     for note in p['notes']:
         print('   note: %s' % note)
     print()
@@ -834,7 +900,7 @@ def describe(p, parts):
 def options(argv):
     """--piece 40x30x7, --name small, and the three numbers of the travel."""
     out = dict(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
-               shorten=PUSHER_SHORTEN, name='small')
+               shorten=PUSHER_SHORTEN, name='small', named='--name' in argv)
     keys = {'--piece': 'piece', '--name': 'name', '--overtravel': 'overtravel',
             '--take-up': 'take_up', '--pusher-shorten': 'shorten'}
     for flag, key in keys.items():
@@ -852,10 +918,11 @@ def options(argv):
             out['name'] = value
         else:
             out[key] = float(value)
-    if out['piece'] != PIECE and out['name'] == 'small':
-        raise SystemExit('--piece %s is not the piece the small parts are for: pass '
-                         '--name <something> as well, so that a trial does not write '
-                         'over them' % 'x'.join('%g' % v for v in out['piece']))
+    if out['piece'] != PIECE and '--name' not in argv:
+        raise SystemExit('--piece %s wants a --name as well, so that what it writes '
+                         'does not land on another variant\'s files: '
+                         '--piece 40x30x7 --name small is the Swiss napolitain'
+                         % 'x'.join('%g' % v for v in out['piece']))
     return out
 
 def main():
@@ -882,6 +949,17 @@ def main():
         print('   needs %d pushers, %d arms, %d pins and %d servos' % ((count,) * 4))
         return
     describe(settings, parts)
+    if not parts:
+        for part in ('body', 'pusher', 'arm', 'pin'):
+            m = measure(load(os.path.join(IMAGES, 'spenser-%s.stl' % part)))
+            print('spenser-%s.stl: %d triangles, %.0f mm3, %s%s' % (
+                part, m['tris'], m['volume'],
+                ' x '.join('%.2f..%.2f' % s for s in m['span']),
+                '' if m['open_edges'] == 0 else '  (%d open edges)' % m['open_edges']))
+        print('\nnothing written. Those four files are the design and this only ever '
+              'reads them;\nto have the same mesh under another name, '
+              '--name <slug> writes it out re-encoded.')
+        return
     seen = set()
     for name, target_name, recipe in parts:
         source = os.path.join(IMAGES, 'spenser-%s.stl' % name)
@@ -957,6 +1035,10 @@ def main():
                 tris = wider
         after = measure(tris)
         target = os.path.join(IMAGES, 'spenser-%s.stl' % target_name)
+        if os.path.normcase(os.path.abspath(target)) in SOURCES:
+            raise SystemExit('refusing to write %s: the four parts it is cut from are '
+                             'the design, and this only reads them'
+                             % os.path.basename(target))
         save(target, tris)
         print('   -> %s: %d triangles, %.0f mm3, %s' % (
             os.path.relpath(target, ROOT).replace('\\', '/'), after['tris'],

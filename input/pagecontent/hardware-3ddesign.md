@@ -45,8 +45,10 @@ arm is 3 mm in these files, against 2.76 on the standard arm, which prints
 under size and binds on the 2.55 mm pin.
 
 For another size of piece, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) cuts these three
-parts to fit it — `--piece 40x30x7` is this one — and prints what the
-travel comes to.
+parts to fit it and prints what the travel comes to. A piece is given as
+across the lane × along it × thick, so `--piece 40x30x7 --name small` is
+this variant; with nothing after it the script takes the Belgian mignonette
+the parts above are already cut for, and says there is nothing to cut.
 
 | Part | Description | Downloads |
 |------|-------------|-----------|

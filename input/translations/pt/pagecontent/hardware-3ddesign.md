@@ -47,7 +47,11 @@ braço padrão, que é impresso abaixo da medida e aperta sobre o pino de
 2,55 mm.
 
 Para outro tamanho de pedaço, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) corta estas três
-peças à medida dele — `--piece 40x30x7` é esta — e mostra o que fica o curso.
+peças à medida dele e mostra o que fica o curso. O pedaço indica-se como
+largura da pista × ao longo dela × espessura, pelo que
+`--piece 40x30x7 --name small` é esta variante; sem nada depois do comando, o
+script toma a mignonette belga para a qual as peças acima já estão cortadas e
+diz que não há nada a cortar.
 
 | Peça | Descrição | Transferências |
 |------|-------------|-----------|
