@@ -26,18 +26,19 @@ shallower, and the rail 20.2 mm shorter, so they take a piece **up to
 40 × 30 mm**, at the same 5.5 to 7.5 mm thick. Measure a piece before
 printing: 30 mm is the limit along the push.
 
-Three things change on the build. Set `anglePush=81` on this unit, against
-the default of 77. Fit the arm so that at rest it sits about 47° back from
-pointing straight across the lane, rather than square to it: that moves the
-whole travel back and is what lets the body be this short. The check is that
-at rest the pushing face ends up just behind the chocolate stack. And drill
-the arm's pin bore out to 2.6 mm — it prints as a 1.25 mm pilot, which the
-2.55 mm pin does not fit. At full advance the tail pokes 1.7 mm out of the
-mouth, which is intended; the pin is the same part as before.
+Two things change on the build. Set `anglePush=81` on this unit, against
+the default of 77. And fit the arm so that at rest it sits about 47° back
+from pointing straight across the lane, rather than square to it: that moves
+the whole travel back and is what lets the body be this short. The check is
+that at rest the pushing face ends up just behind the chocolate stack. At
+full advance the tail pokes 1.7 mm out of the mouth, which is intended. The
+pin is the same part as before and needs no drilling here: its hole in the
+arm is 3 mm in these files, against 2.76 on the standard arm, which prints
+under size and binds on the 2.55 mm pin.
 
 | Part | Description | Downloads |
 |------|-------------|-----------|
-| **Body** | A lane 41.75 × 31 mm instead of 61 × 40; 44.75 × 80.8 × 107 mm overall. The ledge that holds the pusher down sits 2 mm higher, to clear the arm, and the shelf the servo's ears rest on comes back down by the same 2 mm, so that the arm does not rise with it. | [STL](spenser-body-small.stl) |
+| **Body** | A lane 41.75 × 31 mm instead of 61 × 40; 44.75 × 80.8 × 107 mm overall. The ledge that holds the pusher down sits 2 mm higher, to clear the arm, and the servo's box — its ear seat and the floor of its pocket — comes back down by the same 2 mm, so that the arm does not rise with it. | [STL](spenser-body-small.stl) |
 | **Pusher** | 40.65 × 46 mm, to match the narrower lane, with the pin slot opened to 2.8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 28.75 mm between its holes instead of 41, which gives a 37.11 mm stroke at `anglePush=81`. | [STL](spenser-arm-small.stl) |
 | **Pin** | The same part as above. | [STL](spenser-pin.stl) |

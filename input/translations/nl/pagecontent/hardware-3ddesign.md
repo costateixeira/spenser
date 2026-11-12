@@ -26,19 +26,19 @@ en de rail 20,2 mm korter gesneden, zodat ze een stuk **tot 40 × 30 mm**
 nemen, bij dezelfde dikte van 5,5 tot 7,5 mm. Meet een stuk voordat u
 print: 30 mm is de grens in de duwrichting.
 
-Drie dingen veranderen aan de bouw. Zet `anglePush=81` op deze unit, in plaats
-van de standaard 77. Monteer de arm zo dat hij in rust ongeveer 47° terug
+Twee dingen veranderen aan de bouw. Zet `anglePush=81` op deze unit, in plaats
+van de standaard 77. En monteer de arm zo dat hij in rust ongeveer 47° terug
 staat ten opzichte van dwars op de baan, en niet haaks erop: dat zet het hele
 traject verder naar achteren en is wat de behuizing zo kort laat zijn. De
-controle is dat het duwvlak in rust net achter de chocoladestapel uitkomt. En
-boor het pengat in de arm op 2,6 mm — het wordt geprint als een voorboring
-van 1,25 mm, waar de pen van 2,55 mm niet in past. Aan het eind van de slag
-steekt de staart 1,7 mm uit de mond, wat de bedoeling is; de pen is hetzelfde
-onderdeel als eerder.
+controle is dat het duwvlak in rust net achter de chocoladestapel uitkomt.
+Aan het eind van de slag steekt de staart 1,7 mm uit de mond, wat de bedoeling
+is. De pen is hetzelfde onderdeel als eerder en hoeft hier niet geboord te
+worden: het pengat in de arm is 3 mm in deze bestanden, tegen 2,76 in de
+standaardarm, die onder de maat print en op de pen van 2,55 mm klemt.
 
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|
-| **Behuizing** | Een baan van 41,75 × 31 mm in plaats van 61 × 40; 44,75 × 80,8 × 107 mm in totaal. De richel die de duwer op zijn plaats houdt, zit 2 mm hoger om de arm door te laten, en de steun waarop de oren van de servo rusten zakt diezelfde 2 mm weer, zodat de arm niet met hem meestijgt. | [STL](spenser-body-small.stl) |
+| **Behuizing** | Een baan van 41,75 × 31 mm in plaats van 61 × 40; 44,75 × 80,8 × 107 mm in totaal. De richel die de duwer op zijn plaats houdt, zit 2 mm hoger om de arm door te laten, en de ruimte voor de servo — de steun voor de oren en de bodem van de uitsparing — zakt diezelfde 2 mm weer, zodat de arm niet meestijgt. | [STL](spenser-body-small.stl) |
 | **Duwer** | 40,65 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 28,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 37,11 mm geeft. | [STL](spenser-arm-small.stl) |
 | **Pen** | Hetzelfde onderdeel als hierboven. | [STL](spenser-pin.stl) |
