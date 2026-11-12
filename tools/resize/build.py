@@ -723,8 +723,8 @@ PIN_IN_SLOT = 4.69           # how far the pin hangs into the pusher's 4.71 mm s
 # slab can come out without taking something with it, and the width is much the
 # tightest of them: see the note at the top of the file.
 WIDTH_BANDS = ((40.00, 47.00),    # the ledge's inner edge .. the bay's near post
-               (74.00, 83.65))    # 9.65 of the slot between the bay and the servo
-#                                 # tower, which is walled only below the headers
+               (74.00, 84.50))    # all but 1.03 of the slot between the bay and the
+#                                 # servo tower, which is walled only below the headers
 DEPTH_BAND = (65.00, 100.00)  # plain magazine wall, running back
 RAIL_BAND = (-10.00, 19.99)   # the back of the rail, behind the pusher; the mouth
 #                             # is the other end and nothing here touches it

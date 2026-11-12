@@ -22,7 +22,7 @@ le sens de la poussée est celui qui compte : il suffit à un morceau pour se
 glisser vers l'avant sous la paroi de retenue, où le poussoir le rencontre par
 la tranche.
 
-Ce sont les mêmes pièces, le couloir réduit de 16,65 mm en largeur, de 9 mm
+Ce sont les mêmes pièces, le couloir réduit de 17,5 mm en largeur, de 9 mm
 en profondeur et de 20,2 mm en longueur de glissière : elles acceptent un
 morceau **jusqu'à 40 × 30 mm**, à la même épaisseur de 5,5 à 7,5 mm.
 Mesurez un morceau avant d'imprimer : 30 mm est la limite dans le sens de
@@ -33,8 +33,8 @@ largeur non : elle est fixée par le logement où descend l'Atomic Motion Base,
 24 mm pour un module de 24 mm, et par le logement du servo à côté, 12,26 mm
 pour un boîtier de 12,2. Tous deux tiennent entre les deux mêmes parois
 latérales que le couloir et on ne peut rien retirer ni de l'un ni de l'autre,
-de sorte que 16,65 mm est tout ce que ces pièces peuvent céder en largeur. Un
-morceau de 40 mm de large garde 3,35 mm de jeu latéral dans ce qui reste, et
+de sorte que 17,5 mm est tout ce que ces pièces peuvent céder en largeur. Un
+morceau de 40 mm de large garde 2,5 mm de jeu latéral dans ce qui reste, et
 même un ajustement large n'y coûterait rien : un morceau de 30 × 40 ne peut
 pas tourner dans un couloir de 31 mm de fond, aussi large soit-il.
 
@@ -59,8 +59,8 @@ déjà taillées, et dit qu'il n'y a rien à tailler.
 
 | Pièce | Description | Téléchargements |
 |------|-------------|-----------|
-| **Corps** | Un couloir de 44,35 × 31 mm au lieu de 61 × 40 ; 47,35 × 80,8 × 105 mm hors tout. Le logement du module garde ses 24 mm entiers et le servo ses 12,26, et aucune hauteur n'y bouge : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie sont là où le corps standard les place. | [STL](spenser-body-small.stl) |
-| **Poussoir** | 43,25 × 46 mm, pour correspondre au couloir plus étroit, avec la rainure de goupille ouverte à 2,8 mm. | [STL](spenser-pusher-small.stl) |
+| **Corps** | Un couloir de 43,5 × 31 mm au lieu de 61 × 40 ; 46,5 × 80,8 × 105 mm hors tout. Le logement du module garde ses 24 mm entiers et le servo ses 12,26, et aucune hauteur n'y bouge : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie sont là où le corps standard les place. | [STL](spenser-body-small.stl) |
+| **Poussoir** | 42,4 × 46 mm, pour correspondre au couloir plus étroit, avec la rainure de goupille ouverte à 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Bras** | 26,75 mm entre les trous au lieu de 41, ce qui donne une course de 34,53 mm avec `anglePush=81`, à la mesure du couloir moins profond. | [STL](spenser-arm-small.stl) |
 | **Goupille** | La même pièce que ci-dessus. | [STL](spenser-pin.stl) |
 {:.table-bordered}

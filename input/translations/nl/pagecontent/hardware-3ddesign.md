@@ -21,7 +21,7 @@ napolitain past. Een Zwitserse is kleiner — een Lindt Napolitain is ongeveer
 duwrichting is de speling die telt: genoeg om een stuk onder de keerwand naar
 voren te laten kruipen, waar de duwer het met de kop raakt.
 
-Dit zijn dezelfde onderdelen, met de baan 16,65 mm smaller, 9 mm minder diep
+Dit zijn dezelfde onderdelen, met de baan 17,5 mm smaller, 9 mm minder diep
 en de rail 20,2 mm korter gesneden, zodat ze een stuk **tot 40 × 30 mm**
 nemen, bij dezelfde dikte van 5,5 tot 7,5 mm. Meet een stuk voordat u
 print: 30 mm is de grens in de duwrichting.
@@ -30,9 +30,9 @@ De diepte is de maat die op het stuk is gesneden, en die is exact. De breedte
 niet: die wordt bepaald door de ruimte waarin de Atomic Motion Base zakt,
 24 mm voor een module van 24 mm, en door de uitsparing van de servo ernaast,
 12,26 mm voor een huis van 12,2. Beide staan tussen dezelfde twee zijwanden
-als de baan en uit geen van beide kan iets weg, zodat 16,65 mm alles is wat
+als de baan en uit geen van beide kan iets weg, zodat 17,5 mm alles is wat
 deze onderdelen in de breedte kunnen afstaan. Een stuk van 40 mm breed houdt
-3,35 mm zijspeling over in wat rest, en zelfs een ruime pasvorm zou daar
+2,5 mm zijspeling over in wat rest, en zelfs een ruime pasvorm zou daar
 niets kosten: een stuk van 30 × 40 kan niet draaien in een baan van 31 mm
 diep, hoe breed die baan ook is.
 
@@ -56,8 +56,8 @@ zijn, en zegt dat er niets te snijden is.
 
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|
-| **Behuizing** | Een baan van 44,35 × 31 mm in plaats van 61 × 40; 47,35 × 80,8 × 105 mm in totaal. De ruimte voor de module houdt haar volle 24 mm en de servo zijn 12,26, en geen enkele hoogte erin verandert: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft. | [STL](spenser-body-small.stl) |
-| **Duwer** | 43,25 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
+| **Behuizing** | Een baan van 43,5 × 31 mm in plaats van 61 × 40; 46,5 × 80,8 × 105 mm in totaal. De ruimte voor de module houdt haar volle 24 mm en de servo zijn 12,26, en geen enkele hoogte erin verandert: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft. | [STL](spenser-body-small.stl) |
+| **Duwer** | 42,4 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 26,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 34,53 mm geeft, passend bij de minder diepe baan. | [STL](spenser-arm-small.stl) |
 | **Pen** | Hetzelfde onderdeel als hierboven. | [STL](spenser-pin.stl) |
 {:.table-bordered}
