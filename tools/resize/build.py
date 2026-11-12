@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Resize the printed parts for a smaller piece of chocolate.
 
-    python tools/resize/build.py            # write the small parts
-    python tools/resize/build.py --check    # measure, change nothing
+    python tools/resize/build.py                  # write the small parts
+    python tools/resize/build.py --piece 40x30x7  # for that piece instead
+    python tools/resize/build.py --check          # measure, change nothing
+    python tools/resize/build.py --union 2        # two lanes in one printed part
 
 Standard library only.
 
@@ -31,23 +33,51 @@ The small variant keeps the thickness band the original has - 5.5 mm, the
 height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
 the middle of it and nothing about the height needs to change:
 
-  lane            61.0 x 40.0 mm  ->  41.75 x 31.0
-  body            64 x 110 x 105  ->  44.75 x 80.8 x 105
-  pusher          59.9 x 56.0     ->  40.65 x 46.0
+  lane            61.0 x 40.0 mm  ->  54.0 x 31.0
+  body            64 x 110 x 105  ->  57.0 x 80.8 x 105
+  pusher          59.9 x 56.0     ->  52.9 x 46.0
   arm, pin holes  41.0 mm apart   ->  26.75
   stroke          51.05 mm        ->  34.53
-  retaining ledge z 9.0..10.0     ->  unchanged; the arm clears it by being shorter
+  module bay      24.00 mm wide   ->  unchanged, and so is everything beside it
+  retaining ledge z 9.0..10.0     ->  unchanged, and 13.26 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    2.760 mm        ->  3.00, an allowance for the print
   pin             unchanged
   firmware        anglePush 81, and the arm set 46.9 deg back at rest
 
-Both lane numbers are set by something different, and it is worth knowing
-which. The depth is set by the chocolate and it is exact: 31.0 mm for a 30 mm
-piece. That is also what stops a piece turning, because a 30 x 40 piece cannot
-rotate more than a couple of degrees in a lane 31 deep, and it was the 9 mm of
-play along the lane that misfed. The width is set by the mechanism.
+Each of the lane's three numbers is set by something different, and it is
+worth knowing which. The height is the original's, untouched. The depth is set
+by the chocolate and it is exact: 31.0 mm for a 30 mm piece. That is also what
+stops a piece turning, because a 30 x 40 piece cannot rotate more than a couple
+of degrees in a lane 31 deep whatever the lane's width, and it was the 9 mm of
+play along the lane that misfed.
+
+The width is set by neither, and not by the mechanism either. It is set by the
+electronics, which stand in front of the magazine between the same two side
+walls as the lane: the bay the motion base slides down into is 24.00 mm wide
+between its posts for a module 24.0 wide, the channel its servo plugs reach
+into is 11.53, the servo's own pocket is 12.26 for a case 12.2 thick, and with
+the posts and walls between them that is 53.0 mm of the body's 64. All of it is
+inside the lane's own width, so a band cut anywhere across it comes out of one
+of those three spaces. What is free is the 7.00 mm strip between the retaining
+ledge's inner edge at x 40.00 and the bay's near post at x 47.00, and nothing
+else. So the lane goes 61 -> 54.0 and no further, and the piece keeps 14 mm of
+play across the lane, which costs nothing because the depth is what holds it
+square. The one thing that costs is the window in the back wall, which was
+centred on the lane to 0.03 mm and now sits 3.53 off centre, because all 7.00
+comes off one side of it and there is nothing above it to take the other half
+from.
+
+That took two goes to see, and the reason is worth writing down: a cut through
+air is still prismatic. A cross section through the front of the body shows a
+lot of air, the tool proves only that the shape does not change across the
+band, and both of the bands that are now gone passed that proof while taking
+the two spaces apart - x 50.00..52.60 left the bay 21.41 mm wide for a module
+24.0 wide, and x 74.00..83.65 left 1.88 mm of the 11.53 the plugs need. Neither
+shows up in anything this file measures, because both spaces are empty in it.
+What goes in them is in tools/assembly/build.py, which has the module at
+24 x 72 x 20.7 and its bay "24 wide between x 48 and 72".
 
 The arm has to swing out across the lane to drive the pusher, and its two
 reaches from the servo axis are
@@ -56,8 +86,9 @@ reaches from the servo axis are
   towards the stack stroke / 2 + 5 mm x sin(swing/2)
 
 The first is what the lane width has to clear, and it shrinks as the swing
-opens: a wider swing buys a shorter crank for the same stroke, and a shorter
-crank is a narrower lane. The second barely moves, because half the stroke
+opens: a wider swing buys a shorter crank for the same stroke. On this body
+that no longer sets the width - the electronics do - but it is what decides
+whether the arm fits the width they leave. The second barely moves, because half the stroke
 dominates it, so opening the swing costs almost nothing on the side where the
 chocolate is. What it does cost is push: the stroke starts at one end of the
 swing, where the crank's purchase along the travel is cos(swing/2), and that is
@@ -152,8 +183,8 @@ and rests on the plate's top face right there. The tip stays 3.00 mm thick and
 the pin still hangs 4.69 mm into a 4.71 mm slot, as it does on the built unit.
 
 Measured over the whole swing rather than at the centreline, the one thing the
-sweep still finds in the way is the hub, 0.50 mm into the far wall at
-x 79.25..79.75. Axis to far wall is 6.50 mm in both sizes, so that 0.50 is in
+sweep still finds in the way is the hub, 0.50 mm into the far wall of the
+lane. Axis to far wall is 6.50 mm in every size, so that 0.50 is in
 the stock parts as much as in these, and it is the datum rather than the
 geometry: the same check run against the built unit reports it 1.5 mm inside
 both the magazine wall and the servo pocket, so ARM_Z, or the pocket, is off by
@@ -181,6 +212,29 @@ corners - so it is round enough to be pushed out along its own radius and come
 out round, which is what the small arm now does with it. The standard arm is
 left at 2.760, where it is nominally clear of the pin and prints tight; drill
 that one 2.6 mm.
+
+All of the above is one size of piece. The numbers come from PIECE, three
+dimensions in millimetres - across the lane, along it, and thick - and
+--piece 40x30x7 is the whole of what has to change for another one:
+
+  along the lane   the lane's depth, exactly: the piece plus 1.00, so the band
+                   out of the magazine wall is 40.0 less that. This is the one
+                   the variant was made for, and the one that misfed.
+  thick            the clear height under the retaining ledge, by pushing a
+                   slab in at z 8.00. It costs pin engagement a millimetre for
+                   a millimetre, because the servo box goes up with the ledge
+                   and the arm with the servo. A 7 mm piece needs none of it.
+  across the lane  the width, but only between 53 and 60 mm across. Below 53
+                   the electronics are the limit and the lane stays at 54.0.
+
+and from the depth, by way of the stroke: the arm's crank, the band out of its
+bar, how much comes off the pusher's face, and how much of the rail is left.
+plan() does that arithmetic and prints it, with a note wherever the piece asks
+for more than the parts have, and raises rather than write a file it cannot
+stand behind. What no piece moves is the module bay, the channel beside it, the
+servo pocket, the ear seat, the pocket floor or any other height in the body:
+those are the same in every size, which is the whole point of cutting slabs
+rather than remodelling.
 """
 
 import math
@@ -611,68 +665,207 @@ def verify_hole(before, after, cx, cy, radius, to, step=0.23):
 
 # -------------------------------------------------------------- what to cut out
 
-# Every position below is given in the coordinates of the original STL file,
+# Every position below is given in the coordinates of the original STL files,
 # which is what the measurements in --check report. Cutting one band moves
 # everything beyond it, so the cuts are applied from the far end back: then each
 # one is still where it was measured when its turn comes. The other operations
 # follow, on positions that the cuts did not disturb.
 
-# Body. Three bands across it and two along it, and nothing else: no slab is
-# pushed in and no face is moved, so every height in the part is the height the
-# standard body has it. The arm is shortened to clear the ledge instead.
-#   x 40.00..47.00   between the rail the pusher runs under and the bay wall
-#   x 50.00..52.60   the lane's own air, between the rail and the bay
-#   x 74.00..83.65   between the bay and the box the servo sits in
-# The first two come off below the window in the back wall and the third above
-# it, 9.60 against 9.65, so that the window - the one feature that was centred
-# on the lane - still is. Take it all off one side and it ends up 9.15 mm out.
-#   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
-#   y -10.00..10.20  the front of the rail, bar the 1.5 mm the mouth keeps
-# 19.25 mm off the width, 9 off the depth of the lane and 20.2 off the rail.
-BODY = [('cut', 'x', 40.00, 47.00),
-        ('cut', 'x', 50.00, 52.60),
-        ('cut', 'x', 74.00, 83.65),
-        ('cut', 'y', 65.00, 74.00),
-        ('cut', 'y', -10.00, 10.20)]
+# The piece, in millimetres: across the lane, along it, and thick. The default
+# is the Swiss napolitain, laid in with its long side across the lane, which is
+# what keeps the stroke short. Everything else here follows from these three
+# numbers, and --piece 40x30x7 is all it takes to change them.
+PIECE = (40.0, 30.0, 7.0)
 
-# Pusher. The same 19.25 across, in two bands that miss the three ribs
-# underneath, and 10 mm out of its length. That band lies between the pin slot
-# and the pushing face, so it moves the face and not the tail: 5 mm of it
-# answers the shallower lane and the other 5 lets the whole travel sit further
-# back, which is what frees the rail. Then the slot's far wall moves out 0.455,
-# which is what makes room for the pin.
-PUSHER = [('cut', 'x', 27.00, 36.625),
-          ('cut', 'x', 48.00, 57.625),
-          ('cut', 'y', -70.00, -60.00),
-          ('plane', 'y', -83.248, -0.455)]
+# The standard parts, measured out of the files these are cut from.
+LANE = (61.0, 40.0, 7.505)   # the lane: width, depth, clear height under the ledge
+PLAY = (1.0, 1.0, 0.0)       # what a piece is given in each of the three
+CRANK = 41.0                 # the arm's two holes, this far apart
+PUSHER_FACE = 5.5            # the pushing face, which a piece has to be taller than
+PIN_IN_SLOT = 4.69           # how far the pin hangs into the pusher's 4.71 mm slot
 
-# Arm. 14.25 mm out of the plain bar between the two holes: 41 mm apart becomes
-# 26.75, which at anglePush 81 gives a 34.53 mm stroke and keeps the arm's far
-# end a millimetre clear of the ledge, so that no height in the body has to
-# move. The cut is in two bands, not one of 14.25, because two triangles lie
-# across x -43.24..-43.00; two bands either side of them come to the same
-# thing, and the far one is cut first, so the near one is still where it was
-# measured when its turn comes.
-#
-# The bore is opened from 2.760 to 3.00, a print allowance: see above. It is
-# pushed out along its own radius, which is only sound because it is a clean
-# 48-sided prism of one radius, 1.380, and because 0.05 of tolerance catches
-# that ring and nothing else - the nearest other vertices are a seam on the
-# face, 1.63 out.
-ARM = [('cut', 'x', -55.49, -43.24),
-       ('cut', 'x', -43.00, -41.00),
-       ('bore', -63.10, -10.00, 1.380, 1.500)]
+# Where a band is allowed to be. These are the only places in each part where a
+# slab can come out without taking something with it, and the width is much the
+# tightest of them: see the note at the top of the file.
+WIDTH_BAND = (40.00, 47.00)   # the ledge's inner edge .. the module bay's near post
+DEPTH_BAND = (65.00, 100.00)  # plain magazine wall, running back
+RAIL_BAND = (-10.00, 19.99)   # the front of the rail, bar the 1.5 mm the mouth keeps
+LEDGE_AT = 8.00               # a slab pushed in here raises the ledge - and the servo box
+ARM_BANDS = ((-55.49, -43.24), (-43.00, -39.10))   # 12.25, then 3.90 past two triangles
+PUSHER_BANDS = (27.00, 48.00)    # two bands, each in its own gap between the ribs
+PUSHER_LENGTH_BAND = -70.00      # between the pin slot and the pushing face
+PIN_SLOT = (-83.248, -0.455)     # the slot's far wall, and how far out it moves
+BORE = (-63.10, -10.00, 1.380, 1.500)    # the arm's pin hole, opened for the print
 
-PARTS = [('body', 'body-small', BODY),
-         ('pusher', 'pusher-small', PUSHER),
-         ('arm', 'arm-small', ARM)]
+# How the travel follows from the lane, at anglePush 81 with the arm clamped
+# 46.9 degrees back at rest.
+STROKE_PER_MM = 1.291        # mm of stroke per mm of crank
+TAKE_UP = 1.90               # the face sits this far behind the stack at rest
+OVERTRAVEL = 1.63            # and runs this far past the exit at full advance
+PUSHER_SHORTEN = 10.00       # off the pushing face, which is what frees the rail
+RAIL_REACH = 34.675          # the tail stops RAIL_REACH - stroke/2 short of the front
+RAIL_SWUNG_BACK = 2.79       # and this much further again, the arm being clamped back
 
+
+def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
+         shorten=PUSHER_SHORTEN, name='small'):
+    """Turn the piece's three dimensions into every number the cuts need.
+
+    The depth and the height follow the piece exactly. The width does not: it
+    follows the piece only while the piece is wide enough that the electronics
+    are not the limit, which is from 53 mm across upwards. Below that the module
+    bay, the channel its plugs reach into and the servo's pocket set the width,
+    and the lane stays at 54.0 whatever the piece.
+    """
+    across, along, thick = piece
+    notes = []
+
+    room = WIDTH_BAND[1] - WIDTH_BAND[0]
+    want = LANE[0] - (across + PLAY[0])
+    if want < -1e-9:
+        raise SystemExit('a piece %.1f mm across wants a lane wider than the standard '
+                         '%.1f mm, and nothing here can add material' % (across, LANE[0]))
+    x_cut = round(min(want, room), 3)
+    lane_w = LANE[0] - x_cut
+    if want - x_cut > 1e-9:
+        notes.append('the lane stays %.2f mm wide, %.2f wider than the piece asks for: '
+                     'the %.2f mm between the ledge and the module bay is the whole of '
+                     'the width that is not bay, plug channel or servo pocket'
+                     % (lane_w, lane_w - across - PLAY[0], room))
+
+    want = LANE[1] - (along + PLAY[1])
+    if want < -1e-9:
+        raise SystemExit('a piece %.1f mm along the lane wants it deeper than the '
+                         'standard %.1f mm' % (along, LANE[1]))
+    y_cut = round(min(want, DEPTH_BAND[1] - DEPTH_BAND[0]), 3)
+    lane_d = LANE[1] - y_cut
+
+    if thick < PUSHER_FACE:
+        notes.append('a piece %.1f mm thick is shorter than the %.1f mm pushing face, '
+                     'so the pusher can ride over it instead of moving it'
+                     % (thick, PUSHER_FACE))
+    lift = round(max(0.0, thick + PLAY[2] - LANE[2]), 3)
+    if lift:
+        notes.append('the ledge goes up %.2f mm to let a %.1f mm piece under it, and the '
+                     'servo box rises with it, so the arm does too: the pin then hangs '
+                     '%.2f mm into the pusher 4.71 mm slot instead of %.2f'
+                     % (lift, thick, PIN_IN_SLOT - lift, PIN_IN_SLOT))
+
+    crank = round((lane_d + take_up + overtravel) / STROKE_PER_MM, 2)
+    stroke = round(crank * STROKE_PER_MM, 3)
+    arm_cut = round(CRANK - crank, 3)
+    arm_room = sum(hi - lo for lo, hi in ARM_BANDS)
+    if arm_cut < -1e-9:
+        raise SystemExit('this lane wants a crank of %.2f mm, longer than the arm has '
+                         'at %.2f' % (crank, CRANK))
+    if arm_cut - arm_room > 1e-9:
+        raise SystemExit('this lane wants a crank of %.2f mm, and the bar between the '
+                         'arm holes gives up only %.2f of its %.2f; a larger '
+                         '--overtravel asks for a longer crank'
+                         % (crank, arm_room, CRANK))
+    rail_cut = round(min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
+                         RAIL_BAND[1] - RAIL_BAND[0]), 3)
+    if overtravel < 0.54:
+        notes.append('%.2f mm past the exit is less than any arm this has been printed '
+                     'with: the shortest that dispensed had 0.54' % overtravel)
+
+    return dict(piece=(across, along, thick), x_cut=x_cut, y_cut=y_cut, lift=lift,
+                rail_cut=rail_cut, shorten=shorten, crank=crank, arm_cut=arm_cut,
+                stroke=stroke, take_up=take_up, overtravel=overtravel, name=name,
+                lane=(lane_w, lane_d, LANE[2] + lift), notes=notes)
+
+
+def recipes(p):
+    """The three recipes the plan asks for, in the form main() applies."""
+    body = []
+    if p['x_cut']:
+        body.append(('cut', 'x', WIDTH_BAND[0], WIDTH_BAND[0] + p['x_cut']))
+    if p['y_cut']:
+        body.append(('cut', 'y', DEPTH_BAND[0], DEPTH_BAND[0] + p['y_cut']))
+    if p['rail_cut']:
+        body.append(('cut', 'y', RAIL_BAND[0], RAIL_BAND[0] + p['rail_cut']))
+    if p['lift']:
+        body.append(('lift', 'z', LEDGE_AT, p['lift']))
+
+    pusher = []
+    if p['x_cut']:
+        for start in PUSHER_BANDS:
+            pusher.append(('cut', 'x', start, start + p['x_cut'] / 2))
+    if p['shorten']:
+        pusher.append(('cut', 'y', PUSHER_LENGTH_BAND,
+                       PUSHER_LENGTH_BAND + p['shorten']))
+    pusher.append(('plane', 'y') + PIN_SLOT)
+
+    arm = []
+    left = p['arm_cut']
+    for lo, hi in ARM_BANDS:
+        if left <= 1e-9:
+            break
+        take = min(left, hi - lo)
+        arm.append(('cut', 'x', lo, round(lo + take, 3)))
+        left -= take
+    arm.append(('bore',) + BORE)
+
+    return [('body', 'body-%s' % p['name'], body),
+            ('pusher', 'pusher-%s' % p['name'], pusher),
+            ('arm', 'arm-%s' % p['name'], arm)]
+
+
+def describe(p, parts):
+    """What the plan comes to, before anything is cut."""
+    bands = len([op for op in parts[2][2] if op[0] == 'cut'])
+    print('a piece %.1f x %.1f x %.1f mm: across the lane, along it, and thick'
+          % p['piece'])
+    print('   lane     %6.2f x %6.2f x %5.2f   (the standard lane is %.2f x %.2f x %.2f)'
+          % (p['lane'] + LANE))
+    print('   body     %6.2f x %6.2f x %5.2f'
+          % (p['lane'][0] + 3.0, 110.0 - p['y_cut'] - p['rail_cut'], 105.0 + p['lift']))
+    print('   pusher   %6.2f x %6.2f, %.2f off its pushing face'
+          % (p['lane'][0] - 1.10, 56.0 - p['shorten'], p['shorten']))
+    print('   arm      %6.2f between its holes, %.2f out of the bar in %d band%s'
+          % (p['crank'], p['arm_cut'], bands, '' if bands == 1 else 's'))
+    print('   stroke   %6.2f, with %.2f of take-up behind the stack and %.2f past '
+          'the exit' % (p['stroke'], p['take_up'], p['overtravel']))
+    for note in p['notes']:
+        print('   note: %s' % note)
+    print()
+
+
+def options(argv):
+    """--piece 40x30x7, --name small, and the three numbers of the travel."""
+    out = dict(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
+               shorten=PUSHER_SHORTEN, name='small')
+    keys = {'--piece': 'piece', '--name': 'name', '--overtravel': 'overtravel',
+            '--take-up': 'take_up', '--pusher-shorten': 'shorten'}
+    for flag, key in keys.items():
+        if flag not in argv:
+            continue
+        if argv.index(flag) + 1 >= len(argv):
+            raise SystemExit('%s wants a value' % flag)
+        value = argv[argv.index(flag) + 1]
+        if key == 'piece':
+            numbers = value.replace(',', 'x').replace('X', 'x').split('x')
+            if len(numbers) != 3:
+                raise SystemExit('--piece wants three numbers, as 40x30x7')
+            out['piece'] = tuple(float(v) for v in numbers)
+        elif key == 'name':
+            out['name'] = value
+        else:
+            out[key] = float(value)
+    if out['piece'] != PIECE and out['name'] == 'small':
+        raise SystemExit('--piece %s is not the piece the small parts are for: pass '
+                         '--name <something> as well, so that a trial does not write '
+                         'over them' % 'x'.join('%g' % v for v in out['piece']))
+    return out
 
 def main():
     check_only = '--check' in sys.argv
+    settings = plan(**options(sys.argv))
+    parts = recipes(settings)
     if '--union' in sys.argv:
         count = int(sys.argv[sys.argv.index('--union') + 1])
-        which = 'body-small' if '--standard' not in sys.argv else 'body'
+        which = ('body-%s' % settings['name'] if '--standard' not in sys.argv
+                 else 'body')
         tris = load(os.path.join(IMAGES, 'spenser-%s.stl' % which))
         one = measure(tris)
         many, pitch = union(tris, count)
@@ -688,8 +881,9 @@ def main():
                          'open edges: %d' % both['open_edges']))
         print('   needs %d pushers, %d arms, %d pins and %d servos' % ((count,) * 4))
         return
+    describe(settings, parts)
     seen = set()
-    for name, target_name, recipe in PARTS:
+    for name, target_name, recipe in parts:
         source = os.path.join(IMAGES, 'spenser-%s.stl' % name)
         tris = load(source)
         before = measure(tris)

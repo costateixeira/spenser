@@ -21,10 +21,19 @@ belga. Um napolitain suíço é mais pequeno — um Lindt Napolitain tem cerca d
 empurrão é a que importa: basta para um pedaço escorregar para a frente por
 baixo da parede de retenção, onde o empurrador o encontra de topo.
 
-Estas são as mesmas peças com a pista cortada 19,25 mm mais estreita, 9 mm
+Estas são as mesmas peças com a pista cortada 7 mm mais estreita, 9 mm
 menos funda e a guia 20,2 mm mais curta, pelo que aceitam um pedaço **até
 40 × 30 mm**, com a mesma espessura de 5,5 a 7,5 mm. Meça um pedaço antes
 de imprimir: 30 mm é o limite ao longo do empurrão.
+
+A profundidade é a medida cortada ao pedaço, e é exacta. A largura não é, nem
+pode ser: o encaixe onde desce a Atomic Motion Base, o canal onde entram as
+fichas dos servos e o próprio alojamento do servo ficam todos entre as mesmas
+duas paredes laterais da pista e ocupam 53 dos seus 61 mm, pelo que a única
+largura livre é a faixa de 7 mm junto à saliência de retenção. Um pedaço de
+40 mm de largura fica com 14 mm de folga lateral no que resta, o que não custa
+nada: um pedaço de 30 × 40 não roda numa pista de 31 mm de fundo, por mais
+larga que ela seja.
 
 Duas coisas mudam na construção. Defina `anglePush=81` nesta unidade, em vez
 do valor por omissão de 77. E monte o braço de modo a ficar, em repouso,
@@ -37,11 +46,14 @@ furado: o seu orifício no braço tem 3 mm nestes ficheiros, contra 2,76 no
 braço padrão, que é impresso abaixo da medida e aperta sobre o pino de
 2,55 mm.
 
+Para outro tamanho de pedaço, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) corta estas três
+peças à medida dele — `--piece 40x30x7` é esta — e mostra o que fica o curso.
+
 | Peça | Descrição | Transferências |
 |------|-------------|-----------|
-| **Corpo** | Uma pista de 41,75 × 31 mm em vez de 61 × 40; 44,75 × 80,8 × 105 mm no total. Nada nele muda de altura: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem, e em vez disso o braço é encurtado para passar pela saliência. | [STL](spenser-body-small.stl) |
-| **Empurrador** | 40,65 × 46 mm, para corresponder à pista mais estreita, com a ranhura do pino aberta a 2,8 mm. | [STL](spenser-pusher-small.stl) |
-| **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 34,53 mm com `anglePush=81` e mantém a sua extremidade a um milímetro da saliência. | [STL](spenser-arm-small.stl) |
+| **Corpo** | Uma pista de 54 × 31 mm em vez de 61 × 40; 57 × 80,8 × 105 mm no total. Mais nada nele se move: a saliência que segura o empurrador, a caixa do servo, a abertura de saída, o encaixe do módulo e o canal ao lado dele estão todos onde o corpo padrão os tem. | [STL](spenser-body-small.stl) |
+| **Empurrador** | 52,9 × 46 mm, para corresponder à pista mais estreita, com a ranhura do pino aberta a 2,8 mm. | [STL](spenser-pusher-small.stl) |
+| **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 34,53 mm com `anglePush=81`, à medida da pista menos funda. | [STL](spenser-arm-small.stl) |
 | **Pino** | A mesma peça de cima. | [STL](spenser-pin.stl) |
 {:.table-bordered}
 
