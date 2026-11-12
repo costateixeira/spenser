@@ -39,7 +39,7 @@ the middle of it and nothing about the height needs to change:
   retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
   servo box       4 faces lifted  ->  all four put back down after the lift
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
-  arm pin bore    2.760 mm        ->  2.760; 3.00 on the stop-gap arm
+  arm pin bore    2.760 mm        ->  3.00, an allowance for the print
   pin             unchanged
   firmware        anglePush 81, and the arm set 46.9 deg back at rest
 
@@ -184,15 +184,16 @@ What this puts where, hung 2.00 mm lower than the arm it replaces: the plate at
 z 7.05..10.05, 0.95 under the ledge, and the hub's top at 14.75, which is the
 height the arm already reaches.
 
-The pin hole is opened on this arm as well, from 2.760 mm to 3.00. There is
+The pin hole is opened on both small arms, from 2.760 mm to 3.00. There is
 nothing wrong with 2.760 on paper - the pin's shaft measures 2.550 - but a
 small hole in a printed part comes out under its nominal size, and this one
 came out tight enough to have to be driven. So the change is a print allowance
 rather than a change of fit: 3.00 gives away 0.45 mm in the drawing to get a
-tenth or two in the plastic. The wall around the bore is 2.52 mm and loses 0.12
-of it. The method's limit is nearer than the part's: the next ring of vertices
-out sits 1.63 from the axis, so a rim pushed much past 1.55 would fold the face
-between them.
+tenth or two in the plastic. It was printed at 3.00 on the stop-gap arm first,
+where the pin went in by hand, which is why it is now on the other arm too.
+The wall around the bore is 2.52 mm and loses 0.12 of it. The method's limit
+is nearer than the part's: the next ring of vertices out sits 1.63 from the
+axis, so a rim pushed much past 1.55 would fold the face between them.
 
 The shortening is belt and braces, and it is not free. Stroke falls to
 33.44 mm, and since the lane is 31.0 mm deep, overtravel past the exit and
@@ -210,9 +211,9 @@ the one the pin cannot enter at all, and this tool widens it, because its far
 wall is one flat face and what moved can be measured afterwards. The bore is a
 48-sided prism of radius 1.380 - 2.754 across the flats, 2.760 across the
 corners - so it is round enough to be pushed out along its own radius and come
-out round, which is what the stop-gap arm does with it. On the other two arms
-the bore is left at 2.760, which is nominally clear of the pin and prints
-tight; drill those 2.6 mm.
+out round, which is what both small arms now do with it. The standard arm is
+left at 2.760, where it is nominally clear of the pin and prints tight; drill
+that one 2.6 mm.
 """
 
 import math
@@ -693,13 +694,14 @@ PUSHER = [('cut', 'x', 27.00, 36.625),
           ('plane', 'y', -83.248, -0.455)]
 
 # Arm. 12.25 mm out of the plain bar between the two holes: 41 mm apart becomes
-# 28.75, which at anglePush 81 gives the 37.11 mm stroke the lane wants.
-ARM = [('cut', 'x', -55.49, -43.24)]
+# 28.75, which at anglePush 81 gives the 37.11 mm stroke the lane wants. And the
+# pin bore opened from 2.760 to 3.00, which is a print allowance: see below.
+ARM = [('cut', 'x', -55.49, -43.24),
+       ('bore', -63.10, -10.00, 1.380, 1.500)]
 
 # And the stop-gap, for a body already printed with the seat 2.0 mm high.
 #   x -43.00..-40.00           3.00 mm more out of the bar, crank 25.75
 #   z 1.20 + 2.00 past -55.00  the whole hub up, the bar left as it was
-#   bore 2.760 -> 3.00        the pin hole, opened for the print
 # The cut is in two bands, not one of 15.25, because two triangles lie across
 # x -43.24..-43.00; two bands either side of them come to the same thing, and
 # the far one is cut first, so the near one is still where it was measured when
@@ -724,8 +726,7 @@ ARM = [('cut', 'x', -55.49, -43.24)]
 # because 0.05 of tolerance catches that ring and nothing else: the nearest
 # other vertices are a seam on the face, 1.63 out.
 ARM_TALL = ARM + [('cut', 'x', -43.00, -40.00),
-                  ('beyond', 'z', 1.20, 2.00, 'x', -55.00),
-                  ('bore', -63.10, -10.00, 1.380, 1.500)]
+                  ('beyond', 'z', 1.20, 2.00, 'x', -55.00)]
 
 PARTS = [('body', 'body-small', BODY),
          ('pusher', 'pusher-small', PUSHER),
