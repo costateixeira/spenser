@@ -37,7 +37,7 @@ the middle of it and nothing about the height needs to change:
   arm, pin holes  41.0 mm apart   ->  28.75
   stroke          51.05 mm        ->  37.11
   retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
-  servo box       4 faces lifted  ->  all four put back down after the lift
+  servo box       lifted with it  ->  left there: the hub needs the room
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    2.760 mm        ->  3.00, an allowance for the print
   pin             unchanged
@@ -107,39 +107,46 @@ chocolate leaves by grows with it, 7.5 mm to 9.5, which changes nothing: two
 7 mm pieces still cannot pass it together.
 
 A slab pushed in at z 8.0 lifts everything above z 8.0, and the ledge is not
-the only thing up there: the whole servo box went with it. The servo sets the
-height of the horn, the horn sets the height of the arm, so the arm rose the
-same 2.0 mm and the lift bought nothing. The two of them kept their old
-relationship, and the arm's top - 1.0 mm of it - stayed inside the ledge, where
-the sweep puts the arm 0.99 mm under the ledge's inner edge at x 40.0. It also
-cost what had not been wrong before: the pin hung 2.0 mm higher in the pusher's
-slot, which is a through slot 4.71 mm deep, so engagement went from 4.69 mm to
-2.69.
+the only thing up there: the whole servo box goes with it. That is deliberate,
+and it was not at first. The servo sets the height of the horn and the horn
+sets the height of the arm, so a box that rises takes the arm with it, and the
+ledge ends up no further from the arm than it was. The obvious correction is to
+put the box back down and leave the ledge up. It is wrong, and it was tried
+twice before a measurement caught it: the box is what the arm's hub hangs
+under, so pulling the box down closes the space the hub swings in. From the
+underside of the ledge up to the floor of the box, the standard body gives
+8.061 mm. Left where the lift puts it, the small body gives 8.061 as well.
+Pulled back down, it gives 6.186, and the motion module is short of 1.88 mm it
+needs.
 
-Putting the ear seat back down is not enough, and it took a printed part to
-find out. The servo hangs by its ears on that seat, but the short end of its
-case - the end the shaft comes out of, 3.80 mm of it - has to fit between the
-seat and the floor of the pocket, and the hole in that floor is 15.60 mm long
-against a case 22.8 mm long, so the floor is a hard stop and not something the
-case passes through. The standard body leaves 3.841 mm there, which is 0.04
-more than the case needs. Lowering the seat alone left 1.841, so the servo
-stood on the pocket floor with its ears 1.96 mm clear of the seat - the same
-2 mm too high, now for a different reason, and the measurement that had been
-used to check the seat could not see it.
+Pulling it down halfway is worse, and it took a printed part to find out. The
+servo hangs by its ears on the seat, but the short end of its case - the end
+the shaft comes out of, 3.80 mm of it - has to fit between that seat and the
+floor of the pocket, and the hole in that floor is 15.60 mm long against a case
+22.8 mm long, so the floor is a hard stop and not something the case passes
+through. The standard body leaves 3.841 mm there, 0.04 more than the case
+needs. Lowering the seat alone left 1.841, so the servo stood on the pocket
+floor with its ears 1.96 mm clear of the seat: still 2 mm too high, now for a
+different reason, and the measurement used to check the seat could not see it.
+Lowering all four faces seated the servo and spent the space above it instead.
 
-So all four of the box's faces come back down together: the floor of the box at
-19.500, a sliver of the pocket's corner at 20.989, the floor of the pocket at
-21.248 and the seat at 25.089. That puts every horizontal face in the box at
-the height the standard body has it - 17.500, 18.989, 19.248, 23.089 - so the
-servo seats exactly as it does in the unit that works. The lane, the ledge and
-the arm's space are untouched by the four moves: of 21473 lines straight up
-through the part, none below the ledge's top changes.
+So the box is left alone. Every horizontal face in it reads 2.00 mm above the
+standard's - 19.500 against 17.500, 20.989 against 18.989, 21.248 against
+19.248, 25.089 against 23.089 - which is the whole box moved, not reshaped: the
+1.748 mm of floor and the 3.841 mm the case needs are both exactly what the
+unit that works has. The rim and the magazine ride up with it, which costs
+nothing, since the rim only has to clear the top of a case that stands 6.5 mm
+out of the box either way and a magazine 2 mm taller holds the same stack.
 
-The box's own rim and the magazine above it are left 2.0 mm high, because
-nothing locates on them: the rim only has to clear the top of the case, which
-stands 6.5 mm out of the box either way, and a magazine 2 mm taller holds the
-same stack. What has to be right is the floor, the seat and the 3.841 between
-them.
+What the lift does cost is paid at the arm. Riding 2.0 mm higher, the arm's pin
+hangs 2.0 mm higher in the pusher's slot, a through slot 4.71 mm deep, so
+engagement would go from 4.69 mm to 2.69; and the far end of the arm, 3.0 mm
+thick, sits with its top level with the top of the ledge rather than a clear
+millimetre under its underside. Both are answered by stepping the arm's hub
+2.00 mm, so that the hub reaches the horn where the horn now is while the plate
+hangs back down where the pusher and the ledge want it. That is what
+spenser-arm-small-tall does. It was printed against a body with the servo
+2 mm high, which is this same relationship, and it worked.
 
 What that leaves, measured over the whole swing rather than at the centreline:
 1.50 mm from the far wall, 4.72 mm from the face of the chocolate stack, and
@@ -660,27 +667,18 @@ def verify_hole(before, after, cx, cy, radius, to, step=0.23):
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
 #   y -10.00..10.20  the front of the rail, bar 1.5 mm the tail now pokes out of
 #   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
-#   z 19.500 - 2.00  the floor of the servo box, under the pocket
-#   z 20.989 - 2.00  a sliver of the pocket's corner, between the two
-#   z 21.248 - 2.00  the floor of the pocket, which the servo's case meets
-#   z 25.089 - 2.00  puts the servo's ear seat back down, which that lift raised
 # 19.25 mm off the width, 9 off the depth of the lane and 20.2 off the rail.
-# The seat is given at 25.089 because the lift has already moved it by then:
-# Those four are the faces that position the servo, and all of them read 2.00
-# higher than the source file because the lift has already moved them by the
-# time their turn comes. They go in rising order: each is stretched against
-# the one below it, so moving a higher one first would fold the wall between
-# them inside out, which is now an error rather than a surprise.
+# The lift takes the servo box up with the ledge, and it stays up: the gap
+# between the two is where the arm's hub swings, and it has to be the 8.061 mm
+# the standard body gives it. Four move_plane steps here used to pull the box
+# back down to the standard's own heights, which seated the servo and left the
+# hub 6.186. The arm answers the lift instead - see ARM_TALL.
 BODY = [('cut', 'x', 40.00, 47.00),
         ('cut', 'x', 50.00, 52.60),
         ('cut', 'x', 74.00, 83.65),
         ('cut', 'y', 65.00, 74.00),
         ('cut', 'y', -10.00, 10.20),
-        ('lift', 'z', 8.00, 2.00),
-        ('plane', 'z', 19.500, -2.00),
-        ('plane', 'z', 20.989, -2.00),
-        ('plane', 'z', 21.248, -2.00),
-        ('plane', 'z', 25.089, -2.00)]
+        ('lift', 'z', 8.00, 2.00)]
 
 # Pusher. The same 19.25 across, in two bands that miss the three ribs
 # underneath, and 10 mm out of its length. That band lies between the pin slot

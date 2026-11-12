@@ -38,7 +38,7 @@ under size and binds on the 2.55 mm pin.
 
 | Part | Description | Downloads |
 |------|-------------|-----------|
-| **Body** | A lane 41.75 × 31 mm instead of 61 × 40; 44.75 × 80.8 × 107 mm overall. The ledge that holds the pusher down sits 2 mm higher, to clear the arm, and the servo's box — its ear seat and the floor of its pocket — comes back down by the same 2 mm, so that the arm does not rise with it. | [STL](spenser-body-small.stl) |
+| **Body** | A lane 41.75 × 31 mm instead of 61 × 40; 44.75 × 80.8 × 107 mm overall. The ledge that holds the pusher down sits 2 mm higher, to clear the arm, and the servo's box rises with it, so that the arm's hub keeps the 8.06 mm of room it swings in. | [STL](spenser-body-small.stl) |
 | **Pusher** | 40.65 × 46 mm, to match the narrower lane, with the pin slot opened to 2.8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 28.75 mm between its holes instead of 41, which gives a 37.11 mm stroke at `anglePush=81`. | [STL](spenser-arm-small.stl) |
 | **Pin** | The same part as above. | [STL](spenser-pin.stl) |

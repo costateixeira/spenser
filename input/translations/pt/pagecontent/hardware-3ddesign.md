@@ -39,7 +39,7 @@ braço padrão, que é impresso abaixo da medida e aperta sobre o pino de
 
 | Peça | Descrição | Transferências |
 |------|-------------|-----------|
-| **Corpo** | Uma pista de 41,75 × 31 mm em vez de 61 × 40; 44,75 × 80,8 × 107 mm no total. A saliência que segura o empurrador fica 2 mm mais alta, para dar passagem ao braço, e a caixa do servo — o apoio das orelhas e o fundo do encaixe — volta a descer os mesmos 2 mm, para que o braço não suba com ela. | [STL](spenser-body-small.stl) |
+| **Corpo** | Uma pista de 41,75 × 31 mm em vez de 61 × 40; 44,75 × 80,8 × 107 mm no total. A saliência que segura o empurrador fica 2 mm mais alta, para dar passagem ao braço, e a caixa do servo sobe com ela, para que o cubo do braço conserve os 8,06 mm de espaço onde oscila. | [STL](spenser-body-small.stl) |
 | **Empurrador** | 40,65 × 46 mm, para corresponder à pista mais estreita, com a ranhura do pino aberta a 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Braço** | 28,75 mm entre os furos em vez de 41, o que dá um curso de 37,11 mm com `anglePush=81`. | [STL](spenser-arm-small.stl) |
 | **Pino** | A mesma peça de cima. | [STL](spenser-pin.stl) |
