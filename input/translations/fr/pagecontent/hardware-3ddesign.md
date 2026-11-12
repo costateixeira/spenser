@@ -34,16 +34,16 @@ qu'au repos il soit environ 47° en arrière de la perpendiculaire au couloir,
 et non d'équerre : cela recule toute la course et c'est ce qui permet au
 corps d'être aussi court. Le contrôle : au repos, la face de poussée doit se
 trouver juste derrière la pile de chocolats. En fin de course la queue
-dépasse de 1,7 mm par la bouche, ce qui est voulu. La goupille est la même
+s'arrête juste avant la bouche, ce qui est voulu. La goupille est la même
 pièce qu'avant et n'exige aucun perçage ici : son trou dans le bras fait 3 mm
 dans ces fichiers, contre 2,76 sur le bras standard, qui s'imprime sous la
 cote et serre sur la goupille de 2,55 mm.
 
 | Pièce | Description | Téléchargements |
 |------|-------------|-----------|
-| **Corps** | Un couloir de 41,75 × 31 mm au lieu de 61 × 40 ; 44,75 × 80,8 × 107 mm hors tout. L'épaulement qui retient le poussoir est 2 mm plus haut, pour laisser passer le bras, et le boîtier du servo monte avec lui, pour que le moyeu du bras conserve les 8,06 mm d'espace où il pivote. | [STL](spenser-body-small.stl) |
+| **Corps** | Un couloir de 41,75 × 31 mm au lieu de 61 × 40 ; 44,75 × 80,8 × 105 mm hors tout. Rien n'y change de hauteur : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie restent là où le corps standard les place, et c'est le bras qui est raccourci pour dégager l'épaulement. | [STL](spenser-body-small.stl) |
 | **Poussoir** | 40,65 × 46 mm, pour correspondre au couloir plus étroit, avec la rainure de goupille ouverte à 2,8 mm. | [STL](spenser-pusher-small.stl) |
-| **Bras** | 28,75 mm entre les trous au lieu de 41, ce qui donne une course de 37,11 mm avec `anglePush=81`. | [STL](spenser-arm-small.stl) |
+| **Bras** | 26,75 mm entre les trous au lieu de 41, ce qui donne une course de 34,53 mm avec `anglePush=81` et laisse son extrémité à un millimètre de l'épaulement. | [STL](spenser-arm-small.stl) |
 | **Goupille** | La même pièce que ci-dessus. | [STL](spenser-pin.stl) |
 {:.table-bordered}
 

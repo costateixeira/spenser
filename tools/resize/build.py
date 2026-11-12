@@ -32,12 +32,12 @@ height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
 the middle of it and nothing about the height needs to change:
 
   lane            61.0 x 40.0 mm  ->  41.75 x 31.0
-  body            64 x 110 x 105  ->  44.75 x 80.8 x 107
+  body            64 x 110 x 105  ->  44.75 x 80.8 x 105
   pusher          59.9 x 56.0     ->  40.65 x 46.0
-  arm, pin holes  41.0 mm apart   ->  28.75
-  stroke          51.05 mm        ->  37.11
-  retaining ledge z 9.0..10.0     ->  11.0..12.0, lifted, same 2.5 mm overhang
-  servo box       lifted with it  ->  left there: the hub needs the room
+  arm, pin holes  41.0 mm apart   ->  26.75
+  stroke          51.05 mm        ->  34.53
+  retaining ledge z 9.0..10.0     ->  unchanged; the arm clears it by being shorter
+  servo box       unchanged       ->  unchanged, like every height in the body
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    2.760 mm        ->  3.00, an allowance for the print
   pin             unchanged
@@ -90,126 +90,86 @@ pusher's band lies between its slot and its pushing face, so shortening it
 moves the face and not the tail.
 
 20.2 mm comes off here, at anglePush 81 with the arm 46.9 degrees back at rest
-and a pusher 10 mm shorter than the original. That leaves 4.11 mm of
-overtravel against the 3.60 the built unit runs on, 1.90 of take-up, and the
-pusher's tail poking 1.66 mm out of the mouth at full advance - which costs
-nothing, because the mouth has no front wall. At the height the arm runs, the
+and a pusher 10 mm shorter than the original. With the arm shortened to a crank
+of 26.75 that leaves 1.63 mm of overtravel against the 3.60 the built unit runs
+on, 1.90 of take-up, and the pusher's tail stopping just short of the mouth at
+full advance - which costs nothing, because the mouth has no front wall. At the height the arm runs, the
 front face is the two side walls and nothing between them, so the arm and the
 pin move in open air there whatever the pusher is doing.
 
-The far wall the arm must clear used to be the ledge the pusher runs under, at
-x 40.0, because the arm's far end is 3.0 mm thick and its top 1.05 mm fouled
-the ledge's z 9..10. Lifting the ledge 2.0 mm, by pushing a slab in at z 8.0,
-puts its underside at 11.05 and the arm passes a clear 1.0 mm below it. The
-obstacle becomes the bare wall at x 37.5, which is worth 2.5 mm of lane and
-keeps the full 2.5 mm of overhang that holds the pusher down. The slot the
-chocolate leaves by grows with it, 7.5 mm to 9.5, which changes nothing: two
-7 mm pieces still cannot pass it together.
+The one thing in the way of the arm is the ledge the pusher runs under, at
+x 40.0: the arm's far end is 3.0 mm thick and its top 1.05 mm fouls the ledge's
+z 9..10. There are two ways past that, and this went down the wrong one first.
 
-A slab pushed in at z 8.0 lifts everything above z 8.0, and the ledge is not
-the only thing up there: the whole servo box goes with it. That is deliberate,
-and it was not at first. The servo sets the height of the horn and the horn
-sets the height of the arm, so a box that rises takes the arm with it, and the
-ledge ends up no further from the arm than it was. The obvious correction is to
-put the box back down and leave the ledge up. It is wrong, and it was tried
-twice before a measurement caught it: the box is what the arm's hub hangs
-under, so pulling the box down closes the space the hub swings in. From the
-underside of the ledge up to the floor of the box, the standard body gives
-8.061 mm. Left where the lift puts it, the small body gives 8.061 as well.
-Pulled back down, it gives 6.186, and the motion module is short of 1.88 mm it
-needs.
+Lifting the ledge 2.0 mm, by pushing a slab in at z 8.0, puts its underside at
+11.05 and the arm passes a clear millimetre below it. But a slab pushed in at
+z 8.0 lifts everything above z 8.0, and the ledge is not the only thing up
+there: the servo box goes with it. The servo sets the height of the horn and
+the horn the height of the arm, so the arm rises the same 2.0 mm and the lift
+buys nothing, while the pin hangs 2.0 mm higher in the pusher's slot - a
+through slot 4.71 mm deep - so engagement drops from 4.69 mm to 2.69. Pulling
+the box back down is no better. It is what the servo itself needs, because it
+hangs by its ears on a seat and the short end of its case, 3.80 mm of it, has
+to fit between that seat and the floor of the pocket, where the standard body
+leaves 3.841 and the hole in that floor is 15.60 mm long against a case 22.8
+long, so the floor is a hard stop and not something the case passes through.
+But the box is also what the arm's hub swings under, and taking the box down
+out from under a lifted ledge closes that gap from the 8.061 mm the standard
+body gives it to 6.186. Two faces of the same 2 mm, and no height in the body
+satisfies both.
 
-Pulling it down halfway is worse, and it took a printed part to find out. The
-servo hangs by its ears on the seat, but the short end of its case - the end
-the shaft comes out of, 3.80 mm of it - has to fit between that seat and the
-floor of the pocket, and the hole in that floor is 15.60 mm long against a case
-22.8 mm long, so the floor is a hard stop and not something the case passes
-through. The standard body leaves 3.841 mm there, 0.04 more than the case
-needs. Lowering the seat alone left 1.841, so the servo stood on the pocket
-floor with its ears 1.96 mm clear of the seat: still 2 mm too high, now for a
-different reason, and the measurement used to check the seat could not see it.
-Lowering all four faces seated the servo and spent the space above it instead.
+So the body is left alone. No slab is pushed in and no face is moved: all five
+cuts are in x and y, so every height in the part is the height the standard
+body has it - the ledge at 9..10 with its 2.5 mm of overhang, the exit slot at
+7.5 which one 7 mm piece passes and two cannot, the floor of the servo box, the
+seat, and the 3.841 between them that the case needs. The 2 mm comes off the
+arm instead, where it costs stroke and nothing else.
 
-So the box is left alone. Every horizontal face in it reads 2.00 mm above the
-standard's - 19.500 against 17.500, 20.989 against 18.989, 21.248 against
-19.248, 25.089 against 23.089 - which is the whole box moved, not reshaped: the
-1.748 mm of floor and the 3.841 mm the case needs are both exactly what the
-unit that works has. The rim and the magazine ride up with it, which costs
-nothing, since the rim only has to clear the top of a case that stands 6.5 mm
-out of the box either way and a magazine 2 mm taller holds the same stack.
+The arm loses 14.25 mm out of the plain bar between the two holes, in two bands:
+12.25 is as much as one band can take, because two triangles lie across
+x -43.24..-43.00, and the last 2.00 comes from the stretch beyond them. The holes end up 26.75 mm apart, and
+that is what lets the ledge stay where it is - the far end then reaches only
+x 41.0, a clear millimetre short of the ledge's inner edge, so no part of the
+arm ever passes under it. Everything within 16.5 mm of the servo shaft, which
+is all of the part that goes through the slot under the servo box, is exactly
+as it was.
 
-What the lift does cost is paid at the arm. Riding 2.0 mm higher, the arm's pin
-hangs 2.0 mm higher in the pusher's slot, a through slot 4.71 mm deep, so
-engagement would go from 4.69 mm to 2.69; and the far end of the arm, 3.0 mm
-thick, sits with its top level with the top of the ledge rather than a clear
-millimetre under its underside. Both are answered by stepping the arm's hub
-2.00 mm, so that the hub reaches the horn where the horn now is while the plate
-hangs back down where the pusher and the ledge want it. That is what
-spenser-arm-small-tall does. It was printed against a body with the servo
-2 mm high, which is this same relationship, and it worked.
+The last 2.00 mm is not free. Stroke runs at 1.291 mm per mm of crank, so 37.11
+becomes 34.53, and since the lane is 31.0 mm deep, overtravel past the exit and
+take-up behind the stack share whatever the stroke has over 31. Take-up is set
+by where the arm is fitted - the check is that at rest the pushing face sits
+just behind the stack - so the overtravel takes the loss: 4.11 mm at a crank of
+28.75, 1.63 at 26.75, against the 3.60 the built unit runs on. 1.63 is the
+least of those and still more than the 0.54 an interim arm at 25.75 ran on,
+which dispensed. anglePush stays at 81. If the overtravel turns out to be
+wanted, 88 buys the whole 37.11 back at a crank of 26.75, for 0.70 mm more
+sideways swing in a slot 37.0 mm long that has it to spare.
 
-What that leaves, measured over the whole swing rather than at the centreline:
-1.50 mm from the far wall, 4.72 mm from the face of the chocolate stack, and
-the magazine wall lifted clean out of reach. For scale, the same measurement
-run against the built unit reports it 1.5 mm inside both the magazine wall and
-the servo pocket, so the datum here - ARM_Z, or the pocket - is off by about
-that much and these figures carry the error. The comparison is the part to
-trust: this variant has more room than the unit that works.
+Taking the 2 mm off the tip instead would cost no stroke at all, and it is the
+wrong end. The tip stands 3.90 mm beyond the bore, which is 2.40 mm of wall
+round a 3.00 mm hole: 2.00 off leaves 0.40, and the pin's head is 8 mm across
+and rests on the plate's top face right there. The tip stays 3.00 mm thick and
+the pin still hangs 4.69 mm into a 4.71 mm slot, as it does on the built unit.
 
-The arm loses 12.25 mm out of the plain bar between the two holes; everything
-within 16.5 mm of the servo shaft - all of the part that passes through the
-slot under the servo box - is exactly as it was.
+Measured over the whole swing rather than at the centreline, the one thing the
+sweep still finds in the way is the hub, 0.50 mm into the far wall at
+x 79.25..79.75. Axis to far wall is 6.50 mm in both sizes, so that 0.50 is in
+the stock parts as much as in these, and it is the datum rather than the
+geometry: the same check run against the built unit reports it 1.5 mm inside
+both the magazine wall and the servo pocket, so ARM_Z, or the pocket, is off by
+about that much and every figure here carries the error. The comparison is the
+part to trust, and on it this variant has the room the unit that works has.
 
-The second arm here, spenser-arm-small-tall, is the stop-gap for a body already
-printed with the seat 2.0 mm high, and it answers the same millimetres from the
-other end. The bar gives 16.49 before the hub's walls start, so 3.00 mm more
-comes out for a crank of 25.75, and the hub is then stepped up 2.00 mm.
-
-Which surface is raised is the whole of it. The arm hangs on the horn, so the
-horn's seat is a stop in both directions: taller walls let nothing up, because
-the floor the horn rests on arrives first. There are two such surfaces - the
-groove floor at z 3.00 that the horn's bar lies on, and the recess at 1.80 that
-takes its hub - and both have to go up together, with material under them. So
-the step carries everything from z 1.20 up: 3.00 becomes 5.00, 1.80 becomes
-3.80, the walls' top 5.70 becomes 7.70, and the hub comes out the shape it was,
-2.00 mm higher on a plate 2.00 mm thicker.
-
-The step was 2.50 at first, and the printed part rubbed hard on the pusher -
-which is what the drawing said it would do, since 2.50 puts the plate 0.45 mm
-inside the pusher's top. 2.00 is the step that reproduces the built unit, and
-it is what this part now carries. It leaves 0.05 mm between the plate and the
-pusher, so if it still touches, the next quarter millimetre comes off this one
-number and nothing else moves.
-
-The tip is left alone, and not only to keep it out of the ledge. The pin's bore
-is as deep as the plate is thick, and its head is 8 mm across and rests on the
-plate's top face: thicken the tip and the pin reaches 2.00 mm less far into the
-pusher's slot, and the head sits on a slope. So the tip stays 3.00 mm and the
-pin still hangs 4.69 mm into a 4.71 mm slot, as it does on the built unit.
-
-What this puts where, hung 2.00 mm lower than the arm it replaces: the plate at
-z 7.05..10.05, 0.95 under the ledge, and the hub's top at 14.75, which is the
-height the arm already reaches.
-
-The pin hole is opened on both small arms, from 2.760 mm to 3.00. There is
+The pin hole is opened from 2.760 mm to 3.00. There is
 nothing wrong with 2.760 on paper - the pin's shaft measures 2.550 - but a
 small hole in a printed part comes out under its nominal size, and this one
 came out tight enough to have to be driven. So the change is a print allowance
 rather than a change of fit: 3.00 gives away 0.45 mm in the drawing to get a
-tenth or two in the plastic. It was printed at 3.00 on the stop-gap arm first,
-where the pin went in by hand, which is why it is now on the other arm too.
-The wall around the bore is 2.52 mm and loses 0.12 of it. The method's limit
+tenth or two in the plastic. It was printed at 3.00 on an interim arm first,
+where the pin went in by hand. The wall around the bore is 2.52 mm and loses
+0.12 of it. The method's limit
 is nearer than the part's: the next ring of vertices out sits 1.63 from the
 axis, so a rim pushed much past 1.55 would fold the face between them.
-
-The shortening is belt and braces, and it is not free. Stroke falls to
-33.44 mm, and since the lane is 31.0 mm deep, overtravel past the exit and
-take-up behind the stack share whatever the stroke has over 31: 6.11 mm at a
-crank of 28.75, 2.44 at 25.75, against the 3.60 mm of overtravel the built unit
-runs on. What it buys is that the far end only reaches x 42.0, two clear
-millimetres short of the ledge's inner edge, so the arm does not bind even if
-it ends up seated high. Dropping the seat costs no stroke at all, and is still
-the fix for a body not yet printed.
 
 One thing here is not about the small size at all, and is in the stock files:
 the pin's shaft measures 2.550 mm, the arm's bore 2.760 and the pusher's slot
@@ -218,7 +178,7 @@ the one the pin cannot enter at all, and this tool widens it, because its far
 wall is one flat face and what moved can be measured afterwards. The bore is a
 48-sided prism of radius 1.380 - 2.754 across the flats, 2.760 across the
 corners - so it is round enough to be pushed out along its own radius and come
-out round, which is what both small arms now do with it. The standard arm is
+out round, which is what the small arm now does with it. The standard arm is
 left at 2.760, where it is nominally clear of the pin and prints tight; drill
 that one 2.6 mm.
 """
@@ -657,7 +617,9 @@ def verify_hole(before, after, cx, cy, radius, to, step=0.23):
 # one is still where it was measured when its turn comes. The other operations
 # follow, on positions that the cuts did not disturb.
 
-# Body. Three bands across it, one along it, then the lift.
+# Body. Three bands across it and two along it, and nothing else: no slab is
+# pushed in and no face is moved, so every height in the part is the height the
+# standard body has it. The arm is shortened to clear the ledge instead.
 #   x 40.00..47.00   between the rail the pusher runs under and the bay wall
 #   x 50.00..52.60   the lane's own air, between the rail and the bay
 #   x 74.00..83.65   between the bay and the box the servo sits in
@@ -665,20 +627,13 @@ def verify_hole(before, after, cx, cy, radius, to, step=0.23):
 # it, 9.60 against 9.65, so that the window - the one feature that was centred
 # on the lane - still is. Take it all off one side and it ends up 9.15 mm out.
 #   y 65.00..74.00   plain lane wall, well clear of the window in the back wall
-#   y -10.00..10.20  the front of the rail, bar 1.5 mm the tail now pokes out of
-#   z 8.00 + 2.00    lifts the retaining ledge off the arm's path
+#   y -10.00..10.20  the front of the rail, bar the 1.5 mm the mouth keeps
 # 19.25 mm off the width, 9 off the depth of the lane and 20.2 off the rail.
-# The lift takes the servo box up with the ledge, and it stays up: the gap
-# between the two is where the arm's hub swings, and it has to be the 8.061 mm
-# the standard body gives it. Four move_plane steps here used to pull the box
-# back down to the standard's own heights, which seated the servo and left the
-# hub 6.186. The arm answers the lift instead - see ARM_TALL.
 BODY = [('cut', 'x', 40.00, 47.00),
         ('cut', 'x', 50.00, 52.60),
         ('cut', 'x', 74.00, 83.65),
         ('cut', 'y', 65.00, 74.00),
-        ('cut', 'y', -10.00, 10.20),
-        ('lift', 'z', 8.00, 2.00)]
+        ('cut', 'y', -10.00, 10.20)]
 
 # Pusher. The same 19.25 across, in two bands that miss the three ribs
 # underneath, and 10 mm out of its length. That band lies between the pin slot
@@ -691,45 +646,26 @@ PUSHER = [('cut', 'x', 27.00, 36.625),
           ('cut', 'y', -70.00, -60.00),
           ('plane', 'y', -83.248, -0.455)]
 
-# Arm. 12.25 mm out of the plain bar between the two holes: 41 mm apart becomes
-# 28.75, which at anglePush 81 gives the 37.11 mm stroke the lane wants. And the
-# pin bore opened from 2.760 to 3.00, which is a print allowance: see below.
+# Arm. 14.25 mm out of the plain bar between the two holes: 41 mm apart becomes
+# 26.75, which at anglePush 81 gives a 34.53 mm stroke and keeps the arm's far
+# end a millimetre clear of the ledge, so that no height in the body has to
+# move. The cut is in two bands, not one of 14.25, because two triangles lie
+# across x -43.24..-43.00; two bands either side of them come to the same
+# thing, and the far one is cut first, so the near one is still where it was
+# measured when its turn comes.
+#
+# The bore is opened from 2.760 to 3.00, a print allowance: see above. It is
+# pushed out along its own radius, which is only sound because it is a clean
+# 48-sided prism of one radius, 1.380, and because 0.05 of tolerance catches
+# that ring and nothing else - the nearest other vertices are a seam on the
+# face, 1.63 out.
 ARM = [('cut', 'x', -55.49, -43.24),
+       ('cut', 'x', -43.00, -41.00),
        ('bore', -63.10, -10.00, 1.380, 1.500)]
-
-# And the stop-gap, for a body already printed with the seat 2.0 mm high.
-#   x -43.00..-40.00           3.00 mm more out of the bar, crank 25.75
-#   z 1.20 + 2.00 past -55.00  the whole hub up, the bar left as it was
-# The cut is in two bands, not one of 15.25, because two triangles lie across
-# x -43.24..-43.00; two bands either side of them come to the same thing, and
-# the far one is cut first, so the near one is still where it was measured when
-# its turn comes.
-#
-# The step's seam is z 1.20 and its gate is x -55.00, and both are measured.
-# The seam has to clear what it carries: the horn sits on two surfaces, the
-# groove floor at z 3.00 and the recess at 1.80 that takes its hub, and a
-# chamfer runs round the outside of the hub from z 1.35 to 2.27. A seam at 1.79
-# cuts that chamfer and stretches it, and the check says so - 75 lines
-# disagree. At 1.20 nothing in the hub crosses with any real slope: 330
-# triangles span it and not one is more than 0.05 off vertical, so the whole
-# hub rides up on 2.00 mm of new material and comes out the shape it was.
-# The gate has to clear the pin's head, which is 8 mm across and so covers
-# x -66..-58. Its ramp is as long as the triangles that straddle it: -55.50
-# ramps from -61.10, under the head, while -55.00 ramps over -56.89..-54.25,
-# which is 2.64 mm of the rib and nothing else. Short of it nothing moves, so
-# the tip keeps its 3.00 mm and the pin bore its depth.
-#
-# The bore is opened by pushing its wall out along its own radius, which is
-# only sound because it is a clean 48-sided prism of one radius, 1.380, and
-# because 0.05 of tolerance catches that ring and nothing else: the nearest
-# other vertices are a seam on the face, 1.63 out.
-ARM_TALL = ARM + [('cut', 'x', -43.00, -40.00),
-                  ('beyond', 'z', 1.20, 2.00, 'x', -55.00)]
 
 PARTS = [('body', 'body-small', BODY),
          ('pusher', 'pusher-small', PUSHER),
-         ('arm', 'arm-small', ARM),
-         ('arm', 'arm-small-tall', ARM_TALL)]
+         ('arm', 'arm-small', ARM)]
 
 
 def main():

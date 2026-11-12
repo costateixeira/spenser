@@ -31,16 +31,16 @@ van de standaard 77. En monteer de arm zo dat hij in rust ongeveer 47° terug
 staat ten opzichte van dwars op de baan, en niet haaks erop: dat zet het hele
 traject verder naar achteren en is wat de behuizing zo kort laat zijn. De
 controle is dat het duwvlak in rust net achter de chocoladestapel uitkomt.
-Aan het eind van de slag steekt de staart 1,7 mm uit de mond, wat de bedoeling
+Aan het eind van de slag komt de staart net niet uit de mond, wat de bedoeling
 is. De pen is hetzelfde onderdeel als eerder en hoeft hier niet geboord te
 worden: het pengat in de arm is 3 mm in deze bestanden, tegen 2,76 in de
 standaardarm, die onder de maat print en op de pen van 2,55 mm klemt.
 
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|
-| **Behuizing** | Een baan van 41,75 × 31 mm in plaats van 61 × 40; 44,75 × 80,8 × 107 mm in totaal. De richel die de duwer op zijn plaats houdt, zit 2 mm hoger om de arm door te laten, en de ruimte voor de servo stijgt mee, zodat de naaf van de arm de 8,06 mm ruimte houdt waarin hij zwenkt. | [STL](spenser-body-small.stl) |
+| **Behuizing** | Een baan van 41,75 × 31 mm in plaats van 61 × 40; 44,75 × 80,8 × 105 mm in totaal. Niets erin verandert van hoogte: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft, en in plaats daarvan is de arm ingekort zodat hij de richel vrij houdt. | [STL](spenser-body-small.stl) |
 | **Duwer** | 40,65 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
-| **Arm** | 28,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 37,11 mm geeft. | [STL](spenser-arm-small.stl) |
+| **Arm** | 26,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 34,53 mm geeft en het uiteinde een millimeter vrij van de richel houdt. | [STL](spenser-arm-small.stl) |
 | **Pen** | Hetzelfde onderdeel als hierboven. | [STL](spenser-pin.stl) |
 {:.table-bordered}
 

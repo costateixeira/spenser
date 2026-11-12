@@ -31,7 +31,7 @@ do valor por omissão de 77. E monte o braço de modo a ficar, em repouso,
 cerca de 47° recuado em relação à perpendicular à pista, e não a esquadria:
 isso recua todo o percurso e é o que permite o corpo ser tão curto. A
 verificação é que, em repouso, a face de empurrar fique logo atrás do
-empilhamento de chocolate. No fim do curso a cauda sai 1,7 mm pela boca, o
+empilhamento de chocolate. No fim do curso a cauda fica pouco antes da boca, o
 que é intencional. O pino é a mesma peça de antes e aqui não precisa de ser
 furado: o seu orifício no braço tem 3 mm nestes ficheiros, contra 2,76 no
 braço padrão, que é impresso abaixo da medida e aperta sobre o pino de
@@ -39,9 +39,9 @@ braço padrão, que é impresso abaixo da medida e aperta sobre o pino de
 
 | Peça | Descrição | Transferências |
 |------|-------------|-----------|
-| **Corpo** | Uma pista de 41,75 × 31 mm em vez de 61 × 40; 44,75 × 80,8 × 107 mm no total. A saliência que segura o empurrador fica 2 mm mais alta, para dar passagem ao braço, e a caixa do servo sobe com ela, para que o cubo do braço conserve os 8,06 mm de espaço onde oscila. | [STL](spenser-body-small.stl) |
+| **Corpo** | Uma pista de 41,75 × 31 mm em vez de 61 × 40; 44,75 × 80,8 × 105 mm no total. Nada nele muda de altura: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem, e em vez disso o braço é encurtado para passar pela saliência. | [STL](spenser-body-small.stl) |
 | **Empurrador** | 40,65 × 46 mm, para corresponder à pista mais estreita, com a ranhura do pino aberta a 2,8 mm. | [STL](spenser-pusher-small.stl) |
-| **Braço** | 28,75 mm entre os furos em vez de 41, o que dá um curso de 37,11 mm com `anglePush=81`. | [STL](spenser-arm-small.stl) |
+| **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 34,53 mm com `anglePush=81` e mantém a sua extremidade a um milímetro da saliência. | [STL](spenser-arm-small.stl) |
 | **Pino** | A mesma peça de cima. | [STL](spenser-pin.stl) |
 {:.table-bordered}
 
