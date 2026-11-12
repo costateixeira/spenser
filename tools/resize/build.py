@@ -40,13 +40,13 @@ The small variant keeps the thickness band the original has - 5.5 mm, the
 height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
 the middle of it and nothing about the height needs to change:
 
-  lane            61.0 x 40.0 mm  ->  54.0 x 31.0
-  body            64 x 110 x 105  ->  57.0 x 80.8 x 105
-  pusher          59.9 x 56.0     ->  52.9 x 46.0
+  lane            61.0 x 40.0 mm  ->  44.35 x 31.0
+  body            64 x 110 x 105  ->  47.35 x 80.8 x 105
+  pusher          59.9 x 56.0     ->  43.25 x 46.0
   arm, pin holes  41.0 mm apart   ->  26.75
   stroke          51.05 mm        ->  34.53
-  module bay      24.00 mm wide   ->  unchanged, and so is everything beside it
-  retaining ledge z 9.0..10.0     ->  unchanged, and 13.26 mm clear of the arm
+  module bay      24.00 mm wide   ->  unchanged; it is what sets the width
+  retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
   pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
   arm pin bore    2.760 mm        ->  3.00, an allowance for the print
@@ -60,31 +60,41 @@ stops a piece turning, because a 30 x 40 piece cannot rotate more than a couple
 of degrees in a lane 31 deep whatever the lane's width, and it was the 9 mm of
 play along the lane that misfed.
 
-The width is set by neither, and not by the mechanism either. It is set by the
-electronics, which stand in front of the magazine between the same two side
-walls as the lane: the bay the motion base slides down into is 24.00 mm wide
-between its posts for a module 24.0 wide, the channel its servo plugs reach
-into is 11.53, the servo's own pocket is 12.26 for a case 12.2 thick, and with
-the posts and walls between them that is 53.0 mm of the body's 64. All of it is
-inside the lane's own width, so a band cut anywhere across it comes out of one
-of those three spaces. What is free is the 7.00 mm strip between the retaining
-ledge's inner edge at x 40.00 and the bay's near post at x 47.00, and nothing
-else. So the lane goes 61 -> 54.0 and no further, and the piece keeps 14 mm of
-play across the lane, which costs nothing because the depth is what holds it
-square. The one thing that costs is the window in the back wall, which was
-centred on the lane to 0.03 mm and now sits 3.53 off centre, because all 7.00
-comes off one side of it and there is nothing above it to take the other half
-from.
+The width is set by neither, and not by the mechanism either. It is set by one
+thing standing in the lane's own width: the bay the Atomic Motion Base drops
+into, 24.00 mm wide between its posts for a module 24.0 wide, with no clearance
+at all in the part that works. Nothing may come out of that, and nothing may
+come out of the servo's pocket beside it either, 12.26 mm for a case 12.2
+thick. What is left is two bands, and together they are the whole of the width
+this can give up:
 
-That took two goes to see, and the reason is worth writing down: a cut through
-air is still prismatic. A cross section through the front of the body shows a
-lot of air, the tool proves only that the shape does not change across the
-band, and both of the bands that are now gone passed that proof while taking
-the two spaces apart - x 50.00..52.60 left the bay 21.41 mm wide for a module
-24.0 wide, and x 74.00..83.65 left 1.88 mm of the 11.53 the plugs need. Neither
-shows up in anything this file measures, because both spaces are empty in it.
-What goes in them is in tools/assembly/build.py, which has the module at
-24 x 72 x 20.7 and its bay "24 wide between x 48 and 72".
+  x 40.00..47.00   7.00, between the retaining ledge's inner edge and the bay's
+                   near post: plain air at every height
+  x 74.00..83.65   9.65 of the 11.53 slot between the bay's far post and the
+                   servo tower, leaving 1.88
+
+So the lane goes 61 -> 44.35 and no further, the body 64 -> 47.35, and a 40 mm
+piece keeps 3.35 mm of play across the lane.
+
+The second band took two goes to get right, in both directions. It looks like
+the channel the servo plugs reach into, and on that reading it had to stay: the
+module's four headers stand out of its far face and a servo plug needs 8 mm in
+front of one. But measure the slot and it is walled on both sides only over
+z 14.00..32.00, which is the servo tower's own height, while the headers sit at
+z 40.40..75.00 - the base stands on its tab at z 28.4 and they start 12 mm up
+it. Above z 32.00 there is nothing on that side of the body at all, so the
+plugs are in open air and the slot under them is free. It had been cut, then
+put back, then cut again.
+
+What was not free, and is the whole of what went wrong, is x 50.00..52.60. That
+band is inside the bay, and 2.60 out of 24.00 leaves 21.41 for a module 24.0
+wide - about the 2 mm it was short by when it was tried. A cut through air is
+still prismatic: a cross section through the front of the body shows a lot of
+air, the tool proves only that the shape does not change across the band, and
+nothing in this file knows which of that air something stands in. What stands
+where is in tools/assembly/build.py, which has the module at 24 x 72 x 20.7,
+its bay "24 wide between x 48 and 72", and its headers up the side at 12, 21,
+30 and 39 mm.
 
 The arm has to swing out across the lane to drive the pusher, and its two
 reaches from the servo axis are
@@ -106,15 +116,15 @@ with. Past about 120 it would want trying before trusting.
 How long the rail has to be is a separate sum, and an easy one to get wrong:
 the pushing face does not start at the back of the lane. pusher_placement in
 tools/assembly puts the pin 82.075 mm from the pusher's slot, so the face sits
-some way behind the stack at rest and the tail reaches some way past the front
-of the lane. Write S for half the stroke and s for how much the pusher is
+some way behind the stack at rest and the tail reaches some way back along the
+rail. Write S for half the stroke and s for how much the pusher is
 shortened by, and three numbers move together:
 
   rail the tail never reaches   34.675 - S
   overtravel past the exit      S - 16.925 + s
   take-up behind the stack      S - 14.075 - s
 
-The first is what can come off the front of the rail, and it grows as the
+The first is what can come off the back of the rail, and it grows as the
 stroke shrinks. Those three sums hold only while the swing stays centred on
 the arm pointing straight across, though, and nothing says it has to be:
 the hub bore is round, not splined, so the arm can be clamped anywhere on the
@@ -130,10 +140,13 @@ moves the face and not the tail.
 20.2 mm comes off here, at anglePush 81 with the arm 46.9 degrees back at rest
 and a pusher 10 mm shorter than the original. With the arm shortened to a crank
 of 26.75 that leaves 1.63 mm of overtravel against the 3.60 the built unit runs
-on, 1.90 of take-up, and the pusher's tail stopping just short of the mouth at
-full advance - which costs nothing, because the mouth has no front wall. At the height the arm runs, the
-front face is the two side walls and nothing between them, so the arm and the
-pin move in open air there whatever the pusher is doing.
+on and 1.90 of take-up. It comes off the back, which is the end away from the
+mouth: the chocolate leaves through the other end, where the magazine's end
+wall carries a 7.5 mm slot under a lintel at z 9.00..17.00. The back has no
+wall at all at the height the arm runs - the two side walls and nothing between
+them - so the arm, the pin and the pusher's tail all move in open air there,
+and 20.2 mm of rail behind the pusher is what the body can lose without the
+mouth or the lane noticing.
 
 The one thing in the way of the arm is the ledge the pusher runs under, at
 x 40.0: the arm's far end is 3.0 mm thick and its top 1.05 mm fouls the ledge's
@@ -709,9 +722,12 @@ PIN_IN_SLOT = 4.69           # how far the pin hangs into the pusher's 4.71 mm s
 # Where a band is allowed to be. These are the only places in each part where a
 # slab can come out without taking something with it, and the width is much the
 # tightest of them: see the note at the top of the file.
-WIDTH_BAND = (40.00, 47.00)   # the ledge's inner edge .. the module bay's near post
+WIDTH_BANDS = ((40.00, 47.00),    # the ledge's inner edge .. the bay's near post
+               (74.00, 83.65))    # 9.65 of the slot between the bay and the servo
+#                                 # tower, which is walled only below the headers
 DEPTH_BAND = (65.00, 100.00)  # plain magazine wall, running back
-RAIL_BAND = (-10.00, 19.99)   # the front of the rail, bar the 1.5 mm the mouth keeps
+RAIL_BAND = (-10.00, 19.99)   # the back of the rail, behind the pusher; the mouth
+#                             # is the other end and nothing here touches it
 LEDGE_AT = 8.00               # a slab pushed in here raises the ledge - and the servo box
 ARM_BANDS = ((-55.49, -43.24), (-43.00, -39.10))   # 12.25, then 3.90 past two triangles
 PUSHER_BANDS = (27.00, 48.00)    # two bands, each in its own gap between the ribs
@@ -743,7 +759,7 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
     across, along, thick = piece
     notes = []
 
-    room = WIDTH_BAND[1] - WIDTH_BAND[0]
+    room = sum(hi - lo for lo, hi in WIDTH_BANDS)
     want = LANE[0] - (across + PLAY[0])
     if want < -1e-9:
         raise SystemExit('a piece %.1f mm across wants a lane wider than the standard '
@@ -752,9 +768,8 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
     lane_w = LANE[0] - x_cut
     if want - x_cut > 1e-9:
         notes.append('the lane stays %.2f mm wide, %.2f wider than the piece asks for: '
-                     'the %.2f mm between the ledge and the module bay is the whole of '
-                     'the width that is not bay, plug channel or servo pocket'
-                     % (lane_w, lane_w - across - PLAY[0], room))
+                     '%.2f mm is the whole of the width that is neither the module bay '
+                     'nor the servo pocket' % (lane_w, lane_w - across - PLAY[0], room))
 
     want = LANE[1] - (along + PLAY[1])
     if want < -1e-9:
@@ -823,6 +838,26 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
     return settled
 
 
+def share(total, bands):
+    """Spread a width cut over the bands, as evenly as each one's room allows.
+
+    An even split is what keeps the window in the back wall near the lane's
+    centre, since one band lies below it and the other above.
+    """
+    take = [0.0] * len(bands)
+    left = total
+    while left > 1e-9:
+        open_ = [n for n, (lo, hi) in enumerate(bands) if hi - lo - take[n] > 1e-9]
+        if not open_:
+            break
+        step = left / len(open_)
+        for n in open_:
+            this = min(step, bands[n][1] - bands[n][0] - take[n])
+            take[n] += this
+            left -= this
+    return [round(t, 3) for t in take]
+
+
 def recipes(p):
     """The three recipes the plan asks for, in the form main() applies."""
     if p.get('nothing'):
@@ -832,8 +867,9 @@ def recipes(p):
         return [(part, '%s-%s' % (part, p['name']), [])
                 for part in ('body', 'pusher', 'arm')]
     body = []
-    if p['x_cut']:
-        body.append(('cut', 'x', WIDTH_BAND[0], WIDTH_BAND[0] + p['x_cut']))
+    for (lo, _), take in zip(WIDTH_BANDS, share(p['x_cut'], WIDTH_BANDS)):
+        if take:
+            body.append(('cut', 'x', lo, round(lo + take, 3)))
     if p['y_cut']:
         body.append(('cut', 'y', DEPTH_BAND[0], DEPTH_BAND[0] + p['y_cut']))
     if p['rail_cut']:
