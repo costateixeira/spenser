@@ -42,10 +42,13 @@ staat ten opzichte van dwars op de baan, en niet haaks erop: dat zet het hele
 traject verder naar achteren en is wat de behuizing zo kort laat zijn. De
 controle is dat het duwvlak in rust net achter de chocoladestapel uitkomt. De
 20,2 mm gaat er aan de achterkant af, achter de duwer, en niet bij de mond:
-het stuk komt er aan de andere kant uit. De pen is hetzelfde onderdeel als
-eerder en hoeft hier niet geboord te
-worden: het pengat in de arm is 3 mm in deze bestanden, tegen 2,76 in de
-standaardarm, die onder de maat print en op de pen van 2,55 mm klemt.
+het stuk komt er aan de andere kant uit. De pen heeft hier een eigen
+onderdeel en hoeft niet geboord te worden: het pengat in de arm is 3,1 mm in
+deze bestanden tegen 2,76 in de standaardarm, en de pen zelf is 2,3 mm in
+plaats van 2,55. Beide helften moesten mee. Een klein gat print onder de maat
+en een dun asje erboven, en samen aten ze de 0,44 mm speling op die de
+tekening had, zodat de pen er niet in ging; nu is er 0,79 mm. De standaardpen
+blijft zoals hij is — boor de standaardarm 2,6 mm als u die bouwt.
 
 Voor een ander formaat stuk snijdt [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) deze drie
 onderdelen op maat en laat zien wat het traject dan wordt. Een stuk wordt
@@ -59,7 +62,7 @@ zijn, en zegt dat er niets te snijden is.
 | **Behuizing** | Een baan van 43,5 × 31 mm in plaats van 61 × 40; 46,5 × 80,8 × 105 mm in totaal. De ruimte voor de module houdt haar volle 24 mm en de servo zijn 12,26, en geen enkele hoogte erin verandert: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft. | [STL](spenser-body-small.stl) |
 | **Duwer** | 42,4 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 26,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 34,53 mm geeft, passend bij de minder diepe baan. | [STL](spenser-arm-small.stl) |
-| **Pen** | Hetzelfde onderdeel als hierboven. | [STL](spenser-pin.stl) |
+| **Pen** | 2,3 mm asdikte in plaats van 2,55, de andere helft van de pasvorm met de arm. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 
 ### Stuklijst

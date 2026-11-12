@@ -48,9 +48,9 @@ the middle of it and nothing about the height needs to change:
   module bay      24.00 mm wide   ->  unchanged; it is what sets the width
   retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
-  pusher slot     2.345 mm        ->  2.80, which the 2.55 mm pin needs
-  arm pin bore    2.760 mm        ->  3.00, an allowance for the print
-  pin             unchanged
+  pusher slot     2.345 mm        ->  2.80
+  arm pin bore    2.760 mm        ->  3.10, as far as the method goes
+  pin shaft       2.550 mm        ->  2.30, the other half of the same fit
   firmware        anglePush 81, and the arm set 46.9 deg back at rest
 
 Each of the lane's three numbers is set by something different, and it is
@@ -211,27 +211,43 @@ both the magazine wall and the servo pocket, so ARM_Z, or the pocket, is off by
 about that much and every figure here carries the error. The comparison is the
 part to trust, and on it this variant has the room the unit that works has.
 
-The pin hole is opened from 2.760 mm to 3.00. There is
-nothing wrong with 2.760 on paper - the pin's shaft measures 2.550 - but a
-small hole in a printed part comes out under its nominal size, and this one
-came out tight enough to have to be driven. So the change is a print allowance
-rather than a change of fit: 3.00 gives away 0.45 mm in the drawing to get a
-tenth or two in the plastic. It was printed at 3.00 on an interim arm first,
-where the pin went in by hand. The wall around the bore is 2.52 mm and loses
-0.12 of it. The method's limit
-is nearer than the part's: the next ring of vertices out sits 1.63 from the
-axis, so a rim pushed much past 1.55 would fold the face between them.
+The pin and the arm's hole are the one fit here that paper gets wrong. On
+paper there was never a problem: the bore at 2.760 against a shaft of 2.550
+leaves 0.21, and opening the bore to 3.00 made that 0.44. Printed, it still
+bound - a small hole comes out under its nominal size and a small shaft over
+its own, and between them they ate the 0.44. So both halves move now, which is
+the only way left:
 
-One thing here is not about the small size at all, and is in the stock files:
+  the arm's bore   2.760 -> 3.10 across the corners, 3.093 across the flats
+  the pin's shaft  2.550 -> 2.30
+  between them     0.44 of clearance -> 0.79
+
+The bore cannot carry it alone. The method's limit is nearer than the part's:
+the next ring of vertices out sits 1.629 from the axis, so a rim pushed much
+past 1.55 would fold the face between them, and 1.55 is where it now is. The
+wall around the bore is 2.52 mm and loses 0.17 of it; the pin's head is 8.00
+across and still bears 2.45 all round the hole.
+
+Thinning the shaft is the same move as opening the bore, inwards: one ring of
+vertices, all at one radius, slid along their own radii. It costs play in the
+pusher's slot, which is 2.801 wide and now takes a 2.30 shaft with 0.50 in
+hand rather than 0.25. That is lost motion at the start of a push and nothing
+else, against a stroke of 34.53, and the pin is the cheapest part here to
+print again if it turns out to want to be thicker. The standard pin is not
+touched: spenser-pin.stl stays as it is, and spenser-pin-small.stl is the
+thinner one.
+
+None of that is about the small size, and all of it is in the stock files:
 the pin's shaft measures 2.550 mm, the arm's bore 2.760 and the pusher's slot
-2.345, so three parts that have to share one diameter have three. The slot is
-the one the pin cannot enter at all, and this tool widens it, because its far
-wall is one flat face and what moved can be measured afterwards. The bore is a
-48-sided prism of radius 1.380 - 2.754 across the flats, 2.760 across the
-corners - so it is round enough to be pushed out along its own radius and come
-out round, which is what the small arm now does with it. The standard arm is
-left at 2.760, where it is nominally clear of the pin and prints tight; drill
-that one 2.6 mm.
+2.345, so three parts that have to share one diameter have three, and the
+slack between them is thinner than a printer's own error. The slot is the one
+the pin cannot enter at all, and this tool widens it, because its far wall is
+one flat face and what moved can be measured afterwards. The bore and the
+shaft are both 48-sided prisms of one radius - the bore 1.380, which is 2.754
+across the flats and 2.760 across the corners - so each is round enough to be
+pushed along its own radius and come out round. The standard arm is left at
+2.760 and the standard pin at 2.550, which are nominally clear of each other
+and print tight; drill that arm 2.6 mm.
 
 All of the above is one size of piece. The numbers come from PIECE, three
 dimensions in millimetres - across the lane, along it, and thick. PIECE itself
@@ -478,7 +494,10 @@ def move_plane(tris, axis, at, delta):
 
 
 def widen_hole(tris, cx, cy, radius, to, tol=0.05):
-    """Open a round hole that runs straight through, by pushing its wall outwards.
+    """Move the wall of a round feature that runs straight through, along its radius.
+
+    Outwards with `to` larger than `radius`, which opens a hole; inwards with it
+    smaller, which thins a shaft. The move is the same either way.
 
     The wall of such a hole is a ring of vertices all at one radius from its
     axis, the same ring repeated at the top and at the bottom. Move each of them
@@ -655,6 +674,50 @@ def verify_beyond(before, after, at, amount, gate, ramp, step=0.37):
     return checked, skipped, wrong
 
 
+def verify_shaft(before, after, cx, cy, radius, to, step=0.23):
+    """Prove a thinned shaft, the same way as a hole but from the outside in.
+
+    A line straight up through the part must meet its surface where it did,
+    everywhere but the ring of material the shaft has just given up. Then the
+    new wall is found by walking inwards until the material starts, which says
+    what the shaft actually came out at rather than what it was asked for.
+    """
+    spanx = (min(p[0] for t in after for p in t), max(p[0] for t in after for p in t))
+    spany = (min(p[1] for t in after for p in t), max(p[1] for t in after for p in t))
+    wrong = []
+    checked = skipped = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            if to - 0.06 <= math.hypot(x - cx, y - cy) <= radius + 0.06:
+                skipped += 1
+                x += step
+                continue
+            here = _column(after, x, y)
+            there = _column(before, x, y)
+            checked += 1
+            if len(here) != len(there) or any(
+                    abs(p - q) > 1e-3 for p, q in zip(here, there)):
+                wrong.append((x, y, here, there))
+            x += step
+        y += step
+    # A shaft stands on something wider, so "where the material starts" finds
+    # that instead. What marks the shaft out is that it alone reaches the top.
+    top = max(p[2] for t in after for p in t)
+    wall = []
+    for deg in range(3, 360, 7):
+        c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+        r = radius + 0.40
+        while r > max(0.05, to - 0.40):
+            column = _column(after, cx + r * c, cy + r * s)
+            if column and max(column) > top - 0.01:
+                break
+            r -= 0.005
+        wall.append(r)
+    return checked, skipped, wrong, (min(wall), max(wall))
+
+
 def verify_hole(before, after, cx, cy, radius, to, step=0.23):
     """Prove the hole, the same way: by measuring the part, not the intention.
 
@@ -733,7 +796,8 @@ ARM_BANDS = ((-55.49, -43.24), (-43.00, -39.10))   # 12.25, then 3.90 past two t
 PUSHER_BANDS = (27.00, 48.00)    # two bands, each in its own gap between the ribs
 PUSHER_LENGTH_BAND = -70.00      # between the pin slot and the pushing face
 PIN_SLOT = (-83.248, -0.455)     # the slot's far wall, and how far out it moves
-BORE = (-63.10, -10.00, 1.380, 1.500)    # the arm's pin hole, opened for the print
+BORE = (-63.10, -10.00, 1.380, 1.550)    # the arm's pin hole, opened for the print
+SHAFT = (-12.00, 79.00, 1.2765, 1.150)   # and the pin's shaft, pulled in to meet it
 
 # How the travel follows from the lane, at anglePush 81 with the arm clamped
 # 46.9 degrees back at rest.
@@ -898,7 +962,8 @@ def recipes(p):
 
     return [('body', 'body-%s' % p['name'], body),
             ('pusher', 'pusher-%s' % p['name'], pusher),
-            ('arm', 'arm-%s' % p['name'], arm)]
+            ('arm', 'arm-%s' % p['name'], arm),
+            ('pin', 'pin-%s' % p['name'], [('shaft',) + SHAFT])]
 
 
 def describe(p, parts):
@@ -1052,6 +1117,23 @@ def main():
                       'agree, %d through the ramp not looked at'
                       % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
                 tris = stepped
+            elif op[0] == 'shaft':
+                _, cx, cy, radius, to = op
+                thinner, moved = widen_hole(tris, cx, cy, radius, to)
+                checked, skipped, wrong, wall = verify_shaft(
+                    tris, thinner, cx, cy, radius, to)
+                if wrong:
+                    raise SystemExit('%s: thinning the shaft at (%.2f, %.2f) does not '
+                                     'hold up: %d of %d lines disagree, first at '
+                                     'x %.2f y %.2f'
+                                     % ((target_name, cx, cy, len(wrong),
+                                         checked) + wrong[0][:2]))
+                print('   pulled the shaft at (%.2f, %.2f) in from %.3f to %.3f mm '
+                      'across' % (cx, cy, radius * 2, to * 2))
+                print('   %d vertices moved, its wall now %.3f..%.3f from the axis; '
+                      '%d lines elsewhere agree, %d in the ring it gave up not looked at'
+                      % (moved, wall[0], wall[1], checked, skipped))
+                tris = thinner
             elif op[0] == 'bore':
                 _, cx, cy, radius, to = op
                 wider, moved = widen_hole(tris, cx, cy, radius, to)
@@ -1084,7 +1166,7 @@ def main():
                          'open edges: %d, %+d against the source'
                          % (after['open_edges'], extra)))
     if not check_only:
-        print('\nthe pin is unchanged: spenser-pin.stl serves both sizes')
+        print('\nthe standard pin is left as it is: spenser-pin.stl is the design')
 
 
 if __name__ == '__main__':

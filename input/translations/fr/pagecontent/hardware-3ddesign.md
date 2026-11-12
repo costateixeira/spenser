@@ -45,10 +45,13 @@ et non d'équerre : cela recule toute la course et c'est ce qui permet au
 corps d'être aussi court. Le contrôle : au repos, la face de poussée doit se
 trouver juste derrière la pile de chocolats. Les 20,2 mm sont pris à
 l'arrière, derrière le poussoir, et non à la bouche : le morceau sort par
-l'autre extrémité. La goupille est la même
-pièce qu'avant et n'exige aucun perçage ici : son trou dans le bras fait 3 mm
-dans ces fichiers, contre 2,76 sur le bras standard, qui s'imprime sous la
-cote et serre sur la goupille de 2,55 mm.
+l'autre extrémité. La goupille a ici sa propre pièce et n'exige aucun
+perçage : son trou dans le bras fait 3,1 mm dans ces fichiers contre 2,76 sur
+le bras standard, et la goupille elle-même 2,3 mm au lieu de 2,55. Il a fallu
+bouger les deux moitiés. Un petit trou s'imprime sous sa cote et un petit axe
+au-dessus de la sienne, et ensemble ils ont mangé les 0,44 mm de jeu du
+dessin, de sorte que la goupille n'entrait pas ; il y en a 0,79 maintenant.
+La goupille standard ne change pas — percez le bras standard à 2,6 mm si c'est celui-là que vous montez.
 
 Pour une autre taille de morceau, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) taille ces
 trois pièces à sa mesure et affiche ce que devient la course. Un morceau se
@@ -62,7 +65,7 @@ déjà taillées, et dit qu'il n'y a rien à tailler.
 | **Corps** | Un couloir de 43,5 × 31 mm au lieu de 61 × 40 ; 46,5 × 80,8 × 105 mm hors tout. Le logement du module garde ses 24 mm entiers et le servo ses 12,26, et aucune hauteur n'y bouge : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie sont là où le corps standard les place. | [STL](spenser-body-small.stl) |
 | **Poussoir** | 42,4 × 46 mm, pour correspondre au couloir plus étroit, avec la rainure de goupille ouverte à 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Bras** | 26,75 mm entre les trous au lieu de 41, ce qui donne une course de 34,53 mm avec `anglePush=81`, à la mesure du couloir moins profond. | [STL](spenser-arm-small.stl) |
-| **Goupille** | La même pièce que ci-dessus. | [STL](spenser-pin.stl) |
+| **Goupille** | 2,3 mm d'axe au lieu de 2,55, l'autre moitié de l'ajustement avec le bras. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 
 ### Nomenclature

@@ -41,9 +41,13 @@ from pointing straight across the lane, rather than square to it: that moves
 the whole travel back and is what lets the body be this short. The check is
 that at rest the pushing face ends up just behind the chocolate stack. The
 20.2 mm comes off the back, behind the pusher, not off the mouth: the piece
-leaves through the other end. The pin is the same part as before and needs no
-drilling here: its hole in the arm is 3 mm in these files, against 2.76 on
-the standard arm, which prints under size and binds on the 2.55 mm pin.
+leaves through the other end. The pin has its own part here and needs no
+drilling: the hole in the arm is 3.1 mm in these files against 2.76 on the
+standard arm, and the pin itself is 2.3 mm rather than 2.55. Both halves had
+to move. A small hole prints under its size and a small shaft over its own,
+and together they ate the 0.44 mm of clearance the drawing had, so the pin
+would not enter; there is 0.79 mm now. The standard pin is unchanged — drill
+the standard arm 2.6 mm if you are building that one.
 
 For another size of piece, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) cuts these three
 parts to fit it and prints what the travel comes to. A piece is given as
@@ -56,7 +60,7 @@ the parts above are already cut for, and says there is nothing to cut.
 | **Body** | A lane 43.5 × 31 mm instead of 61 × 40; 46.5 × 80.8 × 105 mm overall. The module bay keeps its full 24 mm and the servo its 12.26, and no height in it moves at all: the ledge that holds the pusher down, the servo's box and the exit slot are all where the standard body has them. | [STL](spenser-body-small.stl) |
 | **Pusher** | 42.4 × 46 mm, to match the narrower lane, with the pin slot opened to 2.8 mm. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 26.75 mm between its holes instead of 41, which gives a 34.53 mm stroke at `anglePush=81`, matched to the shallower lane. | [STL](spenser-arm-small.stl) |
-| **Pin** | The same part as above. | [STL](spenser-pin.stl) |
+| **Pin** | 2.3 mm across its shaft instead of 2.55, which is the other half of the fit with the arm. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 
 ### Bill of Materials

@@ -41,10 +41,14 @@ cerca de 47° recuado em relação à perpendicular à pista, e não a esquadria
 isso recua todo o percurso e é o que permite o corpo ser tão curto. A
 verificação é que, em repouso, a face de empurrar fique logo atrás do
 empilhamento de chocolate. Os 20,2 mm saem de trás, atrás do empurrador, e
-não da boca: o pedaço sai pela outra extremidade. O pino é a mesma peça de
-antes e aqui não precisa de ser furado: o seu orifício no braço tem 3 mm
-nestes ficheiros, contra 2,76 no braço padrão, que é impresso abaixo da
-medida e aperta sobre o pino de 2,55 mm.
+não da boca: o pedaço sai pela outra extremidade. O pino tem aqui uma peça
+própria e não precisa de ser furado: o orifício no braço tem 3,1 mm nestes
+ficheiros contra 2,76 no braço padrão, e o próprio pino tem 2,3 mm em vez de
+2,55. Foi preciso mexer nas duas metades. Um orifício pequeno é impresso
+abaixo da medida e um eixo pequeno acima da sua, e juntos consumiram os
+0,44 mm de folga que o desenho tinha, pelo que o pino não entrava; agora há
+0,79 mm. O pino padrão não muda — se construir esse, fure o braço padrão a
+2,6 mm.
 
 Para outro tamanho de pedaço, [`tools/resize/build.py`](https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py) corta estas três
 peças à medida dele e mostra o que fica o curso. O pedaço indica-se como
@@ -58,7 +62,7 @@ diz que não há nada a cortar.
 | **Corpo** | Uma pista de 43,5 × 31 mm em vez de 61 × 40; 46,5 × 80,8 × 105 mm no total. O encaixe do módulo mantém os seus 24 mm completos e o servo os seus 12,26, e nenhuma altura nele se move: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem. | [STL](spenser-body-small.stl) |
 | **Empurrador** | 42,4 × 46 mm, para corresponder à pista mais estreita, com a ranhura do pino aberta a 2,8 mm. | [STL](spenser-pusher-small.stl) |
 | **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 34,53 mm com `anglePush=81`, à medida da pista menos funda. | [STL](spenser-arm-small.stl) |
-| **Pino** | A mesma peça de cima. | [STL](spenser-pin.stl) |
+| **Pino** | 2,3 mm de eixo em vez de 2,55, que é a outra metade do ajuste com o braço. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 
 ### Lista de materiais
