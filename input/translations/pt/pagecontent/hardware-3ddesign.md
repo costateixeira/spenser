@@ -60,7 +60,7 @@ diz que não há nada a cortar.
 | Peça | Descrição | Transferências |
 |------|-------------|-----------|
 | **Corpo** | Uma pista de 43,5 × 31 mm em vez de 61 × 40; 46,5 × 80,8 × 105 mm no total. O encaixe do módulo mantém os seus 24 mm completos e o servo os seus 12,26, e nenhuma altura nele se move: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem. | [STL](spenser-body-small.stl) |
-| **Empurrador** | 42,4 × 46 mm, para corresponder à pista mais estreita, com a ranhura do pino aberta a 2,8 mm. | [STL](spenser-pusher-small.stl) |
+| **Empurrador** | 42,4 × 46 mm, para corresponder à pista mais estreita, com duas ranhuras de 2,55 mm para o pino: o pino entra em qualquer uma delas, e a segunda, 5 mm mais para dentro, mantém o empurrador 5 mm mais atrás durante todo o movimento. | [STL](spenser-pusher-small.stl) |
 | **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 34,53 mm com `anglePush=81`, à medida da pista menos funda. | [STL](spenser-arm-small.stl) |
 | **Pino** | 2,3 mm de eixo em vez de 2,55, que é a outra metade do ajuste com o braço. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}

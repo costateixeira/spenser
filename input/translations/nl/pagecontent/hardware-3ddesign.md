@@ -60,7 +60,7 @@ zijn, en zegt dat er niets te snijden is.
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|
 | **Behuizing** | Een baan van 43,5 × 31 mm in plaats van 61 × 40; 46,5 × 80,8 × 105 mm in totaal. De ruimte voor de module houdt haar volle 24 mm en de servo zijn 12,26, en geen enkele hoogte erin verandert: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft. | [STL](spenser-body-small.stl) |
-| **Duwer** | 42,4 × 46 mm, passend bij de smallere baan, met de pensleuf opengewerkt tot 2,8 mm. | [STL](spenser-pusher-small.stl) |
+| **Duwer** | 42,4 × 46 mm, passend bij de smallere baan, met twee pensleuven van 2,55 mm: de pen past in beide, en de tweede, 5 mm verder naar binnen, houdt de duwer de hele slag 5 mm verder naar achteren. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 26,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 34,53 mm geeft, passend bij de minder diepe baan. | [STL](spenser-arm-small.stl) |
 | **Pen** | 2,3 mm asdikte in plaats van 2,55, de andere helft van de pasvorm met de arm. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}

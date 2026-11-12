@@ -58,7 +58,7 @@ the parts above are already cut for, and says there is nothing to cut.
 | Part | Description | Downloads |
 |------|-------------|-----------|
 | **Body** | A lane 43.5 × 31 mm instead of 61 × 40; 46.5 × 80.8 × 105 mm overall. The module bay keeps its full 24 mm and the servo its 12.26, and no height in it moves at all: the ledge that holds the pusher down, the servo's box and the exit slot are all where the standard body has them. | [STL](spenser-body-small.stl) |
-| **Pusher** | 42.4 × 46 mm, to match the narrower lane, with the pin slot opened to 2.8 mm. | [STL](spenser-pusher-small.stl) |
+| **Pusher** | 42.4 × 46 mm, to match the narrower lane, with two pin slots 2.55 mm wide: the pin goes in either, and the second one, 5 mm further in, holds the pusher 5 mm further back through the whole swing. | [STL](spenser-pusher-small.stl) |
 | **Arm** | 26.75 mm between its holes instead of 41, which gives a 34.53 mm stroke at `anglePush=81`, matched to the shallower lane. | [STL](spenser-arm-small.stl) |
 | **Pin** | 2.3 mm across its shaft instead of 2.55, which is the other half of the fit with the arm. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}

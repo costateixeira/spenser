@@ -48,7 +48,7 @@ the middle of it and nothing about the height needs to change:
   module bay      24.00 mm wide   ->  unchanged; it is what sets the width
   retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
-  pusher slot     2.345 mm        ->  2.80
+  pusher slot     2.345 mm        ->  2.55, and a second one 5.00 further in
   arm pin bore    2.760 mm        ->  3.10, as far as the method goes
   pin shaft       2.550 mm        ->  2.30, the other half of the same fit
   firmware        anglePush 81, and the arm set 46.9 deg back at rest
@@ -229,13 +229,36 @@ wall around the bore is 2.52 mm and loses 0.17 of it; the pin's head is 8.00
 across and still bears 2.45 all round the hole.
 
 Thinning the shaft is the same move as opening the bore, inwards: one ring of
-vertices, all at one radius, slid along their own radii. It costs play in the
-pusher's slot, which is 2.801 wide and now takes a 2.30 shaft with 0.50 in
-hand rather than 0.25. That is lost motion at the start of a push and nothing
-else, against a stroke of 34.53, and the pin is the cheapest part here to
-print again if it turns out to want to be thicker. The standard pin is not
-touched: spenser-pin.stl stays as it is, and spenser-pin-small.stl is the
-thinner one.
+vertices, all at one radius, slid along their own radii. The pusher's slot
+then follows the pin rather than the pin the slot: 2.345 as it comes, it is
+opened to 2.55 rather than the 2.80 a 2.55 mm pin wanted, which leaves the
+thinner pin the same 0.25 of play that worked. It is the far wall that moves,
+so the wall the pin actually pushes against is where it always was. The
+standard pin is not touched: spenser-pin.stl stays as it is, and
+spenser-pin-small.stl is the thinner one.
+
+There are two of those slots in the pusher, 5.00 mm apart, and the pin goes in
+whichever one is wanted. The second is further in, towards the pushing face,
+because that is the way there is room: 3.00 mm of plate lies behind the first
+and the whole of the plate in front of it. The choice moves the pusher, not
+the stroke. With the pin in the second slot the pusher hangs 5 mm further back
+at every point of the swing, so the face starts 5 mm behind where it started
+and stops 5 mm short of where it stopped, and the 34.53 mm between those two
+is what it was. --second-slot 0 leaves the one slot, and --second-slot takes
+any other spacing.
+
+Cutting that slot is not a cut in the sense of the rest of this file: it
+leaves a cavity instead of closing one up. It asks the same thing of the band
+all the same - every surface reaching into it has to run straight through it -
+because that is what makes the band a prism, and the cavity's two end walls
+are then a copy of the cross-section it had. The band crosses the three ribs
+on the pusher's top face, which is why that cross-section is worth building
+properly rather than assuming a rectangle: the walls follow it up over each
+rib and down again. What it did is measured afterwards, like everything else
+here. The volume lost has to be the volume of the box, to a twentieth of a
+cubic millimetre; a line straight up inside the box has to meet no surface at
+all; every line beside it has to meet the surface at the heights it met it
+before; and the mesh has to come out as closed as it went in.
 
 None of that is about the small size, and all of it is in the stock files:
 the pin's shaft measures 2.550 mm, the arm's bore 2.760 and the pusher's slot
@@ -493,6 +516,214 @@ def move_plane(tris, axis, at, delta):
     return out
 
 
+def _clip(poly, i, value, below, tol=1e-4):
+    """The part of a convex polygon on one side of an axis-aligned plane.
+
+    A vertex within `tol` of the plane counts as being on it: it is kept by
+    both sides of the cut and no point is interpolated against it, which is
+    what stops a face that was meant to be left whole losing a sliver to the
+    single-precision coordinates a binary STL is written in.
+    """
+    out = []
+    for n, a in enumerate(poly):
+        b = poly[(n + 1) % len(poly)]
+        da = (a[i] - value) * (1.0 if below else -1.0)
+        db = (b[i] - value) * (1.0 if below else -1.0)
+        da = 0.0 if abs(da) < tol else da
+        db = 0.0 if abs(db) < tol else db
+        if da <= 0.0:
+            out.append(a)
+        if (da < 0.0 < db) or (db < 0.0 < da):
+            t = da / (da - db)
+            out.append(tuple(a[k] + t * (b[k] - a[k]) for k in range(3)))
+    return out
+
+
+def _fan(poly, least=1e-6):
+    """A convex polygon as triangles, keeping its winding, dropping slivers."""
+    out = []
+    for n in range(1, len(poly) - 1):
+        t = (poly[0], poly[n], poly[n + 1])
+        (ax, ay, az), (bx, by, bz), (cx, cy, cz) = t
+        ux, uy, uz = bx - ax, by - ay, bz - az
+        vx, vy, vz = cx - ax, cy - ay, cz - az
+        nx, ny, nz = uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx
+        if (nx * nx + ny * ny + nz * nz) ** 0.5 / 2.0 > least:
+            out.append(t)
+    return out
+
+
+def _outside(tris, xa, xb, y0, y1, tol=1e-7):
+    """The part minus a box: every face cut by the box's four side planes.
+
+    Both sides of all four cuts are kept and the pieces whose middle lands
+    inside the box are dropped. Every triangle is cut, whether the box comes
+    near it or not, because that is what keeps the mesh closed: two triangles
+    that share an edge are cut at the same points along it, and so is the edge
+    a face passing over the cavity's mouth has lying in the band's own plane -
+    half of that edge faces solid and half of it faces the cavity, so it has to
+    break where the slot's sides are.
+
+    A face lying in one of the planes is not cut by that plane. It satisfies
+    both sides of it, so cutting would hand back two copies of it.
+    """
+    polys = [list(t) for t in tris]
+    for i, at in ((1, y0), (1, y1), (0, xa), (0, xb)):
+        split = []
+        for poly in polys:
+            if all(abs(p[i] - at) < 1e-4 for p in poly):
+                split.append(poly)
+                continue
+            for below in (True, False):
+                piece = _clip(poly, i, at, below)
+                if len(piece) >= 3:
+                    split.append(piece)
+        polys = split
+    out = []
+    for poly in polys:
+        n = len(poly)
+        cx = sum(p[0] for p in poly) / n
+        cy = sum(p[1] for p in poly) / n
+        if xa + tol < cx < xb - tol and y0 + tol < cy < y1 - tol:
+            continue
+        out += _fan(poly)
+    return out
+
+
+def _on(a, b, p, tol=1e-4):
+    """Where p sits along the segment a..b, if it is on it and not an end of it."""
+    ab = [b[k] - a[k] for k in range(3)]
+    ap = [p[k] - a[k] for k in range(3)]
+    length = sum(v * v for v in ab) ** 0.5
+    if length < tol:
+        return None
+    t = sum(u * v for u, v in zip(ab, ap)) / length ** 2
+    if not 1e-9 < t < 1 - 1e-9:
+        return None
+    off = max(abs(ap[k] - t * ab[k]) for k in range(3))
+    return t if off < tol else None
+
+
+def _rect(fixed, i, lo, hi, zlo, zhi, outward, pts=()):
+    """A rectangle on a plane, facing `outward`, carrying its neighbours' vertices.
+
+    A rectangle is four corners, but an edge of it may be shared with several
+    triangles of the part, which meet it at points of their own. Every such
+    point is put into the outline, and the triangles then run from the middle
+    out, so each edge is broken exactly where the other side breaks and the
+    mesh stays closed.
+    """
+    j = 1 if i == 0 else 0
+    corners = []
+    for u, v in ((lo, zlo), (hi, zlo), (hi, zhi), (lo, zhi)):
+        p = [0.0, 0.0, v]
+        p[i], p[j] = fixed, u
+        corners.append(tuple(p))
+    poly = []
+    for n, a in enumerate(corners):
+        b = corners[(n + 1) % 4]
+        poly.append(a)
+        along = [(t, p) for t, p in ((_on(a, b, p), p) for p in pts) if t is not None]
+        poly += [p for _, p in sorted(along)]
+    middle = tuple(sum(p[k] for p in poly) / len(poly) for k in range(3))
+    out = [(middle, poly[n], poly[(n + 1) % len(poly)]) for n in range(len(poly))]
+    if normal(out[0])[i] * outward < 0:
+        out = [(c, q, p) for c, p, q in out]
+    return [t for t in out if _fan(t)]
+
+
+def slit(tris, xa, xb, y0, y1, eps=1e-6):
+    """Carve a through-slot out of a plate: a box taken out, nothing closed up.
+
+    A cut has to be prismatic so that its two faces meet when the far side
+    slides up; this has to be prismatic for the opposite reason, so that the
+    cavity it leaves is bounded by a copy of the cross-section the band had.
+    Every surface reaching into the band must run straight through it, exactly
+    as for a cut, and then the band is a prism and its profile is what the
+    cavity's two end walls are.
+
+    What the faces crossing the band lose is clipped away rather than moved,
+    and the cavity's own walls are built on a grid - every x where a wall
+    stands in the band, every z where the profile changes - so each new edge
+    has a neighbour along the whole of it. Nothing is stretched and nothing
+    slides, so the part is the part it was with a box missing.
+    """
+    standing = set()
+    for t in tris:
+        if max(p[1] for p in t) <= y0 + eps or min(p[1] for p in t) >= y1 - eps:
+            continue
+        n = normal(t)
+        if abs(n[1]) > 1e-4:
+            raise ValueError('y = %.3f..%.3f is not a clean band for a slot: a face '
+                             'reaching into it crosses it at an angle, at %r'
+                             % (y0, y1, t))
+        flat = max(p[0] for p in t) - min(p[0] for p in t) < 1e-6
+        if abs(n[0]) > 1e-4 and not flat:
+            raise ValueError('y = %.3f..%.3f is not a clean band for a slot: a wall '
+                             'reaching into it leans in x, at %r' % (y0, y1, t))
+        if flat:
+            standing.add(round(t[0][0], 4))
+    for x in standing:
+        if abs(x - xa) < 1e-3 or abs(x - xb) < 1e-3:
+            raise ValueError('a wall already stands at x = %.3f, where one side of '
+                             'the slot would be' % x)
+    for t in tris:
+        for at in (y0, y1):
+            if (all(abs(p[1] - at) < 1e-4 for p in t)
+                    and min(p[0] for p in t) < xb and max(p[0] for p in t) > xa):
+                raise ValueError('a face already lies in y = %.3f, where one end of '
+                                 'the slot would be, at %r' % (at, t))
+
+    edges = [xa] + sorted(x for x in standing if xa < x < xb) + [xb]
+    middle = y0 + (y1 - y0) * 0.513
+    spans = []
+    for a, b in zip(edges, edges[1:]):
+        column = _column(tris, a + (b - a) * 0.371, middle)
+        if len(column) % 2:
+            raise ValueError('the band is not solid at x = %.3f: a line up through it '
+                             'meets the surface %d times' % (a, len(column)))
+        spans.append([(column[n], column[n + 1]) for n in range(0, len(column), 2)])
+    for side, at in ((spans[0], xa - 0.07), (spans[-1], xb + 0.07)):
+        column = _column(tris, at, middle)
+        outer = [(column[n], column[n + 1]) for n in range(0, len(column), 2)]
+        if len(outer) != len(side) or any(abs(p - q) > 1e-4
+                                         for u, v in zip(outer, side)
+                                         for p, q in zip(u, v)):
+            raise ValueError('the profile at x = %.3f is not the one the slot starts '
+                             'in: %r against %r' % (at, outer, side))
+
+    levels = sorted({round(v, 6) for s in spans for pair in s for v in pair})
+    out = _outside(tris, xa, xb, y0, y1)
+    on = {}
+    for t in out:
+        for p in t:
+            for i, at in ((0, xa), (0, xb), (1, y0), (1, y1)):
+                if abs(p[i] - at) < 1e-4:
+                    on.setdefault((i, at), {})[tuple(round(c, 6) for c in p)] = p
+
+    removed = 0.0
+    for zlo, zhi in zip(levels, levels[1:]):
+        runs = []
+        for (a, b), profile in zip(zip(edges, edges[1:]), spans):
+            if not any(lo - eps < (zlo + zhi) / 2.0 < hi + eps for lo, hi in profile):
+                continue
+            if runs and abs(runs[-1][1] - a) < 1e-9:
+                runs[-1] = (runs[-1][0], b)
+            else:
+                runs.append((a, b))
+        for a, b in runs:
+            # each end wall holds back the material behind it, so it faces the
+            # cavity: forwards at the near end, backwards at the far one
+            out += _rect(y0, 1, a, b, zlo, zhi, +1, on.get((1, y0), {}).values())
+            out += _rect(y1, 1, a, b, zlo, zhi, -1, on.get((1, y1), {}).values())
+            if abs(a - xa) < 1e-9:
+                out += _rect(xa, 0, y0, y1, zlo, zhi, +1, on.get((0, xa), {}).values())
+            if abs(b - xb) < 1e-9:
+                out += _rect(xb, 0, y0, y1, zlo, zhi, -1, on.get((0, xb), {}).values())
+            removed += (b - a) * (zhi - zlo) * (y1 - y0)
+    return out, removed, len(edges) - 1
+
+
 def widen_hole(tris, cx, cy, radius, to, tol=0.05):
     """Move the wall of a round feature that runs straight through, along its radius.
 
@@ -718,6 +949,42 @@ def verify_shaft(before, after, cx, cy, radius, to, step=0.23):
     return checked, skipped, wrong, (min(wall), max(wall))
 
 
+def verify_slit(before, after, xa, xb, y0, y1, step=0.31, margin=0.06):
+    """Prove the slot: the cavity empty, and every line beside it where it was.
+
+    A line straight up inside the box must now meet no surface at all, and one
+    outside it must meet the surface at the heights it met it before, since
+    nothing moved. Lines within a margin of the box's own walls are left out,
+    a line on a face being neither in nor out.
+    """
+    spanx = (min(p[0] for t in before for p in t), max(p[0] for t in before for p in t))
+    spany = (min(p[1] for t in before for p in t), max(p[1] for t in before for p in t))
+    wrong = []
+    checked = inside = skipped = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            near_x = xa - margin < x < xa + margin or xb - margin < x < xb + margin
+            near_y = y0 - margin < y < y0 + margin or y1 - margin < y < y1 + margin
+            if (near_x and y0 - margin < y < y1 + margin) or (
+                    near_y and xa - margin < x < xb + margin):
+                skipped += 1
+            elif xa < x < xb and y0 < y < y1:
+                inside += 1
+                if _column(after, x, y):
+                    wrong.append((x, y, _column(after, x, y), []))
+            else:
+                checked += 1
+                here, there = _column(after, x, y), _column(before, x, y)
+                if len(here) != len(there) or any(
+                        abs(p - q) > 1e-3 for p, q in zip(here, there)):
+                    wrong.append((x, y, here, there))
+            x += step
+        y += step
+    return checked, inside, skipped, wrong
+
+
 def verify_hole(before, after, cx, cy, radius, to, step=0.23):
     """Prove the hole, the same way: by measuring the part, not the intention.
 
@@ -795,7 +1062,14 @@ LEDGE_AT = 8.00               # a slab pushed in here raises the ledge - and the
 ARM_BANDS = ((-55.49, -43.24), (-43.00, -39.10))   # 12.25, then 3.90 past two triangles
 PUSHER_BANDS = (27.00, 48.00)    # two bands, each in its own gap between the ribs
 PUSHER_LENGTH_BAND = -70.00      # between the pin slot and the pushing face
-PIN_SLOT = (-83.248, -0.455)     # the slot's far wall, and how far out it moves
+PIN_SLOT = (-83.248, -80.903)    # the pin's slot as the file has it: 2.345 wide
+SLOT = 2.55                      # what its far wall is opened to. The 2.55 mm pin
+#                                # wanted 2.80; this is the same 0.25 of play round
+#                                # the 2.30 one, and the near wall, which the pin
+#                                # pushes against, does not move either way
+SLOT_X = (18.706, 74.994)        # how far the slot runs across the pusher
+SECOND_SLOT = 5.00               # a second slot, this much further in. The pin in
+#                                # that one holds the pusher 5 mm further back
 BORE = (-63.10, -10.00, 1.380, 1.550)    # the arm's pin hole, opened for the print
 SHAFT = (-12.00, 79.00, 1.2765, 1.150)   # and the pin's shaft, pulled in to meet it
 
@@ -811,7 +1085,7 @@ RAIL_SWUNG_BACK = 2.79       # and this much further again, the arm being clampe
 
 
 def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
-         shorten=PUSHER_SHORTEN, name='small', named=False):
+         shorten=PUSHER_SHORTEN, second=SECOND_SLOT, name='small', named=False):
     """Turn the piece's three dimensions into every number the cuts need.
 
     The depth and the height follow the piece exactly. The width does not: it
@@ -855,7 +1129,7 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
 
     standard_stroke = round(CRANK * STROKE_PER_MM_77, 3)
     settled = dict(piece=(across, along, thick), x_cut=x_cut, y_cut=y_cut, lift=lift,
-                   take_up=take_up, name=name, notes=notes,
+                   take_up=take_up, second=second, name=name, notes=notes,
                    lane=(lane_w, lane_d, LANE[2] + lift))
 
     if not (x_cut or y_cut or lift):
@@ -948,7 +1222,12 @@ def recipes(p):
     if p['shorten']:
         pusher.append(('cut', 'y', PUSHER_LENGTH_BAND,
                        PUSHER_LENGTH_BAND + p['shorten']))
-    pusher.append(('plane', 'y') + PIN_SLOT)
+    pusher.append(('plane', 'y', PIN_SLOT[0],
+                   round(PIN_SLOT[1] - PIN_SLOT[0] - SLOT, 3)))
+    if p['second']:
+        pusher.append(('slit', SLOT_X[0], round(SLOT_X[1] - p['x_cut'], 3),
+                       round(PIN_SLOT[1] - SLOT + p['second'], 3),
+                       round(PIN_SLOT[1] + p['second'], 3)))
 
     arm = []
     left = p['arm_cut']
@@ -981,6 +1260,9 @@ def describe(p, parts):
               % (p['lane'][0] - 1.10, 56.0 - p['shorten'],
                  ', %.2f off its pushing face' % p['shorten'] if p['shorten']
                  else ', its length as it comes'))
+        print('   slot     %6.2f wide, for the 2.30 mm pin%s'
+              % (SLOT, ', and a second one %.2f further in' % p['second']
+                 if p['second'] else ''))
         print('   arm      %6.2f between its holes, %s'
               % (p['crank'], '%.2f out of the bar in %d band%s'
                  % (p['arm_cut'], bands, '' if bands == 1 else 's') if p['arm_cut']
@@ -1001,9 +1283,11 @@ def describe(p, parts):
 def options(argv):
     """--piece 40x30x7, --name small, and the three numbers of the travel."""
     out = dict(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
-               shorten=PUSHER_SHORTEN, name='small', named='--name' in argv)
+               shorten=PUSHER_SHORTEN, second=SECOND_SLOT, name='small',
+               named='--name' in argv)
     keys = {'--piece': 'piece', '--name': 'name', '--overtravel': 'overtravel',
-            '--take-up': 'take_up', '--pusher-shorten': 'shorten'}
+            '--take-up': 'take_up', '--pusher-shorten': 'shorten',
+            '--second-slot': 'second'}
     for flag, key in keys.items():
         if flag not in argv:
             continue
@@ -1117,6 +1401,34 @@ def main():
                       'agree, %d through the ramp not looked at'
                       % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
                 tris = stepped
+            elif op[0] == 'slit':
+                _, xa, xb, y0, y1 = op
+                slotted, removed, columns = slit(tris, xa, xb, y0, y1)
+                checked, inside, skipped, wrong = verify_slit(tris, slotted,
+                                                              xa, xb, y0, y1)
+                if wrong:
+                    raise SystemExit('%s: the slot y %.3f..%.3f does not hold up: %d '
+                                     'of %d lines disagree, first at x %.2f y %.2f'
+                                     % ((target_name, y0, y1, len(wrong),
+                                         checked + inside) + wrong[0][:2]))
+                was, now = measure(tris), measure(slotted)
+                lost = was['volume'] - now['volume']
+                if abs(lost - removed) > 0.05:
+                    raise SystemExit('%s: the slot y %.3f..%.3f took %.3f mm3, and the '
+                                     'box it cut is %.3f'
+                                     % (target_name, y0, y1, lost, removed))
+                if now['open_edges'] != was['open_edges']:
+                    raise SystemExit('%s: the slot y %.3f..%.3f left the mesh open: '
+                                     '%d edges against %d'
+                                     % (target_name, y0, y1, now['open_edges'],
+                                        was['open_edges']))
+                print('   cut a second slot %.2f mm wide at y %.3f..%.3f, running '
+                      'x %.3f..%.3f over %d profiles'
+                      % (y1 - y0, y0, y1, xa, xb, columns))
+                print('   it took %.0f mm3, which is the box to 0.05; %d lines inside '
+                      'it meet nothing, %d outside it agree, %d along its walls not '
+                      'looked at' % (removed, inside, checked, skipped))
+                tris = slotted
             elif op[0] == 'shaft':
                 _, cx, cy, radius, to = op
                 thinner, moved = widen_hole(tris, cx, cy, radius, to)
