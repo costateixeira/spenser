@@ -48,7 +48,8 @@ the middle of it and nothing about the height needs to change:
   module bay      24.00 mm wide   ->  unchanged; it is what sets the width
   retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
-  pusher slot     2.345 mm        ->  2.55, and a second one 5.00 further in
+  pusher slot     2.345 mm        ->  2.55, 1.00 nearer the edge, and a second
+                                      one 5.00 further in again
   arm pin bore    2.760 mm        ->  3.10, as far as the method goes
   pin shaft       2.550 mm        ->  2.30, the other half of the same fit
   firmware        anglePush 81, and the arm set 46.9 deg back at rest
@@ -237,9 +238,14 @@ so the wall the pin actually pushes against is where it always was. The
 standard pin is not touched: spenser-pin.stl stays as it is, and
 spenser-pin-small.stl is the thinner one.
 
+Both walls of it then move 1.00 mm further back, towards the pusher's own
+edge, which is where the pin wants to sit. That leaves 2.25 mm of plate behind
+the slot instead of 3.25, and since the pin bears on the near wall going
+forward, that plate carries the return stroke and nothing else.
+
 There are two of those slots in the pusher, 5.00 mm apart, and the pin goes in
 whichever one is wanted. The second is further in, towards the pushing face,
-because that is the way there is room: 3.00 mm of plate lies behind the first
+because that is the way there is room: 2.25 mm of plate lies behind the first
 and the whole of the plate in front of it. The choice moves the pusher, not
 the stroke. With the pin in the second slot the pusher hangs 5 mm further back
 at every point of the swing, so the face starts 5 mm behind where it started
@@ -1068,6 +1074,11 @@ SLOT = 2.55                      # what its far wall is opened to. The 2.55 mm p
 #                                # the 2.30 one, and the near wall, which the pin
 #                                # pushes against, does not move either way
 SLOT_X = (18.706, 74.994)        # how far the slot runs across the pusher
+SLOT_BACK = 1.00                 # and how much nearer the pusher's back edge it
+#                                # sits than the file has it, which leaves 2.25 mm
+#                                # of plate behind it rather than 3.25. The pin
+#                                # bears on the other wall, so that plate carries
+#                                # the return and nothing else
 SECOND_SLOT = 5.00               # a second slot, this much further in. The pin in
 #                                # that one holds the pusher 5 mm further back
 BORE = (-63.10, -10.00, 1.380, 1.550)    # the arm's pin hole, opened for the print
@@ -1222,12 +1233,17 @@ def recipes(p):
     if p['shorten']:
         pusher.append(('cut', 'y', PUSHER_LENGTH_BAND,
                        PUSHER_LENGTH_BAND + p['shorten']))
-    pusher.append(('plane', 'y', PIN_SLOT[0],
-                   round(PIN_SLOT[1] - PIN_SLOT[0] - SLOT, 3)))
+    # the far wall out first, which widens the slot, then the near wall back,
+    # which brings it to width again: neither order folds a face, and this one
+    # never has the slot narrower than it ends up
+    near = PIN_SLOT[1] - SLOT_BACK
+    pusher.append(('plane', 'y', PIN_SLOT[0], round(near - SLOT - PIN_SLOT[0], 3)))
+    if SLOT_BACK:
+        pusher.append(('plane', 'y', PIN_SLOT[1], round(-SLOT_BACK, 3)))
     if p['second']:
         pusher.append(('slit', SLOT_X[0], round(SLOT_X[1] - p['x_cut'], 3),
-                       round(PIN_SLOT[1] - SLOT + p['second'], 3),
-                       round(PIN_SLOT[1] + p['second'], 3)))
+                       round(near - SLOT + p['second'], 3),
+                       round(near + p['second'], 3)))
 
     arm = []
     left = p['arm_cut']
@@ -1260,9 +1276,16 @@ def describe(p, parts):
               % (p['lane'][0] - 1.10, 56.0 - p['shorten'],
                  ', %.2f off its pushing face' % p['shorten'] if p['shorten']
                  else ', its length as it comes'))
-        print('   slot     %6.2f wide, for the 2.30 mm pin%s'
-              % (SLOT, ', and a second one %.2f further in' % p['second']
-                 if p['second'] else ''))
+        print('   slot     %6.2f wide for the 2.30 mm pin, %.2f nearer the back edge'
+              % (SLOT, SLOT_BACK))
+        print('            which holds the pusher %.2f further forward through the '
+              'whole swing: %.1f deg on the arm\'s clamp at this crank'
+              % (SLOT_BACK, math.degrees(SLOT_BACK / p['crank'])))
+        if p['second']:
+            print('   slot 2   %6.2f further in again, so the pin in that one holds it '
+                  '%.2f back' % (p['second'], p['second']))
+            print('            instead, %.1f deg the other way; the stroke is the same '
+                  'either way' % math.degrees(p['second'] / p['crank']))
         print('   arm      %6.2f between its holes, %s'
               % (p['crank'], '%.2f out of the bar in %d band%s'
                  % (p['arm_cut'], bands, '' if bands == 1 else 's') if p['arm_cut']
