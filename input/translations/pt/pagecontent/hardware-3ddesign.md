@@ -35,13 +35,17 @@ peças podem ceder em largura. Um pedaço de 40 mm fica com 2,5 mm de folga
 lateral no que resta, e mesmo um ajuste largo não custaria nada: um pedaço de
 30 × 40 não roda numa pista de 31 mm de fundo, por mais larga que ela seja.
 
-Duas coisas mudam na construção. Defina `anglePush=81` nesta unidade, em vez
+Duas coisas mudam na construção. Defina `anglePush=78,6` nesta unidade, em vez
 do valor por omissão de 77. E monte o braço de modo a ficar, em repouso,
-cerca de 47° recuado em relação à perpendicular à pista, e não a esquadria:
+cerca de 44,5° recuado em relação à perpendicular à pista, e não a esquadria:
 isso recua todo o percurso e é o que permite o corpo ser tão curto. A
 verificação é que, em repouso, a face de empurrar fique logo atrás do
-empilhamento de chocolate. Os 20,2 mm saem de trás, atrás do empurrador, e
-não da boca: o pedaço sai pela outra extremidade. O pino tem aqui uma peça
+empilhamento de chocolate. Os 26,7 mm saem de trás, atrás do empurrador, e
+não da boca: o pedaço sai pela outra extremidade, e 6,5 mm deles voltam a
+entrar por baixo do servo, que é como o seu encaixe fica encostado à face
+traseira. O próprio servo entra virado ao contrário em relação à unidade
+padrão, para que o cabo saia por trás; o pino vai então na segunda ranhura
+do empurrador, que retira os 5 mm que a caixa virada desloca o veio. O pino tem aqui uma peça
 própria e não precisa de ser furado: o orifício no braço tem 3,1 mm nestes
 ficheiros contra 2,76 no braço padrão, e o próprio pino tem 2,3 mm em vez de
 2,55. Foi preciso mexer nas duas metades. Um orifício pequeno é impresso
@@ -59,9 +63,9 @@ diz que não há nada a cortar.
 
 | Peça | Descrição | Transferências |
 |------|-------------|-----------|
-| **Corpo** | Uma pista de 43,5 × 31 mm em vez de 61 × 40; 46,5 × 80,8 × 105 mm no total. O encaixe do módulo mantém os seus 24 mm completos e o servo os seus 12,26, e nenhuma altura nele se move: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem. | [STL](spenser-body-small.stl) |
-| **Empurrador** | 42,4 × 46 mm, para corresponder à pista mais estreita, com duas ranhuras de 2,55 mm para o pino: o pino entra em qualquer uma delas, e a segunda, 5 mm mais para dentro, mantém o empurrador 5 mm mais atrás durante todo o movimento. | [STL](spenser-pusher-small.stl) |
-| **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 34,53 mm com `anglePush=81`, à medida da pista menos funda. | [STL](spenser-arm-small.stl) |
+| **Corpo** | Uma pista de 43,5 × 31 mm em vez de 61 × 40; 46,5 × 80,8 × 105 mm no total. O encaixe do módulo mantém os seus 24 mm completos e o servo os seus 12,26, e nenhuma altura nele se move: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem. O servo entra virado ao contrário, pelo que o seu cabo sai pela traseira da unidade em vez de ficar voltado para o depósito, e todo o seu encaixe fica 6,5 mm mais atrás para que o veio se mantenha perto de onde estava. | [STL](spenser-body-small.stl) |
+| **Empurrador** | 42,4 × 46 mm, para corresponder à pista mais estreita, com duas ranhuras de 2,55 mm para o pino: o pino entra em qualquer uma delas, e a segunda, 5 mm mais para dentro, mantém o empurrador 5 mm mais atrás durante todo o movimento, que é a que este corpo pede, estando o servo virado ao contrário. | [STL](spenser-pusher-small.stl) |
+| **Braço** | 26,75 mm entre os furos em vez de 41, o que dá um curso de 33,76 mm com `anglePush=78,6`, à medida da pista menos funda. | [STL](spenser-arm-small.stl) |
 | **Pino** | 2,3 mm de eixo em vez de 2,55, que é a outra metade do ajuste com o braço. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 

@@ -36,13 +36,17 @@ deze onderdelen in de breedte kunnen afstaan. Een stuk van 40 mm breed houdt
 niets kosten: een stuk van 30 × 40 kan niet draaien in een baan van 31 mm
 diep, hoe breed die baan ook is.
 
-Twee dingen veranderen aan de bouw. Zet `anglePush=81` op deze unit, in plaats
-van de standaard 77. En monteer de arm zo dat hij in rust ongeveer 47° terug
+Twee dingen veranderen aan de bouw. Zet `anglePush=78,6` op deze unit, in plaats
+van de standaard 77. En monteer de arm zo dat hij in rust ongeveer 44,5° terug
 staat ten opzichte van dwars op de baan, en niet haaks erop: dat zet het hele
 traject verder naar achteren en is wat de behuizing zo kort laat zijn. De
 controle is dat het duwvlak in rust net achter de chocoladestapel uitkomt. De
-20,2 mm gaat er aan de achterkant af, achter de duwer, en niet bij de mond:
-het stuk komt er aan de andere kant uit. De pen heeft hier een eigen
+26,7 mm gaat er aan de achterkant af, achter de duwer, en niet bij de mond:
+het stuk komt er aan de andere kant uit, en 6,5 mm daarvan gaat er onder de
+servo weer in, waardoor zijn ruimte tegen het achtervlak komt te liggen. De
+servo zelf gaat er omgekeerd in ten opzichte van de standaardunit, zodat de
+kabel aan de achterkant naar buiten komt; de pen gaat dan in de tweede sleuf
+van de duwer, die de 5 mm wegneemt die de omgekeerde behuizing de as verzet. De pen heeft hier een eigen
 onderdeel en hoeft niet geboord te worden: het pengat in de arm is 3,1 mm in
 deze bestanden tegen 2,76 in de standaardarm, en de pen zelf is 2,3 mm in
 plaats van 2,55. Beide helften moesten mee. Een klein gat print onder de maat
@@ -59,9 +63,9 @@ zijn, en zegt dat er niets te snijden is.
 
 | Onderdeel | Beschrijving | Downloads |
 |------|-------------|-----------|
-| **Behuizing** | Een baan van 43,5 × 31 mm in plaats van 61 × 40; 46,5 × 80,8 × 105 mm in totaal. De ruimte voor de module houdt haar volle 24 mm en de servo zijn 12,26, en geen enkele hoogte erin verandert: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft. | [STL](spenser-body-small.stl) |
-| **Duwer** | 42,4 × 46 mm, passend bij de smallere baan, met twee pensleuven van 2,55 mm: de pen past in beide, en de tweede, 5 mm verder naar binnen, houdt de duwer de hele slag 5 mm verder naar achteren. | [STL](spenser-pusher-small.stl) |
-| **Arm** | 26,75 mm tussen de gaten in plaats van 41, wat met `anglePush=81` een slag van 34,53 mm geeft, passend bij de minder diepe baan. | [STL](spenser-arm-small.stl) |
+| **Behuizing** | Een baan van 43,5 × 31 mm in plaats van 61 × 40; 46,5 × 80,8 × 105 mm in totaal. De ruimte voor de module houdt haar volle 24 mm en de servo zijn 12,26, en geen enkele hoogte erin verandert: de richel die de duwer op zijn plaats houdt, de ruimte voor de servo en de uitgang zitten waar de standaardbehuizing ze heeft. De servo gaat er omgekeerd in, zodat zijn kabel aan de achterkant van de unit naar buiten komt in plaats van naar het magazijn, en zijn hele ruimte zit 6,5 mm verder naar achteren zodat de as ongeveer blijft waar hij was. | [STL](spenser-body-small.stl) |
+| **Duwer** | 42,4 × 46 mm, passend bij de smallere baan, met twee pensleuven van 2,55 mm: de pen past in beide, en de tweede, 5 mm verder naar binnen, houdt de duwer de hele slag 5 mm verder naar achteren, en dat is de sleuf die deze behuizing vraagt, nu de servo omgekeerd zit. | [STL](spenser-pusher-small.stl) |
+| **Arm** | 26,75 mm tussen de gaten in plaats van 41, wat met `anglePush=78,6` een slag van 33,76 mm geeft, passend bij de minder diepe baan. | [STL](spenser-arm-small.stl) |
 | **Pen** | 2,3 mm asdikte in plaats van 2,55, de andere helft van de pasvorm met de arm. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 

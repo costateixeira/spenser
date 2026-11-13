@@ -38,14 +38,18 @@ morceau de 40 mm de large garde 2,5 mm de jeu latéral dans ce qui reste, et
 même un ajustement large n'y coûterait rien : un morceau de 30 × 40 ne peut
 pas tourner dans un couloir de 31 mm de fond, aussi large soit-il.
 
-Deux choses changent dans la construction. Réglez `anglePush=81` sur cette
+Deux choses changent dans la construction. Réglez `anglePush=78,6` sur cette
 unité, au lieu de la valeur par défaut de 77. Et montez le bras de sorte
-qu'au repos il soit environ 47° en arrière de la perpendiculaire au couloir,
+qu'au repos il soit environ 44,5° en arrière de la perpendiculaire au couloir,
 et non d'équerre : cela recule toute la course et c'est ce qui permet au
 corps d'être aussi court. Le contrôle : au repos, la face de poussée doit se
-trouver juste derrière la pile de chocolats. Les 20,2 mm sont pris à
+trouver juste derrière la pile de chocolats. Les 26,7 mm sont pris à
 l'arrière, derrière le poussoir, et non à la bouche : le morceau sort par
-l'autre extrémité. La goupille a ici sa propre pièce et n'exige aucun
+l'autre extrémité, et 6,5 mm d'entre eux sont remis sous le servo, ce qui
+amène son logement contre la face arrière. Le servo lui-même se monte
+retourné bout pour bout par rapport à l'unité standard, pour que son câble
+sorte à l'arrière ; la goupille va alors dans la deuxième rainure du
+poussoir, qui reprend les 5 mm dont le boîtier retourné déplace l'axe. La goupille a ici sa propre pièce et n'exige aucun
 perçage : son trou dans le bras fait 3,1 mm dans ces fichiers contre 2,76 sur
 le bras standard, et la goupille elle-même 2,3 mm au lieu de 2,55. Il a fallu
 bouger les deux moitiés. Un petit trou s'imprime sous sa cote et un petit axe
@@ -62,9 +66,9 @@ déjà taillées, et dit qu'il n'y a rien à tailler.
 
 | Pièce | Description | Téléchargements |
 |------|-------------|-----------|
-| **Corps** | Un couloir de 43,5 × 31 mm au lieu de 61 × 40 ; 46,5 × 80,8 × 105 mm hors tout. Le logement du module garde ses 24 mm entiers et le servo ses 12,26, et aucune hauteur n'y bouge : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie sont là où le corps standard les place. | [STL](spenser-body-small.stl) |
-| **Poussoir** | 42,4 × 46 mm, pour correspondre au couloir plus étroit, avec deux rainures de goupille de 2,55 mm : la goupille entre dans l'une ou l'autre, et la seconde, 5 mm plus vers l'intérieur, maintient le poussoir 5 mm plus en arrière sur toute la course. | [STL](spenser-pusher-small.stl) |
-| **Bras** | 26,75 mm entre les trous au lieu de 41, ce qui donne une course de 34,53 mm avec `anglePush=81`, à la mesure du couloir moins profond. | [STL](spenser-arm-small.stl) |
+| **Corps** | Un couloir de 43,5 × 31 mm au lieu de 61 × 40 ; 46,5 × 80,8 × 105 mm hors tout. Le logement du module garde ses 24 mm entiers et le servo ses 12,26, et aucune hauteur n'y bouge : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie sont là où le corps standard les place. Le servo se monte retourné bout pour bout, de sorte que son câble sort à l'arrière de l'unité au lieu de regarder vers le magasin, et tout son logement recule de 6,5 mm pour que l'axe reste près de là où il était. | [STL](spenser-body-small.stl) |
+| **Poussoir** | 42,4 × 46 mm, pour correspondre au couloir plus étroit, avec deux rainures de goupille de 2,55 mm : la goupille entre dans l'une ou l'autre, et la seconde, 5 mm plus vers l'intérieur, maintient le poussoir 5 mm plus en arrière sur toute la course, et c'est celle que demande ce corps, le servo étant retourné. | [STL](spenser-pusher-small.stl) |
+| **Bras** | 26,75 mm entre les trous au lieu de 41, ce qui donne une course de 33,76 mm avec `anglePush=78,6`, à la mesure du couloir moins profond. | [STL](spenser-arm-small.stl) |
 | **Goupille** | 2,3 mm d'axe au lieu de 2,55, l'autre moitié de l'ajustement avec le bras. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 

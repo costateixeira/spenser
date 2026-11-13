@@ -3,8 +3,9 @@
 
     python tools/resize/build.py                  # the Belgian mignonette: nothing
                                                   #   to cut, these parts are it
-    python tools/resize/build.py --piece 40x30x7 --name small
-                                                  # the Swiss napolitain
+    python tools/resize/build.py --piece 40x30x7 --name small --flip
+                                                  # the Swiss napolitain, which is
+                                                  #   what the -small files are
     python tools/resize/build.py --check          # measure, change nothing
     python tools/resize/build.py --union 2        # two lanes in one printed part
 
@@ -40,11 +41,13 @@ The small variant keeps the thickness band the original has - 5.5 mm, the
 height of the pusher, to the height of the exit slot - so a 7 mm piece sits in
 the middle of it and nothing about the height needs to change:
 
-  lane            61.0 x 40.0 mm  ->  44.35 x 31.0
-  body            64 x 110 x 105  ->  47.35 x 80.8 x 105
-  pusher          59.9 x 56.0     ->  43.25 x 46.0
+  lane            61.0 x 40.0 mm  ->  43.50 x 31.0
+  body            64 x 110 x 105  ->  46.50 x 80.8 x 105
+  pusher          59.9 x 56.0     ->  42.40 x 46.0
   arm, pin holes  41.0 mm apart   ->  26.75
-  stroke          51.05 mm        ->  34.53
+  stroke          51.05 mm        ->  33.76
+  servo           cable to the magazine  ->  turned round, cable to the back,
+                                      and its whole bay 6.50 mm back with it
   module bay      24.00 mm wide   ->  unchanged; it is what sets the width
   retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
@@ -52,7 +55,7 @@ the middle of it and nothing about the height needs to change:
                                       one 5.00 further in again
   arm pin bore    2.760 mm        ->  3.10, as far as the method goes
   pin shaft       2.550 mm        ->  2.30, the other half of the same fit
-  firmware        anglePush 81, and the arm set 46.9 deg back at rest
+  firmware        anglePush 78.6, and the arm set 44.5 deg back at rest
 
 Each of the lane's three numbers is set by something different, and it is
 worth knowing which. The height is the original's, untouched. The depth is set
@@ -74,7 +77,7 @@ this can give up:
   x 74.00..83.65   9.65 of the 11.53 slot between the bay's far post and the
                    servo tower, leaving 1.88
 
-So the lane goes 61 -> 44.35 and no further, the body 64 -> 47.35, and a 40 mm
+So the lane goes 61 -> 43.50 and no further, the body 64 -> 46.50, and a 40 mm
 piece keeps 3.35 mm of play across the lane.
 
 The second band took two goes to get right, in both directions. It looks like
@@ -277,6 +280,76 @@ across the flats and 2.760 across the corners - so each is round enough to be
 pushed along its own radius and come out round. The standard arm is left at
 2.760 and the standard pin at 2.550, which are nominally clear of each other
 and print tight; drill that arm 2.6 mm.
+
+The servo's cable leaves the end of its case away from the shaft, which on this
+body points at the magazine, so it has to be led back over the tower and round.
+--flip turns the servo end for end in its pocket, and the cable comes out at the
+back of the unit instead, against the body's own back face and open air.
+
+Almost nothing about the pocket is in the way of that. The bay is 23.60 mm for a
+case 23.20 long, the two ear seats are 5.00 and 4.70, and the flange screws are
+symmetric about the case to within a tenth of a millimetre, so the case drops in
+either way round. The one thing that is in the way is the opening in the floor,
+which clears the two bosses on the gear face, and those are as off-centre as the
+shaft is: 6.00 mm of the bay lies one side of it and 17.60 the other.
+
+So turning the case round carries the shaft 11.60 mm towards the magazine, and
+the mechanism cannot have that. 6.50 of it comes back by sliding the whole bay
+into the base behind the tower, which is all there is - 6.60 mm, and the last
+tenth is left alone because a cut landing exactly on the body's back face opens
+the mesh along it. 5.00 of what is left costs nothing at all, because the
+pusher's second slot already holds it 5.00 further back; the pin goes in that
+one rather than the first. The 0.10 still over is inside the take-up, which
+ends up 1.80 mm rather than 1.90.
+
+What is left to pay is the arm, and it is paid in stroke. At rest the arm points
+back at the magazine, and its far end stops 4.68 mm short of the wall the stack
+leans on. The axis has moved 5.10 mm that way, so the clamp comes forward until
+the far end clears it again: 44.5 degrees back from square instead of 46.9,
+which is anglePush 78.6 instead of 81. The stroke goes 34.53 -> 33.76 and the
+overtravel past the exit takes the loss, 1.63 -> 0.95, the lane and the take-up
+being fixed. 0.95 is still above the 0.54 an arm that dispensed ran on.
+
+Sliding the bay is three moves, a fill and two carves. The bay goes back by
+cutting that much more off the rail, which only shortens the body, and pushing
+the same thickness in again at the one clean seam the tower has. That seam is a narrow one: in front of the floor opening the tower's
+underside slopes away to meet the magazine, and a slope cannot be cut across, so
+the only plane that works lies in the 0.30 mm between where the opening stops
+and where the slope starts. Pushing a slab in there puts the body's length back
+and leaves the bay, its near seat and the tower's back wall where the cut took
+them. The far seat's inner wall then comes back to meet them, so the bay is the
+length it was, and the slope's leading edge is pushed forward out of the way of
+what follows. Then the floor. The opening cannot simply be widened to take the bosses where
+they now are. They stand 6.70 mm apart and the opening is barely wider than
+they are, so the two positions overlap without either containing the other:
+anything that covered both would be nearly the whole of the floor between the
+seats, and a 12.20 mm case would have 12.00 mm of opening to sit over. So the
+old opening is filled and a new one cut where the bosses are - the gear boss
+against the bay's far end and the idler behind it - which leaves the plate
+material at both ends of the bay instead of none. Last, a hole for the flange
+screw, the bay having carried the flange away from the one it used; that one is
+left where it is, in the middle of a shelf, doing nothing.
+
+Filling needs nothing built from scratch. A hole that is filled has no wall any
+more - what was a surface becomes the inside of the solid - so the wall goes,
+and what closes the part again is the two rims it stood on: each edge the wall
+had in a face of the plate, spanned back to a point inside the ring. Those rims
+were already shared with the plate's own faces around the hole, so each ends up
+used twice, as it was. Every face is one the part already had, or spanned from
+an edge it already had, and what it did is measured afterwards like everything
+else: the
+volume it puts back has to be the hole, a line where the hole was has to meet
+the plate's two faces and nothing else, and every line beside it has to meet
+what it met.
+
+The carves are the same operation as the pusher's second slot, told which heights
+it owns. A slot through a plate can take everything above its footprint; an
+opening in one plate of a part that has a base under it cannot, so the carve is
+given a band of z and keeps to it. Inside that band the rule is the one every cut
+here obeys - the band has to be a prism, so that the cavity is a copy of its
+cross-section - and a thickness that straddles the band is refused rather than
+sliced, because the cavity would then stop part way up it and need a floor. That
+is why the slope's edge is moved first: it puts both carves on flat plate.
 
 All of the above is one size of piece. The numbers come from PIECE, three
 dimensions in millimetres - across the lane, along it, and thick. PIECE itself
@@ -559,8 +632,13 @@ def _fan(poly, least=1e-6):
     return out
 
 
-def _outside(tris, xa, xb, y0, y1, tol=1e-7):
+def _outside(tris, xa, xb, y0, y1, zlo=None, zhi=None, tol=1e-7):
     """The part minus a box: every face cut by the box's four side planes.
+
+    With a z window, only what lies between those two heights is dropped, so
+    the same footprint can take one plate out of a part and leave another
+    under it.
+
 
     Both sides of all four cuts are kept and the pieces whose middle lands
     inside the box are dropped. Every triangle is cut, whether the box comes
@@ -590,7 +668,9 @@ def _outside(tris, xa, xb, y0, y1, tol=1e-7):
         n = len(poly)
         cx = sum(p[0] for p in poly) / n
         cy = sum(p[1] for p in poly) / n
-        if xa + tol < cx < xb - tol and y0 + tol < cy < y1 - tol:
+        cz = sum(p[2] for p in poly) / n
+        if (xa + tol < cx < xb - tol and y0 + tol < cy < y1 - tol
+                and (zlo is None or zlo - 1e-9 <= cz <= zhi + 1e-9)):
             continue
         out += _fan(poly)
     return out
@@ -638,7 +718,33 @@ def _rect(fixed, i, lo, hi, zlo, zhi, outward, pts=()):
     return [t for t in out if _fan(t)]
 
 
-def slit(tris, xa, xb, y0, y1, eps=1e-6):
+def _windowed(pairs, zlo, zhi, clip=False):
+    """The thicknesses a carve owns, out of a whole column.
+
+    All of them, if there is no window. Otherwise those lying wholly inside
+    it; one that straddles it is refused, because the cavity would then stop
+    part way up a thickness and need a floor, and a floor is not something the
+    cross-section of a prism can give it.
+
+    Clipping instead of refusing is for comparing profiles rather than cutting
+    them: what stands outside the box may well carry on above the window, and
+    only the part inside it is the carve's business.
+    """
+    if zlo is None:
+        return pairs
+    if clip:
+        kept = [(max(lo, zlo), min(hi, zhi)) for lo, hi in pairs]
+        return [p for p in kept if p[1] - p[0] > 1e-9]
+    for lo, hi in pairs:
+        if hi > zlo + 1e-9 and lo < zhi - 1e-9 and not (zlo - 1e-9 <= lo
+                                                        and hi <= zhi + 1e-9):
+            raise ValueError('the band carries material %.3f..%.3f, which crosses '
+                             'the window %.3f..%.3f: a window takes whole '
+                             'thicknesses or none' % (lo, hi, zlo, zhi))
+    return [p for p in pairs if zlo - 1e-9 <= p[0] and p[1] <= zhi + 1e-9]
+
+
+def slit(tris, xa, xb, y0, y1, zlo=None, zhi=None, eps=1e-6):
     """Carve a through-slot out of a plate: a box taken out, nothing closed up.
 
     A cut has to be prismatic so that its two faces meet when the far side
@@ -654,9 +760,15 @@ def slit(tris, xa, xb, y0, y1, eps=1e-6):
     has a neighbour along the whole of it. Nothing is stretched and nothing
     slides, so the part is the part it was with a box missing.
     """
+    def outside_window(t):
+        return zlo is not None and (max(p[2] for p in t) <= zlo + 1e-4
+                                    or min(p[2] for p in t) >= zhi - 1e-4)
+
     standing = set()
     for t in tris:
         if max(p[1] for p in t) <= y0 + eps or min(p[1] for p in t) >= y1 - eps:
+            continue
+        if outside_window(t):
             continue
         n = normal(t)
         if abs(n[1]) > 1e-4:
@@ -674,6 +786,8 @@ def slit(tris, xa, xb, y0, y1, eps=1e-6):
             raise ValueError('a wall already stands at x = %.3f, where one side of '
                              'the slot would be' % x)
     for t in tris:
+        if outside_window(t):
+            continue
         for at in (y0, y1):
             if (all(abs(p[1] - at) < 1e-4 for p in t)
                     and min(p[0] for p in t) < xb and max(p[0] for p in t) > xa):
@@ -688,10 +802,12 @@ def slit(tris, xa, xb, y0, y1, eps=1e-6):
         if len(column) % 2:
             raise ValueError('the band is not solid at x = %.3f: a line up through it '
                              'meets the surface %d times' % (a, len(column)))
-        spans.append([(column[n], column[n + 1]) for n in range(0, len(column), 2)])
+        spans.append(_windowed([(column[n], column[n + 1])
+                               for n in range(0, len(column), 2)], zlo, zhi))
     for side, at in ((spans[0], xa - 0.07), (spans[-1], xb + 0.07)):
         column = _column(tris, at, middle)
-        outer = [(column[n], column[n + 1]) for n in range(0, len(column), 2)]
+        outer = _windowed([(column[n], column[n + 1])
+                          for n in range(0, len(column), 2)], zlo, zhi, clip=True)
         if len(outer) != len(side) or any(abs(p - q) > 1e-4
                                          for u, v in zip(outer, side)
                                          for p, q in zip(u, v)):
@@ -699,7 +815,7 @@ def slit(tris, xa, xb, y0, y1, eps=1e-6):
                              'in: %r against %r' % (at, outer, side))
 
     levels = sorted({round(v, 6) for s in spans for pair in s for v in pair})
-    out = _outside(tris, xa, xb, y0, y1)
+    out = _outside(tris, xa, xb, y0, y1, zlo, zhi)
     on = {}
     for t in out:
         for p in t:
@@ -728,6 +844,96 @@ def slit(tris, xa, xb, y0, y1, eps=1e-6):
                 out += _rect(xb, 0, y0, y1, zlo, zhi, -1, on.get((0, xb), {}).values())
             removed += (b - a) * (zhi - zlo) * (y1 - y0)
     return out, removed, len(edges) - 1
+
+
+def plug(tris, xa, xb, y0, y1, zlo, zhi, cx, cy, eps=1e-4):
+    """Fill a hole running straight through a plate, between two flat faces.
+
+    A hole that is filled has no wall any more: what was a surface becomes the
+    inside of the solid. So the wall goes, and what closes the part again is
+    the two rims it stood on - each edge the wall had in either face of the
+    plate, spanned back to (cx, cy), which has to be a point the whole rim can
+    see. Those rims are already shared with the plate's own faces around the
+    hole, so each one ends up used twice, as it was.
+
+    Where the fan is cut afterwards matters. Close to (cx, cy) its triangles
+    are narrow and nearly parallel, and a wall drawn through them there leaves
+    vertices a thousandth of a millimetre apart on what should be one edge. So
+    the point is put where the next carve will take it away, and what is left
+    of the fan is cut far enough out that its triangles are wide.
+
+    What the box takes is every face wholly inside it and wholly between the
+    two heights: the wall, and anything the hole carries with it, such as the
+    step this one has where its near end runs into the seat beside it. The
+    pocket's own walls stand far higher and are left where they are.
+    """
+    wall, rest = [], []
+    for t in tris:
+        if (all(xa - eps < p[0] < xb + eps and y0 - eps < p[1] < y1 + eps
+                and zlo - eps < p[2] < zhi + eps for p in t)
+                and (abs(normal(t)[2]) < 1e-4
+                     or all(zlo + eps < p[2] < zhi - eps for p in t))):
+            wall.append(t)
+        else:
+            rest.append(t)
+    if not wall:
+        raise ValueError('nothing stands inside x %.3f..%.3f, y %.3f..%.3f between '
+                         'z %.3f and %.3f: there is no hole there to fill'
+                         % (xa, xb, y0, y1, zlo, zhi))
+
+    caps, area = [], 0.0
+    for t in wall:
+        for n in range(3):
+            a, b = t[n], t[(n + 1) % 3]
+            for at in (zhi, zlo):
+                if abs(a[2] - at) > eps or abs(b[2] - at) > eps:
+                    continue
+                caps.append(((cx, cy, at), a, b))
+                if at == zhi:
+                    area += ((a[0] - cx) * (b[1] - cy)
+                             - (b[0] - cx) * (a[1] - cy)) / 2.0
+    if not caps:
+        raise ValueError('nothing between z %.3f and %.3f has an edge in either '
+                         'face: this is not a hole straight through a plate'
+                         % (zlo, zhi))
+    return rest + caps, abs(area) * (zhi - zlo), len(wall)
+
+
+def verify_plug(before, after, xa, xb, y0, y1, zlo, zhi, step=0.23, margin=0.06):
+    """Prove the plug: the hole closed, and nothing else touched.
+
+    A line straight up where the hole was must now meet the plate's two faces
+    where it meets them all around, and must have met neither before. A line
+    anywhere else must meet what it met. Lines within a margin of the box's
+    walls are left out, a line on a face being neither in nor out.
+    """
+    spanx = (min(p[0] for t in before for p in t), max(p[0] for t in before for p in t))
+    spany = (min(p[1] for t in before for p in t), max(p[1] for t in before for p in t))
+    wrong = []
+    checked = closed = skipped = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            here, there = _column(after, x, y), _column(before, x, y)
+            if xa - margin < x < xb + margin and y0 - margin < y < y1 + margin:
+                was = [h for h in there if zlo - 1e-3 <= h <= zhi + 1e-3]
+                now = [h for h in here if zlo - 1e-3 <= h <= zhi + 1e-3]
+                if was and now and len(was) == len(now):
+                    skipped += 1          # outside the hole: the plate as it was
+                elif not was and len(now) == 2 and abs(now[0] - zlo) < 1e-3 \
+                        and abs(now[1] - zhi) < 1e-3:
+                    closed += 1           # inside it: plate where there was none
+                else:
+                    skipped += 1          # on the rim, or under the seats
+            else:
+                checked += 1
+                if len(here) != len(there) or any(abs(p - q) > 1e-3
+                                                  for p, q in zip(here, there)):
+                    wrong.append((x, y, here, there))
+            x += step
+        y += step
+    return checked, closed, skipped, wrong
 
 
 def widen_hole(tris, cx, cy, radius, to, tol=0.05):
@@ -955,12 +1161,14 @@ def verify_shaft(before, after, cx, cy, radius, to, step=0.23):
     return checked, skipped, wrong, (min(wall), max(wall))
 
 
-def verify_slit(before, after, xa, xb, y0, y1, step=0.31, margin=0.06):
+def verify_slit(before, after, xa, xb, y0, y1, zlo=None, zhi=None,
+                step=0.31, margin=0.06):
     """Prove the slot: the cavity empty, and every line beside it where it was.
 
-    A line straight up inside the box must now meet no surface at all, and one
-    outside it must meet the surface at the heights it met it before, since
-    nothing moved. Lines within a margin of the box's own walls are left out,
+    A line straight up inside the box must now meet no surface at all - or,
+    where the carve was given a window, exactly the surfaces it met outside
+    that window and none of those within it - and one outside the box must meet
+    the surface at the heights it met it before, since nothing moved. Lines within a margin of the box's own walls are left out,
     a line on a face being neither in nor out.
     """
     spanx = (min(p[0] for t in before for p in t), max(p[0] for t in before for p in t))
@@ -978,8 +1186,13 @@ def verify_slit(before, after, xa, xb, y0, y1, step=0.31, margin=0.06):
                 skipped += 1
             elif xa < x < xb and y0 < y < y1:
                 inside += 1
-                if _column(after, x, y):
-                    wrong.append((x, y, _column(after, x, y), []))
+                here = _column(after, x, y)
+                want = [] if zlo is None else [
+                    h for h in _column(before, x, y)
+                    if not zlo - 1e-3 <= h <= zhi + 1e-3]
+                if len(here) != len(want) or any(
+                        abs(p - q) > 1e-3 for p, q in zip(here, want)):
+                    wrong.append((x, y, here, want))
             else:
                 checked += 1
                 here, there = _column(after, x, y), _column(before, x, y)
@@ -1081,6 +1294,51 @@ SLOT_BACK = 1.00                 # and how much nearer the pusher's back edge it
 #                                # the return and nothing else
 SECOND_SLOT = 5.00               # a second slot, this much further in. The pin in
 #                                # that one holds the pusher 5 mm further back
+# Turning the servo round in its pocket, so that its cable leaves at the back
+# of the unit instead of towards the magazine. Nothing about the pocket is in
+# the way of that except the opening in its floor: the bay, both ear seats and
+# the screws are symmetric about the case, but the opening clears the two
+# bosses on the servo's gear face and those are as off-centre as the shaft is.
+# The case is not symmetric about its shaft either - 6.00 mm of the bay lies
+# one side of it and 17.60 the other - so a case turned end for end carries the
+# shaft 11.60 mm towards the magazine, which the mechanism cannot have. The bay
+# goes back into the base behind the tower to give most of it back.
+BAY = (3.102, 26.702)         # the case bay, between the ear seats: 23.60 for a
+#                             # case 23.20 long
+FLIP_SLIDE = 6.50             # how far back the bay goes: all but a tenth of the
+#                             # base behind the tower, which leaves its back wall
+#                             # level with the body's own back face. The last tenth
+#                             # is left because a cut landing exactly on that face
+#                             # opens the mesh along it
+SHAFT_AT = 9.102              # the servo axis, 6.00 from one end of that bay
+TOWER_BACK = 16.797           # the tower's back wall, this far up the standard body,
+#                             # which is as far back as the bay can be taken
+OPENING = (68.447, 80.452)    # the floor opening, as wide as the one in the file:
+#                             # a fifth of a millimetre inside each pocket wall. It
+#                             # is two overlapping circles, 12.005 across on the
+#                             # shaft and 5.68 on the boss beside it
+IDLER = 6.700                 # which stands this far along from the shaft, and
+IDLER_WIDE = 2.840            # wants this much of radius round it
+OPENING_END = 18.704          # where the opening stops, which is the tower's one
+#                             # clean seam: in front of it the floor's underside slopes
+BUTTRESS = 19.002             # away, from here to the magazine
+BUTTRESS_FORWARD = 4.50       # so that edge is pushed this far forward, and both
+#                             # carves then land on flat plate
+SCREWS = (0.599, 28.906)      # the flange screws' holes, at x 74.356
+SCREW = (74.356, 1.600)       # and 1.60 across
+FLOOR_UNDER = 17.500          # the floor's underside, and
+FLOOR_Z = (16.00, 19.248)     # the heights the floor opening owns: up to the top
+#                             # of the floor and no further, so that the far seat's
+#                             # wall, which stands in the same plane as the opening's
+#                             # far end, is left out of it
+SEAT_Z = (17.00, 23.10)       # and the heights the far screw's hole goes through
+ARM_TIP = 31.75               # the arm's far end, this far out from the axis
+ARM_REACH = 24.218            # which puts it this far past the axis along the lane
+REST = 46.87                  # at rest, clamped this far back from square
+PUSH_END = 34.13              # and this far past square at full advance
+LANE_BACK = 38.00             # the wall the stack leans on, which it must not touch
+ARM_CLEAR = 0.50              # by this much at least
+
 BORE = (-63.10, -10.00, 1.380, 1.550)    # the arm's pin hole, opened for the print
 SHAFT = (-12.00, 79.00, 1.2765, 1.150)   # and the pin's shaft, pulled in to meet it
 
@@ -1096,7 +1354,8 @@ RAIL_SWUNG_BACK = 2.79       # and this much further again, the arm being clampe
 
 
 def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
-         shorten=PUSHER_SHORTEN, second=SECOND_SLOT, name='small', named=False):
+         shorten=PUSHER_SHORTEN, second=SECOND_SLOT, flip=False,
+         name='small', named=False):
     """Turn the piece's three dimensions into every number the cuts need.
 
     The depth and the height follow the piece exactly. The width does not: it
@@ -1140,8 +1399,12 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
 
     standard_stroke = round(CRANK * STROKE_PER_MM_77, 3)
     settled = dict(piece=(across, along, thick), x_cut=x_cut, y_cut=y_cut, lift=lift,
-                   take_up=take_up, second=second, name=name, notes=notes,
-                   lane=(lane_w, lane_d, LANE[2] + lift))
+                   take_up=take_up, second=second, flip=flip, slide=0.0, shift=0.0,
+                   rest=REST, angle_push=round(REST + PUSH_END, 1),
+                   name=name, notes=notes, lane=(lane_w, lane_d, LANE[2] + lift))
+    if flip and not (x_cut or y_cut):
+        raise SystemExit('--flip is a change to the small body\'s pocket, and this '
+                         'piece does not cut one')
 
     if not (x_cut or y_cut or lift):
         notes.append('this is the piece the parts in input/images are already cut for, '
@@ -1176,15 +1439,71 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
     if overtravel < 0.54:
         notes.append('%.2f mm past the exit is less than any arm this has been printed '
                      'with: the shortest that dispensed had 0.54' % overtravel)
-    notes.append('set anglePush to 81 on this unit and clamp the arm about 47 degrees '
-                 'back from square at rest, which is what the %.2f mm off the rail '
-                 'depends on' % min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
-                                    RAIL_BAND[1] - RAIL_BAND[0]))
-    settled.update(rail_cut=round(min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
-                                      RAIL_BAND[1] - RAIL_BAND[0]), 3),
-                   shorten=shorten, crank=crank, arm_cut=arm_cut, stroke=stroke,
-                   overtravel=overtravel)
+    if not flip:
+        notes.append('set anglePush to 81 on this unit and clamp the arm about 47 '
+                     'degrees back from square at rest, which is what the %.2f mm off '
+                     'the rail depends on'
+                     % min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
+                           RAIL_BAND[1] - RAIL_BAND[0]))
+    rail_cut = round(min(RAIL_REACH - stroke / 2 + RAIL_SWUNG_BACK,
+                         RAIL_BAND[1] - RAIL_BAND[0]), 3)
+    settled.update(rail_cut=rail_cut, shorten=shorten, crank=crank, arm_cut=arm_cut,
+                   stroke=stroke, overtravel=overtravel)
+    if flip:
+        flipped(settled, lane_d, take_up, second, notes)
     return settled
+
+
+def flipped(settled, lane_d, take_up, second, notes):
+    """What turning the servo round costs, and what pays for it.
+
+    The shaft moves because the case is not symmetric about it. Sliding the
+    whole bay back into the base behind the tower gives back all but a few
+    millimetres of that, and those few come off the pusher, by way of the
+    second slot, which holds it that much further back for nothing. What is
+    left to pay is the arm: at rest it points back at the magazine, and the
+    axis has moved that way, so the clamp comes forward until its far end
+    clears the wall the stack leans on. That is the whole of the cost, and it
+    is paid in stroke.
+    """
+    shift = round(BAY[0] + BAY[1] - 2 * SHAFT_AT, 3)
+    slide = round(min(FLIP_SLIDE, TOWER_BACK - RAIL_BAND[0] - settled['rail_cut']), 3)
+    if slide <= 0:
+        raise SystemExit('this lane leaves no base behind the tower for the bay to '
+                         'slide into: the rail is already cut back to it')
+    net = round(shift - slide, 3)
+    crank = settled['crank']
+
+    corner = ARM_REACH - ARM_TIP * math.sin(math.radians(REST))
+    room = LANE_BACK - ARM_CLEAR - (SHAFT_AT + net) - corner
+    if room >= ARM_TIP:
+        rest = REST
+    else:
+        rest = round(math.degrees(math.asin(room / ARM_TIP)), 2)
+    if rest > REST:
+        rest = REST
+    stroke = round(crank * (math.sin(math.radians(rest))
+                            + math.sin(math.radians(PUSH_END))), 3)
+    up = round(take_up - net + second, 3)
+    over = round(stroke - lane_d - up, 3)
+    settled.update(slide=slide, shift=shift, net=net, rest=rest,
+                   angle_push=round(rest + PUSH_END, 1), stroke=stroke,
+                   take_up=up, overtravel=over)
+    if up < 0:
+        raise SystemExit('turned round, the shaft moves %.2f mm and the pusher\'s '
+                         'second slot gives back %.2f, which leaves the face %.2f '
+                         'inside the stack at rest' % (net, second, -up))
+    if over < 0:
+        raise SystemExit('turned round, the swing the arm has room for leaves a '
+                         'stroke of %.2f mm, and the lane and the take-up want '
+                         '%.2f' % (stroke, lane_d + up))
+    notes.append('the servo goes in turned round, cable to the back; its shaft moves '
+                 '%.2f mm towards the magazine and the bay slides %.2f back into the '
+                 'base behind the tower, so the pusher sees %.2f, which the second '
+                 'slot at %.2f takes out' % (shift, slide, net, second))
+    if over < 0.54:
+        notes.append('%.2f mm past the exit is less than any arm this has been printed '
+                     'with: the shortest that dispensed had 0.54' % over)
 
 
 def share(total, bands):
@@ -1221,10 +1540,13 @@ def recipes(p):
             body.append(('cut', 'x', lo, round(lo + take, 3)))
     if p['y_cut']:
         body.append(('cut', 'y', DEPTH_BAND[0], DEPTH_BAND[0] + p['y_cut']))
-    if p['rail_cut']:
-        body.append(('cut', 'y', RAIL_BAND[0], RAIL_BAND[0] + p['rail_cut']))
+    if p['rail_cut'] or p['flip']:
+        body.append(('cut', 'y', RAIL_BAND[0],
+                     RAIL_BAND[0] + p['rail_cut'] + p['slide']))
     if p['lift']:
         body.append(('lift', 'z', LEDGE_AT, p['lift']))
+    if p['flip']:
+        body += turn_round(p['slide'])
 
     pusher = []
     if p['x_cut']:
@@ -1259,6 +1581,49 @@ def recipes(p):
             ('pusher', 'pusher-%s' % p['name'], pusher),
             ('arm', 'arm-%s' % p['name'], arm),
             ('pin', 'pin-%s' % p['name'], [('shaft',) + SHAFT])]
+
+
+def turn_round(slide):
+    """The pocket, with its bay `slide` further back and its floor opened the
+    other way.
+
+    Three moves, a fill and two carves, in that order. The bay goes back by
+    cutting that much more off the rail - which only shortens the body - and then
+    pushing the same thickness in again at the one clean seam the tower has,
+    between the end of the floor opening and the start of the slope under it,
+    which puts the length back and leaves the bay, its near seat and the tower's
+    back wall behind where they were. The far seat's inner wall then comes back to
+    meet them, so the bay is the length it was, and the slope's leading edge is
+    pushed forward, out of the way of what follows.
+
+    Then the floor. The opening cannot just be widened to take the bosses where
+    they now are: they stand 6.70 mm apart and the opening is barely wider than
+    they are, so the two positions overlap without either containing the other,
+    and anything covering both would be most of the floor. So the old one is
+    filled and a new one cut where the bosses now are - the gear boss against the
+    bay's far end, the idler behind it - which leaves the plate material at both
+    ends of the bay rather than none. Last, a hole for the flange screw, the bay
+    having carried the flange away from the one it used.
+    """
+    far = BAY[1] - slide
+    wide = (OPENING[1] - OPENING[0]) / 2.0
+    seam = round((OPENING_END + BUTTRESS) / 2.0 - slide, 3)
+    screw = round(SCREWS[0] - slide + (SCREWS[1] - SCREWS[0]), 3)
+    shaft = round(far - (SHAFT_AT - BAY[0]), 3)         # where it is, turned round
+    old = (round(BAY[0] - slide, 3), round(OPENING_END - slide, 3))
+    return [('lift', 'y', seam, slide),
+            ('plane', 'y', BAY[1], round(-slide, 3)),
+            ('plane', 'y', BUTTRESS, BUTTRESS_FORWARD),
+            ('plug', OPENING[0] - 0.5, OPENING[1] + 0.5, old[0] - 0.5, old[1] + 0.5,
+             FLOOR_UNDER, FLOOR_Z[1],
+             round((OPENING[0] + OPENING[1]) / 2.0, 3),
+             round(shaft - IDLER, 3)),
+            ('slit', round(SCREW[0] - SCREW[1] / 2, 3), round(SCREW[0] + SCREW[1] / 2, 3),
+             round(screw - SCREW[1] / 2, 3), round(screw + SCREW[1] / 2, 3),
+             SEAT_Z[0], SEAT_Z[1]),
+            ('slit', OPENING[0], OPENING[1],
+             round(shaft - IDLER - IDLER_WIDE, 3), round(far, 3),
+             FLOOR_Z[0], FLOOR_Z[1])]
 
 
 def describe(p, parts):
@@ -1298,6 +1663,19 @@ def describe(p, parts):
         print('   stroke   %6.2f at a crank of %.2f, with %.2f of take-up behind the '
               'stack and %.2f past the exit'
               % (p['stroke'], p['crank'], p['take_up'], p['overtravel']))
+    if p['flip']:
+        print('   servo    turned round, cable to the back: the bay %.2f mm further '
+              'back' % p['slide'])
+        print('            and the shaft %.2f forward of where it is, which the '
+              'second slot at %.2f takes off the pusher'
+              % (p['net'], p['second']))
+        print('   arm      clamped %.1f degrees back at rest instead of %.1f, so '
+              'anglePush is %.1f' % (p['rest'], REST, p['angle_push']))
+        print('            which is what keeps its far end off the wall the stack '
+              'leans on: %.2f mm clear' % (LANE_BACK - (SHAFT_AT + p['net'])
+                                           - (ARM_REACH - ARM_TIP
+                                              * math.sin(math.radians(REST)))
+                                           - ARM_TIP * math.sin(math.radians(p['rest']))))
     for note in p['notes']:
         print('   note: %s' % note)
     print()
@@ -1306,8 +1684,8 @@ def describe(p, parts):
 def options(argv):
     """--piece 40x30x7, --name small, and the three numbers of the travel."""
     out = dict(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
-               shorten=PUSHER_SHORTEN, second=SECOND_SLOT, name='small',
-               named='--name' in argv)
+               shorten=PUSHER_SHORTEN, second=SECOND_SLOT, flip='--flip' in argv,
+               name='small', named='--name' in argv)
     keys = {'--piece': 'piece', '--name': 'name', '--overtravel': 'overtravel',
             '--take-up': 'take_up', '--pusher-shorten': 'shorten',
             '--second-slot': 'second'}
@@ -1424,11 +1802,41 @@ def main():
                       'agree, %d through the ramp not looked at'
                       % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
                 tris = stepped
+            elif op[0] == 'plug':
+                xa, xb, y0, y1, zlo, zhi, cx, cy = op[1:]
+                filled, gained, faces = plug(tris, xa, xb, y0, y1, zlo, zhi, cx, cy)
+                checked, closed, skipped, wrong = verify_plug(
+                    tris, filled, xa, xb, y0, y1, zlo, zhi)
+                if wrong:
+                    raise SystemExit('%s: filling the opening at y %.3f..%.3f does '
+                                     'not hold up: %d of %d lines beside it '
+                                     'disagree, first at x %.2f y %.2f'
+                                     % ((target_name, y0, y1, len(wrong),
+                                         checked) + wrong[0][:2]))
+                was, now = measure(tris), measure(filled)
+                made = now['volume'] - was['volume']
+                if abs(made - gained) > 0.05:
+                    raise SystemExit('%s: filling the opening at y %.3f..%.3f added '
+                                     '%.3f mm3, and the hole it closed is %.3f'
+                                     % (target_name, y0, y1, made, gained))
+                if now['open_edges'] != was['open_edges']:
+                    raise SystemExit('%s: filling the opening at y %.3f..%.3f left '
+                                     'the mesh open: %d edges against %d'
+                                     % (target_name, y0, y1, now['open_edges'],
+                                        was['open_edges']))
+                print('   filled the opening at y %.3f..%.3f, taking its %d wall '
+                      'faces away and capping both rims' % (y0, y1, faces))
+                print('   it put back %.0f mm3, which is the hole to 0.05; %d lines '
+                      'through it now meet the plate, %d elsewhere agree, %d on its '
+                      'rim or under the seats not looked at'
+                      % (gained, closed, checked, skipped))
+                tris = filled
             elif op[0] == 'slit':
-                _, xa, xb, y0, y1 = op
-                slotted, removed, columns = slit(tris, xa, xb, y0, y1)
-                checked, inside, skipped, wrong = verify_slit(tris, slotted,
-                                                              xa, xb, y0, y1)
+                xa, xb, y0, y1 = op[1:5]
+                zlo, zhi = op[5:7] if len(op) > 5 else (None, None)
+                slotted, removed, columns = slit(tris, xa, xb, y0, y1, zlo, zhi)
+                checked, inside, skipped, wrong = verify_slit(
+                    tris, slotted, xa, xb, y0, y1, zlo, zhi)
                 if wrong:
                     raise SystemExit('%s: the slot y %.3f..%.3f does not hold up: %d '
                                      'of %d lines disagree, first at x %.2f y %.2f'
@@ -1445,9 +1853,11 @@ def main():
                                      '%d edges against %d'
                                      % (target_name, y0, y1, now['open_edges'],
                                         was['open_edges']))
-                print('   cut a second slot %.2f mm wide at y %.3f..%.3f, running '
-                      'x %.3f..%.3f over %d profiles'
-                      % (y1 - y0, y0, y1, xa, xb, columns))
+                print('   cut a %.2f mm opening at y %.3f..%.3f, running '
+                      'x %.3f..%.3f%s, over %d profiles'
+                      % (y1 - y0, y0, y1, xa, xb,
+                         '' if zlo is None else ', between z %.3f and %.3f'
+                         % (zlo, zhi), columns))
                 print('   it took %.0f mm3, which is the box to 0.05; %d lines inside '
                       'it meet nothing, %d outside it agree, %d along its walls not '
                       'looked at' % (removed, inside, checked, skipped))

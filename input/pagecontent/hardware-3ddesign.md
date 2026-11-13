@@ -35,13 +35,17 @@ parts can give up. A piece 40 mm across keeps 2.5 mm of side play in what is
 left, and even a loose fit there would cost nothing: a 30 × 40 piece cannot
 turn in a lane 31 mm deep however wide that lane is.
 
-Two things change on the build. Set `anglePush=81` on this unit, against
-the default of 77. And fit the arm so that at rest it sits about 47° back
+Two things change on the build. Set `anglePush=78.6` on this unit, against
+the default of 77. And fit the arm so that at rest it sits about 44.5° back
 from pointing straight across the lane, rather than square to it: that moves
 the whole travel back and is what lets the body be this short. The check is
 that at rest the pushing face ends up just behind the chocolate stack. The
-20.2 mm comes off the back, behind the pusher, not off the mouth: the piece
-leaves through the other end. The pin has its own part here and needs no
+26.7 mm comes off the back, behind the pusher, not off the mouth: the piece
+leaves through the other end, and 6.5 mm of it goes back in again under the
+servo, which is how its bay comes to sit against the back face. The servo
+itself goes in turned end for end from the standard unit, so that its cable
+leaves at the back; the pin then goes in the pusher's second slot, which takes
+out the 5 mm the turned-round case moves the shaft by. The pin has its own part here and needs no
 drilling: the hole in the arm is 3.1 mm in these files against 2.76 on the
 standard arm, and the pin itself is 2.3 mm rather than 2.55. Both halves had
 to move. A small hole prints under its size and a small shaft over its own,
@@ -57,9 +61,9 @@ the parts above are already cut for, and says there is nothing to cut.
 
 | Part | Description | Downloads |
 |------|-------------|-----------|
-| **Body** | A lane 43.5 × 31 mm instead of 61 × 40; 46.5 × 80.8 × 105 mm overall. The module bay keeps its full 24 mm and the servo its 12.26, and no height in it moves at all: the ledge that holds the pusher down, the servo's box and the exit slot are all where the standard body has them. | [STL](spenser-body-small.stl) |
-| **Pusher** | 42.4 × 46 mm, to match the narrower lane, with two pin slots 2.55 mm wide: the pin goes in either, and the second one, 5 mm further in, holds the pusher 5 mm further back through the whole swing. | [STL](spenser-pusher-small.stl) |
-| **Arm** | 26.75 mm between its holes instead of 41, which gives a 34.53 mm stroke at `anglePush=81`, matched to the shallower lane. | [STL](spenser-arm-small.stl) |
+| **Body** | A lane 43.5 × 31 mm instead of 61 × 40; 46.5 × 80.8 × 105 mm overall. The module bay keeps its full 24 mm and the servo its 12.26, and no height in it moves at all: the ledge that holds the pusher down, the servo's box and the exit slot are all where the standard body has them. The servo goes in turned end for end, so its cable leaves at the back of the unit instead of towards the magazine, and its whole bay sits 6.5 mm further back so that the shaft stays near where it was. | [STL](spenser-body-small.stl) |
+| **Pusher** | 42.4 × 46 mm, to match the narrower lane, with two pin slots 2.55 mm wide: the pin goes in either, and the second one, 5 mm further in, holds the pusher 5 mm further back through the whole swing, which is the one this body wants, the servo being turned round. | [STL](spenser-pusher-small.stl) |
+| **Arm** | 26.75 mm between its holes instead of 41, which gives a 33.76 mm stroke at `anglePush=78.6`, matched to the shallower lane. | [STL](spenser-arm-small.stl) |
 | **Pin** | 2.3 mm across its shaft instead of 2.55, which is the other half of the fit with the arm. | [STL](spenser-pin-small.stl) |
 {:.table-bordered}
 
