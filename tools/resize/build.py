@@ -48,7 +48,7 @@ the middle of it and nothing about the height needs to change:
   stroke          51.05 mm        ->  33.76
   servo           cable to the magazine  ->  turned round, cable to the back,
                                       and its whole bay 6.50 mm back with it
-  cable           nothing to run on  ->  the magazine's side wall carried 12.70
+  cable           nothing to run on  ->  the magazine's side wall carried 13.00
                                       forward over the tower, window and all
   module bay      24.00 mm wide   ->  unchanged; it is what sets the width
   retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
@@ -642,6 +642,17 @@ def _clip(poly, i, value, below, tol=1e-4):
     both sides of the cut and no point is interpolated against it, which is
     what stops a face that was meant to be left whole losing a sliver to the
     single-precision coordinates a binary STL is written in.
+
+    Where a point does have to be interpolated, it is interpolated from
+    whichever end of the edge sorts first, never from the end this face
+    happens to have come at it by. Two faces sharing an edge run along it in
+    opposite directions, that being what consistent winding means, and
+    `a + t(b - a)` worked from one end is the same point as from the other only
+    in exact arithmetic. In floating point they differ - by a ten-thousandth of
+    a millimetre on a long thin face, where the interpolation is ill
+    conditioned - and then one edge of the part carries two points where it
+    should carry one, which is an edge used four times, or once, in a mesh that
+    is otherwise closed. Fixing the end fixes the point.
     """
     out = []
     for n, a in enumerate(poly):
@@ -653,9 +664,19 @@ def _clip(poly, i, value, below, tol=1e-4):
         if da <= 0.0:
             out.append(a)
         if (da < 0.0 < db) or (db < 0.0 < da):
-            t = da / (da - db)
-            out.append(tuple(a[k] + t * (b[k] - a[k]) for k in range(3)))
+            p, q, dp, dq = (a, b, da, db) if a < b else (b, a, db, da)
+            t = dp / (dp - dq)
+            out.append(tuple(p[k] + t * (q[k] - p[k]) for k in range(3)))
     return out
+
+
+def _area(t):
+    """A triangle's area, for telling a face that has flattened from one that has not."""
+    (ax, ay, az), (bx, by, bz), (cx, cy, cz) = t
+    ux, uy, uz = bx - ax, by - ay, bz - az
+    vx, vy, vz = cx - ax, cy - ay, cz - az
+    n = (uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx)
+    return (n[0] ** 2 + n[1] ** 2 + n[2] ** 2) ** 0.5 / 2.0
 
 
 def _fan(poly, least=1e-6):
@@ -784,6 +805,47 @@ def _windowed(pairs, zlo, zhi, clip=False):
     return [p for p in pairs if zlo - 1e-9 <= p[0] and p[1] <= zhi + 1e-9]
 
 
+def _welded(tris, tol=2e-4):
+    """Points closer together than `tol` made into one, and degenerates dropped.
+
+    Cutting a face by one plane and then cutting the pieces by another leaves
+    points a ten-thousandth of a millimetre apart on what is one point of the
+    part: the arithmetic that put them there was not the same arithmetic both
+    times. Nothing can be done about that while cutting, and nothing needs to
+    be - a ten-thousandth is already finer than anything this body is built to,
+    the closest two surfaces come being the 0.001 seams between the boxes it is
+    a union of. So after a carve, points that close are made into one point,
+    which makes two faces that share an edge share it exactly, and a face left
+    with two corners in the same place is dropped. Dropping it keeps the part
+    closed: its two long edges are the same edge traversed both ways and cancel,
+    and the short one between those corners was its own.
+
+    Points are bucketed on a grid of `tol` and looked for among the buckets
+    next to their own, so a point near a bucket's edge still finds the point it
+    belongs with.
+    """
+    seen = {}
+
+    def one(p):
+        at = tuple(int(math.floor(c / tol)) for c in p)
+        for i in (0, -1, 1):
+            for j in (0, -1, 1):
+                for k in (0, -1, 1):
+                    q = seen.get((at[0] + i, at[1] + j, at[2] + k))
+                    if q is not None and all(abs(p[m] - q[m]) < tol for m in range(3)):
+                        return q
+        seen[at] = p
+        return p
+
+    out = []
+    for t in tris:
+        k = tuple(one(p) for p in t)
+        if k[0] == k[1] or k[1] == k[2] or k[0] == k[2]:
+            continue
+        out.append(k)
+    return out
+
+
 def slit(tris, xa, xb, y0, y1, zlo=None, zhi=None, eps=1e-6):
     """Carve a through-slot out of a plate: a box taken out, nothing closed up.
 
@@ -883,18 +945,57 @@ def slit(tris, xa, xb, y0, y1, zlo=None, zhi=None, eps=1e-6):
             if abs(b - xb) < 1e-9:
                 out += _rect(xb, 0, y0, y1, zlo, zhi, -1, on.get((0, xb), {}).values())
             removed += (b - a) * (zhi - zlo) * (y1 - y0)
-    return out, removed, len(edges) - 1
+    return _welded(out), removed, len(edges) - 1
+
+
+def _flat(t):
+    """A face's height and plan area, if it lies flat, and nothing if it stands."""
+    n = normal(t)
+    if abs(n[2]) < 0.5:
+        return None
+    return t[0][2], abs(((t[1][0] - t[0][0]) * (t[2][1] - t[0][1])
+                         - (t[2][0] - t[0][0]) * (t[1][1] - t[0][1])) / 2.0), n[2]
+
+
+def _held(wall, caps, zhi, eps=1e-4):
+    """What a hole held, from the flat faces that closed it above and below.
+
+    Only a face lying flat carries any height - an upright wall carries none -
+    so this is the plan area of each flat face times the height it lies at,
+    counted positively where it closes the hole from above and negatively from
+    below. Which way the wall itself is wound then does not come into it, and
+    the same sum serves a hole straight through, where the two fans are all
+    there is, and a pocket, whose own floor stands in for the lower fan.
+    """
+    total = 0.0
+    for t in caps:
+        at, area, _ = _flat(t)
+        total += area * (at if abs(at - zhi) < eps else -at)
+    for t in wall:
+        lies = _flat(t)
+        if lies:
+            total -= math.copysign(1.0, lies[2]) * lies[0] * lies[1]
+    return abs(total)
 
 
 def plug(tris, xa, xb, y0, y1, zlo, zhi, cx, cy, eps=1e-4):
-    """Fill a hole running straight through a plate, between two flat faces.
+    """Fill a hole through a plate, or a pocket sunk into one.
 
     A hole that is filled has no wall any more: what was a surface becomes the
     inside of the solid. So the wall goes, and what closes the part again is
-    the two rims it stood on - each edge the wall had in either face of the
-    plate, spanned back to (cx, cy), which has to be a point the whole rim can
-    see. Those rims are already shared with the plate's own faces around the
-    hole, so each one ends up used twice, as it was.
+    the rim it stood on - each edge the wall had in either face of the plate,
+    spanned back to (cx, cy), which has to be a point the whole rim can see.
+    Those rims are already shared with the plate's own faces around the hole,
+    so each ends up used twice, as it was.
+
+    A hole straight through has two of them and gets two fans. A pocket sunk
+    part way in, which is what a screw's hole in a seat turns out to be, has
+    one, and its floor comes away with the wall, being a face lying inside the
+    two heights; one fan then closes it. What it held is measured rather than
+    reckoned - the wall and the fans together are a closed surface, and what
+    that surface encloses is what has just been filled - so the two cases need
+    no telling apart, and the check outside catches it if the heights given do
+    not bracket a plate at all.
 
     Where the fan is cut afterwards matters. Close to (cx, cy) its triangles
     are narrow and nearly parallel, and a wall drawn through them there leaves
@@ -921,7 +1022,7 @@ def plug(tris, xa, xb, y0, y1, zlo, zhi, cx, cy, eps=1e-4):
                          'z %.3f and %.3f: there is no hole there to fill'
                          % (xa, xb, y0, y1, zlo, zhi))
 
-    caps, area = [], 0.0
+    caps = []
     for t in wall:
         for n in range(3):
             a, b = t[n], t[(n + 1) % 3]
@@ -929,14 +1030,11 @@ def plug(tris, xa, xb, y0, y1, zlo, zhi, cx, cy, eps=1e-4):
                 if abs(a[2] - at) > eps or abs(b[2] - at) > eps:
                     continue
                 caps.append(((cx, cy, at), a, b))
-                if at == zhi:
-                    area += ((a[0] - cx) * (b[1] - cy)
-                             - (b[0] - cx) * (a[1] - cy)) / 2.0
     if not caps:
         raise ValueError('nothing between z %.3f and %.3f has an edge in either '
-                         'face: this is not a hole straight through a plate'
-                         % (zlo, zhi))
-    return rest + caps, abs(area) * (zhi - zlo), len(wall)
+                         'face: this is neither a hole through a plate nor a '
+                         'pocket sunk into one' % (zlo, zhi))
+    return rest + caps, _held(wall, caps, zhi), len(wall)
 
 
 def verify_plug(before, after, xa, xb, y0, y1, zlo, zhi, step=0.23, margin=0.06):
@@ -976,7 +1074,291 @@ def verify_plug(before, after, xa, xb, y0, y1, zlo, zhi, step=0.23, margin=0.06)
     return checked, closed, skipped, wrong
 
 
-def boss(tris, xa, xb, y0, y1, at, to, sink=1.0, eps=5e-4):
+def _twice(loop):
+    """Twice the signed area of a closed outline, positive anticlockwise."""
+    return sum(loop[n][0] * loop[(n + 1) % len(loop)][1]
+               - loop[(n + 1) % len(loop)][0] * loop[n][1]
+               for n in range(len(loop)))
+
+
+def _turned(loop):
+    """The outline anticlockwise, whichever way round it came."""
+    return list(loop) if _twice(loop) > 0 else list(loop)[::-1]
+
+
+def _inside(loop, px, py):
+    """Is (px, py) within the closed outline? By counting crossings."""
+    inside = False
+    for n in range(len(loop)):
+        (x1, y1), (x2, y2) = loop[n], loop[(n + 1) % len(loop)]
+        if (y1 > py) != (y2 > py) and px < x1 + (py - y1) / (y2 - y1) * (x2 - x1):
+            inside = not inside
+    return inside
+
+
+def _middle(loop):
+    """The middle of the outline's bounding box."""
+    return (round((min(p[0] for p in loop) + max(p[0] for p in loop)) / 2.0, 4),
+            round((min(p[1] for p in loop) + max(p[1] for p in loop)) / 2.0, 4))
+
+
+def outlines(tris, zlo, zhi, eps=1e-4):
+    """Every hole's own outline, where it runs straight through one plate.
+
+    A hole through a plate has a wall of upright faces, and the top edge of
+    that wall, chained end to end, is the hole's outline. The two heights pick
+    the walls out: a wall that carries on past the plate, a pocket's side or a
+    seat's, has faces outside them and is left where it is. What comes back is
+    one closed outline for each hole, anticlockwise.
+    """
+    step = {}
+    for t in tris:
+        if abs(normal(t)[2]) > 1e-4:
+            continue
+        if not all(zlo - eps < p[2] < zhi + eps for p in t):
+            continue
+        for n in range(3):
+            a, b = t[n], t[(n + 1) % 3]
+            if abs(a[2] - zhi) < eps and abs(b[2] - zhi) < eps:
+                step.setdefault((round(a[0], 4), round(a[1], 4)),
+                                (round(b[0], 4), round(b[1], 4)))
+    loops, seen = [], set()
+    for start in step:
+        if start in seen:
+            continue
+        loop, at = [], start
+        while at in step and at not in seen:
+            seen.add(at)
+            loop.append(at)
+            at = step[at]
+        if len(loop) > 2 and at == start:
+            loops.append(_turned(loop))
+    return loops
+
+
+def outline(tris, px, py, zlo, zhi):
+    """The outline of the one hole that goes round (px, py)."""
+    found = [loop for loop in outlines(tris, zlo, zhi) if _inside(loop, px, py)]
+    if len(found) != 1:
+        raise ValueError('%d outlines between z %.3f and %.3f go round (%.3f, %.3f), '
+                         'and exactly one has to'
+                         % (len(found), zlo, zhi, px, py))
+    return found[0]
+
+
+def _kernel(loop, eps=1e-3):
+    """The point the outline is best seen from, or nothing.
+
+    Every edge has to be seen from it, which for an anticlockwise outline means
+    lying to the left of all of them at once. Which such point is used matters,
+    not only that there is one: the ray that zips the ground turns about it, and
+    off to one side it sweeps the near edges slowly and the far ones in a rush,
+    which leaves triangles so flat that they come out the wrong way round. So
+    what is wanted is the point furthest from every edge at once - the middle of
+    a circle, the middle of the lens where two circles run together - and it is
+    found by walking the bounding box and then closing in on the best of it.
+    """
+    edges = [(loop[n], loop[(n + 1) % len(loop)]) for n in range(len(loop))]
+
+    def clearance(x, y):
+        return min(((b[0] - a[0]) * (y - a[1]) - (b[1] - a[1]) * (x - a[0]))
+                   / math.hypot(b[0] - a[0], b[1] - a[1]) for a, b in edges)
+
+    xs = [p[0] for p in loop]
+    ys = [p[1] for p in loop]
+    step = min(max(xs) - min(xs), max(ys) - min(ys)) / 24.0
+    best, at = None, None
+    y = min(ys)
+    while y <= max(ys):
+        x = min(xs)
+        while x <= max(xs):
+            deep = clearance(x, y)
+            if best is None or deep > best:
+                best, at = deep, (x, y)
+            x += step
+        y += step
+    for _ in range(12):
+        step /= 2.0
+        for dx, dy in ((step, 0.0), (-step, 0.0), (0.0, step), (0.0, -step)):
+            deep = clearance(at[0] + dx, at[1] + dy)
+            if deep > best:
+                best, at = deep, (at[0] + dx, at[1] + dy)
+    return at if best > eps else None
+
+
+def _between(outer, inner, apex):
+    """Cover the ground inside `outer` and outside `inner` with triangles.
+
+    Both outlines have to be ones the apex sees all of, and then a ray turning
+    about the apex crosses each exactly once, so the two can be zipped: take
+    their vertices in the order the ray reaches them, and each step closes one
+    triangle against the vertex the other outline is resting on. Every edge of
+    either outline is used once and once only, so the ground between them comes
+    out covered exactly - which is what the areas prove afterwards.
+    """
+    def angles(loop):
+        return [math.atan2(p[1] - apex[1], p[0] - apex[0]) for p in loop]
+
+    # Where the two outlines are joined first matters: that seam has to be a
+    # line lying in the ground between them, so the vertex it starts from is
+    # the one of `outer` last reached before the ray reaches `inner`'s first.
+    ai = angles(inner)
+    start = min(range(len(inner)), key=lambda n: ai[n])
+    i = list(inner[start:]) + list(inner[:start])
+    behind = [(a - ai[start]) % (2.0 * math.pi) for a in angles(outer)]
+    start = max(range(len(outer)), key=lambda n: behind[n])
+    o = list(outer[start:]) + list(outer[:start])
+    base = angles(o)[0]
+    ao = [(a - base) % (2.0 * math.pi) for a in angles(o)]
+    ai = [(a - base) % (2.0 * math.pi) for a in angles(i)]
+    ao[0] = 0.0
+    out = []
+    m, n = len(o), len(i)
+    j = k = 0
+    while j < m or k < n:
+        if k >= n:
+            take = True
+        elif j >= m:
+            take = False
+        else:
+            take = ((ao[j + 1] if j + 1 < m else ao[0] + 2.0 * math.pi)
+                    <= (ai[k + 1] if k + 1 < n else ai[0] + 2.0 * math.pi))
+        if take:
+            out.append((o[j % m], o[(j + 1) % m], i[k % n]))
+            j += 1
+        else:
+            out.append((i[(k + 1) % n], i[k % n], o[j % m]))
+            k += 1
+    return out
+
+
+def panel(tris, x0, x1, y0, y1, zlo, zhi, hole, side=1.5):
+    """Put a plate back into a slot, with an outline left open through it.
+
+    Every carve here cuts a box, and the holes the servo needs are round, so a
+    round hole that has to move cannot just be cut where it now belongs. What
+    can be done is to cut the box wide of it and put the plate back with the
+    right outline left open: the box takes the floor away and this stands a
+    plate of the floor's own thickness in its place, with the hole through it.
+
+    It is added the way `boss` adds a box and the way the body itself is built,
+    as a closed solid of its own lapping over what is already there rather than
+    welded to it, so nothing standing is cut and every edge keeps the two
+    triangles it had. The lap is what makes it one piece with the floor around
+    it: the two share solid material, which is what a slicer unions.
+
+    The plate is two flat faces, a wall round its edge and a wall round the
+    hole. The faces are the ground between the two outlines, zipped about a
+    point that can see the hole's (see `_between`); the plate's own edge is
+    first cut into lengths of about `side`, so the triangles reaching across to
+    the hole are not slivers. What is proved here is the covering - every
+    triangle anticlockwise, and their areas adding up to the plate less the
+    hole - and what is proved outside is the solid.
+    """
+    ring = _turned(hole)
+    # The plate's edge is cut into lengths of about the hole's own, so that the
+    # ray zipping the two sweeps them at the same rate and no triangle between
+    # them comes out flat enough to turn over.
+    side = min(side, max(0.1, sum(math.hypot(ring[(n + 1) % len(ring)][0] - ring[n][0],
+                                             ring[(n + 1) % len(ring)][1] - ring[n][1])
+                                  for n in range(len(ring))) / len(ring)))
+    rect = _turned([(x0, y0), (x1, y0), (x1, y1), (x0, y1)])
+    edge = []
+    for n in range(4):
+        a, b = rect[n], rect[(n + 1) % 4]
+        steps = max(4, int(math.hypot(b[0] - a[0], b[1] - a[1]) / side))
+        for s in range(steps):
+            edge.append((a[0] + (b[0] - a[0]) * s / steps,
+                         a[1] + (b[1] - a[1]) * s / steps))
+    for p in ring:
+        if not (x0 < p[0] < x1 and y0 < p[1] < y1):
+            raise ValueError('the outline reaches (%.3f, %.3f), outside the plate '
+                             'x %.3f..%.3f y %.3f..%.3f that has to carry it'
+                             % (p[0], p[1], x0, x1, y0, y1))
+    apex = _kernel(ring)
+    if apex is None:
+        raise ValueError('no point inside the outline can see the whole of it, so '
+                         'the ground around it cannot be zipped')
+    ground = _between(edge, ring, apex)
+    want = (_twice(edge) - _twice(ring)) / 2.0
+    got = 0.0
+    for a, b, c in ground:
+        area = ((b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1])) / 2.0
+        if area <= 0.0:
+            raise ValueError('a triangle of the plate comes out inside out near '
+                             '(%.3f, %.3f): the two outlines do not zip'
+                             % (a[0], a[1]))
+        got += area
+    if abs(got - want) > 1e-6 * max(1.0, want):
+        raise ValueError('the plate\'s triangles cover %.6f mm2 where the plate less '
+                         'its hole is %.6f: they overlap, or leave a gap'
+                         % (got, want))
+
+    out = list(tris)
+    for a, b, c in ground:
+        out.append(((a[0], a[1], zhi), (b[0], b[1], zhi), (c[0], c[1], zhi)))
+        out.append(((c[0], c[1], zlo), (b[0], b[1], zlo), (a[0], a[1], zlo)))
+    for loop, inward in ((edge, False), (ring, True)):
+        for n in range(len(loop)):
+            a, b = loop[n], loop[(n + 1) % len(loop)]
+            if inward:
+                a, b = b, a
+            out.append(((a[0], a[1], zlo), (b[0], b[1], zlo), (b[0], b[1], zhi)))
+            out.append(((a[0], a[1], zlo), (b[0], b[1], zhi), (a[0], a[1], zhi)))
+    return _welded(out), want * (zhi - zlo), len(ground) * 2 + (len(edge) + len(ring)) * 2
+
+
+def verify_panel(before, after, x0, x1, y0, y1, zlo, zhi, hole,
+                 step=0.23, margin=0.08):
+    """Prove the plate: solid where it stands, open through the hole, else untouched.
+
+    Over the plate's own ground a line straight up has to meet two faces more
+    than it did, at the plate's two heights. Through the hole it has to meet
+    exactly what it met, which is nothing, the box having taken it away. A line
+    anywhere else has to meet what it met. Lines within a margin of either
+    outline are left out, a line on a face being neither in nor out.
+    """
+    spanx = (min(p[0] for t in before for p in t), max(p[0] for t in before for p in t))
+    spany = (min(p[1] for t in before for p in t), max(p[1] for t in before for p in t))
+    wrong = []
+    checked = standing = through = skipped = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            if x0 - margin < x < x1 + margin and y0 - margin < y < y1 + margin:
+                here = sorted(h for h in _column(after, x, y)
+                              if zlo - 1e-3 <= h <= zhi + 1e-3)
+                was = sorted(h for h in _column(before, x, y)
+                             if zlo - 1e-3 <= h <= zhi + 1e-3)
+                if (not (x0 + margin < x < x1 - margin and y0 + margin < y < y1 - margin)
+                        or min(math.hypot(x - p[0], y - p[1]) for p in hole) < margin):
+                    skipped += 1
+                elif _inside(hole, x, y):
+                    if here == was:
+                        through += 1
+                    else:
+                        wrong.append((x, y, here, was))
+                else:
+                    want = sorted(was + [zlo, zhi])
+                    if len(here) == len(want) and all(abs(p - q) < 1e-3
+                                                      for p, q in zip(here, want)):
+                        standing += 1
+                    else:
+                        wrong.append((x, y, here, want))
+            else:
+                checked += 1
+                here, was = _column(after, x, y), _column(before, x, y)
+                if len(here) != len(was) or any(abs(p - q) > 1e-3
+                                                for p, q in zip(here, was)):
+                    wrong.append((x, y, here, was))
+            x += step
+        y += step
+    return checked, standing, through, skipped, wrong
+
+
+def boss(tris, xa, xb, y0, y1, at, to, sink=1.0, lap=0.0, hang=False, slope=None,
+         eps=5e-4):
     """Stand a box on the part: the one operation here that adds material.
 
     It adds it the way the body itself is built and the way `union` stands
@@ -995,41 +1377,191 @@ def boss(tris, xa, xb, y0, y1, at, to, sink=1.0, eps=5e-4):
     above it. The corners rather than the middle, because a lintel is carried
     at its ends and spans air between them. Everywhere over the footprint the
     part must stop at or below `at`, or the box would run into something.
+
+    A box may also run into a wall at the `xa` end, which is the same idea
+    sideways: `lap` is how far past that wall's face it goes, and over that
+    much of the footprint nothing is asked about `at`, because there the box
+    is meant to be inside material. What is asked instead is that the material
+    really is a wall the box's own height - its surface met under the box's
+    base and not again below the box's top - so an end that laps is carried as
+    surely as one standing on a face, and the two share solid material rather
+    than a face.
+
+    A box that `hang`s has nothing under it at all: `at` is its own underside
+    rather than a face it stands on, and it is held by what it laps into, so
+    it must lap. The part of the body this one belongs to is built that way
+    throughout - the bay's floor and the bezel on the front of its wall both
+    start at z 25.000 with air below them - so there is no face to stand on
+    there and standing on the one under all of it, the lane's floor, would
+    close the front of the body down to the ground.
+
+    `slope` gives that underside a second height, at the `y1` edge, so it is a
+    plane falling across the box rather than flat. It is what carries a bevel
+    on: the ledge under the bay has one, and a box put beside it with a level
+    bottom reads as a floor hanging in the body instead of as the same ledge
+    going further. The underside stays planar, so the box is still six flat
+    faces, and the two end walls are trapezia rather than rectangles.
     """
-    for x, y in ((xa, y0), (xb, y0), (xa, y1), (xb, y1)):
-        x = min(max(x, xa + 1e-3), xb - 1e-3)
+    if hang and not lap:
+        raise ValueError('a box that hangs has to lap into something: nothing else '
+                         'would hold it')
+    base = at if hang else at - sink
+    far = base if slope is None else slope
+
+    def under(y):
+        return base + (far - base) * (y - y0) / (y1 - y0)
+
+    ca = xa + lap
+    if lap:
+        # the underside at the corner, not a thousandth in, so that a sloping
+        # one is not asked to be clear of the face it starts on
+        for y, low in ((y0 + 1e-3, base), (y1 - 1e-3, far)):
+            x = xa + lap / 2.0
+            column = _column(tris, x, y)
+            if (not column or max(column) < to - eps
+                    or any(low + eps < p < to - eps for p in column)):
+                raise ValueError('the box laps %.3f into the wall at x = %.3f, but over '
+                                 '(%.3f, %.3f) the part is not solid from %.3f to %.3f: '
+                                 'its surface is met at %s'
+                                 % (lap, ca, x, y, low, to,
+                                    ', '.join('%.3f' % p for p in column) or 'nothing'))
+    for x, y in ([] if hang else [(xb, y0), (xb, y1)] if lap else
+                 [(ca, y0), (xb, y0), (ca, y1), (xb, y1)]):
+        x = min(max(x, ca + 1e-3), xb - 1e-3)
         y = min(max(y, y0 + 1e-3), y1 - 1e-3)
         column = _column(tris, x, y)
         if not column or abs(max(column) - at) > eps:
             raise ValueError('the part stops at %s over the corner (%.3f, %.3f), not at '
                              'z = %.3f: a box has to stand on a face, with nothing above'
                              % ('%.3f' % max(column) if column else 'nothing', x, y, at))
-    step = max(0.17, min(xb - xa, y1 - y0) / 4.0)
+    step = max(0.17, min(xb - ca, y1 - y0) / 4.0)
     y = y0 + step / 2.0
     while y < y1:
-        x = xa + step / 2.0
+        low = under(y) if hang else at
+        x = ca + step / 2.0
         while x < xb:
             column = _column(tris, x, y)
-            if column and max(column) > at + eps:
+            if column and max(column) > low + eps:
                 raise ValueError('the part reaches z = %.3f at (%.3f, %.3f), above the '
                                  'face at %.3f the box stands on'
-                                 % (max(column), x, y, at))
+                                 % (max(column), x, y, low))
             x += step
         y += step
 
-    base = at - sink
     c = [(xa, y0), (xb, y0), (xb, y1), (xa, y1)]
     out = list(tris)
-    for lo, hi, up in ((base, base, -1), (to, to, +1)):
-        quad = [(p[0], p[1], lo) for p in c]
-        if up < 0:
-            quad = quad[::-1]
-        out += [(quad[0], quad[1], quad[2]), (quad[0], quad[2], quad[3])]
+    quad = [(p[0], p[1], under(p[1])) for p in c][::-1]
+    out += [(quad[0], quad[1], quad[2]), (quad[0], quad[2], quad[3])]
+    quad = [(p[0], p[1], to) for p in c]
+    out += [(quad[0], quad[1], quad[2]), (quad[0], quad[2], quad[3])]
     for n in range(4):
         a, b = c[n], c[(n + 1) % 4]
-        out += [((a[0], a[1], base), (b[0], b[1], base), (b[0], b[1], to)),
-                ((a[0], a[1], base), (b[0], b[1], to), (a[0], a[1], to))]
-    return out, (xb - xa) * (y1 - y0) * (to - base)
+        out += [((a[0], a[1], under(a[1])), (b[0], b[1], under(b[1])), (b[0], b[1], to)),
+                ((a[0], a[1], under(a[1])), (b[0], b[1], to), (a[0], a[1], to))]
+    return out, (xb - xa) * (y1 - y0) * ((to - base) + (to - far)) / 2.0
+
+
+def filed(tris, xa, xb, y0, y1, now, flat, knee, floor, tol=1e-4):
+    """One flat face taken up onto another plane, the way a file would do it.
+
+    `now` is the plane the face is to lie on, as `(c, m)` for z = c + m*y; it
+    does not turn in x, which is what a bevel on this body is. Every point of
+    the part that is under it, inside the footprint and over `floor`, moves
+    straight up onto it, which takes the face and everything the file would
+    have taken with it. It only comes up as far as `flat` - the underside of
+    what sits on the face - so in front of `knee`, where the new plane is over
+    that, the face comes up flat instead.
+
+    Nothing is cut and nothing is added, so the mesh is exactly as closed as
+    it was; what changes is where its points are. The faces that met the old
+    one stretch to follow it, which is the same move `move_plane` makes and
+    carries the same risk, so the same proof is taken: no face may come out
+    inside out.
+
+    The part is split across at `knee` first, so the face has points there to
+    turn on. Without them a triangle spanning the turn cuts the corner, and
+    the widest span on this face is 11 mm, which would miss it by 2.
+    """
+    split = []
+    for t in tris:
+        poly = list(t)
+        if all(abs(p[1] - knee) < tol for p in poly):
+            split.append(poly)
+            continue
+        for below in (True, False):
+            piece = _clip(poly, 1, knee, below)
+            if len(piece) >= 3:
+                split.append(piece)
+    start = []
+    for poly in split:
+        start += _fan(poly)
+
+    def onto(y):
+        return min(flat, now[0] + now[1] * y)
+
+    moved, hits, flattened = [], 0, 0
+    for t in start:
+        new = []
+        for p in t:
+            if (floor < p[2] < onto(p[1]) + tol
+                    and xa - tol <= p[0] <= xb + tol
+                    and y0 - tol <= p[1] <= y1 + tol):
+                hits += 1
+                new.append((p[0], p[1], onto(p[1])))
+            else:
+                new.append(p)
+        new = tuple(new)
+        n1, n2 = normal(t), normal(new)
+        if n2 == (0.0, 0.0, 0.0) or abs(n2[2]) > 0.999999 and _area(new) < 1e-9:
+            # the whole face went onto the plane: it had been under the part's
+            # own surface and is now in it, with no thickness left to bound
+            flattened += 1
+            continue
+        if n1 != (0.0, 0.0, 0.0) and sum(u * v for u, v in zip(n1, n2)) < 0:
+            raise ValueError('filing onto z = %.3f %+.3f y turns a face inside out, '
+                             'at %r' % (now[0], now[1], new))
+        moved.append(new)
+    if not hits:
+        raise ValueError('nothing lies under z = %.3f %+.3f y inside x %.3f..%.3f, '
+                         'y %.3f..%.3f' % (now[0], now[1], xa, xb, y0, y1))
+    return _welded(moved), hits, flattened
+
+
+def verify_filed(before, after, xa, xb, y0, y1, now, flat, floor, step=0.29,
+                 margin=0.08):
+    """Prove it: inside the footprint the part's underside is the new plane.
+
+    A line up through it has to meet the part first at the new plane, or not
+    at all, once what is under `floor` is left out; a line outside has to meet
+    it exactly where it did. Lines within a margin of a side are left out, a
+    line on a wall being neither in nor out.
+    """
+    spanx = (min(p[0] for t in before for p in t), max(p[0] for t in before for p in t))
+    spany = (min(p[1] for t in before for p in t), max(p[1] for t in before for p in t))
+    wrong = []
+    checked = filed_n = skipped = 0
+    y = spany[0] + 0.113
+    while y < spany[1]:
+        x = spanx[0] + 0.137
+        while x < spanx[1]:
+            if (xa - margin < x < xa + margin or xb - margin < x < xb + margin
+                    or y0 - margin < y < y0 + margin or y1 - margin < y < y1 + margin):
+                skipped += 1
+            elif xa < x < xb and y0 < y < y1:
+                filed_n += 1
+                over = min(flat, now[0] + now[1] * y)
+                under = [p for p in _column(after, x, y) if floor < p < over - 1e-3]
+                if under:
+                    wrong.append((x, y, under, []))
+            else:
+                checked += 1
+                here, was = _column(after, x, y), _column(before, x, y)
+                if len(here) != len(was) or any(abs(p - q) > 1e-3
+                                                for p, q in zip(here, was)):
+                    wrong.append((x, y, here, was))
+            x += step
+        y += step
+    return checked, filed_n, skipped, wrong
 
 
 def verify_boss(before, after, xa, xb, y0, y1, at, to, step=0.23, margin=0.06):
@@ -1164,10 +1696,47 @@ def union(tris, count, overlap=1.5):
     return out, pitch
 
 
+_CELL = 2.0
+_GRIDS = []
+
+
+def _grid(tris):
+    """Faces bucketed by where they stand in plan, so a line need not try them all.
+
+    Every check here casts lines straight up through the part and asks what
+    they meet, tens of thousands of them for each carve, and a line can only
+    meet a face standing over the ground it passes through. Bucketing the faces
+    by that ground turns each line from a trawl of the whole part into a look
+    at one bucket. A face goes in every bucket its own plan extent touches, so
+    nothing a line could meet is ever missed, and what comes back is exactly
+    what trying them all came back with.
+
+    The buckets are kept against the list they were built from, by identity, so
+    that a pass comparing two lists builds each one once. The list itself is
+    held as well, or another list could land on the same identity later.
+    """
+    for held, cells in _GRIDS:
+        if held is tris:
+            return cells
+    cells = {}
+    for t in tris:
+        lo = (int(math.floor(min(p[0] for p in t) / _CELL)),
+              int(math.floor(min(p[1] for p in t) / _CELL)))
+        hi = (int(math.floor(max(p[0] for p in t) / _CELL)),
+              int(math.floor(max(p[1] for p in t) / _CELL)))
+        for i in range(lo[0], hi[0] + 1):
+            for j in range(lo[1], hi[1] + 1):
+                cells.setdefault((i, j), []).append(t)
+    _GRIDS.append((tris, cells))
+    del _GRIDS[:-4]
+    return cells
+
+
 def _column(tris, x, y):
     """Heights at which a line straight up through (x, y) meets the surface."""
     out = []
-    for (x1, y1, z1), (x2, y2, z2), (x3, y3, z3) in tris:
+    for (x1, y1, z1), (x2, y2, z2), (x3, y3, z3) in _grid(tris).get(
+            (int(math.floor(x / _CELL)), int(math.floor(y / _CELL))), ()):
         d = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3)
         if d == 0:
             continue
@@ -1436,6 +2005,27 @@ SECOND_SLOT = 5.00               # a second slot, this much further in. The pin 
 # one side of it and 17.60 the other - so a case turned end for end carries the
 # shaft 11.60 mm towards the magazine, which the mechanism cannot have. The bay
 # goes back into the base behind the tower to give most of it back.
+FLIP_FRAME = (17.500, 20.198)  # Every number from here to the end of the cable wall
+#                              # was measured on the small body, which is the standard
+#                              # one with the whole 17.500 mm of width taken out of it
+#                              # and 20.198 off its rail. A piece that cuts less leaves
+#                              # the same features that much further out and further
+#                              # back, so the recipe is offset by the difference and
+#                              # the flip is a change to any body, not only that one.
+FLIP_BAY = 7.000               # Of that width this much came out below the module
+#                              # bay's outer wall, in the band at x 40..47, and the
+#                              # rest above it. So the bay's own wall moves by one
+#                              # amount and everything outboard of the slot by the
+#                              # other, and the slot between them changes width.
+SLOT_WIDE = 11.525             # It is this wide before anything is cut, and the band
+SLOT_SHUT = 1.50               # at x 74..84.50 takes up to 10.50 of it. The bay's outer
+#                              # face is only taken out to meet the rail when what is
+#                              # left is narrower than this - a crack, which on the
+#                              # small body is the 1.025 the band cannot reach. Wider
+#                              # than that, moving the face would stand a block of
+#                              # solid the height of the body in the slot and take the
+#                              # room beside the module's headers with it, so the slot
+#                              # is left and the wall is prolonged across it instead.
 BAY = (3.102, 26.702)         # the case bay, between the ear seats: 23.60 for a
 #                             # case 23.20 long
 FLIP_SLIDE = 6.50             # how far back the bay goes: all but a tenth of the
@@ -1465,26 +2055,128 @@ FLOOR_Z = (16.00, 19.248)     # the heights the floor opening owns: up to the to
 #                             # wall, which stands in the same plane as the opening's
 #                             # far end, is left out of it
 SEAT_Z = (17.00, 23.10)       # and the heights the far screw's hole goes through
+# Three holes the servo needs through a plate, and all three are round: the
+# floor opening its two bosses drop through, the far flange screw's hole, and
+# the screwdriver's hole in the base, under the shaft. Every carve here cuts a
+# box, so a round hole that has to move is read off the part first, filled, and
+# punched again where it now belongs with its own outline open through it.
+FLOOR_PLATE = (17.500, 19.248)   # the floor plate the opening runs through
+SEAT_PLATE = (17.500, 23.089)    # the floor and the far seat together, which the
+#                                # flange screw's hole runs through
+BASE_PLATE = (0.000, 1.498)      # and the base, which the screwdriver's hole does
+BASE_CUT = (-0.500, 2.000)       # and the box for it is cut from below the base to
+#                                # clear air above, so that no face of the base lies
+#                                # within a float's width of a wall of the box
+FAR_SCREW = (74.3245, 28.9025)   # the design's far flange screw hole, which the bay
+#                                # slides out from under: its outline is punched again
+#                                # where the flange now is, and the old one filled
+DRIVER = (74.5005, 9.3020)       # the screwdriver's hole in the base. The design has
+#                                # it 0.20 off the axis and 0.05 off in x; punched
+#                                # again, it is put on the axis
+PLATE_LAP = 0.35                 # how far a plate put back laps over what is there
+SCREW_WIDE = 0.050               # and how far wide of its outline the box for the screw
+#                                # is cut. Cut to the outline exactly, its sides land on
+#                                # the stranded hole's own wall, that being the same
+#                                # circle at the same x, and in the seat's top face
+#                                # there they cross a sliver - two edges a hundredth of
+#                                # a thousandth apart - which no plane can cut cleanly
 # A wall for the cable. Turned round, the servo's lead leaves at the back of
 # the tower and has the length of it to cross, so it is given something to run
 # against: the module rail's own wall, repeated on the other side of the body.
 # The magazine's side wall on the motor side stops being full height at y 37.8,
-# where the lane ends; this carries it 12.70 mm further forward, to where the
-# module rail opposite stops, with the same window through it to feed the lead.
+# where the lane ends; this carries it 13.00 mm further forward, to exactly
+# where the module rail opposite stops, with the same window through it to feed
+# the lead.
 RAIL_X = (81.000, 82.500)     # that wall, whose top at z 32.501 the work stands on
-RAIL_Y = (25.000, 37.700)     # and how far forward it goes. It stands outside the
-#                             # pocket, which ends at x 80.502, so it is clear of the
-#                             # servo and its ears at every point of fitting them
+RAIL_Y = (24.702, 37.707)     # and how far forward it goes: far enough to stand in
+#                             # the same plane as the module bay's own walls, so the
+#                             # front of the body turns one corner here rather than
+#                             # a step 0.298 deep. It stands outside the pocket,
+#                             # which ends at x 80.502, so it is clear of the servo
+#                             # and its ears at every point of fitting them
 RAIL_AT = 32.501              # the face it stands on
 RAIL_SILL = 33.310            # the window's sill and head, both the module rail's own
 RAIL_HEAD = 74.320
 RAIL_TOP = 100.000            # and its top, which is the rail's too
 RAIL_WINDOW = (28.730, 36.796)   # the window itself, the rail's own again
+# The rail the wall stands on ends at y 37.707, and the magazine's own side wall
+# is full height from y 37.805 back. Between the two the body has 0.098 mm of
+# nothing, which runs from the top of the retaining ledge to the top of the
+# wall and shows on the outside of the body as a slit the height of it. Inboard
+# of x 81.500 the rail itself fills that gap as far as its own top, and the
+# wall carried forward now reaches the rail's end, so what is left is the
+# outer half millimetre of it, from the ledge up. A box fills that.
+SEAM_X = 81.500               # from here out to the body's own face
+SEAM_Y = (37.707, 37.805)     # the slit itself, between the rail and the magazine
+SEAM_AT = 9.998               # the ledge's top, which is what it stands on
 BRIDGE_X = 67.025             # the tie across to the tower's inner rail. It stands on
 BRIDGE_Y = 31.500             # the tower's top where that is solid right across, which
 #                             # is past the pocket's far wall at y 31.404, so it roofs
 #                             # nothing the servo has to go down through
 BRIDGE_AT = 32.500            # the tower's top, a thousandth below the wall's
+# And the wall the lead actually runs behind, which faces the other way: across
+# the body, parallel to the magazine's front and back faces, in the plane the
+# module's own slot is in. The lead lies behind it, between it and the
+# magazine's front face at y 37.805, held there rather than resting on an edge.
+CHAN_Y = (24.702, 25.702)     # The wall the lead runs behind stands in the plane of
+#                             # the module bay's own outer wall and is the thickness
+#                             # of it, so that the front of the body reads as one
+#                             # face rather than a set of steps.
+CHAN_AT = 32.500              # It comes down to the top of the motor slot, which is
+#                             # where the rail dividing that slot from the module's
+#                             # channel ends and where the step the magazine's side
+#                             # wall makes ends, and it stands on those two faces, sunk
+#                             # into each the usual millimetre. Between them it is a
+#                             # lintel over the slot, and that is how the lead gets
+#                             # behind it: the case ends at y 20.2, well in front of
+#                             # the wall, and the lead crosses under it in the slot,
+#                             # which is clear from the seat at z 23.089 up to the
+#                             # lintel's underside.
+CHAN_TOP = 100.000            # and it carries on up to the top, with the walls beside it
+CHAN_WALL = 66.000            # The module bay's outer wall stopped a millimetre short
+CHAN_RIB = 67.025             # of that rail, leaving a slot the height of the body
+#                             # between the bay and everything the cable uses. Its
+#                             # outer face is taken out to the rail's own, which closes
+#                             # the slot and leaves the bay twice the wall thickness on
+#                             # that side. Only that face moves, so nothing the module
+#                             # sits against changes.
+BEZEL_AT = 25.000             # The bezel - the rib at the front of each bay wall that
+#                             # the module goes in against - is a millimetre thick and
+#                             # stands in the wall's own plane, from here at its front
+#                             # face, sloping back with the floor under it, up to
+#                             # z 68.310. Where the slot is left open the bezel stops
+#                             # at it and the wall over it only starts at the top of
+#                             # the motor slot, which leaves a notch in the front of
+#                             # the body the width of the slot and 6.5 deep. So the
+#                             # bezel is carried across the slot at its own height and
+#                             # on up to the top, hung off the wall it laps as the
+#                             # bezel beside it is, and the wall over the motor slot
+#                             # laps into that in turn.
+CHAN_LAP = 1.000              # how far it does, where the two meet over the rail
+MOTOR_X = (67.000, 81.600)    # The underside under the motor is its own bevel: one
+MOTOR_BEVEL = ((23.502, 17.500), (37.802, 10.500))   # flat face running between these
+MOTOR_BOX = 17.500            # two, which is the seat's underside at its front and
+MOTOR_FLOOR = 10.200          # 7.00 lower at the back of the body. It falls half as
+#                             # fast as the bevel under the bay and sits well under it,
+#                             # cut that shallow so the overhang would print without
+#                             # supports. It is filed up onto the bay's plane instead,
+#                             # as far as the motor's own box, which sits on it: in
+#                             # front of where the two meet the face comes up flat at
+#                             # the box's underside. The footprint is wide of the face
+#                             # on every side, and the floor is only what the proof
+#                             # looks down to - over the retaining ledge at 9.998.
+BAY_TOP = 27.310              # Under the bay is the ledge the module sits on, its top
+BAY_BACK = 37.801             # here and its back here. Its underside is not level: it
+BAY_BEVEL = 12.102            # is one plane falling from the bezel's own underside at
+#                             # the front to here at the back, and that bevel is what
+#                             # the body shows under the bay. The ledge stops at the
+#                             # slot as the bezel does, so it is carried across in the
+#                             # same way, bevel and all, and what stands over the slot
+#                             # stands on it.
+CHAN_END = 65.003             # The wall then laps the whole of that thickened wall,
+#                             # from the rail's face back to the far side of it, so the
+#                             # two share solid material rather than a face and the
+#                             # front of the body is one face from here across.
 
 ARM_TIP = 31.75               # the arm's far end, this far out from the axis
 ARM_REACH = 24.218            # which puts it this far past the axis along the lane
@@ -1556,11 +2248,7 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
                    take_up=take_up, second=second, flip=flip, slide=0.0, shift=0.0,
                    rest=REST, angle_push=round(REST + PUSH_END, 1),
                    name=name, notes=notes, lane=(lane_w, lane_d, LANE[2] + lift))
-    if flip and not (x_cut or y_cut):
-        raise SystemExit('--flip is a change to the small body\'s pocket, and this '
-                         'piece does not cut one')
-
-    if not (x_cut or y_cut or lift):
+    if not (x_cut or y_cut or lift or flip):
         notes.append('this is the piece the parts in input/images are already cut for, '
                      'so the recipe for it is empty and the parts for it are those '
                      'files; --piece 40x30x7 --name small is the Swiss napolitain')
@@ -1570,12 +2258,19 @@ def plan(piece=PIECE, overtravel=OVERTRAVEL, take_up=TAKE_UP,
         return settled
 
     if not y_cut:
-        notes.append('the lane keeps its depth, so the travel is the standard\'s: the '
-                     'arm, the rail and the pushing face are left alone, and anglePush '
-                     'stays at its default 77 with the arm square at rest')
         settled.update(rail_cut=0.0, shorten=0.0, crank=CRANK, arm_cut=0.0,
                        stroke=standard_stroke,
                        overtravel=round(standard_stroke - lane_d - take_up, 2))
+        if flip:
+            flipped(settled, lane_d, take_up, second, notes)
+            notes.append('the lane keeps its depth, so the arm and the pushing face are '
+                         'left alone; the rail gives up only the %.2f mm the bay slides '
+                         'into, and the clamp comes forward to %.1f degrees all the same'
+                         % (settled['slide'], settled['rest']))
+        else:
+            notes.append('the lane keeps its depth, so the travel is the standard\'s: '
+                         'the arm, the rail and the pushing face are left alone, and '
+                         'anglePush stays at its default 77 with the arm square at rest')
         return settled
 
     crank = round((lane_d + take_up + overtravel) / STROKE_PER_MM, 2)
@@ -1640,9 +2335,15 @@ def flipped(settled, lane_d, take_up, second, notes):
                             + math.sin(math.radians(PUSH_END))), 3)
     up = round(take_up - net + second, 3)
     over = round(stroke - lane_d - up, 3)
+    takes = share(settled['x_cut'], WIDTH_BANDS)
     settled.update(slide=slide, shift=shift, net=net, rest=rest,
                    angle_push=round(rest + PUSH_END, 1), stroke=stroke,
-                   take_up=up, overtravel=over)
+                   take_up=up, overtravel=over,
+                   across=round(FLIP_FRAME[0] - settled['x_cut'], 3),
+                   along=round(FLIP_FRAME[1] - settled['rail_cut'], 3),
+                   bay=round(FLIP_BAY - takes[0], 3),
+                   slot=round(SLOT_WIDE - takes[1], 3))
+    settled['shut'] = settled['slot'] <= SLOT_SHUT
     if up < 0:
         raise SystemExit('turned round, the shaft moves %.2f mm and the pusher\'s '
                          'second slot gives back %.2f, which leaves the face %.2f '
@@ -1658,6 +2359,37 @@ def flipped(settled, lane_d, take_up, second, notes):
     if over < 0.54:
         notes.append('%.2f mm past the exit is less than any arm this has been printed '
                      'with: the shortest that dispensed had 0.54' % over)
+
+
+def clear_of(box, standing, tol=5e-3):
+    """A box's sides moved clear of any vertex they would land near.
+
+    `standing` is the x and y of every vertex the cut can reach, interleaved.
+    A side whose nearest one falls in the band - near it, but not on it - which
+    is the caller's own test for a side that will sliver, is taken
+    two bands further out, which leaves the vertex it was grazing well behind.
+    Outward always, so a box only ever grows and still holds whatever it was
+    cut to hold, and the step repeats, because the move can set the side
+    beside a vertex of its own. It gives up after a dozen tries and leaves the
+    side where it is, for the caller's own check to refuse.
+
+    A side already on a vertex is left there: the cut goes through a point the
+    mesh has, which is the clean case, and moving it off would change parts
+    this already cuts well. Onto the nearest vertex rather than past it would
+    be the neater move for the rest, but it is not safe on this mesh - a side
+    landed exactly on one opened it, the clip leaving degenerate pieces at the
+    point - so a side that has to move is kept away from vertices instead.
+    """
+    out = list(box)
+    for n in range(4):
+        far = n % 2
+        for _ in range(12):
+            at = out[n]
+            off = min(abs(v - at) for v in standing[n // 2::2])
+            if not 1e-4 < off < tol:
+                break
+            out[n] = at + 2 * tol if far else at - 2 * tol
+    return tuple(out)
 
 
 def share(total, bands):
@@ -1700,8 +2432,9 @@ def recipes(p):
     if p['lift']:
         body.append(('lift', 'z', LEDGE_AT, p['lift']))
     if p['flip']:
-        body += turn_round(p['slide'])
-        body += cable_rail()
+        body += turn_round(p['slide'], p['across'], p['along'], p['lift'])
+        body += motor_bevel(p['across'], p['along'], p['lift'])
+        body += cable_rail(p['across'], p['along'], p['lift'], p['bay'], p['shut'])
 
     pusher = []
     if p['x_cut']:
@@ -1738,9 +2471,15 @@ def recipes(p):
             ('pin', 'pin-%s' % p['name'], [('shaft',) + SHAFT])]
 
 
-def turn_round(slide):
+def turn_round(slide, across=0.0, along=0.0, up=0.0):
     """The pocket, with its bay `slide` further back and its floor opened the
     other way.
+
+    The three offsets carry the recipe from the frame its numbers were measured
+    in to the one this piece cuts: `across` and `along` are what this piece
+    leaves of the width and of the rail that the small body gave up, and `up` is
+    what the ledge was raised by for a thicker piece, which the servo box rose
+    with. All three are zero for that body, and the recipe is then what it was.
 
     Three moves, a fill and two carves, in that order. The bay goes back by
     cutting that much more off the rail - which only shortens the body - and then
@@ -1760,29 +2499,61 @@ def turn_round(slide):
     ends of the bay rather than none. Last, a hole for the flange screw, the bay
     having carried the flange away from the one it used.
     """
-    far = BAY[1] - slide
-    wide = (OPENING[1] - OPENING[0]) / 2.0
-    seam = round((OPENING_END + BUTTRESS) / 2.0 - slide, 3)
-    screw = round(SCREWS[0] - slide + (SCREWS[1] - SCREWS[0]), 3)
+    far = BAY[1] + along - slide
+    seam = round((OPENING_END + BUTTRESS) / 2.0 + along - slide, 3)
+    screw = round(SCREWS[0] + along - slide + (SCREWS[1] - SCREWS[0]), 4)
     shaft = round(far - (SHAFT_AT - BAY[0]), 3)         # where it is, turned round
-    old = (round(BAY[0] - slide, 3), round(OPENING_END - slide, 3))
+    axis = round((OPENING[0] + OPENING[1]) / 2.0 + across, 4)   # the x it stands on
+    old = (round(BAY[0] + along - slide, 3), round(OPENING_END + along - slide, 3))
+    turn = round(BAY[0] + BAY[1] + 2.0 * along - 2.0 * slide, 3)
+    #                                                   # the y the servo turns about,
+    #                                                   # doubled: the bay's middle
+    hole = (FAR_SCREW[0] + across, FAR_SCREW[1] + along)        # the stranded screw
+    cap = (DRIVER[0] + across, round(DRIVER[1] + along - slide, 3))   # and driver hole
+    floor = (FLOOR_PLATE[0] + up, FLOOR_PLATE[1] + up)
+    seat = (SEAT_PLATE[0] + up, SEAT_PLATE[1] + up)
     return [('lift', 'y', seam, slide),
-            ('plane', 'y', BAY[1], round(-slide, 3)),
-            ('plane', 'y', BUTTRESS, BUTTRESS_FORWARD),
-            ('plug', OPENING[0] - 0.5, OPENING[1] + 0.5, old[0] - 0.5, old[1] + 0.5,
-             FLOOR_UNDER, FLOOR_Z[1],
-             round((OPENING[0] + OPENING[1]) / 2.0, 3),
-             round(shaft - IDLER, 3)),
-            ('slit', round(SCREW[0] - SCREW[1] / 2, 3), round(SCREW[0] + SCREW[1] / 2, 3),
-             round(screw - SCREW[1] / 2, 3), round(screw + SCREW[1] / 2, 3),
-             SEAT_Z[0], SEAT_Z[1]),
-            ('slit', OPENING[0], OPENING[1],
-             round(shaft - IDLER - IDLER_WIDE, 3), round(far, 3),
-             FLOOR_Z[0], FLOOR_Z[1])]
+            ('plane', 'y', BAY[1] + along, round(-slide, 3)),
+            ('plane', 'y', BUTTRESS + along, BUTTRESS_FORWARD),
+            ('read', axis, round(SHAFT_AT + along - slide, 3),
+             floor[0], floor[1], 'opening'),
+            ('read', hole[0], hole[1], seat[0], seat[1], 'screw'),
+            ('read', cap[0], cap[1], BASE_PLATE[0], BASE_PLATE[1], 'driver'),
+            ('plug', OPENING[0] + across - 0.5, OPENING[1] + across + 0.5,
+             old[0] - 0.5, old[1] + 0.5,
+             FLOOR_UNDER + up, floor[1], axis, round(shaft - IDLER, 3)),
+            ('punch', 'screw', False, None, screw,
+             SEAT_Z[0] + up, SEAT_Z[1] + up, seat[0], seat[1],
+             PLATE_LAP, SCREW_WIDE),
+            ('punch', 'opening', True, axis, round(turn - (old[0] + old[1]) / 2.0, 4),
+             FLOOR_Z[0] + up, FLOOR_Z[1] + up, floor[0], floor[1],
+             PLATE_LAP, 0.000),
+            ('punch', 'driver', False, axis, shaft,
+             BASE_CUT[0], BASE_CUT[1], BASE_PLATE[0], BASE_PLATE[1],
+             PLATE_LAP, 0.000),
+            ('plug', hole[0] - 1.5, hole[0] + 1.5, hole[1] - 1.5, hole[1] + 1.5,
+             seat[0], seat[1], hole[0], hole[1]),
+            ('plug', cap[0] - 3.0, cap[0] + 3.0,
+             round(cap[1] - 3.0, 3), round(cap[1] + 3.0, 3),
+             BASE_PLATE[0], BASE_PLATE[1], cap[0], cap[1])]
 
 
-def cable_rail():
-    """A wall for the cable to run against, as five boxes.
+def motor_bevel(across=0.0, along=0.0, up=0.0):
+    """The bevel under the motor filed onto the one under the module bay."""
+    def through(a, b):
+        m = (b[1] - a[1]) / (b[0] - a[0])
+        return round(a[1] - m * (a[0] + along) + up, 6), round(m, 9)
+
+    was = through(*MOTOR_BEVEL)
+    now = through((CHAN_Y[0], BEZEL_AT), (BAY_BACK, BAY_BEVEL))
+    knee = round((MOTOR_BOX + up - now[0]) / now[1], 3)
+    return [('file', MOTOR_X[0] + across, MOTOR_X[1] + across,
+             MOTOR_BEVEL[0][0] + along - 0.1, MOTOR_BEVEL[1][0] + along + 0.1,
+             was, now, MOTOR_BOX + up, knee, MOTOR_FLOOR + up)]
+
+
+def cable_rail(across=0.0, along=0.0, up=0.0, bay=0.0, shut=True):
+    """A wall for the cable to run against, as six boxes and one moved face.
 
     The magazine's side wall carried forward over the tower, with the module
     rail's window in it, and a tie across to the tower's inner rail. Four boxes
@@ -1791,20 +2562,69 @@ def cable_rail():
     way rather than cut, the window is simply the gap the legs leave, so
     nothing has to be carved out of a wall 1.5 mm thick.
 
-    What it is not is a closed channel. The wall it stands on is 1.5 mm wide
-    and a three-wire servo lead is about 3.6 by 1.3, so the lead runs on edge
-    against this wall rather than inside anything. A channel it could lie flat
-    in would have to hang outboard of the body, which is a wider change than
-    this one.
+    That wall faces along x, so on its own it only gives the lead an edge to
+    rest against. What confines the lead is the last box: a wall facing the
+    other way, across the body, parallel to the magazine's front and back
+    faces and in the plane the module's own slot is in. The lead runs behind
+    it, in the 12.10 between it and the magazine's front face, which takes a
+    three-wire lead lying flat. It comes down to the top of the motor slot and
+    stands on the two faces that end there, and over the slot between them it
+    is a lintel, which is what the lead crosses under on its way behind.
+
+    Either way it starts at the far side of the module bay's own wall and laps
+    into it, so the front of the body is one face from there to the far side
+    of the one carried forward. What lies between is a slot, the height of the
+    body, between the bay's wall and the rail: 11.525 mm before anything is
+    cut, and whatever the width band leaves of it after. The wall is prolonged
+    straight across it.
+
+    The moved face is the bay's outer one, and it only moves when `shut` -
+    when the slot is down to a crack, as it is on the small body, where the
+    band leaves 1.025 mm it cannot reach. Taking the face out then closes the
+    crack for nothing. On a wider one it would stand a block of solid the
+    height of the body in the slot and take the room beside the module's
+    headers with it, so the slot is left open behind the wall. Three boxes
+    take its place. The first is the ledge under the bay carried across the
+    slot, hung off the bay wall at the height of the bezel's underside; the
+    second is the bezel carried across on top of that, standing on it and
+    running to the top of the body, which is why that one does not lap - what
+    joins it to the bay's own bezel is the ledge under both; and the third is
+    the wall over the motor slot, standing on that
+    slot's top as before and lapping into the second. So the front of the body
+    has no notch under it and the module's ledge runs the width of the bay and
+    the slot, while above the ledge the slot is still open.
+
+    The offsets are turn_round's: what this piece leaves of the width and of
+    the rail the small body gave up, and what the ledge was raised by. `bay`
+    is the width one again for the module bay's own wall, which sits below the
+    slot and so moves by a different amount from everything outboard of it.
     """
-    x0, x1 = RAIL_X
-    y0, y1 = RAIL_Y
-    w0, w1 = RAIL_WINDOW
-    return [('boss', x0, x1, y0, y1, RAIL_AT, RAIL_SILL),
-            ('boss', x0, x1, y0, w0, RAIL_SILL, RAIL_HEAD),
-            ('boss', x0, x1, w1, y1, RAIL_SILL, RAIL_HEAD),
-            ('boss', x0, x1, y0, y1, RAIL_HEAD, RAIL_TOP),
-            ('boss', BRIDGE_X, x0, BRIDGE_Y, y1, BRIDGE_AT, RAIL_SILL)]
+    x0, x1 = RAIL_X[0] + across, RAIL_X[1] + across
+    y0, y1 = RAIL_Y[0] + along, RAIL_Y[1] + along
+    w0, w1 = RAIL_WINDOW[0] + along, RAIL_WINDOW[1] + along
+    rib = BRIDGE_X + across
+    ops = [('boss', SEAM_X + across, x1, SEAM_Y[0] + along, SEAM_Y[1] + along,
+            SEAM_AT + up, RAIL_TOP + up),
+           ('boss', x0, x1, y0, y1, RAIL_AT + up, RAIL_SILL + up),
+           ('boss', x0, x1, y0, w0, RAIL_SILL + up, RAIL_HEAD + up),
+           ('boss', x0, x1, w1, y1, RAIL_SILL + up, RAIL_HEAD + up),
+           ('boss', x0, x1, y0, y1, RAIL_HEAD + up, RAIL_TOP + up),
+           ('boss', rib, x0, BRIDGE_Y + along, y1, BRIDGE_AT + up, RAIL_SILL + up)]
+    wall = CHAN_WALL + bay
+    end = CHAN_END + bay
+    if shut:
+        ops.append(('plane', 'x', wall, round(rib - wall, 3)))
+        ops.append(('boss', end, x0, CHAN_Y[0] + along, CHAN_Y[1] + along,
+                    CHAN_AT + up, CHAN_TOP + up, round(rib - end, 3)))
+    else:
+        ops.append(('boss', end, rib, CHAN_Y[0] + along, BAY_BACK + along,
+                    BEZEL_AT + up, BAY_TOP + up, round(wall - end, 3), True,
+                    BAY_BEVEL + up))
+        ops.append(('boss', wall, rib, CHAN_Y[0] + along, CHAN_Y[1] + along,
+                    BAY_TOP + up, CHAN_TOP + up))
+        ops.append(('boss', rib - CHAN_LAP, x0, CHAN_Y[0] + along, CHAN_Y[1] + along,
+                    CHAN_AT + up, CHAN_TOP + up, CHAN_LAP))
+    return ops
 
 
 def describe(p, parts):
@@ -1855,6 +2675,15 @@ def describe(p, parts):
         print('            to z %.0f with the module rail\'s own window in it, and '
               'tied across to the tower\'s inner rail'
               % RAIL_TOP)
+        print('            and a wall %.2f thick across the body at y %.3f, from the '
+              'top of the motor slot at z %.3f to z %.0f'
+              % (CHAN_Y[1] - CHAN_Y[0], CHAN_Y[0], CHAN_AT, CHAN_TOP))
+        if p['shut']:
+            print('            with the module bay\'s outer wall taken out %.3f mm to '
+                  'the rail beside it, closing what was left of the slot' % p['slot'])
+        else:
+            print('            prolonged over the %.2f mm slot beside the module bay, '
+                  'which is left open behind it' % p['slot'])
         print('   arm      clamped %.1f degrees back at rest instead of %.1f, so '
               'anglePush is %.1f' % (p['rest'], REST, p['angle_push']))
         print('            which is what keeps its far end off the wall the stack '
@@ -1962,6 +2791,7 @@ def main():
             print('   cut %s %.2f..%.2f  (%.2f mm), %d lines through it agree'
                   % (axis, a, b, b - a, checked))
             tris = narrower
+        taken = {}
         for op in recipe:
             if op[0] == 'lift':
                 _, axis, at, amount = op
@@ -1988,11 +2818,40 @@ def main():
                       'agree, %d through the ramp not looked at'
                       % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
                 tris = stepped
+            elif op[0] == 'file':
+                _, xa, xb, y0, y1, was, now, flat, knee, floor = op
+                rubbed, hits, more = filed(tris, xa, xb, y0, y1, now, flat, knee, floor)
+                checked, done, skipped, wrong = verify_filed(
+                    tris, rubbed, xa, xb, y0, y1, now, flat, floor)
+                if wrong:
+                    raise SystemExit('%s: filing the face at x %.3f..%.3f does not hold '
+                                     'up: %d of %d lines disagree, first at x %.2f '
+                                     'y %.2f' % ((target_name, xa, xb, len(wrong),
+                                                  checked + done) + wrong[0][:2]))
+                was_m, now_m = measure(tris), measure(rubbed)
+                if now_m['open_edges'] != was_m['open_edges']:
+                    raise SystemExit('%s: filing the face at x %.3f..%.3f left the mesh '
+                                     'open: %d edges against %d'
+                                     % (target_name, xa, xb, now_m['open_edges'],
+                                        was_m['open_edges']))
+                print('   filed the face on z = %.3f %+.6f y up onto z = %.3f %+.6f y, '
+                      'flat at %.3f in front of y %.3f: %.0f mm3 off'
+                      % (was[0], was[1], now[0], now[1], flat, knee,
+                         was_m['volume'] - now_m['volume']))
+                print('   %d points moved, %d faces flattened into it; %d '
+                      'lines over it now meet it there, %d elsewhere are as they were, '
+                      '%d near a side not looked at'
+                      % (hits, more, done, checked, skipped))
+                tris = rubbed
             elif op[0] == 'boss':
-                xa, xb, y0, y1, at, to = op[1:]
-                stood, added = boss(tris, xa, xb, y0, y1, at, to)
+                xa, xb, y0, y1, at, to = op[1:7]
+                lap = op[7] if len(op) > 7 else 0.0
+                hang = op[8] if len(op) > 8 else False
+                slope = op[9] if len(op) > 9 else None
+                stood, added = boss(tris, xa, xb, y0, y1, at, to, lap=lap, hang=hang,
+                                    slope=slope)
                 checked, standing, skipped, wrong = verify_boss(
-                    tris, stood, xa, xb, y0, y1, at, to)
+                    tris, stood, xa + lap, xb, y0, y1, at, to)
                 if wrong:
                     raise SystemExit('%s: the wall at y %.3f..%.3f does not hold up: '
                                      '%d of %d lines disagree, first at x %.2f y %.2f'
@@ -2009,8 +2868,11 @@ def main():
                                      '%d edges against %d'
                                      % (target_name, y0, y1, now['open_edges'],
                                         was['open_edges']))
-                print('   stood a box %.2f x %.2f on the face at z %.3f, up to %.3f'
-                      % (xb - xa, y1 - y0, at, to))
+                print('   %s a box %.2f x %.2f %s z %.3f%s, up to %.3f%s'
+                      % ('hung' if hang else 'stood', xb - xa, y1 - y0,
+                         'from' if hang else 'on the face at', at,
+                         '' if slope is None else ' falling to %.3f' % slope, to,
+                         ', lapping %.2f into the wall at its end' % lap if lap else ''))
                 print('   it added %.0f mm3, which is the box to 0.05; %d lines over it '
                       'now stop at its top, %d elsewhere stop where they did, %d along '
                       'its walls not looked at'
@@ -2045,6 +2907,102 @@ def main():
                       'rim or under the seats not looked at'
                       % (gained, closed, checked, skipped))
                 tris = filled
+            elif op[0] == 'read':
+                px, py, zlo, zhi, name = op[1:]
+                taken[name] = outline(tris, px, py, zlo, zhi)
+                print('   read the outline of the hole round (%.3f, %.3f) between '
+                      'z %.3f and %.3f: %d vertices, %.3f mm2'
+                      % (px, py, zlo, zhi, len(taken[name]),
+                         _twice(taken[name]) / 2.0))
+            elif op[0] == 'punch':
+                name, over, tx, ty, czlo, czhi, zlo, zhi, lap, wide = op[1:]
+                if name not in taken:
+                    raise SystemExit('%s: no outline was read under %r' % (target_name, name))
+                ring = taken[name]
+                if over:
+                    ring = [(-p[0], -p[1]) for p in ring]
+                was_mid = _middle(ring)
+                dx = 0.0 if tx is None else tx - was_mid[0]
+                dy = ty - was_mid[1]
+                ring = [(round(p[0] + dx, 4), round(p[1] + dy, 4)) for p in ring]
+                box = (min(p[0] for p in ring) - wide, max(p[0] for p in ring) + wide,
+                       min(p[1] for p in ring) - wide, max(p[1] for p in ring) + wide)
+                standing = [p[k] for p in (q for t in tris for q in t)
+                            if not (czlo is not None
+                                    and (p[2] <= czlo + 1e-4 or p[2] >= czhi - 1e-4))
+                            for k in (0, 1)]
+                was = box
+                box = clear_of(box, standing)
+                if box != was:
+                    print('   its box moved %s off vertices it would have grazed: '
+                          'x %.4f..%.4f y %.4f..%.4f, was x %.4f..%.4f y %.4f..%.4f'
+                          % ((name,) + box + was))
+                for k, at, which in ((0, box[0], 'x'), (0, box[1], 'x'),
+                                     (1, box[2], 'y'), (1, box[3], 'y')):
+                    off = [abs(v - at) for v in standing[k::2]]
+                    if off and 1e-4 < min(off) < 5e-3:
+                        raise SystemExit('%s: a side of the box for the %s would stand '
+                                         'at %s = %.4f, %.6f from a vertex already '
+                                         'there: near enough to cut a face into slivers '
+                                         'and not near enough to be snapped onto it'
+                                         % (target_name, name, which, at, min(off)))
+                cleared, removed, columns = slit(tris, box[0], box[1], box[2],
+                                                 box[3], czlo, czhi)
+                checked, inside, skipped, wrong = verify_slit(
+                    tris, cleared, box[0], box[1], box[2], box[3], czlo, czhi)
+                if wrong:
+                    raise SystemExit('%s: clearing the way for %s at y %.3f..%.3f does '
+                                     'not hold up: %d of %d lines disagree, first at '
+                                     'x %.2f y %.2f'
+                                     % ((target_name, name, box[2], box[3], len(wrong),
+                                         checked + inside) + wrong[0][:2]))
+                was, now = measure(tris), measure(cleared)
+                if abs((was['volume'] - now['volume']) - removed) > 0.05:
+                    raise SystemExit('%s: clearing the way for %s took %.3f mm3 and the '
+                                     'box is %.3f'
+                                     % (target_name, name,
+                                        was['volume'] - now['volume'], removed))
+                if now['open_edges'] != was['open_edges']:
+                    raise SystemExit('%s: clearing the way for %s left the mesh open: '
+                                     '%d edges against %d'
+                                     % (target_name, name, now['open_edges'],
+                                        was['open_edges']))
+                print('   cleared a box %.3f x %.3f for the %s, at x %.3f..%.3f '
+                      'y %.3f..%.3f: %.0f mm3, the box to 0.05'
+                      % (box[1] - box[0], box[3] - box[2], name,
+                         box[0], box[1], box[2], box[3], removed))
+                stood, added, facets = panel(cleared, box[0] - lap, box[1] + lap,
+                                             box[2] - lap, box[3] + lap,
+                                             zlo, zhi, ring)
+                checked, standing, through, skipped, wrong = verify_panel(
+                    cleared, stood, box[0] - lap, box[1] + lap, box[2] - lap,
+                    box[3] + lap,
+                    zlo, zhi, ring)
+                if wrong:
+                    raise SystemExit('%s: the plate round the %s does not hold up: %d '
+                                     'of %d lines disagree, first at x %.2f y %.2f, '
+                                     '%r against %r'
+                                     % ((target_name, name, len(wrong),
+                                         checked + standing + through) + wrong[0]))
+                was, now = measure(cleared), measure(stood)
+                made = now['volume'] - was['volume']
+                if abs(made - added) > 0.05:
+                    raise SystemExit('%s: the plate round the %s put back %.3f mm3 and '
+                                     'the plate less its hole is %.3f'
+                                     % (target_name, name, made, added))
+                if now['open_edges'] != was['open_edges']:
+                    raise SystemExit('%s: the plate round the %s left the mesh open: '
+                                     '%d edges against %d'
+                                     % (target_name, name, now['open_edges'],
+                                        was['open_edges']))
+                print('   put the plate back round it in %d facets, lapping %.2f over '
+                      'what is there: %.0f mm3, the plate less its hole to 0.05'
+                      % (facets, lap, added))
+                print('   %d lines over the plate now stop at its faces, %d through '
+                      'the hole still meet nothing, %d elsewhere are as they were, '
+                      '%d near a wall not looked at'
+                      % (standing, through, checked, skipped))
+                tris = stood
             elif op[0] == 'slit':
                 xa, xb, y0, y1 = op[1:5]
                 zlo, zhi = op[5:7] if len(op) > 5 else (None, None)
