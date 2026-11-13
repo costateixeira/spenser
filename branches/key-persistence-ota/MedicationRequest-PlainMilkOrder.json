@@ -1,0 +1,25 @@
+{
+  "resourceType" : "MedicationRequest",
+  "id" : "PlainMilkOrder",
+  "meta" : {
+    "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+  },
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: MedicationRequest PlainMilkOrder</b></p><a name=\"PlainMilkOrder\"> </a><a name=\"hcPlainMilkOrder\"> </a><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profile: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p></div><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}\">Milk Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p></div>"
+  },
+  "status" : "active",
+  "intent" : "instance-order",
+  "medication" : {
+    "concept" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+        "code" : "chocolate-milk",
+        "display" : "Milk Chocolate"
+      }]
+    }
+  },
+  "subject" : {
+    "reference" : "Patient/123"
+  }
+}

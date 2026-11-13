@@ -1,0 +1,43 @@
+{
+  "resourceType" : "ValueSet",
+  "id" : "SpenserMedsVS",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ValueSet SpenserMedsVS</b></p><a name=\"SpenserMedsVS\"> </a><a name=\"hcSpenserMedsVS\"> </a><ul><li>Include all codes defined in <a href=\"CodeSystem-SpenserMeds.html\"><code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code></a><span title=\"Version is not explicitly stated, which means it is fixed to the version provided in this specification\"> version &#x1F4E6;1.0.0</span></li></ul></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ValueSet SpenserMedsVS</b></p><a name=\"pt-SpenserMedsVS\"> </a><a name=\"pt-hcSpenserMedsVS\"> </a><ul><li>Include todos os códigos definidos em <a href=\"CodeSystem-SpenserMeds.html\"><code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code></a><span title=\"Version is not explicitly stated, which means it is fixed to the version provided in this specification\"> versão &#x1F4E6;1.0.0</span></li></ul></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ValueSet SpenserMedsVS</b></p><a name=\"nl-SpenserMedsVS\"> </a><a name=\"nl-hcSpenserMedsVS\"> </a><ul><li>Include alle codes gedefinieerd in <a href=\"CodeSystem-SpenserMeds.html\"><code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code></a><span title=\"Versie is niet expliciet, wat betekent dat het de vaste waarde heeft uit deze specificatie\"> versie &#x1F4E6;1.0.0</span></li></ul></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ValueSet SpenserMedsVS</b></p><a name=\"fr-SpenserMedsVS\"> </a><a name=\"fr-hcSpenserMedsVS\"> </a><ul><li>Include tous les codes définis dans <a href=\"CodeSystem-SpenserMeds.html\"><code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code></a><span title=\"La version n'est pas explicitement indiquée, ce qui signifie quelle est fixée à la version fournie dans cette spécification\"> version &#x1F4E6;1.0.0</span></li></ul></div></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS",
+  "version" : "1.0.0",
+  "name" : "SpenserMedsVS",
+  "title" : "Spenser Medications - ValueSet",
+  "status" : "active",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A value set of medications that Spenser can dispense.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "compose" : {
+    "include" : [{
+      "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
+    }]
+  }
+}

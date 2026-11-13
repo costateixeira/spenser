@@ -1,0 +1,13 @@
+{
+  "version": "1.3.0+32957de",
+  "channel": "build",
+  "released": "2026-11-13T21:23:08Z",
+  "firmware": "https://costateixeira.github.io/spenser/firmware/firmware.bin",
+  "filesystem": "https://costateixeira.github.io/spenser/firmware/spiffs.bin",
+  "firmwareSha256": "db279e6a67023d0f99421d9616591700b5015afa26e622689dcf4681efbe3b36",
+  "filesystemSha256": "e9ba83c1e65c459595e2250e204977d7c895b6d491c76f5c4b13c7090179188c",
+  "firmwareBytes": 1438352,
+  "filesystemBytes": 1572864,
+  "notes": "- docs: filter a unit's Tasks by the logical reference the order tools use (c227468, 2026-11-07)\n- dispensingDevice: an order can name its unit on the request itself (55da894, 2026-11-07)\n- firmware 1.3: a unit knows its name, and takes only the Tasks meant for it (112cbce, 2026-11-07)\n- IG: assembly instructions, pt/nl/fr translations, Spenser template (015f647, 2026-11-07)",
+  "notesUrl": "https://costateixeira.github.io/spenser/firmware/"
+}

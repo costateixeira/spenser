@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CapabilityStatement xmlns="http://hl7.org/fhir">
+  <id value="SpenserFHIRCapabilityStatement"/>
+  <language value="pt"/>
+  <text>
+    <status value="extensions"/><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: CapabilityStatement SpenserFHIRCapabilityStatement</b></p><a name="pt-SpenserFHIRCapabilityStatement"> </a><a name="pt-hcSpenserFHIRCapabilityStatement"> </a><h2 id="pt-title"/><ul><li>Guia de implementação Versão: 1.0.0 </li><li>Versão FHIR: 5.0.0 </li><li>Formatos suportados: <code>json</code></li><li>Publicado em: 2025-04-18 </li><li>Publicado por: José Costa Teixeira </li></ul><blockquote class="impl-note"><p><strong>Nota para os implementadores: Capacidades FHIR</strong></p><p>Qualquer capacidade FHIR pode ser &quot;permitida&quot; pelo sistema, exceto se for explicitamente assinalada como &quot;NÃO DEVE&quot;. Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização.</p></blockquote><h2 id="pt-rest">Capacidades FHIR RESTful</h2><h3 id="pt-rest1">Configuração REST: 1 </h3><div class="panel panel-default"><div class="panel-heading"><h4 id="pt-mode1" class="panel-title">Mode: <code>server</code></h4></div><div class="panel-body"/></div><h4 id="pt-resourcesCap1">Capacidades por recurso/perfil</h4><h5 id="pt-resourcesSummary1">Resumo</h5><p>A tabela de resumo enumera os recursos que fazem parte desta configuração e, para cada recurso, enumera-os:</p><ul><li>Os perfis relevantes (se existirem)</li><li>As interações suportadas por cada recurso (<b><span class="bg-info">R</span></b>ead, <b><span class="bg-info">S</span></b>earch, <b><span class="bg-info">U</span></b>pdate, and <b><span class="bg-info">C</span></b>reate, are always shown, while <b><span class="bg-info">VR</span></b>ead, <b><span class="bg-info">P</span></b>atch, <b><span class="bg-info">D</span></b>elete, <b><span class="bg-info">H</span></b>istory on <b><span class="bg-info">I</span></b>nstance, or <b><span class="bg-info">H</span></b>istory on <b><span class="bg-info">T</span></b>só estão presentes se pelo menos um dos recursos os suportar.</li><li><span>Os parâmetros de pesquisa obrigatórios, recomendados e alguns opcionais (se existirem). </span></li><li>Os recursos ligados activados para <code>_include</code></li><li>Os outros recursos activados para <code>_revinclude</code></li><li>As operações sobre o recurso (se existirem)</li></ul><div class="table-responsive"><table class="table table-condensed table-hover"><thead><tr><th><b>Tipo de recurso</b></th><th><b>Perfil</b></th><th class="text-center"><b title="GET um recurso (interação de leitura)">R</b></th><th class="text-center"><b title="GET todo o conjunto de recursos do tipo (interação de pesquisa)">S</b></th><th class="text-center"><b title="PUT uma nova versão do recurso (interação de atualização)">U</b></th><th class="text-center"><b title="POST um novo recurso (criar interação)">C</b></th><th><b title="Parâmetros de pesquisa necessários e recomendados">Pesquisas</b></th><th><code><b>_include</b></code></th><th><code><b>_revinclude</b></code></th><th><b>Operações</b></th></tr></thead><tbody><tr><td><a href="#pt-MedicationRequest1-1">MedicationRequest</a></td><td> </td><td class="text-center"/><td class="text-center"/><td class="text-center"/><td class="text-center">y</td><td/><td/><td/><td/></tr><tr><td><a href="#pt-MedicationDispense1-2">MedicationDispense</a></td><td> </td><td class="text-center">y</td><td class="text-center"/><td class="text-center"/><td class="text-center"/><td/><td/><td/><td/></tr><tr><td><a href="#pt-InventoryReport1-3">InventoryReport</a></td><td> </td><td class="text-center">y</td><td class="text-center"/><td class="text-center"/><td class="text-center">y</td><td/><td/><td/><td/></tr></tbody></table></div><hr/><div class="panel panel-default"><div class="panel-heading"><h5 id="pt-MedicationRequest1-1" class="panel-title"><span style="float: right;">Conformidade do recurso: unspecified </span>MedicationRequest</h5></div><div class="panel-body"><div class="container"><div class="row"><div class="col-lg-4"><span class="lead">Recurso FHIR principal</span><br/><a href="http://hl7.org/fhir/medicationrequest.html">MedicationRequest</a></div><div class="col-lg-4"><span class="lead">Política de referência</span><br/></div><div class="col-lg-4"><span class="lead">Resumo da interação</span><br/><ul><li>Apoios <code>create</code>.</li></ul></div></div><p/><p/></div></div></div><div class="panel panel-default"><div class="panel-heading"><h5 id="pt-MedicationDispense1-2" class="panel-title"><span style="float: right;">Conformidade do recurso: unspecified </span>MedicationDispense</h5></div><div class="panel-body"><div class="container"><div class="row"><div class="col-lg-4"><span class="lead">Recurso FHIR principal</span><br/><a href="http://hl7.org/fhir/medicationdispense.html">MedicationDispense</a></div><div class="col-lg-4"><span class="lead">Política de referência</span><br/></div><div class="col-lg-4"><span class="lead">Resumo da interação</span><br/><ul><li>Apoios <code>read</code>.</li></ul></div></div><p/><p/></div></div></div><div class="panel panel-default"><div class="panel-heading"><h5 id="pt-InventoryReport1-3" class="panel-title"><span style="float: right;">Conformidade do recurso: unspecified </span>InventoryReport</h5></div><div class="panel-body"><div class="container"><div class="row"><div class="col-lg-4"><span class="lead">Recurso FHIR principal</span><br/><a href="http://hl7.org/fhir/inventoryreport.html">InventoryReport</a></div><div class="col-lg-4"><span class="lead">Política de referência</span><br/></div><div class="col-lg-4"><span class="lead">Resumo da interação</span><br/><ul><li>Apoios <code>read</code>, <code>create</code>.</li></ul></div></div><p/><p/></div></div></div><h3 id="pt-rest2">Configuração REST: 2 </h3><div class="panel panel-default"><div class="panel-heading"><h4 id="pt-mode2" class="panel-title">Mode: <code>client</code></h4></div><div class="panel-body"><div><p>Spenser also acts as a client: it polls a server for orders it should fulfil. Following the COW guidance on actionable orders, an order is only dispensed when the MedicationRequest carries the 'actionable' tag, or when a Task asks for it to be fulfilled.</p>
+</div></div></div><h4 id="pt-resourcesCap2">Capacidades por recurso/perfil</h4><h5 id="pt-resourcesSummary2">Resumo</h5><p>A tabela de resumo enumera os recursos que fazem parte desta configuração e, para cada recurso, enumera-os:</p><ul><li>Os perfis relevantes (se existirem)</li><li>As interações suportadas por cada recurso (<b><span class="bg-info">R</span></b>ead, <b><span class="bg-info">S</span></b>earch, <b><span class="bg-info">U</span></b>pdate, and <b><span class="bg-info">C</span></b>reate, are always shown, while <b><span class="bg-info">VR</span></b>ead, <b><span class="bg-info">P</span></b>atch, <b><span class="bg-info">D</span></b>elete, <b><span class="bg-info">H</span></b>istory on <b><span class="bg-info">I</span></b>nstance, or <b><span class="bg-info">H</span></b>istory on <b><span class="bg-info">T</span></b>só estão presentes se pelo menos um dos recursos os suportar.</li><li><span>Os parâmetros de pesquisa obrigatórios, recomendados e alguns opcionais (se existirem). </span></li><li>Os recursos ligados activados para <code>_include</code></li><li>Os outros recursos activados para <code>_revinclude</code></li><li>As operações sobre o recurso (se existirem)</li></ul><div class="table-responsive"><table class="table table-condensed table-hover"><thead><tr><th><b>Tipo de recurso</b></th><th><b>Perfil</b></th><th class="text-center"><b title="GET um recurso (interação de leitura)">R</b></th><th class="text-center"><b title="GET todo o conjunto de recursos do tipo (interação de pesquisa)">S</b></th><th class="text-center"><b title="PUT uma nova versão do recurso (interação de atualização)">U</b></th><th class="text-center"><b title="POST um novo recurso (criar interação)">C</b></th><th><b title="Parâmetros de pesquisa necessários e recomendados">Pesquisas</b></th><th><code><b>_include</b></code></th><th><code><b>_revinclude</b></code></th><th><b>Operações</b></th></tr></thead><tbody><tr><td><a href="#pt-MedicationRequest2-1">MedicationRequest</a></td><td> </td><td class="text-center"/><td class="text-center">y</td><td class="text-center">y</td><td class="text-center"/><td>_tag, status, intent</td><td/><td/><td/></tr><tr><td><a href="#pt-Task2-2">Task</a></td><td> </td><td class="text-center"/><td class="text-center">y</td><td class="text-center">y</td><td class="text-center"/><td>status</td><td><code>Task:focus</code></td><td/><td/></tr><tr><td><a href="#pt-MedicationDispense2-3">MedicationDispense</a></td><td> </td><td class="text-center"/><td class="text-center"/><td class="text-center"/><td class="text-center">y</td><td/><td/><td/><td/></tr></tbody></table></div><hr/><div class="panel panel-default"><div class="panel-heading"><h5 id="pt-MedicationRequest2-1" class="panel-title"><span style="float: right;">Conformidade do recurso: unspecified </span>MedicationRequest</h5></div><div class="panel-body"><div class="container"><div class="row"><div class="col-lg-4"><span class="lead">Recurso FHIR principal</span><br/><a href="http://hl7.org/fhir/medicationrequest.html">MedicationRequest</a></div><div class="col-lg-4"><span class="lead">Política de referência</span><br/></div><div class="col-lg-4"><span class="lead">Resumo da interação</span><br/><ul><li>Apoios <code>search-type</code>, <code>update</code>.</li></ul></div></div><p/><p/><div class="row"><div class="col-12"><span class="lead">Documentação</span><blockquote><div><p>Searched for orders tagged as actionable. Set to 'completed' after dispensing, when no Task is coordinating the work.</p>
+</div></blockquote></div></div><div class="row"><div class="col-lg-7"><span class="lead">Parâmetros de pesquisa</span><table class="table table-condensed table-hover"><thead><tr><th>Conformidade</th><th>Parâmetro</th><th>Tipo</th><th>Documentação</th></tr></thead><tbody><tr><td><b>SHALL</b></td><td>_tag</td><td><code>token</code></td><td><div><p>Selects orders tagged http://terminology.hl7.org/CodeSystem/common-tags#actionable</p>
+</div></td></tr><tr><td><b>SHALL</b></td><td>status</td><td><code>token</code></td><td><div/></td></tr><tr><td><b>SHALL</b></td><td>intent</td><td><code>token</code></td><td><div/></td></tr></tbody></table></div><div class="col-lg-5"> </div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h5 id="pt-Task2-2" class="panel-title"><span style="float: right;">Conformidade do recurso: unspecified </span>Task</h5></div><div class="panel-body"><div class="container"><div class="row"><div class="col-lg-4"><span class="lead">Recurso FHIR principal</span><br/><a href="http://hl7.org/fhir/task.html">Task</a></div><div class="col-lg-4"><span class="lead">Política de referência</span><br/></div><div class="col-lg-4"><span class="lead">Resumo da interação</span><br/><ul><li>Apoios <code>search-type</code>, <code>update</code>.</li></ul></div></div><p/><p/><div class="row"><div class="col-12"><span class="lead">Documentação</span><blockquote><div><p>Coordination Task pointing at the order in Task.focus. Set to 'completed' with the dispense in Task.output; the status of the request itself is left to the placer.</p>
+</div></blockquote></div></div><div class="row"><div class="col-lg-7"><span class="lead">Parâmetros de pesquisa</span><table class="table table-condensed table-hover"><thead><tr><th>Conformidade</th><th>Parâmetro</th><th>Tipo</th><th>Documentação</th></tr></thead><tbody><tr><td><b>SHALL</b></td><td>status</td><td><code>token</code></td><td><div/></td></tr></tbody></table></div><div class="col-lg-5"> </div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h5 id="pt-MedicationDispense2-3" class="panel-title"><span style="float: right;">Conformidade do recurso: unspecified </span>MedicationDispense</h5></div><div class="panel-body"><div class="container"><div class="row"><div class="col-lg-4"><span class="lead">Recurso FHIR principal</span><br/><a href="http://hl7.org/fhir/medicationdispense.html">MedicationDispense</a></div><div class="col-lg-4"><span class="lead">Política de referência</span><br/></div><div class="col-lg-4"><span class="lead">Resumo da interação</span><br/><ul><li>Apoios <code>create</code>.</li></ul></div></div><p/><p/><div class="row"><div class="col-12"><span class="lead">Documentação</span><blockquote><div><p>Created on the server once an order has been dispensed, referring to the order in authorizingPrescription.</p>
+</div></blockquote></div></div></div></div></div></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/CapabilityStatement/SpenserFHIRCapabilityStatement"/>
+  <version value="1.0.0"/>
+  <status value="active"/>
+  <date value="2025-04-18"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <kind value="instance"/>
+  <implementation>
+    <description value="Spenser FHIR Endpoint"/>
+  </implementation>
+  <fhirVersion value="5.0.0"/>
+  <format value="json"/>
+  <rest>
+    <mode value="server"/>
+    <resource>
+      <type value="MedicationRequest"/>
+      <interaction>
+        <code value="create"/>
+      </interaction>
+    </resource>
+    <resource>
+      <type value="MedicationDispense"/>
+      <interaction>
+        <code value="read"/>
+      </interaction>
+    </resource>
+    <resource>
+      <type value="InventoryReport"/>
+      <interaction>
+        <code value="read"/>
+      </interaction>
+      <interaction>
+        <code value="create"/>
+      </interaction>
+    </resource>
+  </rest>
+  <rest>
+    <mode value="client"/>
+    <documentation value="Spenser also acts as a client: it polls a server for orders it should fulfil. Following the COW guidance on actionable orders, an order is only dispensed when the MedicationRequest carries the 'actionable' tag, or when a Task asks for it to be fulfilled."/>
+    <resource>
+      <type value="MedicationRequest"/>
+      <documentation value="Searched for orders tagged as actionable. Set to 'completed' after dispensing, when no Task is coordinating the work."/>
+      <interaction>
+        <code value="search-type"/>
+      </interaction>
+      <interaction>
+        <code value="update"/>
+      </interaction>
+      <searchParam>
+        <name value="_tag"/>
+        <type value="token"/>
+        <documentation value="Selects orders tagged http://terminology.hl7.org/CodeSystem/common-tags#actionable"/>
+      </searchParam>
+      <searchParam>
+        <name value="status"/>
+        <type value="token"/>
+      </searchParam>
+      <searchParam>
+        <name value="intent"/>
+        <type value="token"/>
+      </searchParam>
+    </resource>
+    <resource>
+      <type value="Task"/>
+      <documentation value="Coordination Task pointing at the order in Task.focus. Set to 'completed' with the dispense in Task.output; the status of the request itself is left to the placer."/>
+      <interaction>
+        <code value="search-type"/>
+      </interaction>
+      <interaction>
+        <code value="update"/>
+      </interaction>
+      <searchInclude value="Task:focus"/>
+      <searchParam>
+        <name value="status"/>
+        <type value="token"/>
+      </searchParam>
+    </resource>
+    <resource>
+      <type value="MedicationDispense"/>
+      <documentation value="Created on the server once an order has been dispensed, referring to the order in authorizingPrescription."/>
+      <interaction>
+        <code value="create"/>
+      </interaction>
+    </resource>
+  </rest>
+</CapabilityStatement>

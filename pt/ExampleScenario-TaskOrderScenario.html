@@ -1,0 +1,504 @@
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Scenario - Ordering through an order server - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"14.12"}
+    h3,h4,h5,h6{--heading-prefix:"14.12"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - o companheiro do programador</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International bandeira" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Início</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuração</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilização</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Desenho 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Lista de materiais</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montagem</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Sobre
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Autores</a>
+      </li>
+      <li>
+        <a href="downloads.html">Transferências</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefactos</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-pt.png"/>Português</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Língua:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag pt" src="assets/images/lang-pt.png"/>Português</div>
+
+    <div><a href="../en/ExampleScenario-TaskOrderScenario.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../nl/ExampleScenario-TaskOrderScenario.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/ExampleScenario-TaskOrderScenario.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Índice</b></a></li><li><a href='artifacts.html'><b>Resumo de Artefactos</b></a></li><li><b>Scenario - Ordering through an order server</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<!-- layouts\layout-examplescenario -->
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publicado por José Costa Teixeira. Este guia não é uma publicação autorizada; é a compilação contínua para a versão 1.0.0 construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> e muda regularmente. Veja o <a href='http://costateixeira.github.io/spenser/history.html'>Diretório de versões publicadas</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  
+
+
+
+
+
+
+
+
+
+
+<ul class="nav nav-tabs">
+
+  <li class="active">
+    <a href="#">Conteúdo narrativo</a>
+  </li>
+
+
+
+  
+    <li>
+      <a href="ExampleScenario-TaskOrderScenario.xml.html">XML</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="ExampleScenario-TaskOrderScenario.json.html">JSON</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="ExampleScenario-TaskOrderScenario.ttl.html">TTL</a>
+    </li>
+  
+
+
+
+</ul>
+
+  <a name="root"> </a>
+
+
+  <h2 id="root">ExampleScenario: Scenario - Ordering through an order server
+(Experimental)
+  </h2>
+
+  <table class="colsi" data-fhir="generated">
+
+    <tr>
+      <td colspan="4"><i>URL oficial</i>: <span class="copy-text">http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario<button title="Clique para copiar o URL" class="btn-copy" data-clipboard-text="http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario"/></span>
+      </td>
+      <td><i>Versão</i>:
+      <span class="copy-text">1.0.0<button title="Clique para copiar o URL com versão" class="btn-copy" data-clipboard-text="http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario|1.0.0"/></span>
+      </td>
+      <td style="text-align: right;border-left-style: hidden" title="Enable this to see changes since the last official release">
+        <span id="toggle-change-display"><label style="margin:0;font-weight:normal" for="showChanges">Destacar alterações no texto?</label>
+  
+        <input style="margin:0" type="checkbox" id="showChanges" onchange="toggleChanges()"/>
+  
+      </span>
+      </td>
+    </tr>
+
+    <tr>
+
+
+
+
+
+
+
+      <td colspan="5">
+        
+          Active
+          
+
+            a partir de 
+2026-11-13
+
+          
+        
+      </td>
+
+
+
+      <td><i>Nome computável</i>: <span style="font-family: monospace;">TaskOrderScenario</span></td>
+    </tr>
+
+
+
+
+  </table>
+
+
+<div data-fhir="generated">
+<p>A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did.</p>
+
+</div>
+
+
+<div data-fhir="generated">
+
+
+</div>
+
+  <!-- insert intro if present -->
+  
+
+
+
+<a name="actors"> </a>
+<h3>Actores</h3>
+  <div data-fhir="generated"><p class="res-header-id"></p><a name="TaskOrderScenario"> </a><a name="hcTaskOrderScenario"> </a>
+<table class="table-striped table-bordered" data-fhir="generated"><tr><th>Nome</th><th>Tipo</th><th>Descrição</th></tr>
+<tr><td><a name="a_placer"> </a>Order Placer</td>
+<td>System</td>
+<td style="overflow-wrap:break-word"><div><p>Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not.</p>
+</div></td></tr>
+<tr><td><a name="a_server"> </a>Order Server</td>
+<td>System</td>
+<td style="overflow-wrap:break-word"><div><p>A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer <code>_include=Task:focus</code>.</p>
+</div></td></tr>
+<tr><td><a name="a_spenser"> </a>Spenser Unit</td>
+<td>System</td>
+<td style="overflow-wrap:break-word"><div><p>Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.</p>
+</div></td></tr></table></div>
+
+<a name="diagram"> </a>
+<h3>Diagrama</h3>
+  <?plantuml 1.2026.1?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="SEQUENCE" height="363px" preserveAspectRatio="none" style="width:674px;height:363px;background:#FFFFFF;" version="1.1" viewBox="0 0 674 363" width="674px" zoomAndPan="magnify"><title xmlns="">Ordering through an order server</title><defs xmlns=""/><g xmlns=""><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="265.2617" x="206.0664" y="27.9951">Ordering through an order server</text><g><title>...a_placer.Creates the order and the Task. and closes the order once the Task is done. A Task closes itself. a MedicationRequest does not.. Order Placer..</title><rect fill="#FFFFFF" height="236.0625" style="stroke:#181818;stroke-width:1;" width="10" x="65.7295" y="83.5938"/></g><g><title>...a_server.A plain FHIR server. It holds the order and the Task until a unit collects them. and it has to answer ._include.Task.focus... Order Server..</title><rect fill="#FFFFFF" height="132.6641" style="stroke:#181818;stroke-width:1;" width="10" x="332.9614" y="83.5938"/></g><g><title>...a_spenser.Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.. Spenser Unit..</title><rect fill="#FFFFFF" height="161.6641" style="stroke:#181818;stroke-width:1;" width="10" x="601.4585" y="157.9922"/></g><rect fill="none" height="221.0625" style="stroke:#000000;stroke-width:1.5;" width="658.3945" x="10" y="90.5938"/><g class="participant-lifeline" data-entity-uid="part1" data-qualified-name="placer" id="part1-lifeline"><g><title>...a_placer.Creates the order and the Task. and closes the order once the Task is done. A Task closes itself. a MedicationRequest does not.. Order Placer..</title><rect fill="#000000" fill-opacity="0.00000" height="255.0625" width="8" x="66.7295" y="73.5938"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;" x1="70" x2="70" y1="73.5938" y2="328.6563"/></g></g><g class="participant-lifeline" data-entity-uid="part2" data-qualified-name="server" id="part2-lifeline"><g><title>...a_server.A plain FHIR server. It holds the order and the Task until a unit collects them. and it has to answer ._include.Task.focus... Order Server..</title><rect fill="#000000" fill-opacity="0.00000" height="255.0625" width="8" x="333.9614" y="73.5938"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;" x1="337.7656" x2="337.7656" y1="73.5938" y2="328.6563"/></g></g><g class="participant-lifeline" data-entity-uid="part3" data-qualified-name="spenser" id="part3-lifeline"><g><title>...a_spenser.Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.. Spenser Unit..</title><rect fill="#000000" fill-opacity="0.00000" height="255.0625" width="8" x="602.4585" y="73.5938"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;" x1="605.5225" x2="605.5225" y1="73.5938" y2="328.6563"/></g></g><g class="participant participant-head" data-entity-uid="part1" data-qualified-name="placer" id="part1-head"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="101.459" x="20" y="42.2969"/><a href="#a_placer" target="_top" title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not." xlink:actuate="onRequest" xlink:href="#a_placer" xlink:show="new" xlink:title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="87.459" x="27" y="62.292">Order Placer</text></a></g><g class="participant participant-tail" data-entity-uid="part1" data-qualified-name="placer" id="part1-tail"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="101.459" x="20" y="327.6563"/><a href="#a_placer" target="_top" title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not." xlink:actuate="onRequest" xlink:href="#a_placer" xlink:show="new" xlink:title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="87.459" x="27" y="347.6514">Order Placer</text></a></g><g class="participant participant-head" data-entity-uid="part2" data-qualified-name="server" id="part2-head"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="104.3916" x="285.7656" y="42.2969"/><a href="#a_server" target="_top" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`." xlink:actuate="onRequest" xlink:href="#a_server" xlink:show="new" xlink:title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="90.3916" x="292.7656" y="62.292">Order Server</text></a></g><g class="participant participant-tail" data-entity-uid="part2" data-qualified-name="server" id="part2-tail"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="104.3916" x="285.7656" y="327.6563"/><a href="#a_server" target="_top" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`." xlink:actuate="onRequest" xlink:href="#a_server" xlink:show="new" xlink:title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="90.3916" x="292.7656" y="347.6514">Order Server</text></a></g><g class="participant participant-head" data-entity-uid="part3" data-qualified-name="spenser" id="part3-head"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="103.8721" x="554.5225" y="42.2969"/><a href="#a_spenser" target="_top" title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone." xlink:actuate="onRequest" xlink:href="#a_spenser" xlink:show="new" xlink:title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="89.8721" x="561.5225" y="62.292">Spenser Unit</text></a></g><g class="participant participant-tail" data-entity-uid="part3" data-qualified-name="spenser" id="part3-tail"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="103.8721" x="554.5225" y="327.6563"/><a href="#a_spenser" target="_top" title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone." xlink:actuate="onRequest" xlink:href="#a_spenser" xlink:show="new" xlink:title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="89.8721" x="561.5225" y="347.6514">Spenser Unit</text></a></g><g><title>...a_placer.Creates the order and the Task. and closes the order once the Task is done. A Task closes itself. a MedicationRequest does not.. Order Placer..</title><rect fill="#FFFFFF" height="236.0625" style="stroke:#181818;stroke-width:1;" width="10" x="65.7295" y="83.5938"/></g><g><title>...a_server.A plain FHIR server. It holds the order and the Task until a unit collects them. and it has to answer ._include.Task.focus... Order Server..</title><rect fill="#FFFFFF" height="132.6641" style="stroke:#181818;stroke-width:1;" width="10" x="332.9614" y="83.5938"/></g><g><title>...a_spenser.Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.. Spenser Unit..</title><rect fill="#FFFFFF" height="161.6641" style="stroke:#181818;stroke-width:1;" width="10" x="601.4585" y="157.9922"/></g><path d="M10,90.5938 L371.437,90.5938 L371.437,97.7266 L361.437,107.7266 L10,107.7266 L10,90.5938" fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="221.0625" style="stroke:#000000;stroke-width:1.5;" width="658.3945" x="10" y="90.5938"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="311.9111" x="25" y="103.6606">Order a chocolate through an order server</text><a href="#node1" target="_top" title="Place the work, let the unit find it, and read back what it did." xlink:actuate="onRequest" xlink:href="#node1" xlink:show="new" xlink:title="Place the work, let the unit find it, and read back what it did." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="42.104" x="386.437" y="102.8042">details</text></a><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg1"><polygon fill="#181818" points="320.9614,124.8594,330.9614,128.8594,320.9614,132.8594,324.9614,128.8594" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="75.7295" x2="326.9614" y1="128.8594" y2="128.8594"/><a href="#node2" target="_top" title="Nothing happens yet, and that is the point." xlink:actuate="onRequest" xlink:href="#node2" xlink:show="new" xlink:title="Nothing happens yet, and that is the point." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="167.2607" x="82.7295" y="123.7935">POST /MedicationRequest</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="254.1226" y="123.7935">(</text><a href="#i_orderv_order-active" target="_top" title="#i_orderv_order-active" xlink:actuate="onRequest" xlink:href="#i_orderv_order-active" xlink:show="new" xlink:title="#i_orderv_order-active" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="259.1943" y="123.7935">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="310.8896" y="123.7935">)</text></g><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg2"><polygon fill="#181818" points="320.9614,153.9922,330.9614,157.9922,320.9614,161.9922,324.9614,157.9922" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="75.7295" x2="326.9614" y1="157.9922" y2="157.9922"/><a href="#node3" target="_top" title="`code` is `fulfill`, `focus` is the order, `requestedPerformer` is the unit. Leave `requestedPerformer` out and any unit polling that server may take it." xlink:actuate="onRequest" xlink:href="#node3" xlink:show="new" xlink:title="`code` is `fulfill`, `focus` is the order, `requestedPerformer` is the unit. Leave `requestedPerformer` out and any unit polling that server may take it." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="72.9854" x="82.7295" y="152.9263">POST /Task</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="159.8472" y="152.9263">(</text><a href="#i_taskv_task-requested" target="_top" title="#i_taskv_task-requested" xlink:actuate="onRequest" xlink:href="#i_taskv_task-requested" xlink:show="new" xlink:title="#i_taskv_task-requested" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="164.9189" y="152.9263">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="216.6143" y="152.9263">)</text></g><g class="message" data-entity-1="part3" data-entity-2="part2" id="msg3"><polygon fill="#181818" points="353.9614,183.125,343.9614,187.125,353.9614,191.125,349.9614,187.125" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="347.9614" x2="600.4585" y1="187.125" y2="187.125"/><a href="#node4" target="_top" title="`GET /Task?status=requested&amp;_include=Task:focus&amp;_count=5`. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with." xlink:actuate="onRequest" xlink:href="#node4" xlink:show="new" xlink:title="`GET /Task?status=requested&amp;_include=Task:focus&amp;_count=5`. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="64.9492" x="359.9614" y="182.0591">GET /Task</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="97.8618" x="424.9106" y="182.0591">activate server</text></g><g class="message" data-entity-1="part2" data-entity-2="part3" id="msg4"><polygon fill="#181818" points="589.4585,212.2578,599.4585,216.2578,589.4585,220.2578,593.4585,216.2578" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;stroke-dasharray:2,2;" x1="337.9614" x2="595.4585" y1="216.2578" y2="216.2578"/><a href="#node4" target="_top" title="`GET /Task?status=requested&amp;_include=Task:focus&amp;_count=5`. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with." xlink:actuate="onRequest" xlink:href="#node4" xlink:show="new" xlink:title="`GET /Task?status=requested&amp;_include=Task:focus&amp;_count=5`. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="59.3315" x="344.9614" y="211.1919">response</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="408.4253" y="211.1919">(</text><a href="#i_taskv_task-requested" target="_top" title="#i_taskv_task-requested" xlink:actuate="onRequest" xlink:href="#i_taskv_task-requested" xlink:show="new" xlink:title="#i_taskv_task-requested" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="413.4971" y="211.1919">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="465.1924" y="211.1919">)</text></g><g class="message" data-entity-1="part3" data-entity-2="part2" id="msg5"><polygon fill="#181818" points="348.9614,241.3906,338.9614,245.3906,348.9614,249.3906,344.9614,245.3906" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="342.9614" x2="600.4585" y1="245.3906" y2="245.3906"/><a href="#node5" target="_top" title="The servo turns and a piece drops out, and then the unit says so. The write is queued and retried, so a server that was briefly unreachable does not cost the record." xlink:actuate="onRequest" xlink:href="#node5" xlink:show="new" xlink:title="The servo turns and a piece drops out, and then the unit says so. The write is queued and retried, so a server that was briefly unreachable does not cost the record." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="173.5259" x="354.9614" y="240.3247">POST /MedicationDispense</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="532.6196" y="240.3247">(</text><a href="#i_dispense" target="_top" title="#i_dispense" xlink:actuate="onRequest" xlink:href="#i_dispense" xlink:show="new" xlink:title="#i_dispense" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="537.6914" y="240.3247">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="589.3867" y="240.3247">)</text></g><g class="message" data-entity-1="part3" data-entity-2="part2" id="msg6"><polygon fill="#181818" points="348.9614,270.5234,338.9614,274.5234,348.9614,278.5234,344.9614,274.5234" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="342.9614" x2="600.4585" y1="274.5234" y2="274.5234"/><a href="#node6" target="_top" title="`PUT /Task/&lt;id&gt;`: `status` becomes `completed`, with the dispense in `Task.output`. Sent with `If-Match`, so a Task somebody else has moved on is not overwritten." xlink:actuate="onRequest" xlink:href="#node6" xlink:show="new" xlink:title="`PUT /Task/&lt;id&gt;`: `status` becomes `completed`, with the dispense in `Task.output`. Sent with `If-Match`, so a Task somebody else has moved on is not overwritten." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="64.0161" x="354.9614" y="269.4575">PUT /Task</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="423.1099" y="269.4575">(</text><a href="#i_taskv_task-completed" target="_top" title="#i_taskv_task-completed" xlink:actuate="onRequest" xlink:href="#i_taskv_task-completed" xlink:show="new" xlink:title="#i_taskv_task-completed" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="428.1816" y="269.4575">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="479.877" y="269.4575">)</text></g><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg7"><polygon fill="#181818" points="325.9614,299.6563,335.9614,303.6563,325.9614,307.6563,329.9614,303.6563" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="75.7295" x2="331.9614" y1="303.6563" y2="303.6563"/><a href="#node7" target="_top" title="`PUT /MedicationRequest/&lt;id&gt;`. The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that." xlink:actuate="onRequest" xlink:href="#node7" xlink:show="new" xlink:title="`PUT /MedicationRequest/&lt;id&gt;`. The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="158.2915" x="82.7295" y="298.5903">PUT /MedicationRequest</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="245.1533" y="298.5903">(</text><a href="#i_orderv_order-completed" target="_top" title="#i_orderv_order-completed" xlink:actuate="onRequest" xlink:href="#i_orderv_order-completed" xlink:show="new" xlink:title="#i_orderv_order-completed" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="250.2251" y="298.5903">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="301.9204" y="298.5903">)</text></g><?plantuml-src xLRRRXit47tNLmnI86W1Iq4lIG6tJX6qQMiWQOpOVWe4BqMEl8GeSajo9Mo5_7iEBrghYLJu0_gI3UaXvvmpXpEwqT4mlVEAlRRt55ll-lkMX2MNzYYmtx2VJ3hXevQw4pRIamyVlX9tdH6I_UvNpo9om4ckHuHLUNKZmkeihwHnuLyXpaeUOqW7KixoZ5wLTGtNCR1P_aI2thBIKaJjx7l-k-SG4Oy0w-BiOy5ELndDVFw4HA02xGZcmcRtAaLeIx__UVc-CfpHPQJM6NMA2VKsQWCmlTMHf3E6PSp1wq8IkoroHuTLsE9qSwUjDBtYYtJ-VEba7veHy7LEMm5NbOy0xjY6X5Z6L9wMFQTuKQ1Bezd633sA5HHnrWmPyTRv5GcbF8V0Ae42l8JIiDWWa95kY6swaqt0dIOLu2DTbtnq2v9xR6LhChc7DRgANf1i7KH0wKzvXa30EiNVxd9jHbXdm13pAYkvr5cxeY6yf6WXv8gshOW9iz8Ai1H7eKsOpoS2GcnIrbhZSRsNC6_Jz6NTED_3-6xtbok4Mz4bIZHmpHfphbBupccRN7Nrxlg6ddrXlFcSliQ5-YuptPJFD8F0MJ4O9zHy_irf6D_l6ebFa_8rozuijJ7D6VwRtR57aQ_5hYzPMLsnNpg_PZ-69F5cz2QLytYSwql5XHsAqXqyMzuuwDOQhSMGhGEfHzB9hIFFYCKc_piTanmIVT2_sgH-Zr3_OTVyyRhU_qk88lRXOhppwP77ylHEEhowY-VDZ6xsVaaiaj5XmQZNIQLC4dvas4R2XC84HulqJbR02ZbeCQ3eLitejP1jZJJEhV2GYXENseTaHMY95zERM9xI6U4cWL2e1fmzfxmflggNia5ct-DZkLny0DNpcjSBzc5qSseGmYIN3_2qC96sEhPGVXHcFl_SqJNND0bQjFrVqKSeYgoTWrgFTZ9EVwxyIIi_tzrKp8vYxz5CYcITPdGwvLqN4erzUs7xqE-26D1JNI6rzHhfyAAp5ghsmEWrgwfKrIM_sIsuBl2tfKal6fnbAnQOtljXYAaKYlgU9Lh8aJRscowaHbLKtJXKuZJl5xlcwhOQxjdFMhripgafncjW4EdMG886j-xGurcXiQLgP4XZ8ipT9fsVGQ2kZt3YDOPO2MmkbzEt8igsgVJpv0suTk5Gu3ogKiNNRWErO1rTY6FfavQHRI9z-nzTR0Jtg7RzOoNynI0ex4iLw-c7dotajdKM7dXtNwNpPDjKolAQC9hJ3CXsV_Z5L9rj7I87SajQMRTDpNlRCjJqXpzI-jWwh__1NMldqvmLDljbhyGZXzXHOTYgoIS0?></g></svg>
+
+<a name="processes"> </a>
+<h3>Processos</h3>
+  <div data-fhir="generated"><p class="res-header-id"></p>
+<div><a name="node1"> </a><b>Processo: Order a chocolate through an order server </b>
+<div><p>Place the work, let the unit find it, and read back what it did.</p>
+</div><p><b><i>Condições prévias:</i></b></p>
+<div><p>The unit has been pointed at the order server and its polling is on. The unit has written its own Device on the server, so a Task can name it.</p>
+</div><p><b><i>Pós-condições:</i></b></p>
+<div><p>A chocolate has been dispensed, the dispense is on the server, the Task is completed, and the order is closed.</p>
+</div>
+<table style="width:100%" class="table-striped table-bordered" data-fhir="generated"><tr><th>Etapa</th><th>Nome</th><th>Descrição</th><th>Iniciador</th><th>Recetor</th><th>Pedido</th><th>Resposta</th></tr>
+<tr><td><a name="node2"> </a>1</td>
+<td>POST /MedicationRequest - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">create (Detalhes: FHIR Restful Interactions código create)</a></td>
+<td><div><p>Nothing happens yet, and that is the point.</p>
+</div></td>
+<td><a href="#a_placer" title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not.">Order Placer</a></td>
+<td><a href="#a_server" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`.">Order Server</a></td>
+<td><a href="#i_orderv_order-active" title="As created: authorized, and not yet filled.">active</a></td>
+<td></td></tr>
+<tr><td><a name="node3"> </a>2</td>
+<td>POST /Task - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">create (Detalhes: FHIR Restful Interactions código create)</a></td>
+<td><div><p><code>code</code> is <code>fulfill</code>, <code>focus</code> is the order, <code>requestedPerformer</code> is the unit. Leave <code>requestedPerformer</code> out and any unit polling that server may take it.</p>
+</div></td>
+<td><a href="#a_placer" title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not.">Order Placer</a></td>
+<td><a href="#a_server" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`.">Order Server</a></td>
+<td><a href="#i_taskv_task-requested" title="As created. Every other unit polling the same server skips it.">requested</a></td>
+<td></td></tr>
+<tr colspan="7"><td><p><i>Alternativa Tag the order instead of creating a Task </i></p><div><p>Put <code>actionable</code> from common-tags in the order's <code>meta.tag</code> and skip the Task. A unit accepts both routes on every check, and <code>orderMode</code> narrows it to one. With no Task coordinating the work the unit completes the MedicationRequest itself, and step 6 does not happen.</p>
+</div></td></tr>
+<tr><td><a name="node4"> </a>3</td>
+<td>GET /Task - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">search-type (Detalhes: FHIR Restful Interactions código search-type)</a></td>
+<td><div><p><code>GET /Task?status=requested&amp;_include=Task:focus&amp;_count=5</code>. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with.</p>
+</div></td>
+<td><a href="#a_spenser" title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.">Spenser Unit</a></td>
+<td><a href="#a_server" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`.">Order Server</a></td>
+<td></td>
+<td><a href="#i_taskv_task-requested" title="As created. Every other unit polling the same server skips it.">requested</a></td></tr>
+<tr><td><a name="node5"> </a>4</td>
+<td>POST /MedicationDispense - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">create (Detalhes: FHIR Restful Interactions código create)</a></td>
+<td><div><p>The servo turns and a piece drops out, and then the unit says so. The write is queued and retried, so a server that was briefly unreachable does not cost the record.</p>
+</div></td>
+<td><a href="#a_spenser" title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.">Spenser Unit</a></td>
+<td><a href="#a_server" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`.">Order Server</a></td>
+<td><a href="#i_dispense" title="What the unit writes back, naming itself as `performer` and the order in `authorizingPrescription`.">The dispense</a></td>
+<td></td></tr>
+<tr colspan="7"><td><p><i>Alternativa The lane is empty </i></p><div><p>The unit writes a dispense with <code>status</code> of <code>declined</code> and <code>notPerformedReason.concept</code> of <code>outofstock</code>. Whether the Task is then left open, so a refill retries it, or closed as failed, is the unit's <code>keepOrders</code> setting.</p>
+</div></td></tr>
+<tr><td><a name="node6"> </a>5</td>
+<td>PUT /Task - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">update (Detalhes: FHIR Restful Interactions código update)</a></td>
+<td><div><p><code>PUT /Task/\&lt;id&gt;</code>: <code>status</code> becomes <code>completed</code>, with the dispense in <code>Task.output</code>. Sent with <code>If-Match</code>, so a Task somebody else has moved on is not overwritten.</p>
+</div></td>
+<td><a href="#a_spenser" title="Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.">Spenser Unit</a></td>
+<td><a href="#a_server" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`.">Order Server</a></td>
+<td><a href="#i_taskv_task-completed" title="After the chocolate came out, with the dispense in `Task.output`.">completed</a></td>
+<td></td></tr>
+<tr><td><a name="node7"> </a>6</td>
+<td>PUT /MedicationRequest - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">update (Detalhes: FHIR Restful Interactions código update)</a></td>
+<td><div><p><code>PUT /MedicationRequest/\&lt;id&gt;</code>. The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that.</p>
+</div></td>
+<td><a href="#a_placer" title="Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not.">Order Placer</a></td>
+<td><a href="#a_server" title="A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`.">Order Server</a></td>
+<td><a href="#i_orderv_order-completed" title="After the placer closes it. The unit does not touch the order while a Task is coordinating the work.">completed</a></td>
+<td></td></tr></table></div></div>
+
+<a name="instances"> </a>
+<h3>Instâncias</h3>
+  <div data-fhir="generated"><p class="res-header-id"></p>
+<table class="table-striped table-bordered" data-fhir="generated"><tr><th>Nome</th><th>Tipo</th><th>Conteúdo</th><th>Descrição</th></tr>
+<tr><td><a name="i_order"> </a>The order</td>
+<td rowSpan="3"><a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></td>
+<td><a href="MedicationRequest-PlainDarkOrderForOneUnit.html">here</a></td>
+<td><div><p>An untagged MedicationRequest, naming the unit meant to fill it in the <code>dispensingDevice</code> extension. On its own it sits there.</p>
+</div></td></tr>
+<tr><td style="padding-left: 10px;"><a name="i_orderv_order-active"> </a><ul><li>active</li></ul></td>
+<td><a href="MedicationRequest-PlainDarkOrderForOneUnit.html">here</a></td>
+<td><div><p>An untagged MedicationRequest, naming the unit meant to fill it in the <code>dispensingDevice</code> extension. On its own it sits there.</p>
+</div></td></tr>
+<tr><td style="padding-left: 10px;"><a name="i_orderv_order-completed"> </a><ul><li>completed</li></ul></td>
+<td></td>
+<td><div><p>An untagged MedicationRequest, naming the unit meant to fill it in the <code>dispensingDevice</code> extension. On its own it sits there.</p>
+</div></td></tr>
+<tr><td><a name="i_task"> </a>The Task</td>
+<td rowSpan="3"><a href="http://hl7.org/fhir/R5/task.html">Task</a></td>
+<td><a href="Task-FulfillForOneUnit.html">here</a></td>
+<td><div><p>A <code>fulfill</code> Task whose <code>focus</code> is the order and whose <code>requestedPerformer</code> is the unit. This is what makes the order actionable.</p>
+</div></td></tr>
+<tr><td style="padding-left: 10px;"><a name="i_taskv_task-requested"> </a><ul><li>requested</li></ul></td>
+<td><a href="Task-FulfillForOneUnit.html">here</a></td>
+<td><div><p>A <code>fulfill</code> Task whose <code>focus</code> is the order and whose <code>requestedPerformer</code> is the unit. This is what makes the order actionable.</p>
+</div></td></tr>
+<tr><td style="padding-left: 10px;"><a name="i_taskv_task-completed"> </a><ul><li>completed</li></ul></td>
+<td></td>
+<td><div><p>A <code>fulfill</code> Task whose <code>focus</code> is the order and whose <code>requestedPerformer</code> is the unit. This is what makes the order actionable.</p>
+</div></td></tr>
+<tr><td><a name="i_dispense"> </a>The dispense</td>
+<td><a href="http://hl7.org/fhir/R5/medicationdispense.html">MedicationDispense</a></td>
+<td><a href="MedicationDispense-DispenseForTaskOrder.html">here</a></td>
+<td><div><p>What the unit writes back, naming itself as <code>performer</code> and the order in <code>authorizingPrescription</code>.</p>
+</div></td></tr></table></div>
+
+  <!-- insert notes if present -->
+  
+
+
+
+  
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pacote jct.fhir.spenser#1.0.0 baseado em <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gerado 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Ligações: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Índice</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Relatório de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

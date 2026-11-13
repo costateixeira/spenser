@@ -1,0 +1,193 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ActorDefinition/OrderServer> a fhir:ActorDefinition ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "OrderServer"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ActorDefinition OrderServer</b></p><a name=\"OrderServer\"> </a><a name=\"hcOrderServer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderServer </b></td><td>Order Server</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including <code>_include=Task:focus</code>. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.</p>\n<p>See <a href=\"interfaces.html#what-spenser-asks-of-an-order-server\">What Spenser asks of an order server</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ActorDefinition OrderServer</b></p><a name=\"pt-OrderServer\"> </a><a name=\"pt-hcOrderServer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderServer </b></td><td>Servidor de Prescrições</td><td>Tipo: system </td></tr><tr><td colspan=\"3\"><div><p>Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including <code>_include=Task:focus</code>. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.</p>\n<p>See <a href=\"interfaces.html#what-spenser-asks-of-an-order-server\">What Spenser asks of an order server</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ActorDefinition OrderServer</b></p><a name=\"nl-OrderServer\"> </a><a name=\"nl-hcOrderServer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderServer </b></td><td>Orderserver</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including <code>_include=Task:focus</code>. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.</p>\n<p>See <a href=\"interfaces.html#what-spenser-asks-of-an-order-server\">What Spenser asks of an order server</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ActorDefinition OrderServer</b></p><a name=\"fr-OrderServer\"> </a><a name=\"fr-hcOrderServer\"> </a><table class=\"grid\"><tr><td><b>Acteur : OrderServer </b></td><td>Serveur d'ordonnances</td><td>Type : system </td></tr><tr><td colspan=\"3\"><div><p>Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including <code>_include=Task:focus</code>. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.</p>\n<p>See <a href=\"interfaces.html#what-spenser-asks-of-an-order-server\">What Spenser asks of an order server</a>.</p>\n</div></td></tr></table></div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ActorDefinition/OrderServer"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [
+     fhir:v "OrderServer" ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "OrderServer"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "OrderServer"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "OrderServer"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:title [
+     fhir:v "Order Server" ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Servidor de Prescrições"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Orderserver"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Serveur d'ordonnances"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [
+     fhir:v "A FHIR server that holds orders until a Spenser Unit collects them, and receives what the unit reports back." ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Um servidor FHIR que guarda as prescrições até uma Unidade Spenser as recolher, e recebe o que a unidade comunica de volta."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Een FHIR-server die orders bewaart tot een Spenser-unit ze ophaalt, en ontvangt wat de unit terugmeldt."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Un serveur FHIR qui conserve les ordonnances jusqu'à ce qu'une unité Spenser vienne les chercher, et reçoit les comptes rendus de l'unité."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:type [ fhir:v "system"] ; # 
+  fhir:documentation [ fhir:v "Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including `_include=Task:focus`. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.\n\nSee [What Spenser asks of an order server](interfaces.html#what-spenser-asks-of-an-order-server)."] . # 
+
+# -------------------------------------------------------------------------------------
+

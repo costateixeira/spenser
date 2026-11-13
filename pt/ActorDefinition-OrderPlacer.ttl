@@ -1,0 +1,50 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer> a fhir:ActorDefinition ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "OrderPlacer"] ; # 
+  fhir:language [ fhir:v "pt"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ActorDefinition OrderPlacer</b></p><a name=\"pt-OrderPlacer\"> </a><a name=\"pt-hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderPlacer </b></td><td>Emissor de Prescrições</td><td>Tipo: system </td></tr><tr><td colspan=\"3\"><div><p>Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída.</p>\n</div></td></tr></table></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "OrderPlacer"] ; # 
+  fhir:title [ fhir:v "Emissor de Prescrições"] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:type [ fhir:v "system"] ; # 
+  fhir:documentation [ fhir:v "Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída."] . # 
+
+# -------------------------------------------------------------------------------------
+

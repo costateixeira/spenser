@@ -1,0 +1,90 @@
+[{
+  "id" : "OrderPlacer",
+  "type" : "ActorDefinition",
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer",
+  "version" : "1.0.0",
+  "name" : "OrderPlacer"
+},
+{
+  "id" : "OrderServer",
+  "type" : "ActorDefinition",
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/OrderServer",
+  "version" : "1.0.0",
+  "name" : "OrderServer"
+},
+{
+  "id" : "SpenserUnit",
+  "type" : "ActorDefinition",
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit",
+  "version" : "1.0.0",
+  "name" : "SpenserUnit"
+},
+{
+  "id" : "UnitOwner",
+  "type" : "ActorDefinition",
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/UnitOwner",
+  "version" : "1.0.0",
+  "name" : "UnitOwner"
+},
+{
+  "id" : "UpdatePublisher",
+  "type" : "ActorDefinition",
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/UpdatePublisher",
+  "version" : "1.0.0",
+  "name" : "UpdatePublisher"
+},
+{
+  "id" : "SpenserFHIRCapabilityStatement",
+  "type" : "CapabilityStatement",
+  "url" : "http://costateixeira.github.io/spenser/CapabilityStatement/SpenserFHIRCapabilityStatement",
+  "version" : "1.0.0"
+},
+{
+  "id" : "SpenserMeds",
+  "type" : "CodeSystem",
+  "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+  "version" : "1.0.0",
+  "name" : "SpenserMeds"
+},
+{
+  "id" : "DirectOrderScenario",
+  "type" : "ExampleScenario",
+  "url" : "http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario",
+  "version" : "1.0.0",
+  "name" : "DirectOrderScenario"
+},
+{
+  "id" : "TaskOrderScenario",
+  "type" : "ExampleScenario",
+  "url" : "http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario",
+  "version" : "1.0.0",
+  "name" : "TaskOrderScenario"
+},
+{
+  "id" : "jct.fhir.spenser",
+  "type" : "ImplementationGuide",
+  "url" : "http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser",
+  "version" : "1.0.0",
+  "name" : "Spenser"
+},
+{
+  "id" : "SpenserRequest",
+  "type" : "StructureDefinition",
+  "url" : "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest",
+  "version" : "1.0.0",
+  "name" : "SpenserRequest"
+},
+{
+  "id" : "dispensingDevice",
+  "type" : "StructureDefinition",
+  "url" : "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+  "version" : "1.0.0",
+  "name" : "DispensingDevice"
+},
+{
+  "id" : "SpenserMedsVS",
+  "type" : "ValueSet",
+  "url" : "http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS",
+  "version" : "1.0.0",
+  "name" : "SpenserMedsVS"
+}]

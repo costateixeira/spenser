@@ -1,0 +1,1216 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="nl" xmlns="http://www.w3.org/1999/xhtml" lang="nl" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Dispensing device - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"14.8"}
+    h3,h4,h5,h6{--heading-prefix:"14.8"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - de metgezel van de ontwikkelaar</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International vlag" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Startpagina</a>
+  </li>
+  <li>
+    <a href="setup.html">Installatie</a>
+  </li>
+  <li>
+    <a href="usage.html">Gebruik</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">3D-ontwerp</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Stuklijst</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montage</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Over
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Auteurs</a>
+      </li>
+      <li>
+        <a href="downloads.html">Downloads</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefacten</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-nl.png"/>Nederlands</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Taal:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag nl" src="assets/images/lang-nl.png"/>Nederlands</div>
+
+    <div><a href="../en/StructureDefinition-dispensingDevice.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../pt/StructureDefinition-dispensingDevice.html"><img class="flag" src="assets/images/lang-pt.png" alt="flag pt"/>Português</a></div>
+
+    <div><a href="../fr/StructureDefinition-dispensingDevice.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Inhoudsopgave</b></a></li><li><a href='artifacts.html'><b>Samenvatting artefacten</b></a></li><li><b>Dispensing device</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<!-- layouts\layout-ext -->
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, gepubliceerd door José Costa Teixeira. Deze gids is geen geautoriseerde publicatie; het is de continue build voor versie 1.0.0  gebouwd door FHIR (HL7&reg; FHIR&reg; Standaard) CI Build. Deze versie is gebaseerd op de huidige inhoud van <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> en wijzigt regelmatig. Zie het <a href='http://costateixeira.github.io/spenser/history.html'>overzicht van gepubliceerde versies</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="nav nav-tabs">
+
+  <li class="active">
+    <a href="#">Inhoud</a>
+  </li>
+
+
+
+  <li>
+    <a href="StructureDefinition-dispensingDevice-definitions.html">Gedetailleerde Beschrijvingen</a>
+  </li>
+
+
+
+  
+    <li>
+      <a href="StructureDefinition-dispensingDevice-mappings.html">Koppelingen</a>
+    </li>
+  
+
+
+
+
+
+
+
+  
+    <li>
+      <a href="StructureDefinition-dispensingDevice.profile.xml.html">XML</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="StructureDefinition-dispensingDevice.profile.json.html">JSON</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="StructureDefinition-dispensingDevice.profile.ttl.html">TTL</a>
+    </li>
+  
+
+
+</ul>
+
+  <a name="root"> </a>
+  <h2 id="root">Uitbreiding: Dispensing device
+
+  </h2>
+
+  <table class="colsi" data-fhir="generated">
+
+    <tr>
+      <td colspan="4"><i>Officiële URL</i>: <span class="copy-text">http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice<button title="Klik om URL te kopiëren" class="btn-copy" data-clipboard-text="http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"/></span>
+      </td>
+      <td><i>Versie</i>:
+      <span class="copy-text">1.0.0<button title="Klik om URL met versie te kopiëren" class="btn-copy" data-clipboard-text="http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice|1.0.0"/></span>
+      </td>
+      <td style="text-align: right;border-left-style: hidden" title="Schakel dit in om wijzigingen sinds de laatste officiële release te zien">
+        <span id="toggle-change-display"><label style="margin:0;font-weight:normal" for="showChanges">Tekstwijzigingen markeren?</label>
+  
+        <input style="margin:0" type="checkbox" id="showChanges" onchange="toggleChanges()"/>
+  
+      </span>
+      </td>
+    </tr>
+
+    <tr>
+
+
+
+
+
+
+
+      <td colspan="5">
+        
+          Active
+          
+
+            vanaf 
+2026-11-13
+
+          
+        
+      </td>
+
+
+
+      <td><i>Naam</i>: <span style="font-family: monospace;">DispensingDevice</span></td>
+    </tr>
+
+
+
+
+  </table>
+
+<div data-fhir="generated"><p>The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.</p>
+
+<p>R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.</p>
+
+<p>When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit.</p>
+</div>
+
+
+  <p><b>Context of Use</b></p>
+  <ul>
+  <p>Deze extensie kan worden gebruikt op de volgende element(en)</p>
+<ul>
+  <li>
+Element-id:     <code>
+<a href="http://hl7.org/fhir/R5/medicationrequest.html">MedicationRequest</a>    </code>
+  </li>
+</ul>
+
+  </ul>
+
+  <!-- insert intro if present -->
+  
+
+
+
+  <p><b>Usage info</b></p>
+  <p><b>Gebruik:</b></p>
+<ul>
+ <li>Gebruik Extensie: <a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></li>
+ <li>Voorbeelden voor Extensie: <a href="MedicationRequest-ActionableDarkOrderForOneUnit.html">MedicationRequest/ActionableDarkOrderForOneUnit</a> and <a href="MedicationRequest-PlainDarkOrderForOneUnit.html">MedicationRequest/PlainDarkOrderForOneUnit</a></li>
+</ul>
+<p>You can also check for <a href="https://packages2.fhir.org/xig/resource/jct.fhir.spenser|current/StructureDefinition/StructureDefinition-dispensingDevice.json">usages in the FHIR IG Statistics</a></p>
+
+  <!-- no uri -->
+  <a name="profile"> </a>
+  <h3 id="profile">Formele weergaven van de uitbreidingsinhoud</h3>
+  <p>
+    <a href="http://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#structure-definitions">Beschrijving van profielen, differentials, snapshots en hun representaties</a>.
+  </p>
+  <div id="tabs">
+    <ul>
+      <li>
+        <a href="#tabs-diff">Differentieletabel</a>
+      </li>
+      <li>
+        <a href="#tabs-snap">Momentopnametabel</a>
+      </li>
+
+
+      <!--<li>
+        <a href="#tabs-xml">Pseudo XML</a>
+      </li>-->
+
+
+      <!--<li>
+        <a href="#tabs-json">Pseudo JSON</a>
+      </li>-->
+
+
+      <!--<li>
+        <a href="#tabs-ttl">Pseudo TTL</a>
+      </li>-->
+
+      <li>
+        <a href="#tabs-summ">Statistieken/Referenties</a>
+      </li>
+      <li>
+        <a href="#tabs-all">Alles</a>
+      </li>
+    </ul>
+    
+    <a name="tabs-diff"> </a>
+    <div id="tabs-diff">
+      <div id="tbl-diff">
+        <p>Deze structuur is afgeleid van 
+      <a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a>
+    </p>
+        <div id="tbl-diff-inner">
+          <table border="0" fhir="generated-heirarchy" cellpadding="0" cellspacing="0" id="dispensingDeviceD" class="xhtTableBorder0" data-fhir="generated-heirarchy"><tr fhir="generated-heirarchy" class="xhtRowBorder1" data-fhir="generated-heirarchy"><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="De logische naam van het element" data-no-external="true">Naam</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Informatie over het gebruik van het element" data-no-external="true">Markeringen</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Minimum en maximum # keren dat het element kan voorkomen in de instance" data-no-external="true">Kard.</a></th><th scope="col" style="; width: 100px" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Referentie naar het type van het element" data-no-external="true">Type</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Additionele informatie over het element" data-no-external="true">Omschrijving &amp; constraints</a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal">Filter: <input size="10" name="filter" style="border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);" onInput="filterTree(document.getElementById('dispensingDeviceD'), event.target.value)" type="text" aria-label="Filter"/> <button onClick="showPanel(this, document.getElementById('dispensingDeviceD'), document.getElementById('ppdispensingDeviceD'))" aria-controls="ppdispensingDeviceD" style="background: none; border: 0; padding: 0; margin: 0; cursor: pointer" type="button" title="Filters" aria-label="Filters"><img src="tree-filter.png" alt=""/></button><div style="display: none; position: fixed; opacity : 1.0; background-color: rgb(254, 254, 231); border: 1px solid #ccc; padding: 10px; boxShadow: 0 2px 5px rgba(0,0,0,0.2); zIndex: 1000; borderRadius: 4px" id="ppdispensingDeviceD"><label>Bindings <input onClick="filterDesc(document.getElementById('dispensingDeviceD'), 'binding',event.target.checked, document.getElementById('ppdispensingDeviceD'))" size="1" name="binding" checked="true" id="cbdispensingDeviceD-binding" type="checkbox" aria-label="binding"/></label><br/><label>Constrains <input onClick="filterDesc(document.getElementById('dispensingDeviceD'), 'constraint',event.target.checked, document.getElementById('ppdispensingDeviceD'))" size="1" name="constraint" checked="true" id="cbdispensingDeviceD-constraint" type="checkbox" aria-label="constraint"/></label><br/><label>Verplichtingen <input onClick="filterDesc(document.getElementById('dispensingDeviceD'), 'obligation',event.target.checked, document.getElementById('ppdispensingDeviceD'))" size="1" name="obligation" checked="true" id="cbdispensingDeviceD-obligation" type="checkbox" aria-label="obligation"/></label><br/></div></span><span style="float: right"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legend for this format" data-no-external="true"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" onLoad="fhirTableInit(this)" style="background-color: inherit"/></a></span></th></tr>
+<tr fhir="generated-heirarchy" id="a" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck1.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension" title="The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.
+
+R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.
+
+When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit." data-no-external="true">Extension</a><a name="Extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">0</span><span class="xhtPieceDeEmphasized">..</span><span class="xhtPieceDeEmphasized">*</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Dispensing device</td></tr>
+<tr fhir="generated-heirarchy" id="aa" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.extension" class="xhtPieceStrikeout" data-no-external="true">extension</a><a name="Extension.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceStrikeout"></span><span class="xhtPieceStrikeout xhtPieceDeEmphasized">0</span><span class="xhtPieceStrikeout">..</span><span class="xhtPieceStrikeout">0</span></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceItalic xhtPieceDeEmphasized">Extension</span></td></tr>
+<tr fhir="generated-heirarchy" id="ab" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.url" data-no-external="true">url</a><a name="Extension.url"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">1</span><span class="xhtPieceDeEmphasized">..</span><span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri" class="xhtPieceDeEmphasized">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDarkGreen">"http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"</span></td></tr>
+<tr fhir="generated-heirarchy" id="ac" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck01.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_reference.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Verwijzing naar andere resource" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x]" data-no-external="true">value[x]</a><a name="Extension.value_x_"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/references.html">Reference</a>(<a href="http://hl7.org/fhir/R5/device.html">Device</a>)</td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">Value of extension</span></td></tr>
+<tr fhir="generated-heirarchy" id="aca" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].reference" class="xhtPieceStrikeout" data-no-external="true">reference</a><a name="Extension.value_x_.reference"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceStrikeout"></span><span class="xhtPieceStrikeout xhtPieceDeEmphasized">0</span><span class="xhtPieceStrikeout">..</span><span class="xhtPieceStrikeout">0</span></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceItalic xhtPieceDeEmphasized">Literal reference, Relative, internal or absolute URL</span></td></tr>
+<tr fhir="generated-heirarchy" id="acb" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck001.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier" data-no-external="true">identifier</a><a name="Extension.value_x_.identifier"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#Identifier" class="xhtPieceDeEmphasized">Identifier</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">Logical reference, when literal reference is not known</span></td></tr>
+<tr fhir="generated-heirarchy" id="acba" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.system" data-no-external="true">system</a><a name="Extension.value_x_.identifier.system"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri" class="xhtPieceDeEmphasized">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">The namespace for the identifier value</span><br/><span class="xhtPieceBold">Vast waarde: </span><span class="xhtPieceDarkGreen">http://costateixeira.github.io/spenser/unit</span> (no extensions allowed)</td></tr>
+<tr fhir="generated-heirarchy" id="acbb" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0000.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin_end.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.value" data-no-external="true">value</a><a name="Extension.value_x_.identifier.value"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#string" class="xhtPieceDeEmphasized">string</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">The value that is unique</span></td></tr>
+<tr fhir="generated-heirarchy" data-fhir="generated-heirarchy"><td colspan="5" class="hierarchy"><br/><a href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legenda voor dit formaat"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" style="background-color: inherit"/> Documentatie voor dit formaat</a></td></tr><script type="text/javascript">  // d05c76bd-93a9-4dd2-8fa7-3544ab77e2aa
+document.getElementById('cbdispensingDeviceD-binding').checked = 'false' != localStorage.getItem('ht-table-states-binding');
+filterDesc(document.getElementById('dispensingDeviceD'), 'binding', document.getElementById('cbdispensingDeviceD-binding').checked, document.getElementById('ppdispensingDeviceD'));
+document.getElementById('cbdispensingDeviceD-constraint').checked = 'false' != localStorage.getItem('ht-table-states-constraint');
+filterDesc(document.getElementById('dispensingDeviceD'), 'constraint', document.getElementById('cbdispensingDeviceD-constraint').checked, document.getElementById('ppdispensingDeviceD'));
+document.getElementById('cbdispensingDeviceD-obligation').checked = 'false' != localStorage.getItem('ht-table-states-obligation');
+filterDesc(document.getElementById('dispensingDeviceD'), 'obligation', document.getElementById('cbdispensingDeviceD-obligation').checked, document.getElementById('ppdispensingDeviceD'));
+</script></table>
+
+
+        
+          <a name="tx"> </a>
+          <!--Terminology Bindings heading in the fragment -->
+          
+        
+          
+          <!-- 218 is size of empty table -->
+          
+
+        </div>
+      </div>
+    </div>
+    <a name="tabs-snap"> </a>
+    <div id="tabs-snap">
+      <div id="tbl-snap">
+        <div id="tbl-snap-inner">
+          <table border="0" fhir="generated-heirarchy" cellpadding="0" cellspacing="0" id="dispensingDeviceS" class="xhtTableBorder0" data-fhir="generated-heirarchy"><tr fhir="generated-heirarchy" class="xhtRowBorder1" data-fhir="generated-heirarchy"><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="De logische naam van het element" data-no-external="true">Naam</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Informatie over het gebruik van het element" data-no-external="true">Markeringen</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Minimum en maximum # keren dat het element kan voorkomen in de instance" data-no-external="true">Kard.</a></th><th scope="col" style="; width: 100px" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Referentie naar het type van het element" data-no-external="true">Type</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Additionele informatie over het element" data-no-external="true">Omschrijving &amp; constraints</a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal">Filter: <input size="10" name="filter" style="border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);" onInput="filterTree(document.getElementById('dispensingDeviceS'), event.target.value)" type="text" aria-label="Filter"/> <button onClick="showPanel(this, document.getElementById('dispensingDeviceS'), document.getElementById('ppdispensingDeviceS'))" aria-controls="ppdispensingDeviceS" style="background: none; border: 0; padding: 0; margin: 0; cursor: pointer" type="button" title="Filters" aria-label="Filters"><img src="tree-filter.png" alt=""/></button><div style="display: none; position: fixed; opacity : 1.0; background-color: rgb(254, 254, 231); border: 1px solid #ccc; padding: 10px; boxShadow: 0 2px 5px rgba(0,0,0,0.2); zIndex: 1000; borderRadius: 4px" id="ppdispensingDeviceS"><label>Bindings <input onClick="filterDesc(document.getElementById('dispensingDeviceS'), 'binding',event.target.checked, document.getElementById('ppdispensingDeviceS'))" size="1" name="binding" checked="true" id="cbdispensingDeviceS-binding" type="checkbox" aria-label="binding"/></label><br/><label>Constrains <input onClick="filterDesc(document.getElementById('dispensingDeviceS'), 'constraint',event.target.checked, document.getElementById('ppdispensingDeviceS'))" size="1" name="constraint" checked="true" id="cbdispensingDeviceS-constraint" type="checkbox" aria-label="constraint"/></label><br/><label>Verplichtingen <input onClick="filterDesc(document.getElementById('dispensingDeviceS'), 'obligation',event.target.checked, document.getElementById('ppdispensingDeviceS'))" size="1" name="obligation" checked="true" id="cbdispensingDeviceS-obligation" type="checkbox" aria-label="obligation"/></label><br/></div></span><span style="float: right"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legend for this format" data-no-external="true"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" onLoad="fhirTableInit(this)" style="background-color: inherit"/></a></span></th></tr>
+<tr fhir="generated-heirarchy" id="s-a" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck1.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_resource.png" alt="" style="background-color: white; background-color: inherit" title="Resource" class="hierarchy"/> <a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension" title="The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.
+
+R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.
+
+When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit." data-no-external="true">Extension</a><a name="s-Extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..*</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Dispensing device<br/></td></tr>
+<tr fhir="generated-heirarchy" id="s-aa" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces." data-no-external="true">id</a><a name="s-Extension.id"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Unique id for inter-element referencing</td></tr>
+<tr fhir="generated-heirarchy" id="s-ab" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck12.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: white; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.extension" title="An Extension" data-no-external="true">extension</a><a name="s-Extension.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..0</td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">Extension<br/><span class="xhtPieceBold">Slice: </span>Zonder volgorde, Open op value:url<br/></td></tr>
+<tr fhir="generated-heirarchy" id="s-ac" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.url" title="Source of the definition for the extension code - a logical name or a URL." data-no-external="true">url</a><a name="s-Extension.url"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDarkGreen">"http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"</span></td></tr>
+<tr fhir="generated-heirarchy" id="s-ad" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck01.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_reference.png" alt="" style="background-color: white; background-color: inherit" title="Verwijzing naar andere resource" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x]" title="Value of extension - must be one of a constrained set of the data types (see [Extensibility](http://hl7.org/fhir/R5/extensibility.html) for a list)." data-no-external="true">value[x]</a><a name="s-Extension.value_x_"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/references.html">Reference</a>(<a href="http://hl7.org/fhir/R5/device.html">Device</a>)</td>
+<td style="" class="hierarchy xhtCellBorder0">Value of extension</td></tr>
+<tr fhir="generated-heirarchy" id="s-ada" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces." data-no-external="true">id</a><a name="s-Extension.value_x_.id"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Unique id for inter-element referencing</td></tr>
+<tr fhir="generated-heirarchy" id="s-adb" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck012.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: white; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].extension" title="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." data-no-external="true">extension</a><a name="s-Extension.value_x_.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..*</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Additional content defined by implementations<br/><span class="xhtPieceBold">Slice: </span>Zonder volgorde, Open op value:url<br/></td></tr>
+<tr fhir="generated-heirarchy" id="s-adc" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].type" title="The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.
+
+The type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. &quot;Patient&quot; is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources)." data-no-external="true">type</a><a name="s-Extension.value_x_.type"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Type the reference refers to (e.g. "Patient") - must be a resource in resources<br class="binding"/><span class="xhtPieceBold binding">Binding: </span><a href="http://hl7.org/fhir/R5/valueset-resource-types.html" title="http://hl7.org/fhir/ValueSet/resource-types" class="binding">ResourceType</a><span class="binding"> (</span><a href="http://hl7.org/fhir/R5/terminologies.html#extensible" title="To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated.  If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead." class="binding">extensible</a><span class="binding">)</span><span class="binding">: </span><span class="binding">Aa resource (or, for logical models, the URI of the logical model).</span></td></tr>
+<tr fhir="generated-heirarchy" id="s-add" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck011.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_datatype.gif" alt="" style="background-color: white; background-color: inherit" title="Datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier" title="An identifier for the target resource. This is used when there is no way to reference the other resource directly, either because the entity it represents is not available through a FHIR server, or because there is no way for the author of the resource to convert a known identifier to an actual location. There is no requirement that a Reference.identifier point to something that is actually exposed as a FHIR instance, but it SHALL point to a business concept that would be expected to be exposed as a FHIR instance, and that instance would need to be of a FHIR resource type allowed by the reference." data-no-external="true">identifier</a><a name="s-Extension.value_x_.identifier"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span><a href="http://hl7.org/fhir/R5/conformance-rules.html#constraints" title="Dit element heeft of wordt geraakt door constraints ( ref-2 )" class="xhtConstraintStyle">C</a></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#Identifier">Identifier</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Logical reference, when literal reference is not known</td></tr>
+<tr fhir="generated-heirarchy" id="s-adda" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces." data-no-external="true">id</a><a name="s-Extension.value_x_.identifier.id"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Unique id for inter-element referencing</td></tr>
+<tr fhir="generated-heirarchy" id="s-addb" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0112.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: white; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.extension" title="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." data-no-external="true">extension</a><a name="s-Extension.value_x_.identifier.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..*</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Additional content defined by implementations<br/><span class="xhtPieceBold">Slice: </span>Zonder volgorde, Open op value:url<br/></td></tr>
+<tr fhir="generated-heirarchy" id="s-addc" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.use" title="The purpose of this identifier." data-no-external="true">use</a><a name="s-Extension.value_x_.identifier.use"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element is een modifier element">?!</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element is een modifier element. </span><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#code">code</a></td>
+<td style="" class="hierarchy xhtCellBorder0">usual | official | temp | secondary | old (If known)<br class="binding"/><span class="xhtPieceBold binding">Binding: </span><a href="http://hl7.org/fhir/R5/valueset-identifier-use.html" title="http://hl7.org/fhir/ValueSet/identifier-use" class="binding">IdentifierUse</a><span class="binding"> (</span><a href="http://hl7.org/fhir/R5/terminologies.html#required" title="To be conformant, the concept in this element SHALL be from the specified value set." class="binding">required</a><span class="binding">)</span><span class="binding">: </span><span class="binding">Identifies the purpose for this identifier, if known .</span></td></tr>
+<tr fhir="generated-heirarchy" id="s-addd" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_datatype.gif" alt="" style="background-color: white; background-color: inherit" title="Datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.type" title="A coded type for the identifier that can be used to determine which identifier to use for a specific purpose." data-no-external="true">type</a><a name="s-Extension.value_x_.identifier.type"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#CodeableConcept">CodeableConcept</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Description of identifier<br class="binding"/><span class="xhtPieceBold binding">Binding: </span><a href="http://hl7.org/fhir/R5/valueset-identifier-type.html" title="http://hl7.org/fhir/ValueSet/identifier-type" class="binding">IdentifierTypeCodes</a><span class="binding"> (</span><a href="http://hl7.org/fhir/R5/terminologies.html#extensible" title="To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated.  If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead." class="binding">extensible</a><span class="binding">)</span><span class="binding">: </span><span class="binding">A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.</span></td></tr>
+<tr fhir="generated-heirarchy" id="s-adde" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.system" title="Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique." data-no-external="true">system</a><a name="s-Extension.value_x_.identifier.system"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0">The namespace for the identifier value<br/><span class="xhtPieceBold">Vast waarde: </span><span class="xhtPieceDarkGreen">http://costateixeira.github.io/spenser/unit</span> (no extensions allowed)</td></tr>
+<tr fhir="generated-heirarchy" id="s-addf" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: white; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.value" title="The portion of the identifier typically relevant to the user and which is unique within the context of the system." data-no-external="true">value</a><a name="s-Extension.value_x_.identifier.value"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span><a href="http://hl7.org/fhir/R5/conformance-rules.html#constraints" title="Dit element heeft of wordt geraakt door constraints ( ident-1 )" class="xhtConstraintStyle">C</a></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></td>
+<td style="" class="hierarchy xhtCellBorder0">The value that is unique<br/><span class="xhtPieceBold">Voorbeeld General: </span><span class="xhtPieceDarkGreen">123456</span></td></tr>
+<tr fhir="generated-heirarchy" id="s-addg" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_datatype.gif" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.period" title="Time period during which identifier is/was valid for use." data-no-external="true">period</a><a name="s-Extension.value_x_.identifier.period"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#Period">Period</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Time period when id is/was valid for use</td></tr>
+<tr fhir="generated-heirarchy" id="s-addh" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0100.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin_end.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_reference.png" alt="" style="background-color: white; background-color: inherit" title="Verwijzing naar andere resource" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.assigner" title="Organization that issued/manages the identifier." data-no-external="true">assigner</a><a name="s-Extension.value_x_.identifier.assigner"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/references.html">Reference</a>(<a href="http://hl7.org/fhir/R5/organization.html">Organization</a>)</td>
+<td style="" class="hierarchy xhtCellBorder0">Organization that issued id (may be just text)</td></tr>
+<tr fhir="generated-heirarchy" id="s-ade" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck000.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin_end.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].display" title="Plain text narrative that identifies the resource in addition to the resource reference." data-no-external="true">display</a><a name="s-Extension.value_x_.display"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span><a href="http://hl7.org/fhir/R5/conformance-rules.html#constraints" title="Dit element heeft of wordt geraakt door constraints ( ref-2 )" class="xhtConstraintStyle">C</a></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Text alternative for the resource</td></tr>
+<tr fhir="generated-heirarchy" data-fhir="generated-heirarchy"><td colspan="5" class="hierarchy"><br/><a href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legenda voor dit formaat"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" style="background-color: inherit"/> Documentatie voor dit formaat</a></td></tr><script type="text/javascript">  // d05c76bd-93a9-4dd2-8fa7-3544ab77e2aa
+document.getElementById('cbdispensingDeviceS-binding').checked = 'false' != localStorage.getItem('ht-table-states-binding');
+filterDesc(document.getElementById('dispensingDeviceS'), 'binding', document.getElementById('cbdispensingDeviceS-binding').checked, document.getElementById('ppdispensingDeviceS'));
+document.getElementById('cbdispensingDeviceS-constraint').checked = 'false' != localStorage.getItem('ht-table-states-constraint');
+filterDesc(document.getElementById('dispensingDeviceS'), 'constraint', document.getElementById('cbdispensingDeviceS-constraint').checked, document.getElementById('ppdispensingDeviceS'));
+document.getElementById('cbdispensingDeviceS-obligation').checked = 'false' != localStorage.getItem('ht-table-states-obligation');
+filterDesc(document.getElementById('dispensingDeviceS'), 'obligation', document.getElementById('cbdispensingDeviceS-obligation').checked, document.getElementById('ppdispensingDeviceS'));
+</script></table>
+
+
+        
+          <!--Terminology Bindings heading in the fragment -->
+          <h4>Terminologiebindings</h4>
+<table class="list" data-fhir="generated-heirarchy">
+  <tr>
+    <td>
+      <b>Pad</b>
+    </td>
+    <td>
+      <b>Status</b>
+    </td>
+    <td>
+      <b>Gebruik</b>
+    </td>
+    <td>
+      <b>ValueSet</b>
+    </td>
+    <td>
+      <b>Versie</b>
+    </td>
+    <td>
+      <b>Bron</b>
+    </td>
+  </tr>
+  <tr>
+    <td>Extension.value[x].type</td>
+    <td>Base</td>
+    <td>
+      <a href="http://hl7.org/fhir/R5/terminologies.html#Enumeration[extensible]">extensible</a>
+    </td>
+    <td title="Aa resource (or, for logical models, the URI of the logical model).">
+      <a href="http://hl7.org/fhir/R5/valueset-resource-types.html">Resource Types</a>
+      <button data-clipboard-text="http://hl7.org/fhir/ValueSet/resource-types|5.0.0" title="Klik om de url te kopiëren" class="btn-copy" aria-label="copy"></button>
+    </td>
+    <td title="Versie is expliciet 5.0.0">&#x1F4CD;5.0.0</td>
+    <td>
+      <a href="https://hl7.org/fhir/R5/">FHIR Std.</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Extension.value[x].identifier.​use</td>
+    <td>Base</td>
+    <td>
+      <a href="http://hl7.org/fhir/R5/terminologies.html#Enumeration[required]">required</a>
+    </td>
+    <td title="Identifies the purpose for this identifier, if known .">
+      <a href="http://hl7.org/fhir/R5/valueset-identifier-use.html">IdentifierUse</a>
+      <button data-clipboard-text="http://hl7.org/fhir/ValueSet/identifier-use|5.0.0" title="Klik om de url te kopiëren" class="btn-copy" aria-label="copy"></button>
+    </td>
+    <td title="Versie is expliciet 5.0.0">&#x1F4CD;5.0.0</td>
+    <td>
+      <a href="https://hl7.org/fhir/R5/">FHIR Std.</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Extension.value[x].identifier.​type</td>
+    <td>Base</td>
+    <td>
+      <a href="http://hl7.org/fhir/R5/terminologies.html#Enumeration[extensible]">extensible</a>
+    </td>
+    <td title="A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.">
+      <a href="http://hl7.org/fhir/R5/valueset-identifier-type.html">Identifier Type Codes</a>
+      <button data-clipboard-text="http://hl7.org/fhir/ValueSet/identifier-type|5.0.0" title="Klik om de url te kopiëren" class="btn-copy" aria-label="copy"></button>
+    </td>
+    <td title="Versie is expliciet 5.0.0">&#x1F4CD;5.0.0</td>
+    <td>
+      <a href="https://hl7.org/fhir/R5/">FHIR Std.</a>
+    </td>
+  </tr>
+</table>
+
+        
+          
+          <!-- 218 is size of empty table -->
+          
+            <a name="inv-snap"> </a>
+            <!--Constraints  heading in the fragment -->
+            <h4>Constrains</h4>
+<table class="list presentation" data-fhir="generated-heirarchy">
+  <tr>
+    <td width="60">
+      <b>Id</b>
+    </td>
+    <td>
+      <b>Grade</b>
+    </td>
+    <td>
+      <b>Pad(en)</b>
+    </td>
+    <td>
+      <b>Omschrijving</b>
+    </td>
+    <td>
+      <b>Expressie</b>
+    </td>
+  </tr>
+  <tr>
+    <td>ele-1</td>
+    <td>error</td>
+    <td>
+      <b>**ALLE** elementen</b>
+    </td>
+    <td>All FHIR elements must have a @value or children</td>
+    <td>
+      <code>hasValue() or (children().count() &gt; id.count())</code>
+    </td>
+  </tr>
+  <tr>
+    <td>ext-1</td>
+    <td>error</td>
+    <td>
+      <b>**ALLE** extensies</b>
+    </td>
+    <td>Must have either extensions or value[x], not both</td>
+    <td>
+      <code>extension.exists() != value.exists()</code>
+    </td>
+  </tr>
+</table>
+
+          
+        </div>
+      </div>
+    </div>
+
+
+    <!--<a name="tabs-xml"> </a>
+    <div id="tabs-xml">
+      <div id="xml">
+        <div id="xml-inner">
+          <p><span style="color: maroon; font-weight: bold">yet to be done: Xml template</span></p>
+
+        </div>
+      </div>
+    </div>-->
+
+
+    <!--<a name="tabs-json"> </a>
+    <div id="tabs-json">
+      <div id="json">
+        <div id="json-inner">
+           // <span style="color: navy; opacity: 0.8">Dispensing device</span>
+ {
+    "<a href="StructureDefinition-dispensingDevice.html#Extension.id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces" class="dict"><span style="text-decoration: underline">id</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: navy; opacity: 0.8">Unique id for inter-element referencing</span>
+    "<a href="StructureDefinition-dispensingDevice.html#Extension.url" title="Source of the definition for the extension code - a logical name or a URL" class="dict"><span style="text-decoration: underline">url</span></a>" : "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice", <span style="color: Gray">//</span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span>
+    "<a href="StructureDefinition-dispensingDevice.html#Extension.valueReference" title="Value of extension - must be one of a constrained set of the data types (see [Extensibility](http://hl7.org/fhir/R5/extensibility.html) for a list)" class="dict"><span style="text-decoration: underline">valueReference</span></a>" : { <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span> <span style="color: navy; opacity: 0.8">Value of extension</span>
+      "extension": [
+      ],
+      "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].type" title="The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.
+
+The type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. &quot;Patient&quot; is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources)" class="dict"><span style="text-decoration: underline">type</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8"><a href="http://hl7.org/fhir/R5/null.html" style="color: navy">Type the reference refers to (e.g. &quot;Patient&quot;) - must be a resource in resources</a></span>
+      "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier" title="An identifier for the target resource. This is used when there is no way to reference the other resource directly, either because the entity it represents is not available through a FHIR server, or because there is no way for the author of the resource to convert a known identifier to an actual location. There is no requirement that a Reference.identifier point to something that is actually exposed as a FHIR instance, but it SHALL point to a business concept that would be expected to be exposed as a FHIR instance, and that instance would need to be of a FHIR resource type allowed by the reference" class="dict"><span style="text-decoration: underline">identifier</span></a>" : { <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span> <span style="color: navy; opacity: 0.8">Logical reference, when literal reference is not known</span>
+        "extension": [
+        ],
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.use" title="The purpose of this identifier (dit element wijzigt de betekenis van andere elementen)" class="dict"><span style="text-decoration: underline">use</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#code">code</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8"><a href="http://hl7.org/fhir/R5/null.html" style="color: navy">usual | official | temp | secondary | old (If known)</a></span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.type" title="A coded type for the identifier that can be used to determine which identifier to use for a specific purpose" class="dict"><span style="text-decoration: underline">type</span></a>" : {<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#CodeableConcept">CodeableConcept</a></span>}, <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8"><a href="http://hl7.org/fhir/R5/null.html" style="color: navy">Description of identifier</a></span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.system" title="Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique" class="dict"><span style="text-decoration: underline">system</span></a>" : "http://costateixeira.github.io/spenser/unit", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.value" title="The portion of the identifier typically relevant to the user and which is unique within the context of the system" class="dict"><span style="text-decoration: underline">value</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span> <span style="color: navy; opacity: 0.8">The value that is unique</span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.period" title="Time period during which identifier is/was valid for use" class="dict"><span style="text-decoration: underline">period</span></a>" : {<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#Period">Period</a></span>}, <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8">Time period when id is/was valid for use</span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.assigner" title="Organization that issued/manages the identifier" class="dict"><span style="text-decoration: underline">assigner</span></a>" : {<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/references.html#Reference">Reference</a></span>(Organization|5.0.0)} <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8">Organization that issued id (may be just text)</span>
+      },
+      "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].display" title="Plain text narrative that identifies the resource in addition to the resource reference" class="dict"><span style="text-decoration: underline">display</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></span>&gt;" <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8">Text alternative for the resource</span>
+    }
+  }
+
+        </div>
+      </div>
+    </div>-->
+
+
+    <!--<a name="tabs-ttl"> </a>
+    <div id="tabs-ttl">
+      <div id="ttl">
+        <div id="ttl-inner">
+          <p><span style="color: maroon; font-weight: bold">yet to be done: Turtle template</span></p>
+
+        </div>
+      </div>
+    </div>-->
+
+    <a name="tabs-summ"> </a>
+    <div id="tabs-summ">
+      <div id="tbl-summ">
+        <p>Deze structuur is afgeleid van 
+      <a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a>
+    </p>
+        <div id="tbl-summ-inner">
+          <a name="summary"> </a>
+          <div data-fhir="generated"><a name="s-summary"> </a>
+<p><b>
+Samenvatting
+</b></p>
+<p>Eenvoudige extensie met type Reference: The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.</p><p>R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.</p>
+<p>When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit.</p></div>
+        </div>
+      </div>
+    </div>
+    <a name="tabs-all"> </a>
+    <div id="tabs-all">
+      <div id="all-tbl-diff">
+        <p>
+          <b>Differentieelweergave</b>
+        </p>
+        <p>Deze structuur is afgeleid van 
+      <a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a>
+    </p>
+        <div id="all-tbl-diff-inner">
+          <table border="0" fhir="generated-heirarchy" cellpadding="0" cellspacing="0" id="dispensingDeviceDA" class="xhtTableBorder0" data-fhir="generated-heirarchy"><tr fhir="generated-heirarchy" class="xhtRowBorder1" data-fhir="generated-heirarchy"><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="De logische naam van het element" data-no-external="true">Naam</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Informatie over het gebruik van het element" data-no-external="true">Markeringen</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Minimum en maximum # keren dat het element kan voorkomen in de instance" data-no-external="true">Kard.</a></th><th scope="col" style="; width: 100px" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Referentie naar het type van het element" data-no-external="true">Type</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Additionele informatie over het element" data-no-external="true">Omschrijving &amp; constraints</a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal">Filter: <input size="10" name="filter" style="border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);" onInput="filterTree(document.getElementById('dispensingDeviceDA'), event.target.value)" type="text" aria-label="Filter"/> <button onClick="showPanel(this, document.getElementById('dispensingDeviceDA'), document.getElementById('ppdispensingDeviceDA'))" aria-controls="ppdispensingDeviceDA" style="background: none; border: 0; padding: 0; margin: 0; cursor: pointer" type="button" title="Filters" aria-label="Filters"><img src="tree-filter.png" alt=""/></button><div style="display: none; position: fixed; opacity : 1.0; background-color: rgb(254, 254, 231); border: 1px solid #ccc; padding: 10px; boxShadow: 0 2px 5px rgba(0,0,0,0.2); zIndex: 1000; borderRadius: 4px" id="ppdispensingDeviceDA"><label>Bindings <input onClick="filterDesc(document.getElementById('dispensingDeviceDA'), 'binding',event.target.checked, document.getElementById('ppdispensingDeviceDA'))" size="1" name="binding" checked="true" id="cbdispensingDeviceDA-binding" type="checkbox" aria-label="binding"/></label><br/><label>Constrains <input onClick="filterDesc(document.getElementById('dispensingDeviceDA'), 'constraint',event.target.checked, document.getElementById('ppdispensingDeviceDA'))" size="1" name="constraint" checked="true" id="cbdispensingDeviceDA-constraint" type="checkbox" aria-label="constraint"/></label><br/><label>Verplichtingen <input onClick="filterDesc(document.getElementById('dispensingDeviceDA'), 'obligation',event.target.checked, document.getElementById('ppdispensingDeviceDA'))" size="1" name="obligation" checked="true" id="cbdispensingDeviceDA-obligation" type="checkbox" aria-label="obligation"/></label><br/></div></span><span style="float: right"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legend for this format" data-no-external="true"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" onLoad="fhirTableInit(this)" style="background-color: inherit"/></a></span></th></tr>
+<tr fhir="generated-heirarchy" id="a-a" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck1.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension" title="The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.
+
+R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.
+
+When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit." data-no-external="true">Extension</a><a name="a-Extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">0</span><span class="xhtPieceDeEmphasized">..</span><span class="xhtPieceDeEmphasized">*</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Dispensing device</td></tr>
+<tr fhir="generated-heirarchy" id="a-aa" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.extension" class="xhtPieceStrikeout" data-no-external="true">extension</a><a name="a-Extension.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceStrikeout"></span><span class="xhtPieceStrikeout xhtPieceDeEmphasized">0</span><span class="xhtPieceStrikeout">..</span><span class="xhtPieceStrikeout">0</span></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceItalic xhtPieceDeEmphasized">Extension</span></td></tr>
+<tr fhir="generated-heirarchy" id="a-ab" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.url" data-no-external="true">url</a><a name="a-Extension.url"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">1</span><span class="xhtPieceDeEmphasized">..</span><span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri" class="xhtPieceDeEmphasized">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDarkGreen">"http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"</span></td></tr>
+<tr fhir="generated-heirarchy" id="a-ac" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck01.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_reference.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Verwijzing naar andere resource" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x]" data-no-external="true">value[x]</a><a name="a-Extension.value_x_"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/references.html">Reference</a>(<a href="http://hl7.org/fhir/R5/device.html">Device</a>)</td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">Value of extension</span></td></tr>
+<tr fhir="generated-heirarchy" id="a-aca" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].reference" class="xhtPieceStrikeout" data-no-external="true">reference</a><a name="a-Extension.value_x_.reference"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceStrikeout"></span><span class="xhtPieceStrikeout xhtPieceDeEmphasized">0</span><span class="xhtPieceStrikeout">..</span><span class="xhtPieceStrikeout">0</span></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceItalic xhtPieceDeEmphasized">Literal reference, Relative, internal or absolute URL</span></td></tr>
+<tr fhir="generated-heirarchy" id="a-acb" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck001.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier" data-no-external="true">identifier</a><a name="a-Extension.value_x_.identifier"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#Identifier" class="xhtPieceDeEmphasized">Identifier</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">Logical reference, when literal reference is not known</span></td></tr>
+<tr fhir="generated-heirarchy" id="a-acba" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.system" data-no-external="true">system</a><a name="a-Extension.value_x_.identifier.system"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri" class="xhtPieceDeEmphasized">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">The namespace for the identifier value</span><br/><span class="xhtPieceBold">Vast waarde: </span><span class="xhtPieceDarkGreen">http://costateixeira.github.io/spenser/unit</span> (no extensions allowed)</td></tr>
+<tr fhir="generated-heirarchy" id="a-acbb" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0000.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin_end.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_element.gif" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Element" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.value" data-no-external="true">value</a><a name="a-Extension.value_x_.identifier.value"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..<span class="xhtPieceDeEmphasized">1</span></td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#string" class="xhtPieceDeEmphasized">string</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDeEmphasized">The value that is unique</span></td></tr>
+<tr fhir="generated-heirarchy" data-fhir="generated-heirarchy"><td colspan="5" class="hierarchy"><br/><a href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legenda voor dit formaat"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" style="background-color: inherit"/> Documentatie voor dit formaat</a></td></tr><script type="text/javascript">  // d05c76bd-93a9-4dd2-8fa7-3544ab77e2aa
+document.getElementById('cbdispensingDeviceDA-binding').checked = 'false' != localStorage.getItem('ht-table-states-binding');
+filterDesc(document.getElementById('dispensingDeviceDA'), 'binding', document.getElementById('cbdispensingDeviceDA-binding').checked, document.getElementById('ppdispensingDeviceDA'));
+document.getElementById('cbdispensingDeviceDA-constraint').checked = 'false' != localStorage.getItem('ht-table-states-constraint');
+filterDesc(document.getElementById('dispensingDeviceDA'), 'constraint', document.getElementById('cbdispensingDeviceDA-constraint').checked, document.getElementById('ppdispensingDeviceDA'));
+document.getElementById('cbdispensingDeviceDA-obligation').checked = 'false' != localStorage.getItem('ht-table-states-obligation');
+filterDesc(document.getElementById('dispensingDeviceDA'), 'obligation', document.getElementById('cbdispensingDeviceDA-obligation').checked, document.getElementById('ppdispensingDeviceDA'));
+</script></table>
+
+          <!--Terminology Bindings heading in the fragment -->
+          
+        
+          
+          <!-- 218 is size of empty table -->
+          
+        </div>
+      </div>
+      <div id="all-tbl-snap">
+        <p>
+          <b>Momentopnameweergave</b>
+        </p>
+        <div id="all-tbl-snap-inner">
+          <table border="0" fhir="generated-heirarchy" cellpadding="0" cellspacing="0" id="dispensingDeviceSA" class="xhtTableBorder0" data-fhir="generated-heirarchy"><tr fhir="generated-heirarchy" class="xhtRowBorder1" data-fhir="generated-heirarchy"><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="De logische naam van het element" data-no-external="true">Naam</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Informatie over het gebruik van het element" data-no-external="true">Markeringen</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Minimum en maximum # keren dat het element kan voorkomen in de instance" data-no-external="true">Kard.</a></th><th scope="col" style="; width: 100px" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Referentie naar het type van het element" data-no-external="true">Type</a></th><th scope="col" style="" class="hierarchy xhtCellBorder0"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Additionele informatie over het element" data-no-external="true">Omschrijving &amp; constraints</a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal">Filter: <input size="10" name="filter" style="border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);" onInput="filterTree(document.getElementById('dispensingDeviceSA'), event.target.value)" type="text" aria-label="Filter"/> <button onClick="showPanel(this, document.getElementById('dispensingDeviceSA'), document.getElementById('ppdispensingDeviceSA'))" aria-controls="ppdispensingDeviceSA" style="background: none; border: 0; padding: 0; margin: 0; cursor: pointer" type="button" title="Filters" aria-label="Filters"><img src="tree-filter.png" alt=""/></button><div style="display: none; position: fixed; opacity : 1.0; background-color: rgb(254, 254, 231); border: 1px solid #ccc; padding: 10px; boxShadow: 0 2px 5px rgba(0,0,0,0.2); zIndex: 1000; borderRadius: 4px" id="ppdispensingDeviceSA"><label>Bindings <input onClick="filterDesc(document.getElementById('dispensingDeviceSA'), 'binding',event.target.checked, document.getElementById('ppdispensingDeviceSA'))" size="1" name="binding" checked="true" id="cbdispensingDeviceSA-binding" type="checkbox" aria-label="binding"/></label><br/><label>Constrains <input onClick="filterDesc(document.getElementById('dispensingDeviceSA'), 'constraint',event.target.checked, document.getElementById('ppdispensingDeviceSA'))" size="1" name="constraint" checked="true" id="cbdispensingDeviceSA-constraint" type="checkbox" aria-label="constraint"/></label><br/><label>Verplichtingen <input onClick="filterDesc(document.getElementById('dispensingDeviceSA'), 'obligation',event.target.checked, document.getElementById('ppdispensingDeviceSA'))" size="1" name="obligation" checked="true" id="cbdispensingDeviceSA-obligation" type="checkbox" aria-label="obligation"/></label><br/></div></span><span style="float: right"><a no-external="true" href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legend for this format" data-no-external="true"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" onLoad="fhirTableInit(this)" style="background-color: inherit"/></a></span></th></tr>
+<tr fhir="generated-heirarchy" id="sa-a" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck1.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_resource.png" alt="" style="background-color: white; background-color: inherit" title="Resource" class="hierarchy"/> <a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension" title="The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.
+
+R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.
+
+When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit." data-no-external="true">Extension</a><a name="sa-Extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..*</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Dispensing device<br/></td></tr>
+<tr fhir="generated-heirarchy" id="sa-aa" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces." data-no-external="true">id</a><a name="sa-Extension.id"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Unique id for inter-element referencing</td></tr>
+<tr fhir="generated-heirarchy" id="sa-ab" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck12.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: white; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.extension" title="An Extension" data-no-external="true">extension</a><a name="sa-Extension.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..0</td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">Extension<br/><span class="xhtPieceBold">Slice: </span>Zonder volgorde, Open op value:url<br/></td></tr>
+<tr fhir="generated-heirarchy" id="sa-ac" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck10.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.url" title="Source of the definition for the extension code - a logical name or a URL." data-no-external="true">url</a><a name="sa-Extension.url"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span class="xhtPieceDarkGreen">"http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"</span></td></tr>
+<tr fhir="generated-heirarchy" id="sa-ad" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck01.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_reference.png" alt="" style="background-color: white; background-color: inherit" title="Verwijzing naar andere resource" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x]" title="Value of extension - must be one of a constrained set of the data types (see [Extensibility](http://hl7.org/fhir/R5/extensibility.html) for a list)." data-no-external="true">value[x]</a><a name="sa-Extension.value_x_"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/references.html">Reference</a>(<a href="http://hl7.org/fhir/R5/device.html">Device</a>)</td>
+<td style="" class="hierarchy xhtCellBorder0">Value of extension</td></tr>
+<tr fhir="generated-heirarchy" id="sa-ada" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces." data-no-external="true">id</a><a name="sa-Extension.value_x_.id"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Unique id for inter-element referencing</td></tr>
+<tr fhir="generated-heirarchy" id="sa-adb" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck012.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: white; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].extension" title="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." data-no-external="true">extension</a><a name="sa-Extension.value_x_.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..*</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Additional content defined by implementations<br/><span class="xhtPieceBold">Slice: </span>Zonder volgorde, Open op value:url<br/></td></tr>
+<tr fhir="generated-heirarchy" id="sa-adc" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck010.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].type" title="The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.
+
+The type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. &quot;Patient&quot; is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources)." data-no-external="true">type</a><a name="sa-Extension.value_x_.type"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Type the reference refers to (e.g. "Patient") - must be a resource in resources<br class="binding"/><span class="xhtPieceBold binding">Binding: </span><a href="http://hl7.org/fhir/R5/valueset-resource-types.html" title="http://hl7.org/fhir/ValueSet/resource-types" class="binding">ResourceType</a><span class="binding"> (</span><a href="http://hl7.org/fhir/R5/terminologies.html#extensible" title="To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated.  If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead." class="binding">extensible</a><span class="binding">)</span><span class="binding">: </span><span class="binding">Aa resource (or, for logical models, the URI of the logical model).</span></td></tr>
+<tr fhir="generated-heirarchy" id="sa-add" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck011.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img onClick="tableRowAction(this)" src="tbl_vjoin-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_datatype.gif" alt="" style="background-color: white; background-color: inherit" title="Datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier" title="An identifier for the target resource. This is used when there is no way to reference the other resource directly, either because the entity it represents is not available through a FHIR server, or because there is no way for the author of the resource to convert a known identifier to an actual location. There is no requirement that a Reference.identifier point to something that is actually exposed as a FHIR instance, but it SHALL point to a business concept that would be expected to be exposed as a FHIR instance, and that instance would need to be of a FHIR resource type allowed by the reference." data-no-external="true">identifier</a><a name="sa-Extension.value_x_.identifier"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span><a href="http://hl7.org/fhir/R5/conformance-rules.html#constraints" title="Dit element heeft of wordt geraakt door constraints ( ref-2 )" class="xhtConstraintStyle">C</a></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#Identifier">Identifier</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Logical reference, when literal reference is not known</td></tr>
+<tr fhir="generated-heirarchy" id="sa-adda" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces." data-no-external="true">id</a><a name="sa-Extension.value_x_.identifier.id"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Unique id for inter-element referencing</td></tr>
+<tr fhir="generated-heirarchy" id="sa-addb" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0112.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_extension_simple.png" alt="" style="background-color: white; background-color: inherit" title="Eenvoudige extensie" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.extension" title="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." data-no-external="true">extension</a><a name="sa-Extension.value_x_.identifier.extension"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"></td>
+<td style="" class="hierarchy xhtCellBorder0">0..*</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Additional content defined by implementations<br/><span class="xhtPieceBold">Slice: </span>Zonder volgorde, Open op value:url<br/></td></tr>
+<tr fhir="generated-heirarchy" id="sa-addc" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.use" title="The purpose of this identifier." data-no-external="true">use</a><a name="sa-Extension.value_x_.identifier.use"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element is een modifier element">?!</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element is een modifier element. </span><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#code">code</a></td>
+<td style="" class="hierarchy xhtCellBorder0">usual | official | temp | secondary | old (If known)<br class="binding"/><span class="xhtPieceBold binding">Binding: </span><a href="http://hl7.org/fhir/R5/valueset-identifier-use.html" title="http://hl7.org/fhir/ValueSet/identifier-use" class="binding">IdentifierUse</a><span class="binding"> (</span><a href="http://hl7.org/fhir/R5/terminologies.html#required" title="To be conformant, the concept in this element SHALL be from the specified value set." class="binding">required</a><span class="binding">)</span><span class="binding">: </span><span class="binding">Identifies the purpose for this identifier, if known .</span></td></tr>
+<tr fhir="generated-heirarchy" id="sa-addd" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_datatype.gif" alt="" style="background-color: white; background-color: inherit" title="Datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.type" title="A coded type for the identifier that can be used to determine which identifier to use for a specific purpose." data-no-external="true">type</a><a name="sa-Extension.value_x_.identifier.type"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#CodeableConcept">CodeableConcept</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Description of identifier<br class="binding"/><span class="xhtPieceBold binding">Binding: </span><a href="http://hl7.org/fhir/R5/valueset-identifier-type.html" title="http://hl7.org/fhir/ValueSet/identifier-type" class="binding">IdentifierTypeCodes</a><span class="binding"> (</span><a href="http://hl7.org/fhir/R5/terminologies.html#extensible" title="To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated.  If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead." class="binding">extensible</a><span class="binding">)</span><span class="binding">: </span><span class="binding">A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.</span></td></tr>
+<tr fhir="generated-heirarchy" id="sa-adde" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.system" title="Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique." data-no-external="true">system</a><a name="sa-Extension.value_x_.identifier.system"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></td>
+<td style="" class="hierarchy xhtCellBorder0">The namespace for the identifier value<br/><span class="xhtPieceBold">Vast waarde: </span><span class="xhtPieceDarkGreen">http://costateixeira.github.io/spenser/unit</span> (no extensions allowed)</td></tr>
+<tr fhir="generated-heirarchy" id="sa-addf" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: white; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.value" title="The portion of the identifier typically relevant to the user and which is unique within the context of the system." data-no-external="true">value</a><a name="sa-Extension.value_x_.identifier.value"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span><a href="http://hl7.org/fhir/R5/conformance-rules.html#constraints" title="Dit element heeft of wordt geraakt door constraints ( ident-1 )" class="xhtConstraintStyle">C</a></td>
+<td style="" class="hierarchy xhtCellBorder0">1..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></td>
+<td style="" class="hierarchy xhtCellBorder0">The value that is unique<br/><span class="xhtPieceBold">Voorbeeld General: </span><span class="xhtPieceDarkGreen">123456</span></td></tr>
+<tr fhir="generated-heirarchy" id="sa-addg" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0110.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_datatype.gif" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.period" title="Time period during which identifier is/was valid for use." data-no-external="true">period</a><a name="sa-Extension.value_x_.identifier.period"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#Period">Period</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Time period when id is/was valid for use</td></tr>
+<tr fhir="generated-heirarchy" id="sa-addh" class="xhtRowBorder0 xhtRowEven" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck0100.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vline.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin_end.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_reference.png" alt="" style="background-color: white; background-color: inherit" title="Verwijzing naar andere resource" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].identifier.</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].identifier.assigner" title="Organization that issued/manages the identifier." data-no-external="true">assigner</a><a name="sa-Extension.value_x_.identifier.assigner"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/references.html">Reference</a>(<a href="http://hl7.org/fhir/R5/organization.html">Organization</a>)</td>
+<td style="" class="hierarchy xhtCellBorder0">Organization that issued id (may be just text)</td></tr>
+<tr fhir="generated-heirarchy" id="sa-ade" class="xhtRowBorder0 xhtRowOdd" data-fhir="generated-heirarchy"><td role="rowheader" style="background-image: url(tbl_bck000.png)" class="hierarchy xhtCellBorder0 xhtCellNoWrap"><img src="tbl_spacer.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_blank.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="tbl_vjoin_end.png" alt="" style="background-color: inherit" class="hierarchy"/><img src="icon_primitive.png" alt="" style="background-color: #F7F7F7; background-color: inherit" title="Primitief datatype" class="hierarchy"/> <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only">Extension.value[x].</span><a no-external="true" href="StructureDefinition-dispensingDevice-definitions.html#Extension.value[x].display" title="Plain text narrative that identifies the resource in addition to the resource reference." data-no-external="true">display</a><a name="sa-Extension.value_x_.display"> </a></td>
+<td style="" class="hierarchy xhtCellBorder0"><span aria-hidden="true" style="padding-left: 3px; padding-right: 3px; color: black; background-color: white" title="Dit element komt mee in samenvattingen">Σ</span><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0" class="sr-only"> Dit element komt mee in samenvattingen. </span><a href="http://hl7.org/fhir/R5/conformance-rules.html#constraints" title="Dit element heeft of wordt geraakt door constraints ( ref-2 )" class="xhtConstraintStyle">C</a></td>
+<td style="" class="hierarchy xhtCellBorder0">0..1</td>
+<td style="" class="hierarchy xhtCellBorder0"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></td>
+<td style="" class="hierarchy xhtCellBorder0">Text alternative for the resource</td></tr>
+<tr fhir="generated-heirarchy" data-fhir="generated-heirarchy"><td colspan="5" class="hierarchy"><br/><a href="https://build.fhir.org/ig/FHIR/ig-guidance/readingIgs.html#table-views" title="Legenda voor dit formaat"><img src="https://hl7.org/fhir/R5/help16.png" alt="doco" style="background-color: inherit"/> Documentatie voor dit formaat</a></td></tr><script type="text/javascript">  // d05c76bd-93a9-4dd2-8fa7-3544ab77e2aa
+document.getElementById('cbdispensingDeviceSA-binding').checked = 'false' != localStorage.getItem('ht-table-states-binding');
+filterDesc(document.getElementById('dispensingDeviceSA'), 'binding', document.getElementById('cbdispensingDeviceSA-binding').checked, document.getElementById('ppdispensingDeviceSA'));
+document.getElementById('cbdispensingDeviceSA-constraint').checked = 'false' != localStorage.getItem('ht-table-states-constraint');
+filterDesc(document.getElementById('dispensingDeviceSA'), 'constraint', document.getElementById('cbdispensingDeviceSA-constraint').checked, document.getElementById('ppdispensingDeviceSA'));
+document.getElementById('cbdispensingDeviceSA-obligation').checked = 'false' != localStorage.getItem('ht-table-states-obligation');
+filterDesc(document.getElementById('dispensingDeviceSA'), 'obligation', document.getElementById('cbdispensingDeviceSA-obligation').checked, document.getElementById('ppdispensingDeviceSA'));
+</script></table>
+
+          <!--Terminology Bindings heading in the fragment -->
+          <h4>Terminologiebindings</h4>
+<table class="list" data-fhir="generated-heirarchy">
+  <tr>
+    <td>
+      <b>Pad</b>
+    </td>
+    <td>
+      <b>Status</b>
+    </td>
+    <td>
+      <b>Gebruik</b>
+    </td>
+    <td>
+      <b>ValueSet</b>
+    </td>
+    <td>
+      <b>Versie</b>
+    </td>
+    <td>
+      <b>Bron</b>
+    </td>
+  </tr>
+  <tr>
+    <td>Extension.value[x].type</td>
+    <td>Base</td>
+    <td>
+      <a href="http://hl7.org/fhir/R5/terminologies.html#Enumeration[extensible]">extensible</a>
+    </td>
+    <td title="Aa resource (or, for logical models, the URI of the logical model).">
+      <a href="http://hl7.org/fhir/R5/valueset-resource-types.html">Resource Types</a>
+      <button data-clipboard-text="http://hl7.org/fhir/ValueSet/resource-types|5.0.0" title="Klik om de url te kopiëren" class="btn-copy" aria-label="copy"></button>
+    </td>
+    <td title="Versie is expliciet 5.0.0">&#x1F4CD;5.0.0</td>
+    <td>
+      <a href="https://hl7.org/fhir/R5/">FHIR Std.</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Extension.value[x].identifier.​use</td>
+    <td>Base</td>
+    <td>
+      <a href="http://hl7.org/fhir/R5/terminologies.html#Enumeration[required]">required</a>
+    </td>
+    <td title="Identifies the purpose for this identifier, if known .">
+      <a href="http://hl7.org/fhir/R5/valueset-identifier-use.html">IdentifierUse</a>
+      <button data-clipboard-text="http://hl7.org/fhir/ValueSet/identifier-use|5.0.0" title="Klik om de url te kopiëren" class="btn-copy" aria-label="copy"></button>
+    </td>
+    <td title="Versie is expliciet 5.0.0">&#x1F4CD;5.0.0</td>
+    <td>
+      <a href="https://hl7.org/fhir/R5/">FHIR Std.</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Extension.value[x].identifier.​type</td>
+    <td>Base</td>
+    <td>
+      <a href="http://hl7.org/fhir/R5/terminologies.html#Enumeration[extensible]">extensible</a>
+    </td>
+    <td title="A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.">
+      <a href="http://hl7.org/fhir/R5/valueset-identifier-type.html">Identifier Type Codes</a>
+      <button data-clipboard-text="http://hl7.org/fhir/ValueSet/identifier-type|5.0.0" title="Klik om de url te kopiëren" class="btn-copy" aria-label="copy"></button>
+    </td>
+    <td title="Versie is expliciet 5.0.0">&#x1F4CD;5.0.0</td>
+    <td>
+      <a href="https://hl7.org/fhir/R5/">FHIR Std.</a>
+    </td>
+  </tr>
+</table>
+
+        
+          
+          <!-- 218 is size of empty table -->
+          
+            <a name="inv-all-snap"> </a>
+            <!--Constraints  heading in the fragment -->
+            <h4>Constrains</h4>
+<table class="list presentation" data-fhir="generated-heirarchy">
+  <tr>
+    <td width="60">
+      <b>Id</b>
+    </td>
+    <td>
+      <b>Grade</b>
+    </td>
+    <td>
+      <b>Pad(en)</b>
+    </td>
+    <td>
+      <b>Omschrijving</b>
+    </td>
+    <td>
+      <b>Expressie</b>
+    </td>
+  </tr>
+  <tr>
+    <td>ele-1</td>
+    <td>error</td>
+    <td>
+      <b>**ALLE** elementen</b>
+    </td>
+    <td>All FHIR elements must have a @value or children</td>
+    <td>
+      <code>hasValue() or (children().count() &gt; id.count())</code>
+    </td>
+  </tr>
+  <tr>
+    <td>ext-1</td>
+    <td>error</td>
+    <td>
+      <b>**ALLE** extensies</b>
+    </td>
+    <td>Must have either extensions or value[x], not both</td>
+    <td>
+      <code>extension.exists() != value.exists()</code>
+    </td>
+  </tr>
+</table>
+
+          
+        </div>
+      </div>
+
+
+      <!--<div id="all-xml">
+        <p>
+          <b>XML-sjabloon</b>
+        </p>
+        <div id="all-xml-inner">
+          <p><span style="color: maroon; font-weight: bold">yet to be done: Xml template</span></p>
+
+        </div>
+      </div>-->
+
+
+      <!--<div id="all-json">
+        <p>
+          <b>JSON-sjabloon</b>
+        </p>
+        <div id="all-json-inner">
+           // <span style="color: navy; opacity: 0.8">Dispensing device</span>
+ {
+    "<a href="StructureDefinition-dispensingDevice.html#Extension.id" title="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces" class="dict"><span style="text-decoration: underline">id</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#id">id</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: navy; opacity: 0.8">Unique id for inter-element referencing</span>
+    "<a href="StructureDefinition-dispensingDevice.html#Extension.url" title="Source of the definition for the extension code - a logical name or a URL" class="dict"><span style="text-decoration: underline">url</span></a>" : "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice", <span style="color: Gray">//</span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span>
+    "<a href="StructureDefinition-dispensingDevice.html#Extension.valueReference" title="Value of extension - must be one of a constrained set of the data types (see [Extensibility](http://hl7.org/fhir/R5/extensibility.html) for a list)" class="dict"><span style="text-decoration: underline">valueReference</span></a>" : { <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span> <span style="color: navy; opacity: 0.8">Value of extension</span>
+      "extension": [
+      ],
+      "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].type" title="The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.
+
+The type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. &quot;Patient&quot; is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources)" class="dict"><span style="text-decoration: underline">type</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#uri">uri</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8"><a href="http://hl7.org/fhir/R5/null.html" style="color: navy">Type the reference refers to (e.g. &quot;Patient&quot;) - must be a resource in resources</a></span>
+      "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier" title="An identifier for the target resource. This is used when there is no way to reference the other resource directly, either because the entity it represents is not available through a FHIR server, or because there is no way for the author of the resource to convert a known identifier to an actual location. There is no requirement that a Reference.identifier point to something that is actually exposed as a FHIR instance, but it SHALL point to a business concept that would be expected to be exposed as a FHIR instance, and that instance would need to be of a FHIR resource type allowed by the reference" class="dict"><span style="text-decoration: underline">identifier</span></a>" : { <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span> <span style="color: navy; opacity: 0.8">Logical reference, when literal reference is not known</span>
+        "extension": [
+        ],
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.use" title="The purpose of this identifier (dit element wijzigt de betekenis van andere elementen)" class="dict"><span style="text-decoration: underline">use</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#code">code</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8"><a href="http://hl7.org/fhir/R5/null.html" style="color: navy">usual | official | temp | secondary | old (If known)</a></span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.type" title="A coded type for the identifier that can be used to determine which identifier to use for a specific purpose" class="dict"><span style="text-decoration: underline">type</span></a>" : {<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#CodeableConcept">CodeableConcept</a></span>}, <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8"><a href="http://hl7.org/fhir/R5/null.html" style="color: navy">Description of identifier</a></span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.system" title="Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique" class="dict"><span style="text-decoration: underline">system</span></a>" : "http://costateixeira.github.io/spenser/unit", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.value" title="The portion of the identifier typically relevant to the user and which is unique within the context of the system" class="dict"><span style="text-decoration: underline">value</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></span>&gt;", <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: brown" title="Dit element is verplicht"><b>R!</b></span> <span style="color: navy; opacity: 0.8">The value that is unique</span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.period" title="Time period during which identifier is/was valid for use" class="dict"><span style="text-decoration: underline">period</span></a>" : {<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#Period">Period</a></span>}, <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8">Time period when id is/was valid for use</span>
+        "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].identifier.assigner" title="Organization that issued/manages the identifier" class="dict"><span style="text-decoration: underline">assigner</span></a>" : {<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/references.html#Reference">Reference</a></span>(Organization|5.0.0)} <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8">Organization that issued id (may be just text)</span>
+      },
+      "<a href="StructureDefinition-dispensingDevice.html#Extension.value[x].display" title="Plain text narrative that identifies the resource in addition to the resource reference" class="dict"><span style="text-decoration: underline">display</span></a>" : "&lt;<span style="color: darkgreen"><a href="http://hl7.org/fhir/R5/datatypes.html#string">string</a></span>&gt;" <span style="color: Gray">//</span> <span style="color: brown" title="ele-1: All FHIR elements must have a @value or children"><b>C?</b></span> <span style="color: navy; opacity: 0.8">Text alternative for the resource</span>
+    }
+  }
+
+        </div>
+      </div>-->
+
+
+      <!--<div id="all-ttl">
+        <p>
+          <b>TTL-sjabloon</b>
+        </p>
+        <div id="all-ttl-inner">
+          <p><span style="color: maroon; font-weight: bold">yet to be done: Turtle template</span></p>
+
+        </div>
+      </div>-->
+
+      <div id="all-summ">
+        <p>Deze structuur is afgeleid van 
+      <a href="http://hl7.org/fhir/R5/extensibility.html#Extension">Extension</a>
+    </p>
+        <div id="all-summ-inner">
+          <div data-fhir="generated"><a name="a-summary"> </a>
+<p><b>
+Samenvatting
+</b></p>
+<p>Eenvoudige extensie met type Reference: The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.</p><p>R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.</p>
+<p>When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p>&#160;</p>
+  <p>Andere representaties van het profiel: <a href="../StructureDefinition-dispensingDevice.csv">CSV</a>, <a href="../StructureDefinition-dispensingDevice.xlsx">Excel</a>, <a href="../StructureDefinition-dispensingDevice.sch">Schematron</a>
+  </p>
+
+  <!-- insert notes if present -->
+  
+
+
+
+</div>
+
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/tabs.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pakket jct.fhir.spenser#1.0.0 gebaseerd op <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gegenereerd 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Links: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Inhoudsopgave</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">QA-rapport</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

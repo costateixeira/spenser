@@ -1,0 +1,241 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer> a fhir:ActorDefinition ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "OrderPlacer"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ActorDefinition OrderPlacer</b></p><a name=\"OrderPlacer\"> </a><a name=\"hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderPlacer </b></td><td>Order Placer</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed.</p>\n</div></td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ActorDefinition OrderPlacer</b></p><a name=\"pt-OrderPlacer\"> </a><a name=\"pt-hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderPlacer </b></td><td>Emissor de Prescrições</td><td>Tipo: system </td></tr><tr><td colspan=\"3\"><div><p>Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída.</p>\n</div></td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ActorDefinition OrderPlacer</b></p><a name=\"nl-OrderPlacer\"> </a><a name=\"nl-hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderPlacer </b></td><td>Orderplaatser</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid.</p>\n</div></td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ActorDefinition OrderPlacer</b></p><a name=\"fr-OrderPlacer\"> </a><a name=\"fr-hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Acteur : OrderPlacer </b></td><td>Émetteur d'ordonnances</td><td>Type : system </td></tr><tr><td colspan=\"3\"><div><p>Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée.</p>\n</div></td></tr></table></div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [
+     fhir:v "OrderPlacer" ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "OrderPlacer"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "OrderPlacer"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "OrderPlacer"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:title [
+     fhir:v "Order Placer" ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Emissor de Prescrições"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Orderplaatser"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Émetteur d'ordonnances"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [
+     fhir:v "The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server." ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Het systeem dat om chocolade vraagt, door een order naar een Spenser-unit te posten of er een op een orderserver te plaatsen."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:type [ fhir:v "system"] ; # 
+  fhir:documentation [
+     fhir:v "On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed." ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] . # 
+
+# -------------------------------------------------------------------------------------
+

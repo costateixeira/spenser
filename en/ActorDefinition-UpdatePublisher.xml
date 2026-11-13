@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="UpdatePublisher"/>
+  <language value="en"/>
+  <text>
+    <status value="generated"/><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ActorDefinition UpdatePublisher</b></p><a name="UpdatePublisher"> </a><a name="hcUpdatePublisher"> </a><table class="grid"><tr><td><b>Actor: UpdatePublisher </b></td><td>Update Publisher</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.</p>
+<p>See <a href="interfaces.html#updates">Updates</a>.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/UpdatePublisher"/>
+  <version value="1.0.0"/>
+  <name value="UpdatePublisher"/>
+  <title value="Update Publisher"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="The site that publishes the release manifest and firmware images a Spenser Unit checks for and installs."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.&#xA;&#xA;See [Updates](interfaces.html#updates)."/>
+</ActorDefinition>

@@ -1,0 +1,41 @@
+{
+  "resourceType" : "ActorDefinition",
+  "id" : "OrderServer",
+  "language" : "en",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ActorDefinition OrderServer</b></p><a name=\"OrderServer\"> </a><a name=\"hcOrderServer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderServer </b></td><td>Order Server</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including <code>_include=Task:focus</code>. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.</p>\n<p>See <a href=\"interfaces.html#what-spenser-asks-of-an-order-server\">What Spenser asks of an order server</a>.</p>\n</div></td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/OrderServer",
+  "version" : "1.0.0",
+  "name" : "OrderServer",
+  "title" : "Order Server",
+  "status" : "draft",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A FHIR server that holds orders until a Spenser Unit collects them, and receives what the unit reports back.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "type" : "system",
+  "documentation" : "Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including `_include=Task:focus`. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.\n\nSee [What Spenser asks of an order server](interfaces.html#what-spenser-asks-of-an-order-server)."
+}

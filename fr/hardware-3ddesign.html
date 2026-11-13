@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Pièces imprimables en 3D - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"7"}
+    h3,h4,h5,h6{--heading-prefix:"7"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - un compagnon pour développeurs</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International drapeau" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Accueil</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuration</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilisation</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Logiciel
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Micrologiciel</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Matériel
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Conception 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Nomenclature</a>
+      </li>
+      <li>
+        <a href="assembly.html">Assemblage</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">À propos
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Auteurs</a>
+      </li>
+      <li>
+        <a href="downloads.html">Téléchargements</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefacts</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-fr.png"/>Français</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Langue:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag fr" src="assets/images/lang-fr.png"/>Français</div>
+
+    <div><a href="../en/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../pt/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-pt.png" alt="flag pt"/>Português</a></div>
+
+    <div><a href="../nl/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Table des matières</b></a></li><li><b>Pièces imprimables en 3D</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publié par José Costa Teixeira. Ce guide n'est pas une publication autorisée ; C'est la version en intégration continue pour la version 1.0.0 construite par le CI Build FHIR (HL7® FHIR® Standard). Cette version est basée sur le contenu actuel de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> et change régulièrement. Voir le <a href='http://costateixeira.github.io/spenser/history.html'>répertoire des versions publiées</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Pièces imprimables en 3D</h2>
+  
+
+
+
+
+<p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+
+<p>Cette page comprend des traductions de la langue source originale dans laquelle le guide a été rédigé.  Des informations sur ces traductions et des instructions sur la manière de fournir un retour d'information sur les traductions sont disponibles <a href="translationinfo.html">ici</a>.</p>
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#description" id="markdown-toc-description">Description</a></li>
+  <li><a href="#for-smaller-chocolates" id="markdown-toc-for-smaller-chocolates">Pour des chocolats plus petits</a></li>
+  <li><a href="#nomenclature" id="markdown-toc-nomenclature">Nomenclature</a></li>
+</ul>
+
+</div>
+<p>Voici les pièces 3D utilisées pour construire <strong>Spenser</strong>.</p>
+
+<h3 id="description">Description</h3>
+
+<p><br clear="all" /></p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Pièce</th>
+      <th>Image</th>
+      <th>Description</th>
+      <th>Téléchargements</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Corps</strong></td>
+      <td><img src="spenser-body.png" alt="" width="120px" /></td>
+      <td>Contient la pile de chocolats, le servomoteur et les rails de guidage, sur sa propre base.</td>
+      <td><a href="spenser-body.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Poussoir</strong></td>
+      <td><img src="spenser-pusher.png" alt="" width="120px" /></td>
+      <td>Coulisse le long des rails et pousse un chocolat vers la sortie.</td>
+      <td><a href="spenser-pusher.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Bras</strong></td>
+      <td><img src="spenser-arm.png" alt="" width="120px" /></td>
+      <td>Se fixe sur le palonnier du servo et entraîne le poussoir.</td>
+      <td><a href="spenser-arm.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Goupille</strong></td>
+      <td><img src="spenser-pin.png" alt="" width="120px" /></td>
+      <td>Axe reliant le bras au poussoir.</td>
+      <td><a href="spenser-pin.stl">STL</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="for-smaller-chocolates">Pour des chocolats plus petits</h3>
+
+<p>Le couloir ci-dessus accepte un morceau jusqu'à 60 × 39 mm, ce qui convient à
+un napolitain belge. Un napolitain suisse est plus petit — un Lindt Napolitain
+mesure environ 40 × 25 mm — et a de la place pour bouger. Le jeu de 9 mm dans
+le sens de la poussée est celui qui compte : il suffit à un morceau pour se
+glisser vers l'avant sous la paroi de retenue, où le poussoir le rencontre par
+la tranche.</p>
+
+<p>Ce sont les mêmes pièces, le couloir réduit de 17,5 mm en largeur, de 9 mm
+en profondeur et de 20,2 mm en longueur de glissière : elles acceptent un
+morceau <strong>jusqu'à 40 × 30 mm</strong>, à la même épaisseur de 5,5 à 7,5 mm.
+Mesurez un morceau avant d'imprimer : 30 mm est la limite dans le sens de
+la poussée.</p>
+
+<p>La profondeur est la cote taillée sur le morceau, et elle est exacte. La
+largeur non : elle est fixée par le logement où descend l'Atomic Motion Base,
+24 mm pour un module de 24 mm, et par le logement du servo à côté, 12,26 mm
+pour un boîtier de 12,2. Tous deux tiennent entre les deux mêmes parois
+latérales que le couloir et on ne peut rien retirer ni de l'un ni de l'autre,
+de sorte que 17,5 mm est tout ce que ces pièces peuvent céder en largeur. Un
+morceau de 40 mm de large garde 2,5 mm de jeu latéral dans ce qui reste, et
+même un ajustement large n'y coûterait rien : un morceau de 30 × 40 ne peut
+pas tourner dans un couloir de 31 mm de fond, aussi large soit-il.</p>
+
+<p>Deux choses changent dans la construction. Réglez <code class="language-plaintext highlighter-rouge">anglePush=78,6</code> sur cette
+unité, au lieu de la valeur par défaut de 77. Et montez le bras de sorte
+qu'au repos il soit environ 44,5° en arrière de la perpendiculaire au couloir,
+et non d'équerre : cela recule toute la course et c'est ce qui permet au
+corps d'être aussi court. Le contrôle : au repos, la face de poussée doit se
+trouver juste derrière la pile de chocolats. Les 26,7 mm sont pris à
+l'arrière, derrière le poussoir, et non à la bouche : le morceau sort par
+l'autre extrémité, et 6,5 mm d'entre eux sont remis sous le servo, ce qui
+amène son logement contre la face arrière. Le servo lui-même se monte
+retourné bout pour bout par rapport à l'unité standard, pour que son câble
+sorte à l'arrière ; la goupille va alors dans la deuxième rainure du
+poussoir, qui reprend les 5 mm dont le boîtier retourné déplace l'axe. La goupille a ici sa propre pièce et n'exige aucun
+perçage : son trou dans le bras fait 3,1 mm dans ces fichiers contre 2,76 sur
+le bras standard, et la goupille elle-même 2,3 mm au lieu de 2,55. Il a fallu
+bouger les deux moitiés. Un petit trou s'imprime sous sa cote et un petit axe
+au-dessus de la sienne, et ensemble ils ont mangé les 0,44 mm de jeu du
+dessin, de sorte que la goupille n'entrait pas ; il y en a 0,79 maintenant.
+La goupille standard ne change pas — percez le bras standard à 2,6 mm si c'est celui-là que vous montez.</p>
+
+<p>Pour une autre taille de morceau, <a href="https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py"><code class="language-plaintext highlighter-rouge">tools/resize/build.py</code></a> taille ces
+trois pièces à sa mesure et affiche ce que devient la course. Un morceau se
+donne en largeur du couloir × longueur le long de celui-ci × épaisseur, donc
+<code class="language-plaintext highlighter-rouge">--piece 40x30x7 --name small</code> est cette variante ; sans rien derrière, le
+script prend la mignonnette belge pour laquelle les pièces ci-dessus sont
+déjà taillées, et dit qu'il n'y a rien à tailler.</p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Pièce</th>
+      <th>Description</th>
+      <th>Téléchargements</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Corps</strong></td>
+      <td>Un couloir de 43,5 × 31 mm au lieu de 61 × 40 ; 46,5 × 80,8 × 105 mm hors tout. Le logement du module garde ses 24 mm entiers et le servo ses 12,26, et aucune hauteur n'y bouge : l'épaulement qui retient le poussoir, le boîtier du servo et la sortie sont là où le corps standard les place. Le servo se monte retourné bout pour bout, de sorte que son câble sort à l'arrière de l'unité au lieu de regarder vers le magasin, et tout son logement recule de 6,5 mm pour que l'axe reste près de là où il était. Le câble doit alors franchir toute la longueur de la tour ; la paroi latérale du magasin avance donc de 13,0 mm au-dessus de celle-ci, aussi haute que le rail du module en face et percée de la même fenêtre, pour que le câble s'y appuie.</td>
+      <td><a href="spenser-body-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Poussoir</strong></td>
+      <td>42,4 × 46 mm, pour correspondre au couloir plus étroit, avec deux rainures de goupille de 2,55 mm : la goupille entre dans l'une ou l'autre, et la seconde, 5 mm plus vers l'intérieur, maintient le poussoir 5 mm plus en arrière sur toute la course, et c'est celle que demande ce corps, le servo étant retourné.</td>
+      <td><a href="spenser-pusher-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Bras</strong></td>
+      <td>26,75 mm entre les trous au lieu de 41, ce qui donne une course de 33,76 mm avec <code class="language-plaintext highlighter-rouge">anglePush=78,6</code>, à la mesure du couloir moins profond.</td>
+      <td><a href="spenser-arm-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Goupille</strong></td>
+      <td>2,3 mm d'axe au lieu de 2,55, l'autre moitié de l'ajustement avec le bras.</td>
+      <td><a href="spenser-pin-small.stl">STL</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="nomenclature">Nomenclature</h3>
+
+<p><strong>Les quantités indiquées sont celles du distributeur à 2 positions.</strong></p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Article</th>
+      <th>Description</th>
+      <th>Quantité</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Corps</td>
+      <td>Contient les chocolats, le moteur et les rails de guidage</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Bras</td>
+      <td>Bras rotatif fixé au servo</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Goupille</td>
+      <td>Relie le bras au poussoir</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Poussoir</td>
+      <td>Pousse un chocolat vers la sortie</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Le package jct.fhir.spenser#1.0.0 est basé sur <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Date de génération : 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Liens: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Table des matières</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Rapport de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

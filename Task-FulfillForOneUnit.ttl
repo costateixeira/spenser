@@ -1,0 +1,42 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/Task/FulfillForOneUnit> a fhir:Task ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "FulfillForOneUnit"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: Task FulfillForOneUnit</b></p><a name=\"FulfillForOneUnit\"> </a><a name=\"hcFulfillForOneUnit\"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Codes:{http://hl7.org/fhir/CodeSystem/task-code fulfill}\">Fulfill the focal request</span></p><p><b>focus</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p><p><b>for</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>RequestedPerformers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Reference</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: Task FulfillForOneUnit</b></p><a name=\"pt-FulfillForOneUnit\"> </a><a name=\"pt-hcFulfillForOneUnit\"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Códigos:{http://hl7.org/fhir/CodeSystem/task-code fulfill}\">Fulfill the focal request</span></p><p><b>focus</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p><p><b>for</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>RequestedPerformers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Reference</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: Task FulfillForOneUnit</b></p><a name=\"nl-FulfillForOneUnit\"> </a><a name=\"nl-hcFulfillForOneUnit\"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Codes:{http://hl7.org/fhir/CodeSystem/task-code fulfill}\">Fulfill the focal request</span></p><p><b>focus</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p><p><b>for</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>RequestedPerformers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Reference</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : Task FulfillForOneUnit</b></p><a name=\"fr-FulfillForOneUnit\"> </a><a name=\"fr-hcFulfillForOneUnit\"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Codes :{http://hl7.org/fhir/CodeSystem/task-code fulfill}\">Fulfill the focal request</span></p><p><b>focus</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest : extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p><p><b>for</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>RequestedPerformers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Reference</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table></div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:status [ fhir:v "requested"] ; # 
+  fhir:intent [ fhir:v "order"] ; # 
+  fhir:code [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://hl7.org/fhir/CodeSystem/task-code"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "fulfill" ] ;
+       fhir:display [ fhir:v "Fulfill the focal request" ]
+     ] )
+  ] ; # 
+  fhir:focus [
+     fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainDarkOrderForOneUnit> ;
+     fhir:reference [ fhir:v "MedicationRequest/PlainDarkOrderForOneUnit" ]
+  ] ; # 
+  fhir:for [
+     fhir:link <http://costateixeira.github.io/spenser/Patient/123> ;
+     fhir:reference [ fhir:v "Patient/123" ]
+  ] ; # 
+  fhir:requestedPerformer ( [
+     fhir:reference [
+       fhir:link <http://costateixeira.github.io/spenser/Device/Spenser-E3D4> ;
+       fhir:reference [ fhir:v "Device/Spenser-E3D4" ] ;
+       fhir:display [ fhir:v "Spenser-E3D4" ]
+     ]
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

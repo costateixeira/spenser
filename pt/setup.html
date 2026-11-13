@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Setup - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"9"}
+    h3,h4,h5,h6{--heading-prefix:"9"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - o companheiro do programador</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International bandeira" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Início</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuração</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilização</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Desenho 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Lista de materiais</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montagem</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Sobre
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Autores</a>
+      </li>
+      <li>
+        <a href="downloads.html">Transferências</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefactos</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-pt.png"/>Português</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Língua:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag pt" src="assets/images/lang-pt.png"/>Português</div>
+
+    <div><a href="../en/setup.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../nl/setup.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/setup.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Índice</b></a></li><li><b>Setup</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publicado por José Costa Teixeira. Este guia não é uma publicação autorizada; é a compilação contínua para a versão 1.0.0 construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> e muda regularmente. Veja o <a href='http://costateixeira.github.io/spenser/history.html'>Diretório de versões publicadas</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Setup</h2>
+  
+
+
+
+
+<p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+
+<p>Esta página inclui traduções a partir da língua original em que o guia foi criado. Informações sobre estas traduções e instruções para fornecer feedback podem ser encontradas <a href="translationinfo.html">aqui</a>.</p>
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#first-boot" id="markdown-toc-first-boot">Primeiro arranque</a></li>
+  <li><a href="#which-arrangement" id="markdown-toc-which-arrangement">Que arranjo escolher</a></li>
+  <li><a href="#pointing-it-at-an-order-server" id="markdown-toc-pointing-it-at-an-order-server">Apontar a unidade a um servidor de prescrições</a></li>
+  <li><a href="#several-units-in-one-room" id="markdown-toc-several-units-in-one-room">Várias unidades na mesma sala</a></li>
+  <li><a href="#when-it-does-not-work" id="markdown-toc-when-it-does-not-work">Quando não funciona</a></li>
+</ul>
+
+</div>
+<p>A unidade está montada, com o firmware gravado e ligada. Falta pô-la numa rede
+e apontá-la ao sítio de onde virão as prescrições.</p>
+
+<p>Há um facto que decide tudo o resto nesta página: <strong>nunca é preciso nada
+ligar-se de fora a uma unidade.</strong> Ela pode ser alcançada quando a rede o
+permite, e sai à procura de trabalho quando a rede não o permite. É por isso que
+um dispensador funciona na Wi-Fi de uma conferência, que é onde este tipo de
+demonstração costuma morrer.</p>
+
+<h3 id="first-boot">Primeiro arranque</h3>
+
+<p>Sem credenciais guardadas, a unidade é a sua própria rede Wi-Fi aberta. A rede
+chama-se <code class="language-plaintext highlighter-rouge">Spenser-</code> seguido dos dois últimos bytes do seu endereço MAC, por
+exemplo <code class="language-plaintext highlighter-rouge">Spenser-E3D4</code>, e esse é também o nome da unidade em todo o resto.</p>
+
+<ol>
+  <li>Ligue-se a <code class="language-plaintext highlighter-rouge">Spenser-XXXX</code> a partir de um telemóvel ou de um portátil. A
+unidade responde a qualquer nome de DNS que lhe perguntem, por isso a página
+de configuração abre normalmente sozinha. Se não abrir, aceda a
+<a href="http://192.168.4.1">http://192.168.4.1</a>.</li>
+  <li>Escolha uma rede da lista, indique a palavra-passe e guarde. A unidade
+reinicia e liga-se a ela.</li>
+  <li>A partir daí está em <a href="http://spenser.local">http://spenser.local</a>, ou no
+endereço que o router lhe tiver dado.</li>
+</ol>
+
+<p><strong>Guarde a chave antes de sair do modo de configuração.</strong> Tudo o que <em>altera</em>
+uma unidade precisa dela: dispensar, definições, stock, Wi-Fi e atualizações.
+<code class="language-plaintext highlighter-rouge">GET /key</code> devolve-a durante cinco minutos depois de um reinício, e a qualquer
+momento enquanto a unidade estiver em modo de configuração. Também é escrita na
+consola série, a 115200 baud, em cada arranque. Uma unidade que esteja a servir
+o seu próprio ponto de acesso aceita tudo sem chave, porque ali não há rede
+nenhuma a defender.</p>
+
+<p>Manter o botão premido três segundos durante o arranque devolve o modo de
+configuração. Dez segundos apagam as credenciais guardadas; o LED fica vermelho
+enquanto o botão está premido, para avisar antes de o largar.</p>
+
+<h3 id="which-arrangement">Que arranjo escolher</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Onde está a unidade</th>
+      <th>Como lhe chegam as prescrições</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Na sua rede, com um servidor de prescrições</td>
+      <td>De ambas as formas: publicadas diretamente na unidade, ou emitidas no servidor e recolhidas</td>
+    </tr>
+    <tr>
+      <td>Na sua rede, sem servidor</td>
+      <td>Publicadas diretamente na unidade</td>
+    </tr>
+    <tr>
+      <td>No seu próprio ponto de acesso</td>
+      <td>Publicadas diretamente na unidade, por quem se tiver ligado a ela</td>
+    </tr>
+    <tr>
+      <td>Numa rede que isola os seus clientes</td>
+      <td>Emitidas num servidor de prescrições na Internet, e recolhidas</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="your-own-network">A sua própria rede</h4>
+
+<p>Casa, escritório, laboratório. A unidade está na Wi-Fi, <code class="language-plaintext highlighter-rouge">spenser.local</code> resolve,
+e ambos os caminhos lhe estão abertos: publicar um MedicationRequest diretamente
+nela e sai um chocolate, ou colocar prescrições num servidor e deixar a unidade
+recolhê-las.</p>
+
+<p>É este o arranjo com que se deve desenvolver, porque permite ver as duas
+metades.</p>
+
+<h4 id="no-network-at-all">Sem rede nenhuma</h4>
+
+<p>Deixe a unidade no seu próprio ponto de acesso e deixe as pessoas ligarem-se a
+<code class="language-plaintext highlighter-rouge">Spenser-XXXX</code>. A unidade está em <code class="language-plaintext highlighter-rouge">192.168.4.1</code>, ali não precisa de chave, e as
+prescrições publicadas nela são dispensadas de imediato. A troca completa é
+<a href="ExampleScenario-DirectOrderScenario.html">pedir diretamente à unidade</a>.</p>
+
+<p>Faltam duas coisas sem ligação à Internet. Não há relógio, porque não há NTP, e
+por isso a unidade omite <code class="language-plaintext highlighter-rouge">whenHandedOver</code> e afins em vez de inventar uma hora. E
+não há servidor de prescrições, por isso não há nada para consultar; desligue a
+consulta periódica com <code class="language-plaintext highlighter-rouge">pollEnabled=0</code> para a unidade deixar de tentar.</p>
+
+<h4 id="a-network-that-isolates-its-clients">Uma rede que isola os seus clientes</h4>
+
+<p>A Wi-Fi de conferências e de hotéis, e quase todas as redes para convidados,
+põem cada cliente na sua própria célula. Os clientes alcançam a Internet e mais
+nada. <code class="language-plaintext highlighter-rouge">spenser.local</code> não vai resolver, o endereço da unidade não vai responder,
+e nada lhe pode ser publicado.</p>
+
+<p>A unidade não tem problema nenhum. Continua a sair.</p>
+
+<p>Ponha um servidor de prescrições algures na Internet, aponte a unidade a ele, e
+deixe todos escreverem lá as suas prescrições. A unidade consulta o servidor,
+recolhe o trabalho que lhe é dirigido, dispensa, e comunica de volta o que fez.
+É <a href="ExampleScenario-TaskOrderScenario.html">pedir através de um servidor de prescrições</a>,
+e o isolamento de clientes é a razão de ser desse cenário.</p>
+
+<p>Verifique isto antes da sessão e não durante: ligue-se à rede com dois
+dispositivos e tente alcançar um a partir do outro.</p>
+
+<h4 id="a-phone-hotspot">Uma partilha de rede do telemóvel</h4>
+
+<p>O mesmo que a sua própria rede, e sob o seu controlo, desde que o telemóvel
+também não esteja a isolar os clientes — alguns isolam. É o recurso habitual
+quando a Wi-Fi do local se revela isolada e o servidor de prescrições já está na
+Internet.</p>
+
+<h3 id="pointing-it-at-an-order-server">Apontar a unidade a um servidor de prescrições</h3>
+
+<p>Tudo o que se segue precisa da chave.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">KEY</span><span class="o">=</span>... <span class="c"># da consola série, ou de GET /key</span>
+
+curl <span class="nt">-H</span> <span class="s2">"X-Spenser-Key: </span><span class="nv">$KEY</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="s2">"http://spenser.local/setSettings?serverUrl=https://example.org/fhir&amp;orderMode=both&amp;pollEnabled=1&amp;pollSeconds=30&amp;writeBack=1&amp;giveUpOnStockEmpty=0"</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">orderMode</code> é <code class="language-plaintext highlighter-rouge">both</code> por omissão: a unidade aceita tanto prescrições com tag
+como Tasks. <code class="language-plaintext highlighter-rouge">tag</code> ou <code class="language-plaintext highlighter-rouge">task</code> restringem-na a uma só. Não são dois modos de
+funcionamento, apenas duas formas de uma prescrição se tornar acionável.</li>
+  <li><code class="language-plaintext highlighter-rouge">pollSeconds</code> está entre 5 e 3600, 30 por omissão. <code class="language-plaintext highlighter-rouge">GET /checkOrders</code> força
+uma verificação imediata, e devolve <code class="language-plaintext highlighter-rouge">202</code> antes de a verificação ter
+terminado.</li>
+  <li><code class="language-plaintext highlighter-rouge">giveUpOnStockEmpty</code> desligado deixa em aberto uma prescrição que não pôde ser
+aviada, de modo que reabastecer a pista a cumpre numa verificação posterior.
+Ligado, é comunicada uma vez e abandonada.</li>
+</ul>
+
+<p>O painel em <code class="language-plaintext highlighter-rouge">http://spenser.local</code> define as mesmas coisas, e ainda o stock, os
+ângulos dos servos e as atualizações.</p>
+
+<h3 id="several-units-in-one-room">Várias unidades na mesma sala</h3>
+
+<p>Cada unidade consulta o mesmo servidor e, de outro modo, recolheria as mesmas
+prescrições. Indique a que deve aviar a prescrição em <code class="language-plaintext highlighter-rouge">Task.requestedPerformer</code>,
+e na extensão <code class="language-plaintext highlighter-rouge">dispensingDevice</code> da própria prescrição; todas as outras unidades
+a ignoram.</p>
+
+<p>Cada verificação considera apenas os cinco primeiros resultados. Uma fila mais
+longa do que isso no servidor pode ultrapassar uma verificação, o que convém
+saber antes de se formar uma fila numa demonstração.</p>
+
+<h3 id="when-it-does-not-work">Quando não funciona</h3>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">spenser.local</code> não resolve.</strong> Use o endereço do router ou da consola série.
+O mDNS é a parte com mais probabilidade de faltar, não a unidade.</li>
+  <li><strong>Tudo responde <code class="language-plaintext highlighter-rouge">401</code>.</strong> A chave falta ou está errada. Reinicie a unidade e
+leia <code class="language-plaintext highlighter-rouge">GET /key</code> nos cinco minutos seguintes.</li>
+  <li><strong>As dispensas não têm data e hora.</strong> O relógio não foi acertado: o NTP ainda
+não respondeu, ou não há caminho até ele. A unidade omite a hora em vez de a
+inventar.</li>
+  <li><strong>As prescrições não são recolhidas.</strong> Verifique <code class="language-plaintext highlighter-rouge">serverUrl</code>, verifique se
+<code class="language-plaintext highlighter-rouge">pollEnabled</code> está ligado, e lembre-se de que as prescrições já tratadas ficam
+registadas: <code class="language-plaintext highlighter-rouge">GET /forgetOrders</code> antes de repetir o mesmo cenário.</li>
+  <li><strong>Um teste está sempre a competir com a unidade.</strong> Desligue a consulta
+periódica com <code class="language-plaintext highlighter-rouge">pollEnabled=0</code> durante os testes e force as verificações, e
+volte a ligá-la no fim.</li>
+  <li><strong>A página de configuração não abre sozinha.</strong> Aceda a
+<a href="http://192.168.4.1">http://192.168.4.1</a> estando ligado a <code class="language-plaintext highlighter-rouge">Spenser-XXXX</code>.</li>
+</ul>
+
+<p><a href="interfaces.html">Interfaces</a> tem a referência por detrás de tudo isto: todas as
+rotas, o que precisa de chave, e o que faz cada definição.</p>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pacote jct.fhir.spenser#1.0.0 baseado em <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gerado 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Ligações: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Índice</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Relatório de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Peças para impressão 3D - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"7"}
+    h3,h4,h5,h6{--heading-prefix:"7"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - o companheiro do programador</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International bandeira" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Início</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuração</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilização</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Desenho 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Lista de materiais</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montagem</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Sobre
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Autores</a>
+      </li>
+      <li>
+        <a href="downloads.html">Transferências</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefactos</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-pt.png"/>Português</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Língua:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag pt" src="assets/images/lang-pt.png"/>Português</div>
+
+    <div><a href="../en/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../nl/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Índice</b></a></li><li><b>Peças para impressão 3D</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publicado por José Costa Teixeira. Este guia não é uma publicação autorizada; é a compilação contínua para a versão 1.0.0 construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> e muda regularmente. Veja o <a href='http://costateixeira.github.io/spenser/history.html'>Diretório de versões publicadas</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Peças para impressão 3D</h2>
+  
+
+
+
+
+<p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+
+<p>Esta página inclui traduções a partir da língua original em que o guia foi criado. Informações sobre estas traduções e instruções para fornecer feedback podem ser encontradas <a href="translationinfo.html">aqui</a>.</p>
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#descrição" id="markdown-toc-descrição">Descrição</a></li>
+  <li><a href="#for-smaller-chocolates" id="markdown-toc-for-smaller-chocolates">Para chocolates mais pequenos</a></li>
+  <li><a href="#lista-de-materiais" id="markdown-toc-lista-de-materiais">Lista de materiais</a></li>
+</ul>
+
+</div>
+<p>Seguem-se as peças 3D usadas para construir o <strong>Spenser</strong>.</p>
+
+<h3 id="descrição">Descrição</h3>
+
+<p><br clear="all" /></p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Peça</th>
+      <th>Imagem</th>
+      <th>Descrição</th>
+      <th>Transferências</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Corpo</strong></td>
+      <td><img src="spenser-body.png" alt="" width="120px" /></td>
+      <td>Segura a pilha de chocolates, o servomotor e as guias de deslizamento, sobre a sua própria base.</td>
+      <td><a href="spenser-body.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Empurrador</strong></td>
+      <td><img src="spenser-pusher.png" alt="" width="120px" /></td>
+      <td>Desliza ao longo das guias e empurra um chocolate para fora.</td>
+      <td><a href="spenser-pusher.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Braço</strong></td>
+      <td><img src="spenser-arm.png" alt="" width="120px" /></td>
+      <td>Fixa-se à cruzeta do servo e move o empurrador.</td>
+      <td><a href="spenser-arm.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Pino</strong></td>
+      <td><img src="spenser-pin.png" alt="" width="120px" /></td>
+      <td>Eixo que liga o braço ao empurrador.</td>
+      <td><a href="spenser-pin.stl">STL</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="for-smaller-chocolates">Para chocolates mais pequenos</h3>
+
+<p>A pista acima aceita um pedaço até 60 × 39 mm, o que serve um napolitain
+belga. Um napolitain suíço é mais pequeno — um Lindt Napolitain tem cerca de
+40 × 25 mm — e fica com espaço para se mexer. A folga de 9 mm ao longo do
+empurrão é a que importa: basta para um pedaço escorregar para a frente por
+baixo da parede de retenção, onde o empurrador o encontra de topo.</p>
+
+<p>Estas são as mesmas peças com a pista cortada 17,5 mm mais estreita, 9 mm
+menos funda e a guia 20,2 mm mais curta, pelo que aceitam um pedaço <strong>até
+40 × 30 mm</strong>, com a mesma espessura de 5,5 a 7,5 mm. Meça um pedaço antes
+de imprimir: 30 mm é o limite ao longo do empurrão.</p>
+
+<p>A profundidade é a medida cortada ao pedaço, e é exacta. A largura não: é
+definida pelo encaixe onde desce a Atomic Motion Base, de 24 mm para um
+módulo de 24 mm, e pelo alojamento do servo ao lado, de 12,26 mm para uma
+caixa de 12,2. Ambos ficam entre as mesmas duas paredes laterais da pista e
+não se pode tirar nada de nenhum deles, pelo que 17,5 mm é tudo o que estas
+peças podem ceder em largura. Um pedaço de 40 mm fica com 2,5 mm de folga
+lateral no que resta, e mesmo um ajuste largo não custaria nada: um pedaço de
+30 × 40 não roda numa pista de 31 mm de fundo, por mais larga que ela seja.</p>
+
+<p>Duas coisas mudam na construção. Defina <code class="language-plaintext highlighter-rouge">anglePush=78,6</code> nesta unidade, em vez
+do valor por omissão de 77. E monte o braço de modo a ficar, em repouso,
+cerca de 44,5° recuado em relação à perpendicular à pista, e não a esquadria:
+isso recua todo o percurso e é o que permite o corpo ser tão curto. A
+verificação é que, em repouso, a face de empurrar fique logo atrás do
+empilhamento de chocolate. Os 26,7 mm saem de trás, atrás do empurrador, e
+não da boca: o pedaço sai pela outra extremidade, e 6,5 mm deles voltam a
+entrar por baixo do servo, que é como o seu encaixe fica encostado à face
+traseira. O próprio servo entra virado ao contrário em relação à unidade
+padrão, para que o cabo saia por trás; o pino vai então na segunda ranhura
+do empurrador, que retira os 5 mm que a caixa virada desloca o veio. O pino tem aqui uma peça
+própria e não precisa de ser furado: o orifício no braço tem 3,1 mm nestes
+ficheiros contra 2,76 no braço padrão, e o próprio pino tem 2,3 mm em vez de
+2,55. Foi preciso mexer nas duas metades. Um orifício pequeno é impresso
+abaixo da medida e um eixo pequeno acima da sua, e juntos consumiram os
+0,44 mm de folga que o desenho tinha, pelo que o pino não entrava; agora há
+0,79 mm. O pino padrão não muda — se construir esse, fure o braço padrão a
+2,6 mm.</p>
+
+<p>Para outro tamanho de pedaço, <a href="https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py"><code class="language-plaintext highlighter-rouge">tools/resize/build.py</code></a> corta estas três
+peças à medida dele e mostra o que fica o curso. O pedaço indica-se como
+largura da pista × ao longo dela × espessura, pelo que
+<code class="language-plaintext highlighter-rouge">--piece 40x30x7 --name small</code> é esta variante; sem nada depois do comando, o
+script toma a mignonette belga para a qual as peças acima já estão cortadas e
+diz que não há nada a cortar.</p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Peça</th>
+      <th>Descrição</th>
+      <th>Transferências</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Corpo</strong></td>
+      <td>Uma pista de 43,5 × 31 mm em vez de 61 × 40; 46,5 × 80,8 × 105 mm no total. O encaixe do módulo mantém os seus 24 mm completos e o servo os seus 12,26, e nenhuma altura nele se move: a saliência que segura o empurrador, a caixa do servo e a abertura de saída ficam onde o corpo padrão as tem. O servo entra virado ao contrário, pelo que o seu cabo sai pela traseira da unidade em vez de ficar voltado para o depósito, e todo o seu encaixe fica 6,5 mm mais atrás para que o veio se mantenha perto de onde estava. O cabo passa então a ter de atravessar todo o comprimento da torre, pelo que a parede lateral do depósito avança 13,0 mm por cima dela, tão alta como a calha do módulo do lado oposto e com a mesma janela, para o cabo encostar.</td>
+      <td><a href="spenser-body-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Empurrador</strong></td>
+      <td>42,4 × 46 mm, para corresponder à pista mais estreita, com duas ranhuras de 2,55 mm para o pino: o pino entra em qualquer uma delas, e a segunda, 5 mm mais para dentro, mantém o empurrador 5 mm mais atrás durante todo o movimento, que é a que este corpo pede, estando o servo virado ao contrário.</td>
+      <td><a href="spenser-pusher-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Braço</strong></td>
+      <td>26,75 mm entre os furos em vez de 41, o que dá um curso de 33,76 mm com <code class="language-plaintext highlighter-rouge">anglePush=78,6</code>, à medida da pista menos funda.</td>
+      <td><a href="spenser-arm-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Pino</strong></td>
+      <td>2,3 mm de eixo em vez de 2,55, que é a outra metade do ajuste com o braço.</td>
+      <td><a href="spenser-pin-small.stl">STL</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="lista-de-materiais">Lista de materiais</h3>
+
+<p><strong>As quantidades indicadas são para o dispensador de 2 posições.</strong></p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Artigo</th>
+      <th>Descrição</th>
+      <th>Quantidade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Corpo</td>
+      <td>Segura os chocolates, o motor e as guias de deslizamento</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Braço</td>
+      <td>Braço rotativo fixado ao servo</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Pino</td>
+      <td>Liga o braço ao empurrador</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Empurrador</td>
+      <td>Empurra um chocolate para fora</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pacote jct.fhir.spenser#1.0.0 baseado em <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gerado 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Ligações: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Índice</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Relatório de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

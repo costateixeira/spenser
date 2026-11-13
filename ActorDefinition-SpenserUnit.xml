@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="SpenserUnit"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ActorDefinition SpenserUnit</b></p><a name="SpenserUnit"> </a><a name="hcSpenserUnit"> </a><table class="grid"><tr><td><b>Actor: SpenserUnit </b></td><td>Spenser Unit</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>
+<p>See <a href="interfaces.html">Interfaces</a>.</p>
+</div></td></tr></table></div><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: ActorDefinition SpenserUnit</b></p><a name="pt-SpenserUnit"> </a><a name="pt-hcSpenserUnit"> </a><table class="grid"><tr><td><b>Actor: SpenserUnit </b></td><td>Unidade Spenser</td><td>Tipo: system </td></tr><tr><td colspan="3"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>
+<p>See <a href="interfaces.html">Interfaces</a>.</p>
+</div></td></tr></table></div><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: ActorDefinition SpenserUnit</b></p><a name="nl-SpenserUnit"> </a><a name="nl-hcSpenserUnit"> </a><table class="grid"><tr><td><b>Actor: SpenserUnit </b></td><td>Spenser-unit</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>
+<p>See <a href="interfaces.html">Interfaces</a>.</p>
+</div></td></tr></table></div><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : ActorDefinition SpenserUnit</b></p><a name="fr-SpenserUnit"> </a><a name="fr-hcSpenserUnit"> </a><table class="grid"><tr><td><b>Acteur : SpenserUnit </b></td><td>Unité Spenser</td><td>Type : system </td></tr><tr><td colspan="3"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>
+<p>See <a href="interfaces.html">Interfaces</a>.</p>
+</div></td></tr></table></div></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit"/>
+  <version value="1.0.0"/>
+  <name value="SpenserUnit">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="SpenserUnit"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="SpenserUnit"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="SpenserUnit"/>
+      </extension>
+    </extension>
+  </name>
+  <title value="Spenser Unit">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Unidade Spenser"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser-unit"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Unité Spenser"/>
+      </extension>
+    </extension>
+  </title>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time.">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Um dispensador de chocolate, que atua como servidor FHIR e como cliente FHIR ao mesmo tempo."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Een chocoladedispenser die tegelijk als FHIR-server en als FHIR-client optreedt."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Un distributeur de chocolat, qui agit à la fois comme serveur FHIR et comme client FHIR."/>
+      </extension>
+    </extension>
+  </description>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="A single dispenser. As a **server** it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a **client** it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.&#xA;&#xA;See [Interfaces](interfaces.html)."/>
+</ActorDefinition>

@@ -1,0 +1,50 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer> a fhir:ActorDefinition ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "OrderPlacer"] ; # 
+  fhir:language [ fhir:v "fr"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ActorDefinition OrderPlacer</b></p><a name=\"fr-OrderPlacer\"> </a><a name=\"fr-hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Acteur : OrderPlacer </b></td><td>Émetteur d'ordonnances</td><td>Type : system </td></tr><tr><td colspan=\"3\"><div><p>Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée.</p>\n</div></td></tr></table></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "OrderPlacer"] ; # 
+  fhir:title [ fhir:v "Émetteur d'ordonnances"] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:type [ fhir:v "system"] ; # 
+  fhir:documentation [ fhir:v "Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée."] . # 
+
+# -------------------------------------------------------------------------------------
+

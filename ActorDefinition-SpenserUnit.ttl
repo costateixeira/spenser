@@ -1,0 +1,193 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit> a fhir:ActorDefinition ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "SpenserUnit"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ActorDefinition SpenserUnit</b></p><a name=\"SpenserUnit\"> </a><a name=\"hcSpenserUnit\"> </a><table class=\"grid\"><tr><td><b>Actor: SpenserUnit </b></td><td>Spenser Unit</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>\n<p>See <a href=\"interfaces.html\">Interfaces</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ActorDefinition SpenserUnit</b></p><a name=\"pt-SpenserUnit\"> </a><a name=\"pt-hcSpenserUnit\"> </a><table class=\"grid\"><tr><td><b>Actor: SpenserUnit </b></td><td>Unidade Spenser</td><td>Tipo: system </td></tr><tr><td colspan=\"3\"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>\n<p>See <a href=\"interfaces.html\">Interfaces</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ActorDefinition SpenserUnit</b></p><a name=\"nl-SpenserUnit\"> </a><a name=\"nl-hcSpenserUnit\"> </a><table class=\"grid\"><tr><td><b>Actor: SpenserUnit </b></td><td>Spenser-unit</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>\n<p>See <a href=\"interfaces.html\">Interfaces</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ActorDefinition SpenserUnit</b></p><a name=\"fr-SpenserUnit\"> </a><a name=\"fr-hcSpenserUnit\"> </a><table class=\"grid\"><tr><td><b>Acteur : SpenserUnit </b></td><td>Unité Spenser</td><td>Type : system </td></tr><tr><td colspan=\"3\"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>\n<p>See <a href=\"interfaces.html\">Interfaces</a>.</p>\n</div></td></tr></table></div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [
+     fhir:v "SpenserUnit" ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "SpenserUnit"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "SpenserUnit"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "SpenserUnit"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:title [
+     fhir:v "Spenser Unit" ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Unidade Spenser"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Spenser-unit"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Unité Spenser"
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [
+     fhir:v "A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time." ;
+     fhir:extension ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "pt"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Um dispensador de chocolate, que atua como servidor FHIR e como cliente FHIR ao mesmo tempo."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "nl"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Een chocoladedispenser die tegelijk als FHIR-server en als FHIR-client optreedt."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "lang"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "fr"
+         ]
+       ] [
+         fhir:url [ fhir:v "content"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Un distributeur de chocolat, qui agit à la fois comme serveur FHIR et comme client FHIR."
+         ]
+       ] ) ;
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/translation"^^xsd:anyURI ]
+     ] )
+  ] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:type [ fhir:v "system"] ; # 
+  fhir:documentation [ fhir:v "A single dispenser. As a **server** it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a **client** it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.\n\nSee [Interfaces](interfaces.html)."] . # 
+
+# -------------------------------------------------------------------------------------
+

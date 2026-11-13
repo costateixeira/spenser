@@ -1,0 +1,256 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario> a fhir:ExampleScenario ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "TaskOrderScenario"] ; # 
+  fhir:language [ fhir:v "en"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ExampleScenario TaskOrderScenario</b></p><a name=\"TaskOrderScenario\"> </a><a name=\"hcTaskOrderScenario\"> </a><p><b>url</b>: <a href=\"ExampleScenario-TaskOrderScenario.html\">Ordering through an order server</a></p><p><b>version</b>: 1.0.0</p><p><b>name</b>: TaskOrderScenario</p><p><b>title</b>: Ordering through an order server</p><p><b>status</b>: Active</p><p><b>experimental</b>: true</p><p><b>date</b>: 2026-11-13 21:21:03+0000</p><p><b>publisher</b>: José Costa Teixeira</p><p><b>contact</b>: José Costa Teixeira: <a href=\"https://github.com/costateixeira\">https://github.com/costateixeira</a>, José Costa Teixeira: <a href=\"mailto:you-know.it@gmail.com\">you-know.it@gmail.com</a></p><p><b>description</b>: </p><div><p>A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did.</p>\n</div><p><b>jurisdiction</b>: <span title=\"Codes:{http://unstats.un.org/unsd/methods/m49/m49.htm 001}\">World</span></p><p><b>purpose</b>: </p><div><p>The long way round, and the one that behaves like a real workflow.</p>\n<p>An order on a server is an authorization: it says a chocolate may be dispensed,\nnot that one should be dispensed now. Something else has to ask for it to be\nfulfilled. A Task is that something, and <code>Task.requestedPerformer</code> is the only\nplace in R5 that can name the Device meant to do the work.</p>\n<p>The unit is never connected to from outside here. It polls, which is what lets\na dispenser sit on a conference network with nothing open to it.</p>\n</div><blockquote><p><b>actor</b></p><p><b>key</b>: placer</p><p><b>type</b>: System</p><p><b>title</b>: Order Placer</p><p><b>description</b>: </p><div><p>Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not.</p>\n</div></blockquote><blockquote><p><b>actor</b></p><p><b>key</b>: server</p><p><b>type</b>: System</p><p><b>title</b>: Order Server</p><p><b>description</b>: </p><div><p>A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer <code>_include=Task:focus</code>.</p>\n</div></blockquote><blockquote><p><b>actor</b></p><p><b>key</b>: spenser</p><p><b>type</b>: System</p><p><b>title</b>: Spenser Unit</p><p><b>description</b>: </p><div><p>Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone.</p>\n</div></blockquote><blockquote><p><b>instance</b></p><p><b>key</b>: order</p><p><b>structureType</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-MedicationRequest\">All FHIR Types: MedicationRequest</a> (MedicationRequest)</p><p><b>structureProfile</b>: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p><p><b>title</b>: The order</p><p><b>description</b>: </p><div><p>An untagged MedicationRequest, naming the unit meant to fill it in the <code>dispensingDevice</code> extension. On its own it sits there.</p>\n</div><p><b>content</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p><blockquote><p><b>version</b></p><p><b>key</b>: order-active</p><p><b>title</b>: active</p><p><b>description</b>: </p><div><p>As created: authorized, and not yet filled.</p>\n</div><p><b>content</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p></blockquote><blockquote><p><b>version</b></p><p><b>key</b>: order-completed</p><p><b>title</b>: completed</p><p><b>description</b>: </p><div><p>After the placer closes it. The unit does not touch the order while a Task is coordinating the work.</p>\n</div></blockquote></blockquote><blockquote><p><b>instance</b></p><p><b>key</b>: task</p><p><b>structureType</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-Task\">All FHIR Types: Task</a> (Task)</p><p><b>title</b>: The Task</p><p><b>description</b>: </p><div><p>A <code>fulfill</code> Task whose <code>focus</code> is the order and whose <code>requestedPerformer</code> is the unit. This is what makes the order actionable.</p>\n</div><p><b>content</b>: <a href=\"Task-FulfillForOneUnit.html\">Task Fulfill the focal request</a></p><blockquote><p><b>version</b></p><p><b>key</b>: task-requested</p><p><b>title</b>: requested</p><p><b>description</b>: </p><div><p>As created. Every other unit polling the same server skips it.</p>\n</div><p><b>content</b>: <a href=\"Task-FulfillForOneUnit.html\">Task Fulfill the focal request</a></p></blockquote><blockquote><p><b>version</b></p><p><b>key</b>: task-completed</p><p><b>title</b>: completed</p><p><b>description</b>: </p><div><p>After the chocolate came out, with the dispense in <code>Task.output</code>.</p>\n</div></blockquote></blockquote><blockquote><p><b>instance</b></p><p><b>key</b>: dispense</p><p><b>structureType</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-MedicationDispense\">All FHIR Types: MedicationDispense</a> (MedicationDispense)</p><p><b>title</b>: The dispense</p><p><b>description</b>: </p><div><p>What the unit writes back, naming itself as <code>performer</code> and the order in <code>authorizingPrescription</code>.</p>\n</div><p><b>content</b>: <a href=\"MedicationDispense-DispenseForTaskOrder.html\">MedicationDispense: status = completed</a></p></blockquote><blockquote><p><b>process</b></p><p><b>title</b>: Order a chocolate through an order server</p><p><b>description</b>: </p><div><p>Place the work, let the unit find it, and read back what it did.</p>\n</div><p><b>preConditions</b>: </p><div><p>The unit has been pointed at the order server and its polling is on. The unit has written its own Device on the server, so a Task can name it.</p>\n</div><p><b>postConditions</b>: </p><div><p>A chocolate has been dispensed, the dispense is on the server, the Task is completed, and the order is closed.</p>\n</div><blockquote><p><b>step</b></p><p><b>number</b>: 1</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-create\">FHIR Restful Interactions: create</a> (create)</p><p><b>title</b>: POST /MedicationRequest</p><p><b>initiator</b>: placer</p><p><b>receiver</b>: server</p><p><b>description</b>: </p><div><p>Nothing happens yet, and that is the point.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Requests</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td><td><b>VersionReference</b></td></tr><tr><td style=\"display: none\">*</td><td>order</td><td>order-active</td></tr></table></blockquote></blockquote><blockquote><p><b>step</b></p><p><b>number</b>: 2</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-create\">FHIR Restful Interactions: create</a> (create)</p><p><b>title</b>: POST /Task</p><p><b>initiator</b>: placer</p><p><b>receiver</b>: server</p><p><b>description</b>: </p><div><p><code>code</code> is <code>fulfill</code>, <code>focus</code> is the order, <code>requestedPerformer</code> is the unit. Leave <code>requestedPerformer</code> out and any unit polling that server may take it.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Requests</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td><td><b>VersionReference</b></td></tr><tr><td style=\"display: none\">*</td><td>task</td><td>task-requested</td></tr></table></blockquote><h3>Alternatives</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Title</b></td><td><b>Description</b></td></tr><tr><td style=\"display: none\">*</td><td>Tag the order instead of creating a Task</td><td><div><p>Put <code>actionable</code> from common-tags in the order's <code>meta.tag</code> and skip the Task. A unit accepts both routes on every check, and <code>orderMode</code> narrows it to one. With no Task coordinating the work the unit completes the MedicationRequest itself, and step 6 does not happen.</p>\n</div></td></tr></table></blockquote><blockquote><p><b>step</b></p><p><b>number</b>: 3</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-search-type\">FHIR Restful Interactions: search-type</a> (search-type)</p><p><b>title</b>: GET /Task</p><p><b>initiator</b>: spenser</p><p><b>receiver</b>: server</p><p><b>description</b>: </p><div><p><code>GET /Task?status=requested&amp;_include=Task:focus&amp;_count=5</code>. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Responses</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td><td><b>VersionReference</b></td></tr><tr><td style=\"display: none\">*</td><td>task</td><td>task-requested</td></tr></table></blockquote></blockquote><blockquote><p><b>step</b></p><p><b>number</b>: 4</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-create\">FHIR Restful Interactions: create</a> (create)</p><p><b>title</b>: POST /MedicationDispense</p><p><b>initiator</b>: spenser</p><p><b>receiver</b>: server</p><p><b>description</b>: </p><div><p>The servo turns and a piece drops out, and then the unit says so. The write is queued and retried, so a server that was briefly unreachable does not cost the record.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Requests</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td></tr><tr><td style=\"display: none\">*</td><td>dispense</td></tr></table></blockquote><h3>Alternatives</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Title</b></td><td><b>Description</b></td></tr><tr><td style=\"display: none\">*</td><td>The lane is empty</td><td><div><p>The unit writes a dispense with <code>status</code> of <code>declined</code> and <code>notPerformedReason.concept</code> of <code>outofstock</code>. Whether the Task is then left open, so a refill retries it, or closed as failed, is the unit's <code>keepOrders</code> setting.</p>\n</div></td></tr></table></blockquote><blockquote><p><b>step</b></p><p><b>number</b>: 5</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-update\">FHIR Restful Interactions: update</a> (update)</p><p><b>title</b>: PUT /Task</p><p><b>initiator</b>: spenser</p><p><b>receiver</b>: server</p><p><b>description</b>: </p><div><p><code>PUT /Task/\\&lt;id&gt;</code>: <code>status</code> becomes <code>completed</code>, with the dispense in <code>Task.output</code>. Sent with <code>If-Match</code>, so a Task somebody else has moved on is not overwritten.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Requests</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td><td><b>VersionReference</b></td></tr><tr><td style=\"display: none\">*</td><td>task</td><td>task-completed</td></tr></table></blockquote></blockquote><blockquote><p><b>step</b></p><p><b>number</b>: 6</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-update\">FHIR Restful Interactions: update</a> (update)</p><p><b>title</b>: PUT /MedicationRequest</p><p><b>initiator</b>: placer</p><p><b>receiver</b>: server</p><p><b>description</b>: </p><div><p><code>PUT /MedicationRequest/\\&lt;id&gt;</code>. The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Requests</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td><td><b>VersionReference</b></td></tr><tr><td style=\"display: none\">*</td><td>order</td><td>order-completed</td></tr></table></blockquote></blockquote></blockquote></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "TaskOrderScenario"] ; # 
+  fhir:title [ fhir:v "Ordering through an order server"] ; # 
+  fhir:status [ fhir:v "active"] ; # 
+  fhir:experimental [ fhir:v true] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:purpose [ fhir:v "The long way round, and the one that behaves like a real workflow.\n\nAn order on a server is an authorization: it says a chocolate may be dispensed,\nnot that one should be dispensed now. Something else has to ask for it to be\nfulfilled. A Task is that something, and `Task.requestedPerformer` is the only\nplace in R5 that can name the Device meant to do the work.\n\nThe unit is never connected to from outside here. It polls, which is what lets\na dispenser sit on a conference network with nothing open to it."] ; # 
+  fhir:actor ( [
+     fhir:key [ fhir:v "placer" ] ;
+     fhir:type [ fhir:v "system" ] ;
+     fhir:title [ fhir:v "Order Placer" ] ;
+     fhir:description [ fhir:v "Creates the order and the Task, and closes the order once the Task is done. A Task closes itself; a MedicationRequest does not." ]
+  ] [
+     fhir:key [ fhir:v "server" ] ;
+     fhir:type [ fhir:v "system" ] ;
+     fhir:title [ fhir:v "Order Server" ] ;
+     fhir:description [ fhir:v "A plain FHIR server. It holds the order and the Task until a unit collects them, and it has to answer `_include=Task:focus`." ]
+  ] [
+     fhir:key [ fhir:v "spenser" ] ;
+     fhir:type [ fhir:v "system" ] ;
+     fhir:title [ fhir:v "Spenser Unit" ] ;
+     fhir:description [ fhir:v "Acting here as a FHIR client. It takes only the work addressed to it and leaves everything else alone." ]
+  ] ) ; # 
+  fhir:instance ( [
+     fhir:key [ fhir:v "order" ] ;
+     fhir:structureType [
+       fhir:system [ fhir:v "http://hl7.org/fhir/fhir-types"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "MedicationRequest" ]
+     ] ;
+     fhir:structureProfile [
+       a fhir:canonical ;
+       fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+       fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+     ] ;
+     fhir:title [ fhir:v "The order" ] ;
+     fhir:description [ fhir:v "An untagged MedicationRequest, naming the unit meant to fill it in the `dispensingDevice` extension. On its own it sits there." ] ;
+     fhir:content [
+       fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainDarkOrderForOneUnit> ;
+       fhir:reference [ fhir:v "MedicationRequest/PlainDarkOrderForOneUnit" ]
+     ] ;
+     fhir:version ( [
+       fhir:key [ fhir:v "order-active" ] ;
+       fhir:title [ fhir:v "active" ] ;
+       fhir:description [ fhir:v "As created: authorized, and not yet filled." ] ;
+       fhir:content [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainDarkOrderForOneUnit> ;
+         fhir:reference [ fhir:v "MedicationRequest/PlainDarkOrderForOneUnit" ]
+       ]
+     ] [
+       fhir:key [ fhir:v "order-completed" ] ;
+       fhir:title [ fhir:v "completed" ] ;
+       fhir:description [ fhir:v "After the placer closes it. The unit does not touch the order while a Task is coordinating the work." ]
+     ] )
+  ] [
+     fhir:key [ fhir:v "task" ] ;
+     fhir:structureType [
+       fhir:system [ fhir:v "http://hl7.org/fhir/fhir-types"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "Task" ]
+     ] ;
+     fhir:title [ fhir:v "The Task" ] ;
+     fhir:description [ fhir:v "A `fulfill` Task whose `focus` is the order and whose `requestedPerformer` is the unit. This is what makes the order actionable." ] ;
+     fhir:content [
+       fhir:link <http://costateixeira.github.io/spenser/Task/FulfillForOneUnit> ;
+       fhir:reference [ fhir:v "Task/FulfillForOneUnit" ]
+     ] ;
+     fhir:version ( [
+       fhir:key [ fhir:v "task-requested" ] ;
+       fhir:title [ fhir:v "requested" ] ;
+       fhir:description [ fhir:v "As created. Every other unit polling the same server skips it." ] ;
+       fhir:content [
+         fhir:link <http://costateixeira.github.io/spenser/Task/FulfillForOneUnit> ;
+         fhir:reference [ fhir:v "Task/FulfillForOneUnit" ]
+       ]
+     ] [
+       fhir:key [ fhir:v "task-completed" ] ;
+       fhir:title [ fhir:v "completed" ] ;
+       fhir:description [ fhir:v "After the chocolate came out, with the dispense in `Task.output`." ]
+     ] )
+  ] [
+     fhir:key [ fhir:v "dispense" ] ;
+     fhir:structureType [
+       fhir:system [ fhir:v "http://hl7.org/fhir/fhir-types"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "MedicationDispense" ]
+     ] ;
+     fhir:title [ fhir:v "The dispense" ] ;
+     fhir:description [ fhir:v "What the unit writes back, naming itself as `performer` and the order in `authorizingPrescription`." ] ;
+     fhir:content [
+       fhir:link <http://costateixeira.github.io/spenser/MedicationDispense/DispenseForTaskOrder> ;
+       fhir:reference [ fhir:v "MedicationDispense/DispenseForTaskOrder" ]
+     ]
+  ] ) ; # 
+  fhir:process ( [
+     fhir:title [ fhir:v "Order a chocolate through an order server" ] ;
+     fhir:description [ fhir:v "Place the work, let the unit find it, and read back what it did." ] ;
+     fhir:preConditions [ fhir:v "The unit has been pointed at the order server and its polling is on. The unit has written its own Device on the server, so a Task can name it." ] ;
+     fhir:postConditions [ fhir:v "A chocolate has been dispensed, the dispense is on the server, the Task is completed, and the order is closed." ] ;
+     fhir:step ( [
+       fhir:number [ fhir:v "1" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "create" ]
+         ] ;
+         fhir:title [ fhir:v "POST /MedicationRequest" ] ;
+         fhir:initiator [ fhir:v "placer" ] ;
+         fhir:receiver [ fhir:v "server" ] ;
+         fhir:description [ fhir:v "Nothing happens yet, and that is the point." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:request [
+           fhir:instanceReference [ fhir:v "order" ] ;
+           fhir:versionReference [ fhir:v "order-active" ]
+         ]
+       ]
+     ] [
+       fhir:number [ fhir:v "2" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "create" ]
+         ] ;
+         fhir:title [ fhir:v "POST /Task" ] ;
+         fhir:initiator [ fhir:v "placer" ] ;
+         fhir:receiver [ fhir:v "server" ] ;
+         fhir:description [ fhir:v "`code` is `fulfill`, `focus` is the order, `requestedPerformer` is the unit. Leave `requestedPerformer` out and any unit polling that server may take it." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:request [
+           fhir:instanceReference [ fhir:v "task" ] ;
+           fhir:versionReference [ fhir:v "task-requested" ]
+         ]
+       ] ;
+       fhir:alternative ( [
+         fhir:title [ fhir:v "Tag the order instead of creating a Task" ] ;
+         fhir:description [ fhir:v "Put `actionable` from common-tags in the order's `meta.tag` and skip the Task. A unit accepts both routes on every check, and `orderMode` narrows it to one. With no Task coordinating the work the unit completes the MedicationRequest itself, and step 6 does not happen." ]
+       ] )
+     ] [
+       fhir:number [ fhir:v "3" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "search-type" ]
+         ] ;
+         fhir:title [ fhir:v "GET /Task" ] ;
+         fhir:initiator [ fhir:v "spenser" ] ;
+         fhir:receiver [ fhir:v "server" ] ;
+         fhir:description [ fhir:v "`GET /Task?status=requested&_include=Task:focus&_count=5`. The unit polls on a timer, and a check can also be asked for by hand. Each check looks at the first five results only, so a long queue on the server can outrun one check. The unit remembers what it has already dealt with." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:response [
+           fhir:instanceReference [ fhir:v "task" ] ;
+           fhir:versionReference [ fhir:v "task-requested" ]
+         ]
+       ]
+     ] [
+       fhir:number [ fhir:v "4" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "create" ]
+         ] ;
+         fhir:title [ fhir:v "POST /MedicationDispense" ] ;
+         fhir:initiator [ fhir:v "spenser" ] ;
+         fhir:receiver [ fhir:v "server" ] ;
+         fhir:description [ fhir:v "The servo turns and a piece drops out, and then the unit says so. The write is queued and retried, so a server that was briefly unreachable does not cost the record." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:request [
+           fhir:instanceReference [ fhir:v "dispense" ]
+         ]
+       ] ;
+       fhir:alternative ( [
+         fhir:title [ fhir:v "The lane is empty" ] ;
+         fhir:description [ fhir:v "The unit writes a dispense with `status` of `declined` and `notPerformedReason.concept` of `outofstock`. Whether the Task is then left open, so a refill retries it, or closed as failed, is the unit's `keepOrders` setting." ]
+       ] )
+     ] [
+       fhir:number [ fhir:v "5" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "update" ]
+         ] ;
+         fhir:title [ fhir:v "PUT /Task" ] ;
+         fhir:initiator [ fhir:v "spenser" ] ;
+         fhir:receiver [ fhir:v "server" ] ;
+         fhir:description [ fhir:v "`PUT /Task/<id>`: `status` becomes `completed`, with the dispense in `Task.output`. Sent with `If-Match`, so a Task somebody else has moved on is not overwritten." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:request [
+           fhir:instanceReference [ fhir:v "task" ] ;
+           fhir:versionReference [ fhir:v "task-completed" ]
+         ]
+       ]
+     ] [
+       fhir:number [ fhir:v "6" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "update" ]
+         ] ;
+         fhir:title [ fhir:v "PUT /MedicationRequest" ] ;
+         fhir:initiator [ fhir:v "placer" ] ;
+         fhir:receiver [ fhir:v "server" ] ;
+         fhir:description [ fhir:v "`PUT /MedicationRequest/<id>`. The placer closes its own order. The unit does not: it was asked to fill one Task, and it has no way of knowing whether the order authorized more than that." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:request [
+           fhir:instanceReference [ fhir:v "order" ] ;
+           fhir:versionReference [ fhir:v "order-completed" ]
+         ]
+       ]
+     ] )
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

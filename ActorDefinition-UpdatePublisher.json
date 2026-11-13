@@ -1,0 +1,145 @@
+{
+  "resourceType" : "ActorDefinition",
+  "id" : "UpdatePublisher",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ActorDefinition UpdatePublisher</b></p><a name=\"UpdatePublisher\"> </a><a name=\"hcUpdatePublisher\"> </a><table class=\"grid\"><tr><td><b>Actor: UpdatePublisher </b></td><td>Update Publisher</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.</p>\n<p>See <a href=\"interfaces.html#updates\">Updates</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ActorDefinition UpdatePublisher</b></p><a name=\"pt-UpdatePublisher\"> </a><a name=\"pt-hcUpdatePublisher\"> </a><table class=\"grid\"><tr><td><b>Actor: UpdatePublisher </b></td><td>Publicador de Atualizações</td><td>Tipo: system </td></tr><tr><td colspan=\"3\"><div><p>This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.</p>\n<p>See <a href=\"interfaces.html#updates\">Updates</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ActorDefinition UpdatePublisher</b></p><a name=\"nl-UpdatePublisher\"> </a><a name=\"nl-hcUpdatePublisher\"> </a><table class=\"grid\"><tr><td><b>Actor: UpdatePublisher </b></td><td>Update-uitgever</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.</p>\n<p>See <a href=\"interfaces.html#updates\">Updates</a>.</p>\n</div></td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ActorDefinition UpdatePublisher</b></p><a name=\"fr-UpdatePublisher\"> </a><a name=\"fr-hcUpdatePublisher\"> </a><table class=\"grid\"><tr><td><b>Acteur : UpdatePublisher </b></td><td>Éditeur des mises à jour</td><td>Type : system </td></tr><tr><td colspan=\"3\"><div><p>This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.</p>\n<p>See <a href=\"interfaces.html#updates\">Updates</a>.</p>\n</div></td></tr></table></div></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/UpdatePublisher",
+  "version" : "1.0.0",
+  "name" : "UpdatePublisher",
+  "_name" : {
+    "extension" : [{
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "pt"
+      },
+      {
+        "url" : "content",
+        "valueString" : "UpdatePublisher"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "nl"
+      },
+      {
+        "url" : "content",
+        "valueString" : "UpdatePublisher"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "fr"
+      },
+      {
+        "url" : "content",
+        "valueString" : "UpdatePublisher"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    }]
+  },
+  "title" : "Update Publisher",
+  "_title" : {
+    "extension" : [{
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "pt"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Publicador de Atualizações"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "nl"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Update-uitgever"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "fr"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Éditeur des mises à jour"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    }]
+  },
+  "status" : "draft",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "The site that publishes the release manifest and firmware images a Spenser Unit checks for and installs.",
+  "_description" : {
+    "extension" : [{
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "pt"
+      },
+      {
+        "url" : "content",
+        "valueString" : "O sítio que publica o manifesto da versão e as imagens de firmware que uma Unidade Spenser procura e instala."
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "nl"
+      },
+      {
+        "url" : "content",
+        "valueString" : "De site die het releasemanifest en de firmware-images publiceert die een Spenser-unit controleert en installeert."
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "fr"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Le site qui publie le manifeste de publication et les images du micrologiciel qu'une unité Spenser vérifie et installe."
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    }]
+  },
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "type" : "system",
+  "documentation" : "This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.\n\nSee [Updates](interfaces.html#updates)."
+}

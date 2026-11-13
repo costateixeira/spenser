@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Micrologiciel - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"5"}
+    h3,h4,h5,h6{--heading-prefix:"5"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - un compagnon pour développeurs</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International drapeau" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Accueil</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuration</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilisation</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Logiciel
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Micrologiciel</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Matériel
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Conception 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Nomenclature</a>
+      </li>
+      <li>
+        <a href="assembly.html">Assemblage</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">À propos
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Auteurs</a>
+      </li>
+      <li>
+        <a href="downloads.html">Téléchargements</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefacts</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-fr.png"/>Français</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Langue:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag fr" src="assets/images/lang-fr.png"/>Français</div>
+
+    <div><a href="../en/firmware.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../pt/firmware.html"><img class="flag" src="assets/images/lang-pt.png" alt="flag pt"/>Português</a></div>
+
+    <div><a href="../nl/firmware.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Table des matières</b></a></li><li><b>Micrologiciel</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publié par José Costa Teixeira. Ce guide n'est pas une publication autorisée ; C'est la version en intégration continue pour la version 1.0.0 construite par le CI Build FHIR (HL7® FHIR® Standard). Cette version est basée sur le contenu actuel de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> et change régulièrement. Voir le <a href='http://costateixeira.github.io/spenser/history.html'>répertoire des versions publiées</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Micrologiciel</h2>
+  
+
+
+
+
+<p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+
+<p>Cette page comprend des traductions de la langue source originale dans laquelle le guide a été rédigé.  Des informations sur ces traductions et des instructions sur la manière de fournir un retour d'information sur les traductions sont disponibles <a href="translationinfo.html">ici</a>.</p>
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#utilisation" id="markdown-toc-utilisation">Utilisation</a></li>
+  <li><a href="#-points-de-terminaison-fhir" id="markdown-toc--points-de-terminaison-fhir">🌐 Points de terminaison FHIR</a></li>
+  <li><a href="#️-points-de-terminaison-de-configuration-et-de-débogage" id="markdown-toc-️-points-de-terminaison-de-configuration-et-de-débogage">⚙️ Points de terminaison de configuration et de débogage</a></li>
+  <li><a href="#-wi-fi-et-démarrage" id="markdown-toc--wi-fi-et-démarrage">🚀 Wi-Fi et démarrage</a></li>
+  <li><a href="#-comportement-du-matériel" id="markdown-toc--comportement-du-matériel">🔋 Comportement du matériel</a></li>
+  <li><a href="#-stockage" id="markdown-toc--stockage">📦 Stockage</a></li>
+  <li><a href="#-surveillance-de-la-batterie" id="markdown-toc--surveillance-de-la-batterie">🔋 Surveillance de la batterie</a></li>
+  <li><a href="#-tests-manuels" id="markdown-toc--tests-manuels">🧪 Tests manuels</a></li>
+  <li><a href="#-exemple-de-post-de-medicationrequest" id="markdown-toc--exemple-de-post-de-medicationrequest">✅ Exemple de POST de <code class="language-plaintext highlighter-rouge">MedicationRequest</code></a></li>
+</ul>
+
+</div>
+<p>Le <a href="https://github.com/costateixeira/spenser/tree/master/firmware">micrologiciel</a> s'exécute sur un <strong>distributeur à base d'ESP32-S3</strong> utilisant le <a href="https://shop.m5stack.com/products/atoms3-lite">M5Stack AtomS3 Lite</a> et la <a href="https://shop.m5stack.com/products/atomic-motion">M5Stack Atomic Motion Base</a>, conçu pour dispenser du chocolat à la réception de <code class="language-plaintext highlighter-rouge">MedicationRequest</code> FHIR par HTTP.</p>
+
+<p>Il prend en charge :</p>
+<ul>
+  <li>Un portail local de configuration Wi-Fi (par portail captif ou par bouton)</li>
+  <li>Des points de terminaison RESTful pour l'interaction FHIR
+    <ul>
+      <li>📦 <code class="language-plaintext highlighter-rouge">InventoryReport</code> FHIR pour rapporter (GET) et ajuster (POST) le stock</li>
+      <li>🏥 Acceptation de ressources <code class="language-plaintext highlighter-rouge">MedicationRequest</code> par HTTP POST, avec réponse par <code class="language-plaintext highlighter-rouge">MedicationDispense</code></li>
+    </ul>
+  </li>
+  <li>Des services RESTful pour le débogage et la gestion du stock</li>
+</ul>
+
+<h3 id="utilisation">Utilisation</h3>
+<ol>
+  <li>Installez PlatformIO - Remarque : VSCode fonctionne, VSCodium non</li>
+  <li>Branchez sur un port USB. Sous Windows, utilisez les pilotes Microsoft - <strong>N'UTILISEZ PAS d'autres pilotes comme CH340, etc.</strong></li>
+  <li>Depuis le dossier <code class="language-plaintext highlighter-rouge">firmware</code>, lancez PlatformIo pour compiler, téléverser et surveiller</li>
+  <li><strong>Merci d'aider à améliorer le code - les PR sont plus que bienvenues.</strong></li>
+</ol>
+
+<hr />
+
+<h3 id="-points-de-terminaison-fhir">🌐 Points de terminaison FHIR</h3>
+
+<p>Ces points de terminaison sont conformes à <a href="https://hl7.org/fhir/R5">FHIR R5</a> :</p>
+
+<h4 id="get-metadata"><code class="language-plaintext highlighter-rouge">GET /metadata</code></h4>
+<ul>
+  <li>Renvoie un <code class="language-plaintext highlighter-rouge">CapabilityStatement</code> FHIR</li>
+  <li>Déclare la prise en charge des ressources FHIR</li>
+</ul>
+
+<h4 id="post-medicationrequest"><code class="language-plaintext highlighter-rouge">POST /MedicationRequest</code></h4>
+<ul>
+  <li>Accepte une ressource FHIR <code class="language-plaintext highlighter-rouge">MedicationRequest</code> (JSON)</li>
+  <li>Dispense du chocolat noir ou au lait selon le code du médicament</li>
+  <li>Répond avec une ressource <code class="language-plaintext highlighter-rouge">MedicationDispense</code></li>
+  <li>En cas de rupture de stock, répond avec une <code class="language-plaintext highlighter-rouge">MedicationDispense</code> refusée</li>
+</ul>
+
+<h4 id="post-inventoryreport"><code class="language-plaintext highlighter-rouge">POST /InventoryReport</code></h4>
+<ul>
+  <li>Accepte une ressource FHIR <code class="language-plaintext highlighter-rouge">InventoryReport</code></li>
+  <li>Prend en charge :
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">countType: snapshot</code> — remplace le stock</li>
+      <li><code class="language-plaintext highlighter-rouge">countType: difference</code> — ajuste le stock par incréments</li>
+    </ul>
+  </li>
+  <li>Valide les contraintes de stock (par exemple, pas de valeurs négatives)</li>
+  <li>Répond avec le stock mis à jour ou une erreur</li>
+</ul>
+
+<h4 id="get-inventoryreport"><code class="language-plaintext highlighter-rouge">GET /InventoryReport</code></h4>
+<ul>
+  <li>Renvoie un <code class="language-plaintext highlighter-rouge">InventoryReport</code> de type instantané représentant le stock actuel</li>
+  <li>Inclut les emplacements et l'état des articles</li>
+</ul>
+
+<hr />
+
+<h3 id="️-points-de-terminaison-de-configuration-et-de-débogage">⚙️ Points de terminaison de configuration et de débogage</h3>
+
+<p>Ce sont des points de terminaison utilitaires pour le diagnostic, la mise en place et les tests interactifs.</p>
+
+<h4 id="configuration-wi-fi">Configuration Wi-Fi</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Point de terminaison</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /wifi-settings</code></td>
+      <td>Marque l'appareil pour qu'il passe en mode de configuration Wi-Fi au redémarrage</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /wifi-reboot-config</code></td>
+      <td>Redémarre immédiatement en mode de configuration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /wifi-reset</code></td>
+      <td>Efface les identifiants Wi-Fi enregistrés</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /startConfig</code></td>
+      <td>Déclenche le mode de configuration Wi-Fi et redémarre</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /wifi</code></td>
+      <td>Redirige vers le portail de configuration si non connecté</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="interface-utilisateur-et-informations">Interface utilisateur et informations</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Point de terminaison</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /</code></td>
+      <td>Sert l'interface depuis SPIFFS ou redirige en mode AP</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /ui.html</code></td>
+      <td>Sert l'interface statique (<code class="language-plaintext highlighter-rouge">index.html</code>)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /success</code></td>
+      <td>Écran de confirmation après la configuration Wi-Fi</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /ip-info</code></td>
+      <td>Affiche l'IP et y redirige automatiquement</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="debugging--manual-control">Débogage et contrôle manuel</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Point de terminaison</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /setColor</code></td>
+      <td>Change la couleur de la LED RGB via les paramètres de requête</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /setServos</code></td>
+      <td>Définit les angles des servos via les paramètres de requête</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /reset</code></td>
+      <td>Remet la LED et les deux servos à 0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /flashServo1</code></td>
+      <td>Amène brièvement le servo 1 à <code class="language-plaintext highlighter-rouge">dispenseAngle</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /flashServo2</code></td>
+      <td>Amène brièvement le servo 2 à <code class="language-plaintext highlighter-rouge">dispenseAngle</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /inventory</code></td>
+      <td>Affiche les niveaux de stock actuels en JSON</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /resetInventory?dark=10&amp;milk=15</code></td>
+      <td>Définit manuellement les quantités en stock</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /battery</code></td>
+      <td>Indique la tension et le pourcentage de la batterie</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="compatibilité-avec-les-portails-captifs">Compatibilité avec les portails captifs</h4>
+
+<p>Ces points de terminaison redirigent vers <code class="language-plaintext highlighter-rouge">/success</code> pour gérer les portails captifs propres à chaque plateforme :</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/generate_204</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/hotspot-detect.html</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/fwlink</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/connecttest.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/ncsi.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/i</code></li>
+</ul>
+
+<hr />
+
+<h3 id="-wi-fi-et-démarrage">🚀 Wi-Fi et démarrage</h3>
+<p>Sans identifiants enregistrés, le micrologiciel sert son propre point d'accès ouvert, nommé <code class="language-plaintext highlighter-rouge">Spenser-</code> suivi des deux derniers octets de son adresse MAC, à l'adresse <code class="language-plaintext highlighter-rouge">192.168.4.1</code>. En rejoignant ce réseau, la page de configuration s'ouvre d'elle-même ; on y indique à l'unité le réseau à rejoindre, et ces identifiants sont conservés d'un démarrage à l'autre.<br />
+Une fois sur un réseau, elle est joignable à <a href="http://spenser.local">http://spenser.local</a>, qu'elle annonce en mDNS sous le nom <code class="language-plaintext highlighter-rouge">spenser</code>.<br />
+Voir <a href="setup.html">Configurer une unité</a>.</p>
+
+<hr />
+
+<h3 id="-comportement-du-matériel">🔋 Comportement du matériel</h3>
+
+<ul>
+  <li><strong>Broche du bouton :</strong> GPIO 41
+    <ul>
+      <li>Maintien de 3 secondes au démarrage : passage en mode de configuration Wi-Fi</li>
+      <li>Appui court en fonctionnement : dispense un chocolat noir - <strong>alias PANIC ! / Hit Me !!</strong></li>
+    </ul>
+  </li>
+  <li><strong>Broche de la LED RGB :</strong> GPIO 35 (WS2812)</li>
+  <li><strong>Servos :</strong>
+    <ul>
+      <li>Servo 0 : chocolat noir</li>
+      <li>Servo 1 : chocolat au lait</li>
+      <li><code class="language-plaintext highlighter-rouge">dispenseAngle</code> par défaut : 97°</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h3 id="-stockage">📦 Stockage</h3>
+
+<ul>
+  <li><strong>SPIFFS</strong> sert à fournir <code class="language-plaintext highlighter-rouge">index.html</code> et les ressources de l'interface.</li>
+  <li><strong>Preferences</strong> sert à conserver l'indicateur <code class="language-plaintext highlighter-rouge">forceConfig</code> pour la configuration Wi-Fi.</li>
+</ul>
+
+<hr />
+
+<h3 id="-surveillance-de-la-batterie">🔋 Surveillance de la batterie</h3>
+
+<p>(En cours de développement / vos résultats peuvent varier)</p>
+<ul>
+  <li>Lit la tension sur le capteur INA226 de l'Atomic Motion Base.</li>
+  <li>Estime le pourcentage de batterie par un ajustement polynomial.</li>
+  <li>Interrogez l'état de la batterie via <a href="#debugging--manual-control"><code class="language-plaintext highlighter-rouge">GET /battery</code></a></li>
+</ul>
+
+<hr />
+
+<h3 id="-tests-manuels">🧪 Tests manuels</h3>
+
+<p>Utilisez ces points de terminaison pour tester le fonctionnement :</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /flashServo1</code> — Dispense manuellement du chocolat noir</li>
+  <li><code class="language-plaintext highlighter-rouge">GET /flashServo2</code> — Dispense manuellement du chocolat au lait</li>
+  <li><code class="language-plaintext highlighter-rouge">GET /setColor?red=0&amp;green=255&amp;blue=0</code> — Met la LED au vert</li>
+  <li><code class="language-plaintext highlighter-rouge">GET /resetInventory?dark=20&amp;milk=20</code> — Réinitialise le stock</li>
+</ul>
+
+<hr />
+
+<h3 id="-exemple-de-post-de-medicationrequest">✅ Exemple de POST de <code class="language-plaintext highlighter-rouge">MedicationRequest</code></h3>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"resourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MedicationRequest"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"req-123"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"intent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instance-order"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"medicationCodeableConcept"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"coding"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chocolate-dark"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dark Chocolate"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"dosageInstruction"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dispense one dark chocolate"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"subject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Patient/example"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Le package jct.fhir.spenser#1.0.0 est basé sur <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Date de génération : 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Liens: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Table des matières</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Rapport de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

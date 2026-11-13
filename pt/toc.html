@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Índice - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"0"}
+    h3,h4,h5,h6{--heading-prefix:"0.0"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - o companheiro do programador</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International bandeira" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Início</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuração</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilização</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Desenho 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Lista de materiais</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montagem</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Sobre
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Autores</a>
+      </li>
+      <li>
+        <a href="downloads.html">Transferências</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefactos</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-pt.png"/>Português</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Língua:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag pt" src="assets/images/lang-pt.png"/>Português</div>
+
+    <div><a href="../en/toc.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../nl/toc.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/toc.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><b>Índice</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publicado por José Costa Teixeira. Este guia não é uma publicação autorizada; é a compilação contínua para a versão 1.0.0 construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> e muda regularmente. Veja o <a href='http://costateixeira.github.io/spenser/history.html'>Diretório de versões publicadas</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Índice</h2>
+  
+  <p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+  
+  <p>Não existe uma tradução disponível para esta página, por isso está apresentada na língua padrão</p>
+
+  
+  </p>
+  
+  
+  
+  
+  <?xml version="1.0" encoding="UTF-8"?><div style="col-12"><table style="border:0px;font-size:11px;font-family:verdana;vertical-align:top;" cellpadding="0" border="0" cellspacing="0"><tbody><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page-child.gif"/><a title="Table of Contents" href="toc.html"> 0 Table of Contents</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.1."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Home" href="index.html"> 1 Home</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.2."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Implementing" href="implementing.html"> 2 Implementing</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.3."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="FHIR" href="fhir-intro.html"> 3 FHIR</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.4."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Interfaces" href="interfaces.html"> 4 Interfaces</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.5."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Firmware" href="firmware.html"> 5 Firmware</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.6."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Hardware Bill of Materials" href="hardware-bom.html"> 6 Hardware Bill of Materials</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.7."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="3D printable parts" href="hardware-3ddesign.html"> 7 3D printable parts</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.8."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Assembly" href="assembly.html"> 8 Assembly</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.9."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Setup" href="setup.html"> 9 Setup</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.10."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Authors" href="authors.html"> 10 Authors</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.11."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Downloads" href="downloads.html"> 11 Downloads</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.12."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Usage" href="usage.html"> 12 Usage</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.13."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Translations" href="translationinfo.html"> 13 Translations</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img onClick="tableRowAction(this)" src="tbl_vjoin_end-open.png" alt="" style="background-color: inherit" class="hierarchy"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page-child.gif"/><a title="Artifacts Summary" href="artifacts.html"> 14 Artifacts Summary</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.1."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Order Placer" href="ActorDefinition-OrderPlacer.html"> 14.1 Order Placer</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.2."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Order Server" href="ActorDefinition-OrderServer.html"> 14.2 Order Server</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.3."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Spenser Unit" href="ActorDefinition-SpenserUnit.html"> 14.3 Spenser Unit</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.4."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Unit Owner" href="ActorDefinition-UnitOwner.html"> 14.4 Unit Owner</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.5."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Update Publisher" href="ActorDefinition-UpdatePublisher.html"> 14.5 Update Publisher</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.6."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="SpenserFHIRCapabilityStatement" href="CapabilityStatement-SpenserFHIRCapabilityStatement.html"> 14.6 SpenserFHIRCapabilityStatement</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.7."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="SpenserRequest" href="StructureDefinition-SpenserRequest.html"> 14.7 SpenserRequest</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.8."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Dispensing device" href="StructureDefinition-dispensingDevice.html"> 14.8 Dispensing device</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.9."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Spenser Medications - ValueSet" href="ValueSet-SpenserMedsVS.html"> 14.9 Spenser Medications - ValueSet</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.10."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Spenser Medications - Code System" href="CodeSystem-SpenserMeds.html"> 14.10 Spenser Medications - Code System</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.11."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Scenario - Ordering straight from the unit" href="ExampleScenario-DirectOrderScenario.html"> 14.11 Scenario - Ordering straight from the unit</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.12."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Scenario - Ordering through an order server" href="ExampleScenario-TaskOrderScenario.html"> 14.12 Scenario - Ordering through an order server</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.13."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - A Spenser unit on the order server" href="Device-Spenser-E3D4.html"> 14.13 Example - A Spenser unit on the order server</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.14."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Add to inventory - 5 Milk Chocolates" href="InventoryReport-Add5Milk.html"> 14.14 Example - Add to inventory - 5 Milk Chocolates</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.15."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Dispense answering an order posted at the unit" href="MedicationDispense-DispenseForDirectOrder.html"> 14.15 Example - Dispense answering an order posted at the unit</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.16."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Dispense reported back" href="MedicationDispense-DispenseForActionableDarkOrder.html"> 14.16 Example - Dispense reported back</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.17."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Dispense reported for a Task" href="MedicationDispense-DispenseForTaskOrder.html"> 14.17 Example - Dispense reported for a Task</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.18."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Dispense that did not happen" href="MedicationDispense-DeclinedDispenseOutOfStock.html"> 14.18 Example - Dispense that did not happen</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.19."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Order made actionable by a tag" href="MedicationRequest-ActionableDarkOrder.html"> 14.19 Example - Order made actionable by a tag</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.20."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Order meant for one unit" href="MedicationRequest-PlainDarkOrderForOneUnit.html"> 14.20 Example - Order meant for one unit</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.21."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Order that is not actionable on its own" href="MedicationRequest-PlainMilkOrder.html"> 14.21 Example - Order that is not actionable on its own</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.22."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Set inventory - 17 Dark Chocolates" href="InventoryReport-SetDarkTo17.html"> 14.22 Example - Set inventory - 17 Dark Chocolates</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.23."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Spenser Request" href="MedicationRequest-med-request-1234.html"> 14.23 Example - Spenser Request</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.24."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Tagged order for one unit" href="MedicationRequest-ActionableDarkOrderForOneUnit.html"> 14.24 Example - Tagged order for one unit</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.25."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Task addressed to one unit" href="Task-FulfillForOneUnit.html"> 14.25 Example - Task addressed to one unit</a></td></tr><tr style="border:0px;padding:0px;vertical-align:top;background-color:inherit;" id="toc0.14.26."><td style="vertical-align:top;text-align:var(--ig-left,left);background-color:inherit;padding:0px 4px 0px 4px;white-space:nowrap;background-image:url(tbl_bck0.png)" class="hierarchy"><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_spacer.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_blank.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="tbl_vjoin_end.png"/><img style="background-color:inherit" alt="" class="hierarchy" src="icon_page.gif"/><a title="Example - Task asking for an order to be fulfilled" href="Task-FulfillPlainMilkOrder.html"> 14.26 Example - Task asking for an order to be fulfilled</a></td></tr></tbody></table></div>
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pacote jct.fhir.spenser#1.0.0 baseado em <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gerado 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Ligações: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Índice</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Relatório de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

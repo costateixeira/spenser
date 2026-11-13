@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ImplementationGuide xmlns="http://hl7.org/fhir">
+  <id value="jct.fhir.spenser"/>
+  <language value="pt"/>
+  <text>
+    <status value="generated"/><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: ImplementationGuide jct.fhir.spenser</b></p><a name="pt-jct.fhir.spenser"> </a><a name="pt-hcjct.fhir.spenser"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px">Língua: en</p></div><h2>Spenser</h2><p>O URL oficial para este guia de implementação é: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>
+</div></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser"/>
+  <version value="1.0.0"/>
+  <name value="Spenser"/>
+  <title value="Spenser - o companheiro do programador"/>
+  <status value="active"/>
+  <date value="2025-05-01"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Spenser - o companheiro do programador."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <packageId value="jct.fhir.spenser"/>
+  <fhirVersion value="5.0.0"/>
+  <dependsOn id="hl7tx">
+    <extension url="http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment">
+      <valueMarkdown value="Automatically added as a dependency - all IGs depend on HL7 Terminology"/>
+    </extension>
+    <uri value="http://terminology.hl7.org/ImplementationGuide/hl7.terminology"/>
+    <packageId value="hl7.terminology.r5"/>
+    <version value="7.5.0"/>
+  </dependsOn>
+  <dependsOn id="hl7ext">
+    <extension url="http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment">
+      <valueMarkdown value="Automatically added as a dependency - all IGs depend on the HL7 Extension Pack"/>
+    </extension>
+    <uri value="http://hl7.org/fhir/extensions/ImplementationGuide/hl7.fhir.uv.extensions"/>
+    <packageId value="hl7.fhir.uv.extensions.r5"/>
+    <version value="5.4.0"/>
+  </dependsOn>
+  <definition>
+    <extension url="http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency">
+      <valueCode value="hl7.fhir.uv.tools.r5#1.3.0"/>
+    </extension>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="StructureDefinition:extension"/>
+      </extension>
+      <reference>
+        <reference value="StructureDefinition/dispensingDevice"/>
+      </reference>
+      <name value="Dispensing device"/>
+      <description value="The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.&#xA;&#xA;R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.&#xA;&#xA;When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="Device"/>
+      </extension>
+      <reference>
+        <reference value="Device/Spenser-E3D4"/>
+      </reference>
+      <name value="Example - A Spenser unit on the order server"/>
+      <description value="The Device a unit writes on the order server once per boot. Its id is the unit's name, the network it shows in setup mode: Spenser- and the last two bytes of its factory MAC."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="InventoryReport"/>
+      </extension>
+      <reference>
+        <reference value="InventoryReport/Add5Milk"/>
+      </reference>
+      <name value="Exemplo - Acrescentar ao inventário - 5 chocolates de leite"/>
+      <description value="Exemplo - Acrescentar ao inventário - 5 chocolates de leite"/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DispenseForDirectOrder"/>
+      </reference>
+      <name value="Example - Dispense answering an order posted at the unit"/>
+      <description value="What a unit returns to an order posted straight at it. The chocolate is already out by the time the placer reads this."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DispenseForActionableDarkOrder"/>
+      </reference>
+      <name value="Exemplo - Dispensa comunicada de volta"/>
+      <description value="O que o Spenser cria no servidor de prescrições depois de sair um pedaço, apontando de volta para a prescrição em authorizingPrescription. O mesmo recurso é a resposta a uma prescrição publicada diretamente no dispositivo."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DispenseForTaskOrder"/>
+      </reference>
+      <name value="Example - Dispense reported for a Task"/>
+      <description value="What a unit creates on the order server once a Task has asked it to fill an order. The same resource goes into Task.output when the unit completes the Task."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DeclinedDispenseOutOfStock"/>
+      </reference>
+      <name value="Exemplo - Dispensa que não aconteceu"/>
+      <description value="Uma prescrição que o Spenser não conseguiu aviar porque a calha está vazia. O R5 removeu MedicationDispense.statusReason, pelo que o motivo fica em notPerformedReason, que é um CodeableReference - daí o .concept no caminho."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/ActionableDarkOrder"/>
+      </reference>
+      <name value="Exemplo - Prescrição tornada acionável por uma tag"/>
+      <description value="Uma MedicationRequest que o emissor marcou como acionável. O Spenser dispensa-a na verificação seguinte e, como nenhuma Task está a coordenar o trabalho, define ele próprio a MedicationRequest como completed."/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/PlainDarkOrderForOneUnit"/>
+      </reference>
+      <name value="Example - Order meant for one unit"/>
+      <description value="A plain order, made actionable by the Task that addresses it to one unit. The order names the unit too, in the dispensingDevice extension, by a logical reference: R5 has no element on MedicationRequest that takes a Device."/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/PlainMilkOrder"/>
+      </reference>
+      <name value="Exemplo - Prescrição que não é acionável por si só"/>
+      <description value="A mesma prescrição sem a tag. Por si só, é uma autorização e nada mais: o Spenser ignora-a até que uma Task peça que seja aviada."/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="InventoryReport"/>
+      </extension>
+      <reference>
+        <reference value="InventoryReport/SetDarkTo17"/>
+      </reference>
+      <name value="Exemplo - Definir inventário - 17 chocolates negros"/>
+      <description value="Exemplo - Definir inventário - 17 chocolates negros"/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/med-request-1234"/>
+      </reference>
+      <name value="Exemplo - Prescrição para o Spenser"/>
+      <description value="Exemplo de uma MedicationRequest a enviar ao Spenser"/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/ActionableDarkOrderForOneUnit"/>
+      </reference>
+      <name value="Example - Tagged order for one unit"/>
+      <description value="An order made actionable by the tag, with no Task, that names the unit to dispense it in the dispensingDevice extension. Every other unit polling the server skips it."/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="Task"/>
+      </extension>
+      <reference>
+        <reference value="Task/FulfillForOneUnit"/>
+      </reference>
+      <name value="Example - Task addressed to one unit"/>
+      <description value="Task.requestedPerformer names the unit that is to fill the order: the one Task element R5 lets name a Device. Every other unit skips this Task; the unit it names dispenses it and closes it."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="Task"/>
+      </extension>
+      <reference>
+        <reference value="Task/FulfillPlainMilkOrder"/>
+      </reference>
+      <name value="Exemplo - Task a pedir que uma prescrição seja aviada"/>
+      <description value="Uma Task de coordenação que aponta para a prescrição em Task.focus. É isto que torna acionável a prescrição simples. O Spenser conclui a Task com a dispensa em Task.output e deixa a própria MedicationRequest ao emissor."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/OrderPlacer"/>
+      </reference>
+      <name value="Emissor de Prescrições"/>
+      <description value="O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/OrderServer"/>
+      </reference>
+      <name value="Servidor de Prescrições"/>
+      <description value="Um servidor FHIR que guarda as prescrições até uma Unidade Spenser as recolher, e recebe o que a unidade comunica de volta."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ExampleScenario"/>
+      </extension>
+      <reference>
+        <reference value="ExampleScenario/DirectOrderScenario"/>
+      </reference>
+      <name value="Scenario - Ordering straight from the unit"/>
+      <description value="A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ExampleScenario"/>
+      </extension>
+      <reference>
+        <reference value="ExampleScenario/TaskOrderScenario"/>
+      </reference>
+      <name value="Scenario - Ordering through an order server"/>
+      <description value="A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="CodeSystem"/>
+      </extension>
+      <reference>
+        <reference value="CodeSystem/SpenserMeds"/>
+      </reference>
+      <name value="Medicamentos Spenser - Sistema de códigos"/>
+      <description value="Um sistema de códigos dos medicamentos que o Spenser pode dispensar."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ValueSet"/>
+      </extension>
+      <reference>
+        <reference value="ValueSet/SpenserMedsVS"/>
+      </reference>
+      <name value="Medicamentos Spenser - Conjunto de valores"/>
+      <description value="Um conjunto de valores dos medicamentos que o Spenser pode dispensar."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/SpenserUnit"/>
+      </reference>
+      <name value="Unidade Spenser"/>
+      <description value="Um dispensador de chocolate, que atua como servidor FHIR e como cliente FHIR ao mesmo tempo."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="CapabilityStatement"/>
+      </extension>
+      <reference>
+        <reference value="CapabilityStatement/SpenserFHIRCapabilityStatement"/>
+      </reference>
+      <name value="SpenserFHIRCapabilityStatement"/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="StructureDefinition:resource"/>
+      </extension>
+      <reference>
+        <reference value="StructureDefinition/SpenserRequest"/>
+      </reference>
+      <name value="SpenserRequest"/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/UnitOwner"/>
+      </reference>
+      <name value="Proprietário da Unidade"/>
+      <description value="A pessoa que detém a chave de uma unidade e, com ela, a autoridade para configurar, reabastecer e atualizar a unidade."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/UpdatePublisher"/>
+      </reference>
+      <name value="Publicador de Atualizações"/>
+      <description value="O sítio que publica o manifesto da versão e as imagens de firmware que uma Unidade Spenser procura e instala."/>
+      <isExample value="false"/>
+    </resource>
+    <page>
+      <sourceUrl value="toc.html"/>
+      <name value="toc.html"/>
+      <title value="Índice"/>
+      <generation value="html"/>
+      <page>
+        <sourceUrl value="index.html"/>
+        <name value="index.html"/>
+        <title value="Início"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="implementing.html"/>
+        <name value="implementing.html"/>
+        <title value="Implementação"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="fhir-intro.html"/>
+        <name value="fhir-intro.html"/>
+        <title value="FHIR"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="interfaces.html"/>
+        <name value="interfaces.html"/>
+        <title value="Interfaces"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="firmware.html"/>
+        <name value="firmware.html"/>
+        <title value="Firmware"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="hardware-bom.html"/>
+        <name value="hardware-bom.html"/>
+        <title value="Lista de materiais do hardware"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="hardware-3ddesign.html"/>
+        <name value="hardware-3ddesign.html"/>
+        <title value="Peças para impressão 3D"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="assembly.html"/>
+        <name value="assembly.html"/>
+        <title value="Montagem"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="setup.html"/>
+        <name value="setup.html"/>
+        <title value="Setup"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="authors.html"/>
+        <name value="authors.html"/>
+        <title value="Autores"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="downloads.html"/>
+        <name value="downloads.html"/>
+        <title value="Transferências"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="usage.html"/>
+        <name value="usage.html"/>
+        <title value="Utilização"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="translationinfo.html"/>
+        <name value="translationinfo.html"/>
+        <title value="Traduções"/>
+        <generation value="markdown"/>
+      </page>
+    </page>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="copyrightyear"/>
+      </code>
+      <value value="2021+"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="releaselabel"/>
+      </code>
+      <value value="STU1"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-default-lang"/>
+      </code>
+      <value value="en"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-lang"/>
+      </code>
+      <value value="pt"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-lang"/>
+      </code>
+      <value value="nl"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-lang"/>
+      </code>
+      <value value="fr"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="translation-sources"/>
+      </code>
+      <value value="input/translations/pt"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="translation-sources"/>
+      </code>
+      <value value="input/translations/nl"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="translation-sources"/>
+      </code>
+      <value value="input/translations/fr"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="autoload-resources"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/capabilities"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/examples"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/extensions"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/models"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/operations"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/profiles"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/resources"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/vocabulary"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/maps"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/testing"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/history"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="fsh-generated/resources"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-pages"/>
+      </code>
+      <value value="template/config"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-pages"/>
+      </code>
+      <value value="input/assets"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-pages"/>
+      </code>
+      <value value="input/images"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-liquid-template"/>
+      </code>
+      <value value="template/liquid"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-liquid-template"/>
+      </code>
+      <value value="input/liquid"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-qa"/>
+      </code>
+      <value value="temp/qa"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-temp"/>
+      </code>
+      <value value="temp/pages"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-output"/>
+      </code>
+      <value value="output"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-tx-cache"/>
+      </code>
+      <value value="input-cache/txcache"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-suppressed-warnings"/>
+      </code>
+      <value value="input/ignoreWarnings.txt"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-history"/>
+      </code>
+      <value value="http://costateixeira.github.io/spenser/history.html"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="template-html"/>
+      </code>
+      <value value="template-page.html"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="template-md"/>
+      </code>
+      <value value="template-page-md.html"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-contact"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-context"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-copyright"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-jurisdiction"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-license"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-publisher"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-version"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-wg"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="active-tables"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="fmm-definition"/>
+      </code>
+      <value value="http://hl7.org/fhir/versions.html#maturity"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="propagate-status"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="excludelogbinaryformat"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="tabbed-snapshots"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+  </definition>
+</ImplementationGuide>

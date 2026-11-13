@@ -1,0 +1,41 @@
+{
+  "resourceType" : "ActorDefinition",
+  "id" : "UpdatePublisher",
+  "language" : "fr",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ActorDefinition UpdatePublisher</b></p><a name=\"fr-UpdatePublisher\"> </a><a name=\"fr-hcUpdatePublisher\"> </a><table class=\"grid\"><tr><td><b>Acteur : UpdatePublisher </b></td><td>Éditeur des mises à jour</td><td>Type : system </td></tr><tr><td colspan=\"3\"><div><p>This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.</p>\n<p>See <a href=\"interfaces.html#updates\">Updates</a>.</p>\n</div></td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/UpdatePublisher",
+  "version" : "1.0.0",
+  "name" : "UpdatePublisher",
+  "title" : "Éditeur des mises à jour",
+  "status" : "draft",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "Le site qui publie le manifeste de publication et les images du micrologiciel qu'une unité Spenser vérifie et installe.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "type" : "system",
+  "documentation" : "This is a plain HTTP exchange rather than a FHIR one. The publisher serves a manifest naming a version, its firmware and filesystem images, and its release notes.\n\nSee [Updates](interfaces.html#updates)."
+}

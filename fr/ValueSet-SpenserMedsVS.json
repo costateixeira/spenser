@@ -1,0 +1,44 @@
+{
+  "resourceType" : "ValueSet",
+  "id" : "SpenserMedsVS",
+  "language" : "fr",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ValueSet SpenserMedsVS</b></p><a name=\"fr-SpenserMedsVS\"> </a><a name=\"fr-hcSpenserMedsVS\"> </a><ul><li>Include tous les codes définis dans <a href=\"CodeSystem-SpenserMeds.html\"><code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code></a><span title=\"La version n'est pas explicitement indiquée, ce qui signifie quelle est fixée à la version fournie dans cette spécification\"> version &#x1F4E6;1.0.0</span></li></ul></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS",
+  "version" : "1.0.0",
+  "name" : "SpenserMedsVS",
+  "title" : "Spenser Medications - ValueSet",
+  "status" : "active",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A value set of medications that Spenser can dispense.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "compose" : {
+    "include" : [{
+      "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"
+    }]
+  }
+}

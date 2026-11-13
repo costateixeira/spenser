@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CodeSystem xmlns="http://hl7.org/fhir">
+  <id value="SpenserMeds"/>
+  <language value="pt"/>
+  <text>
+    <status value="generated"/><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: CodeSystem SpenserMeds</b></p><a name="pt-SpenserMeds"> </a><a name="pt-hcSpenserMeds"> </a><p>Este  sistema de código <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code> define o seguinte códigos:</p><table class="codes"><tr><td style="white-space:nowrap"><b>Código</b></td><td><b>Ecrã</b></td></tr><tr><td style="white-space:nowrap">chocolate-dark<a name="pt-SpenserMeds-chocolate-dark"> </a></td><td>Dark Chocolate</td></tr><tr><td style="white-space:nowrap">chocolate-milk<a name="pt-SpenserMeds-chocolate-milk"> </a></td><td>Milk Chocolate</td></tr></table><p><b>Ecrãs de idiomas adicionais</b></p><table class="codes"><tr><td><b>Código</b></td><td><b>French (fr)</b></td><td><b>Nederlands (Dutch, nl)</b></td><td><b>Portuguese (pt)</b></td></tr><tr><td>chocolate-dark</td><td>Chocolat noir</td><td>Pure chocolade</td><td>Chocolate negro</td></tr><tr><td>chocolate-milk</td><td>Chocolat au lait</td><td>Melkchocolade</td><td>Chocolate de leite</td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+  <version value="1.0.0"/>
+  <name value="SpenserMeds"/>
+  <title value="Medicamentos Spenser - Sistema de códigos"/>
+  <status value="active"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Um sistema de códigos dos medicamentos que o Spenser pode dispensar."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <content value="complete"/>
+  <count value="2"/>
+  <concept>
+    <code value="chocolate-dark"/>
+    <display value="Dark Chocolate"/>
+    <designation>
+      <language value="pt"/>
+      <value value="Chocolate negro"/>
+    </designation>
+    <designation>
+      <language value="nl"/>
+      <value value="Pure chocolade"/>
+    </designation>
+    <designation>
+      <language value="fr"/>
+      <value value="Chocolat noir"/>
+    </designation>
+  </concept>
+  <concept>
+    <code value="chocolate-milk"/>
+    <display value="Milk Chocolate"/>
+    <designation>
+      <language value="pt"/>
+      <value value="Chocolate de leite"/>
+    </designation>
+    <designation>
+      <language value="nl"/>
+      <value value="Melkchocolade"/>
+    </designation>
+    <designation>
+      <language value="fr"/>
+      <value value="Chocolat au lait"/>
+    </designation>
+  </concept>
+</CodeSystem>

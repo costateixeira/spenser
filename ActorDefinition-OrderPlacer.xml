@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="OrderPlacer"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ActorDefinition OrderPlacer</b></p><a name="OrderPlacer"> </a><a name="hcOrderPlacer"> </a><table class="grid"><tr><td><b>Actor: OrderPlacer </b></td><td>Order Placer</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed.</p>
+</div></td></tr></table></div><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: ActorDefinition OrderPlacer</b></p><a name="pt-OrderPlacer"> </a><a name="pt-hcOrderPlacer"> </a><table class="grid"><tr><td><b>Actor: OrderPlacer </b></td><td>Emissor de Prescrições</td><td>Tipo: system </td></tr><tr><td colspan="3"><div><p>Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída.</p>
+</div></td></tr></table></div><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: ActorDefinition OrderPlacer</b></p><a name="nl-OrderPlacer"> </a><a name="nl-hcOrderPlacer"> </a><table class="grid"><tr><td><b>Actor: OrderPlacer </b></td><td>Orderplaatser</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid.</p>
+</div></td></tr></table></div><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : ActorDefinition OrderPlacer</b></p><a name="fr-OrderPlacer"> </a><a name="fr-hcOrderPlacer"> </a><table class="grid"><tr><td><b>Acteur : OrderPlacer </b></td><td>Émetteur d'ordonnances</td><td>Type : system </td></tr><tr><td colspan="3"><div><p>Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée.</p>
+</div></td></tr></table></div></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"/>
+  <version value="1.0.0"/>
+  <name value="OrderPlacer">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="OrderPlacer"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="OrderPlacer"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="OrderPlacer"/>
+      </extension>
+    </extension>
+  </name>
+  <title value="Order Placer">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Emissor de Prescrições"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Orderplaatser"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Émetteur d'ordonnances"/>
+      </extension>
+    </extension>
+  </title>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server.">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Het systeem dat om chocolade vraagt, door een order naar een Spenser-unit te posten of er een op een orderserver te plaatsen."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."/>
+      </extension>
+    </extension>
+  </description>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed.">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée."/>
+      </extension>
+    </extension>
+  </documentation>
+</ActorDefinition>

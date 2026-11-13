@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Device xmlns="http://hl7.org/fhir">
+  <id value="Spenser-E3D4"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: Device Spenser-E3D4</b></p><a name="Spenser-E3D4"> </a><a name="hcSpenser-E3D4"> </a><p><b>identifier</b>: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4</p><p><b>status</b>: Active</p><p><b>manufacturer</b>: Spenser</p><h3>Names</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td><td><b>Type</b></td></tr><tr><td style="display: none">*</td><td>Spenser-E3D4</td><td>User Friendly name</td></tr></table><h3>Versions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td></tr><tr><td style="display: none">*</td><td>1.3.0</td></tr></table></div><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: Device Spenser-E3D4</b></p><a name="pt-Spenser-E3D4"> </a><a name="pt-hcSpenser-E3D4"> </a><p><b>identifier</b>: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4</p><p><b>status</b>: Active</p><p><b>manufacturer</b>: Spenser</p><h3>Names</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td><td><b>Type</b></td></tr><tr><td style="display: none">*</td><td>Spenser-E3D4</td><td>User Friendly name</td></tr></table><h3>Versions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td></tr><tr><td style="display: none">*</td><td>1.3.0</td></tr></table></div><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: Device Spenser-E3D4</b></p><a name="nl-Spenser-E3D4"> </a><a name="nl-hcSpenser-E3D4"> </a><p><b>identifier</b>: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4</p><p><b>status</b>: Active</p><p><b>manufacturer</b>: Spenser</p><h3>Names</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td><td><b>Type</b></td></tr><tr><td style="display: none">*</td><td>Spenser-E3D4</td><td>User Friendly name</td></tr></table><h3>Versions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td></tr><tr><td style="display: none">*</td><td>1.3.0</td></tr></table></div><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : Device Spenser-E3D4</b></p><a name="fr-Spenser-E3D4"> </a><a name="fr-hcSpenser-E3D4"> </a><p><b>identifier</b>: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4</p><p><b>status</b>: Active</p><p><b>manufacturer</b>: Spenser</p><h3>Names</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td><td><b>Type</b></td></tr><tr><td style="display: none">*</td><td>Spenser-E3D4</td><td>User Friendly name</td></tr></table><h3>Versions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Value</b></td></tr><tr><td style="display: none">*</td><td>1.3.0</td></tr></table></div></div>
+  </text>
+  <identifier>
+    <system value="http://costateixeira.github.io/spenser/unit"/>
+    <value value="Spenser-E3D4"/>
+  </identifier>
+  <status value="active"/>
+  <manufacturer value="Spenser"/>
+  <name>
+    <value value="Spenser-E3D4"/>
+    <type value="user-friendly-name"/>
+  </name>
+  <version>
+    <value value="1.3.0"/>
+  </version>
+</Device>

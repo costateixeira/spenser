@@ -1,0 +1,447 @@
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="nl" xmlns="http://www.w3.org/1999/xhtml" lang="nl" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Scenario - Ordering straight from the unit - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"14.11"}
+    h3,h4,h5,h6{--heading-prefix:"14.11"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - de metgezel van de ontwikkelaar</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International vlag" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Startpagina</a>
+  </li>
+  <li>
+    <a href="setup.html">Installatie</a>
+  </li>
+  <li>
+    <a href="usage.html">Gebruik</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">3D-ontwerp</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Stuklijst</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montage</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Over
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Auteurs</a>
+      </li>
+      <li>
+        <a href="downloads.html">Downloads</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefacten</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-nl.png"/>Nederlands</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Taal:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag nl" src="assets/images/lang-nl.png"/>Nederlands</div>
+
+    <div><a href="../en/ExampleScenario-DirectOrderScenario.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../pt/ExampleScenario-DirectOrderScenario.html"><img class="flag" src="assets/images/lang-pt.png" alt="flag pt"/>Português</a></div>
+
+    <div><a href="../fr/ExampleScenario-DirectOrderScenario.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Inhoudsopgave</b></a></li><li><a href='artifacts.html'><b>Samenvatting artefacten</b></a></li><li><b>Scenario - Ordering straight from the unit</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<!-- layouts\layout-examplescenario -->
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, gepubliceerd door José Costa Teixeira. Deze gids is geen geautoriseerde publicatie; het is de continue build voor versie 1.0.0  gebouwd door FHIR (HL7&reg; FHIR&reg; Standaard) CI Build. Deze versie is gebaseerd op de huidige inhoud van <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> en wijzigt regelmatig. Zie het <a href='http://costateixeira.github.io/spenser/history.html'>overzicht van gepubliceerde versies</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  
+
+
+
+
+
+
+
+
+
+
+<ul class="nav nav-tabs">
+
+  <li class="active">
+    <a href="#">Verhalende inhoud</a>
+  </li>
+
+
+
+  
+    <li>
+      <a href="ExampleScenario-DirectOrderScenario.xml.html">XML</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="ExampleScenario-DirectOrderScenario.json.html">JSON</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="ExampleScenario-DirectOrderScenario.ttl.html">TTL</a>
+    </li>
+  
+
+
+
+</ul>
+
+  <a name="root"> </a>
+
+
+  <h2 id="root">ExampleScenario: Scenario - Ordering straight from the unit
+(Experimenteel)
+  </h2>
+
+  <table class="colsi" data-fhir="generated">
+
+    <tr>
+      <td colspan="4"><i>Officiële URL</i>: <span class="copy-text">http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario<button title="Klik om URL te kopiëren" class="btn-copy" data-clipboard-text="http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario"/></span>
+      </td>
+      <td><i>Versie</i>:
+      <span class="copy-text">1.0.0<button title="Klik om URL met versie te kopiëren" class="btn-copy" data-clipboard-text="http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario|1.0.0"/></span>
+      </td>
+      <td style="text-align: right;border-left-style: hidden" title="Schakel dit in om wijzigingen sinds de laatste officiële release te zien">
+        <span id="toggle-change-display"><label style="margin:0;font-weight:normal" for="showChanges">Tekstwijzigingen markeren?</label>
+  
+        <input style="margin:0" type="checkbox" id="showChanges" onchange="toggleChanges()"/>
+  
+      </span>
+      </td>
+    </tr>
+
+    <tr>
+
+
+
+
+
+
+
+      <td colspan="5">
+        
+          Active
+          
+
+            vanaf 
+2026-11-13
+
+          
+        
+      </td>
+
+
+
+      <td><i>Naam</i>: <span style="font-family: monospace;">DirectOrderScenario</span></td>
+    </tr>
+
+
+
+
+  </table>
+
+
+<div data-fhir="generated">
+<p>A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization.</p>
+
+</div>
+
+
+<div data-fhir="generated">
+
+
+</div>
+
+  <!-- insert intro if present -->
+  
+
+
+
+<a name="actors"> </a>
+<h3>Acteurs</h3>
+  <div data-fhir="generated"><p class="res-header-id"></p><a name="DirectOrderScenario"> </a><a name="hcDirectOrderScenario"> </a>
+<table class="table-striped table-bordered" data-fhir="generated"><tr><th>Naam</th><th>Type</th><th>Omschrijving</th></tr>
+<tr><td><a name="a_placer"> </a>Order Placer</td>
+<td>System</td>
+<td style="overflow-wrap:break-word"><div><p>Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard.</p>
+</div></td></tr>
+<tr><td><a name="a_spenser"> </a>Spenser Unit</td>
+<td>System</td>
+<td style="overflow-wrap:break-word"><div><p>One dispenser, acting here only as a FHIR server.</p>
+</div></td></tr></table></div>
+
+<a name="diagram"> </a>
+<h3>Diagram</h3>
+  <?plantuml 1.2026.1?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="SEQUENCE" height="240px" preserveAspectRatio="none" style="width:395px;height:240px;background:#FFFFFF;" version="1.1" viewBox="0 0 395 240" width="395px" zoomAndPan="magnify"><title xmlns="">Ordering straight from the unit</title><defs xmlns=""/><g xmlns=""><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="247.1465" x="80.8755" y="27.9951">Ordering straight from the unit</text><g><title>...a_placer.Whatever is asking for chocolate. a script. a client under development. or the unit.s own dashboard.. Order Placer..</title><rect fill="#FFFFFF" height="112.5313" style="stroke:#181818;stroke-width:1;" width="10" x="65.7295" y="83.5938"/></g><g><title>...a_spenser.One dispenser. acting here only as a FHIR server.. Spenser Unit..</title><rect fill="#FFFFFF" height="112.5313" style="stroke:#181818;stroke-width:1;" width="10" x="332.9614" y="83.5938"/></g><g><title>...a_spenser.One dispenser. acting here only as a FHIR server.. Spenser Unit..</title><rect fill="#FFFFFF" height="29.1328" style="stroke:#181818;stroke-width:1;" width="10" x="337.9614" y="128.8594"/></g><g class="participant-lifeline" data-entity-uid="part1" data-qualified-name="placer" id="part1-lifeline"><g><title>...a_placer.Whatever is asking for chocolate. a script. a client under development. or the unit.s own dashboard.. Order Placer..</title><rect fill="#000000" fill-opacity="0.00000" height="131.5313" width="8" x="66.7295" y="73.5938"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;" x1="70" x2="70" y1="73.5938" y2="205.125"/></g></g><g class="participant-lifeline" data-entity-uid="part2" data-qualified-name="spenser" id="part2-lifeline"><g><title>...a_spenser.One dispenser. acting here only as a FHIR server.. Spenser Unit..</title><rect fill="#000000" fill-opacity="0.00000" height="131.5313" width="8" x="333.9614" y="73.5938"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;" x1="337.0254" x2="337.0254" y1="73.5938" y2="205.125"/></g></g><g class="participant participant-head" data-entity-uid="part1" data-qualified-name="placer" id="part1-head"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="101.459" x="20" y="42.2969"/><a href="#a_placer" target="_top" title="Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard." xlink:actuate="onRequest" xlink:href="#a_placer" xlink:show="new" xlink:title="Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="87.459" x="27" y="62.292">Order Placer</text></a></g><g class="participant participant-tail" data-entity-uid="part1" data-qualified-name="placer" id="part1-tail"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="101.459" x="20" y="204.125"/><a href="#a_placer" target="_top" title="Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard." xlink:actuate="onRequest" xlink:href="#a_placer" xlink:show="new" xlink:title="Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="87.459" x="27" y="224.1201">Order Placer</text></a></g><g class="participant participant-head" data-entity-uid="part2" data-qualified-name="spenser" id="part2-head"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="103.8721" x="286.0254" y="42.2969"/><a href="#a_spenser" target="_top" title="One dispenser, acting here only as a FHIR server." xlink:actuate="onRequest" xlink:href="#a_spenser" xlink:show="new" xlink:title="One dispenser, acting here only as a FHIR server." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="89.8721" x="293.0254" y="62.292">Spenser Unit</text></a></g><g class="participant participant-tail" data-entity-uid="part2" data-qualified-name="spenser" id="part2-tail"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="103.8721" x="286.0254" y="204.125"/><a href="#a_spenser" target="_top" title="One dispenser, acting here only as a FHIR server." xlink:actuate="onRequest" xlink:href="#a_spenser" xlink:show="new" xlink:title="One dispenser, acting here only as a FHIR server." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="89.8721" x="293.0254" y="224.1201">Spenser Unit</text></a></g><g><title>...a_placer.Whatever is asking for chocolate. a script. a client under development. or the unit.s own dashboard.. Order Placer..</title><rect fill="#FFFFFF" height="112.5313" style="stroke:#181818;stroke-width:1;" width="10" x="65.7295" y="83.5938"/></g><g><title>...a_spenser.One dispenser. acting here only as a FHIR server.. Spenser Unit..</title><rect fill="#FFFFFF" height="112.5313" style="stroke:#181818;stroke-width:1;" width="10" x="332.9614" y="83.5938"/></g><g><title>...a_spenser.One dispenser. acting here only as a FHIR server.. Spenser Unit..</title><rect fill="#FFFFFF" height="29.1328" style="stroke:#181818;stroke-width:1;" width="10" x="337.9614" y="128.8594"/></g><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg1"><polygon fill="#181818" points="325.9614,124.8594,335.9614,128.8594,325.9614,132.8594,329.9614,128.8594" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="75.7295" x2="331.9614" y1="128.8594" y2="128.8594"/><a href="#node2" target="_top" title="The unit dispenses before it answers. The response is `201 Created` carrying the MedicationDispense, with a `Location` for the record the unit kept and an `ETag`. This changes the unit, so it needs the unit's key." xlink:actuate="onRequest" xlink:href="#node2" xlink:show="new" xlink:title="The unit dispenses before it answers. The response is `201 Created` carrying the MedicationDispense, with a `Location` for the record the unit kept and an `ETag`. This changes the unit, so it needs the unit's key." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="167.2607" x="82.7295" y="123.7935">POST /MedicationRequest</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="254.1226" y="123.7935">(</text><a href="#i_order" target="_top" title="#i_order" xlink:actuate="onRequest" xlink:href="#i_order" xlink:show="new" xlink:title="#i_order" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="259.1943" y="123.7935">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="310.8896" y="123.7935">)</text></g><g class="message" data-entity-1="part2" data-entity-2="part1" id="msg2"><polygon fill="#181818" points="86.7295,153.9922,76.7295,157.9922,86.7295,161.9922,82.7295,157.9922" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;stroke-dasharray:2,2;" x1="80.7295" x2="331.9614" y1="157.9922" y2="157.9922"/><a href="#node2" target="_top" title="The unit dispenses before it answers. The response is `201 Created` carrying the MedicationDispense, with a `Location` for the record the unit kept and an `ETag`. This changes the unit, so it needs the unit's key." xlink:actuate="onRequest" xlink:href="#node2" xlink:show="new" xlink:title="The unit dispenses before it answers. The response is `201 Created` carrying the MedicationDispense, with a `Location` for the record the unit kept and an `ETag`. This changes the unit, so it needs the unit's key." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="59.3315" x="92.7295" y="152.9263">response</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="156.1934" y="152.9263">(</text><a href="#i_dispense" target="_top" title="#i_dispense" xlink:actuate="onRequest" xlink:href="#i_dispense" xlink:show="new" xlink:title="#i_dispense" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="51.6953" x="161.2651" y="152.9263">payload</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5.0718" x="212.9604" y="152.9263">)</text></g><g class="message" data-entity-1="part1" data-entity-2="part2" id="msg3"><polygon fill="#181818" points="320.9614,183.125,330.9614,187.125,320.9614,191.125,324.9614,187.125" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1;" x1="75.7295" x2="326.9614" y1="187.125" y2="187.125"/><a href="#node3" target="_top" title="Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with `search.mode` of `outcome`, saying when the unit last looked for work and how that went." xlink:actuate="onRequest" xlink:href="#node3" xlink:show="new" xlink:title="Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with `search.mode` of `outcome`, saying when the unit last looked for work and how that went." xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" text-decoration="underline" textLength="165.4897" x="82.7295" y="182.0591">GET /MedicationDispense</text></a><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24.4893" x="248.2192" y="182.0591">end</text></g><?plantuml-src tPHDRnCn48Rl-HMZSW2aDD1oou4Bb0y9bAfDnQ5QTIVs96ljncF6JbTHnNzdl1z9AhXmvP2FjSVplEyxkxjqgI5OY2LnVWCn2RfDbM0jl8LK4UoyIvD9G4dEk80-mTdz_Gjy20qQagSV5IPw904N0METUwnPm5HikD6jEI148owagVupZIFjiFEA0wld6WvRNPc2dXbfBoDmwy5Yh5QCOcU_UdrmtI6Buan9qFF_8Ym6yb6LBJo1TSELmatAuYeI0lRDFlT0-FJbwmtelZfGp6rV37UgOi0CvoUJZV0k34BmwEzvKA0AF5kwwEX2FtSKipczE9nGZgM4heb5CScg7dERmSxXUkJswt3-VboPZupBf-L87Mr6M96cJw1hw6DB4cUGguHYO2t8Koeltrx01o6bs18CYknpCDd2TxBEO7BiFmuTfz2wLAdXyXltEsKttzGrDIpswBscaB5MFr1UBN5JPhWIJOL-e-B6oYb4pX8zaOsdOwzfh-bSBswNyEQevQQFiIZWbLft3zpD8E2-ORH5yVhFq8PVEDVO-W3__zH6iOUOHdkdILdwXnlitTCYPEtOJ3k1hFjpvQ3YimZmtB5XUVH28KAhhmGuoTTsoa-y6xMweguJhD3Ka1yBwVj4GZ5L9CsaqLCvQASXw0bzJSY-3xRigsPRLLa2hw7aNJAyfL9Hs0schSWVGsumwXTphQhp85gMklDKSQjLghVLzfhYvwjdjzuuqA8WRoU_0G00?></g></svg>
+
+<a name="processes"> </a>
+<h3>Processen</h3>
+  <div data-fhir="generated"><p class="res-header-id"></p>
+<div><a name="node1"> </a><b>Process: Order a chocolate from the unit </b>
+<div><p>One request, one chocolate.</p>
+</div><p><b><i>Precondities:</i></b></p>
+<div><p>The unit is on the network and the placer can reach it. The lane for the code being ordered has stock.</p>
+</div><p><b><i>Postcondities:</i></b></p>
+<div><p>A chocolate has been dispensed, and the unit holds a MedicationDispense recording it.</p>
+</div>
+<table style="width:100%" class="table-striped table-bordered" data-fhir="generated"><tr><th>Stap</th><th>Naam</th><th>Omschrijving</th><th>Initiator</th><th>Ontvanger</th><th>Verzoek</th><th>Antwoord</th></tr>
+<tr><td><a name="node2"> </a>1</td>
+<td>POST /MedicationRequest - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">create (Details: FHIR Restful Interactions code create)</a></td>
+<td><div><p>The unit dispenses before it answers. The response is <code>201 Created</code> carrying the MedicationDispense, with a <code>Location</code> for the record the unit kept and an <code>ETag</code>. This changes the unit, so it needs the unit's key.</p>
+</div></td>
+<td><a href="#a_placer" title="Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard.">Order Placer</a></td>
+<td><a href="#a_spenser" title="One dispenser, acting here only as a FHIR server.">Spenser Unit</a></td>
+<td><a href="#i_order" title="A MedicationRequest naming a chocolate from the IG's own code system. Neither the actionable tag nor a Task is needed on this route.">The order</a></td>
+<td><a href="#i_dispense" title="What the unit returns, pointing back at the order in `authorizingPrescription`. An absent `whenHandedOver` means the unit's clock has not been set by NTP, not that the time is unknown.">The dispense</a></td></tr>
+<tr colspan="7"><td><p><i>Alternatief The lane is empty </i></p><div><p>Nothing moves, and the unit still answers with a MedicationDispense: <code>status</code> of <code>declined</code>, and <code>notPerformedReason.concept</code> of <code>outofstock</code>. A refusal is an answer, not an error.</p>
+</div></td></tr>
+<tr colspan="7"><td><p><i>Alternatief The order asks for something the unit does not carry </i></p><div><p>The unit answers <code>400</code> with an OperationOutcome. Every error from a FHIR route on the unit is an OperationOutcome; there is no second error format.</p>
+</div></td></tr>
+<tr><td><a name="node3"> </a>2</td>
+<td>GET /MedicationDispense - <a href="http://hl7.org/fhir/R5/codesystem-restful-interaction.html">search-type (Details: FHIR Restful Interactions code search-type)</a></td>
+<td><div><p>Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with <code>search.mode</code> of <code>outcome</code>, saying when the unit last looked for work and how that went.</p>
+</div></td>
+<td><a href="#a_placer" title="Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard.">Order Placer</a></td>
+<td><a href="#a_spenser" title="One dispenser, acting here only as a FHIR server.">Spenser Unit</a></td>
+<td></td>
+<td></td></tr></table></div></div>
+
+<a name="instances"> </a>
+<h3>Instanties</h3>
+  <div data-fhir="generated"><p class="res-header-id"></p>
+<table class="table-striped table-bordered" data-fhir="generated"><tr><th>Naam</th><th>Type</th><th>Content</th><th>Omschrijving</th></tr>
+<tr><td><a name="i_order"> </a>The order</td>
+<td><a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></td>
+<td><a href="MedicationRequest-PlainMilkOrder.html">here</a></td>
+<td><div><p>A MedicationRequest naming a chocolate from the IG's own code system. Neither the actionable tag nor a Task is needed on this route.</p>
+</div></td></tr>
+<tr><td><a name="i_dispense"> </a>The dispense</td>
+<td><a href="http://hl7.org/fhir/R5/medicationdispense.html">MedicationDispense</a></td>
+<td><a href="MedicationDispense-DispenseForDirectOrder.html">here</a></td>
+<td><div><p>What the unit returns, pointing back at the order in <code>authorizingPrescription</code>. An absent <code>whenHandedOver</code> means the unit's clock has not been set by NTP, not that the time is unknown.</p>
+</div></td></tr></table></div>
+
+  <!-- insert notes if present -->
+  
+
+
+
+  
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pakket jct.fhir.spenser#1.0.0 gebaseerd op <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gegenereerd 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Links: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Inhoudsopgave</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">QA-rapport</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

@@ -1,0 +1,4 @@
+- docs: filter a unit's Tasks by the logical reference the order tools use (c227468, 2026-11-07)
+- dispensingDevice: an order can name its unit on the request itself (55da894, 2026-11-07)
+- firmware 1.3: a unit knows its name, and takes only the Tasks meant for it (112cbce, 2026-11-07)
+- IG: assembly instructions, pt/nl/fr translations, Spenser template (015f647, 2026-11-07)

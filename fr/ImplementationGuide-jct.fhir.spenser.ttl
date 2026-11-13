@@ -1,0 +1,902 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser> a fhir:ImplementationGuide ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "jct.fhir.spenser"] ; # 
+  fhir:language [ fhir:v "fr"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ImplementationGuide jct.fhir.spenser</b></p><a name=\"fr-jct.fhir.spenser\"> </a><a name=\"fr-hcjct.fhir.spenser\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Langue : en</p></div><h2>Spenser</h2><p>L'URL officielle pour ce guide d'implémentation est : </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>\n</div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "Spenser"] ; # 
+  fhir:title [ fhir:v "Spenser - un compagnon pour développeurs"] ; # 
+  fhir:status [ fhir:v "active"] ; # 
+  fhir:date [ fhir:v "2025-05-01"^^xsd:date] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "Spenser - un compagnon pour développeurs."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:packageId [ fhir:v "jct.fhir.spenser"] ; # 
+  fhir:fhirVersion ( [ fhir:v "5.0.0"] ) ; # 
+  fhir:dependsOn ( [
+     fhir:id [ fhir:v "hl7tx" ] ;
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:markdown ;
+         fhir:v "Automatically added as a dependency - all IGs depend on HL7 Terminology"
+       ]
+     ] ) ;
+     fhir:uri [
+       fhir:v "http://terminology.hl7.org/ImplementationGuide/hl7.terminology"^^xsd:anyURI ;
+       fhir:link <http://terminology.hl7.org/ImplementationGuide/hl7.terminology>
+     ] ;
+     fhir:packageId [ fhir:v "hl7.terminology.r5" ] ;
+     fhir:version [ fhir:v "7.5.0" ]
+  ] [
+     fhir:id [ fhir:v "hl7ext" ] ;
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:markdown ;
+         fhir:v "Automatically added as a dependency - all IGs depend on the HL7 Extension Pack"
+       ]
+     ] ) ;
+     fhir:uri [
+       fhir:v "http://hl7.org/fhir/extensions/ImplementationGuide/hl7.fhir.uv.extensions"^^xsd:anyURI ;
+       fhir:link <http://hl7.org/fhir/extensions/ImplementationGuide/hl7.fhir.uv.extensions>
+     ] ;
+     fhir:packageId [ fhir:v "hl7.fhir.uv.extensions.r5" ] ;
+     fhir:version [ fhir:v "5.4.0" ]
+  ] ) ; # 
+  fhir:definition [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:code ;
+         fhir:v "hl7.fhir.uv.tools.r5#1.3.0"
+       ]
+     ] ) ;
+     fhir:resource ( [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "StructureDefinition:extension"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice> ;
+         fhir:reference [ fhir:v "StructureDefinition/dispensingDevice" ]
+       ] ;
+       fhir:name [ fhir:v "Dispensing device" ] ;
+       fhir:description [ fhir:v "The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.\n\nR5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.\n\nWhen a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Device"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/Device/Spenser-E3D4> ;
+         fhir:reference [ fhir:v "Device/Spenser-E3D4" ]
+       ] ;
+       fhir:name [ fhir:v "Example - A Spenser unit on the order server" ] ;
+       fhir:description [ fhir:v "The Device a unit writes on the order server once per boot. Its id is the unit's name, the network it shows in setup mode: Spenser- and the last two bytes of its factory MAC." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "InventoryReport"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/InventoryReport/Add5Milk> ;
+         fhir:reference [ fhir:v "InventoryReport/Add5Milk" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Ajout au stock - 5 chocolats au lait" ] ;
+       fhir:description [ fhir:v "Exemple - Ajout au stock - 5 chocolats au lait" ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationDispense"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationDispense/DispenseForDirectOrder> ;
+         fhir:reference [ fhir:v "MedicationDispense/DispenseForDirectOrder" ]
+       ] ;
+       fhir:name [ fhir:v "Example - Dispense answering an order posted at the unit" ] ;
+       fhir:description [ fhir:v "What a unit returns to an order posted straight at it. The chocolate is already out by the time the placer reads this." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationDispense"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationDispense/DispenseForActionableDarkOrder> ;
+         fhir:reference [ fhir:v "MedicationDispense/DispenseForActionableDarkOrder" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Dispensation signalée en retour" ] ;
+       fhir:description [ fhir:v "Ce que Spenser crée sur le serveur d'ordonnances une fois qu'un morceau est sorti, en renvoyant à l'ordonnance dans authorizingPrescription. La même ressource est la réponse à une ordonnance envoyée directement à l'appareil." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationDispense"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationDispense/DispenseForTaskOrder> ;
+         fhir:reference [ fhir:v "MedicationDispense/DispenseForTaskOrder" ]
+       ] ;
+       fhir:name [ fhir:v "Example - Dispense reported for a Task" ] ;
+       fhir:description [ fhir:v "What a unit creates on the order server once a Task has asked it to fill an order. The same resource goes into Task.output when the unit completes the Task." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationDispense"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationDispense/DeclinedDispenseOutOfStock> ;
+         fhir:reference [ fhir:v "MedicationDispense/DeclinedDispenseOutOfStock" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Dispensation qui n'a pas eu lieu" ] ;
+       fhir:description [ fhir:v "Une ordonnance que Spenser n'a pas pu exécuter parce que le couloir est vide. R5 a supprimé MedicationDispense.statusReason : le motif se trouve donc dans notPerformedReason, qui est un CodeableReference - d'où le .concept dans le chemin." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationRequest"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/ActionableDarkOrder> ;
+         fhir:reference [ fhir:v "MedicationRequest/ActionableDarkOrder" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Ordonnance rendue exécutable par un tag" ] ;
+       fhir:description [ fhir:v "Une MedicationRequest que l'émetteur a marquée comme exécutable. Spenser la dispense à sa prochaine vérification et, comme aucune Task ne coordonne le travail, passe lui-même la demande à completed." ] ;
+       fhir:isExample [ fhir:v true ] ;
+       fhir:profile ( [
+         fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+       ] )
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationRequest"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainDarkOrderForOneUnit> ;
+         fhir:reference [ fhir:v "MedicationRequest/PlainDarkOrderForOneUnit" ]
+       ] ;
+       fhir:name [ fhir:v "Example - Order meant for one unit" ] ;
+       fhir:description [ fhir:v "A plain order, made actionable by the Task that addresses it to one unit. The order names the unit too, in the dispensingDevice extension, by a logical reference: R5 has no element on MedicationRequest that takes a Device." ] ;
+       fhir:isExample [ fhir:v true ] ;
+       fhir:profile ( [
+         fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+       ] )
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationRequest"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainMilkOrder> ;
+         fhir:reference [ fhir:v "MedicationRequest/PlainMilkOrder" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Ordonnance qui n'est pas exécutable à elle seule" ] ;
+       fhir:description [ fhir:v "La même ordonnance sans le tag. À elle seule, c'est une autorisation et rien de plus : Spenser l'ignore jusqu'à ce qu'une Task demande son exécution." ] ;
+       fhir:isExample [ fhir:v true ] ;
+       fhir:profile ( [
+         fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+       ] )
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "InventoryReport"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/InventoryReport/SetDarkTo17> ;
+         fhir:reference [ fhir:v "InventoryReport/SetDarkTo17" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Définition du stock - 17 chocolats noirs" ] ;
+       fhir:description [ fhir:v "Exemple - Définition du stock - 17 chocolats noirs" ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationRequest"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/med-request-1234> ;
+         fhir:reference [ fhir:v "MedicationRequest/med-request-1234" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Ordonnance Spenser" ] ;
+       fhir:description [ fhir:v "Exemple de MedicationRequest à envoyer à Spenser" ] ;
+       fhir:isExample [ fhir:v true ] ;
+       fhir:profile ( [
+         fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+       ] )
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "MedicationRequest"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/ActionableDarkOrderForOneUnit> ;
+         fhir:reference [ fhir:v "MedicationRequest/ActionableDarkOrderForOneUnit" ]
+       ] ;
+       fhir:name [ fhir:v "Example - Tagged order for one unit" ] ;
+       fhir:description [ fhir:v "An order made actionable by the tag, with no Task, that names the unit to dispense it in the dispensingDevice extension. Every other unit polling the server skips it." ] ;
+       fhir:isExample [ fhir:v true ] ;
+       fhir:profile ( [
+         fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+       ] )
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Task"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/Task/FulfillForOneUnit> ;
+         fhir:reference [ fhir:v "Task/FulfillForOneUnit" ]
+       ] ;
+       fhir:name [ fhir:v "Example - Task addressed to one unit" ] ;
+       fhir:description [ fhir:v "Task.requestedPerformer names the unit that is to fill the order: the one Task element R5 lets name a Device. Every other unit skips this Task; the unit it names dispenses it and closes it." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "Task"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/Task/FulfillPlainMilkOrder> ;
+         fhir:reference [ fhir:v "Task/FulfillPlainMilkOrder" ]
+       ] ;
+       fhir:name [ fhir:v "Exemple - Task demandant l'exécution d'une ordonnance" ] ;
+       fhir:description [ fhir:v "Une Task de coordination qui pointe vers l'ordonnance dans Task.focus. C'est ce qui rend l'ordonnance simple exécutable. Spenser termine la Task avec la dispensation dans Task.output, et laisse la demande elle-même à l'émetteur." ] ;
+       fhir:isExample [ fhir:v true ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ActorDefinition"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer> ;
+         fhir:reference [ fhir:v "ActorDefinition/OrderPlacer" ]
+       ] ;
+       fhir:name [ fhir:v "Émetteur d'ordonnances" ] ;
+       fhir:description [ fhir:v "Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ActorDefinition"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ActorDefinition/OrderServer> ;
+         fhir:reference [ fhir:v "ActorDefinition/OrderServer" ]
+       ] ;
+       fhir:name [ fhir:v "Serveur d'ordonnances" ] ;
+       fhir:description [ fhir:v "Un serveur FHIR qui conserve les ordonnances jusqu'à ce qu'une unité Spenser vienne les chercher, et reçoit les comptes rendus de l'unité." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ExampleScenario"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario> ;
+         fhir:reference [ fhir:v "ExampleScenario/DirectOrderScenario" ]
+       ] ;
+       fhir:name [ fhir:v "Scenario - Ordering straight from the unit" ] ;
+       fhir:description [ fhir:v "A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ExampleScenario"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ExampleScenario/TaskOrderScenario> ;
+         fhir:reference [ fhir:v "ExampleScenario/TaskOrderScenario" ]
+       ] ;
+       fhir:name [ fhir:v "Scenario - Ordering through an order server" ] ;
+       fhir:description [ fhir:v "A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "CodeSystem"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds> ;
+         fhir:reference [ fhir:v "CodeSystem/SpenserMeds" ]
+       ] ;
+       fhir:name [ fhir:v "Médicaments Spenser - Système de codes" ] ;
+       fhir:description [ fhir:v "Un système de codes des médicaments que Spenser peut dispenser." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ValueSet"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ValueSet/SpenserMedsVS> ;
+         fhir:reference [ fhir:v "ValueSet/SpenserMedsVS" ]
+       ] ;
+       fhir:name [ fhir:v "Médicaments Spenser - Jeu de valeurs" ] ;
+       fhir:description [ fhir:v "Un jeu de valeurs des médicaments que Spenser peut dispenser." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ActorDefinition"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit> ;
+         fhir:reference [ fhir:v "ActorDefinition/SpenserUnit" ]
+       ] ;
+       fhir:name [ fhir:v "Unité Spenser" ] ;
+       fhir:description [ fhir:v "Un distributeur de chocolat, qui agit à la fois comme serveur FHIR et comme client FHIR." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "CapabilityStatement"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/CapabilityStatement/SpenserFHIRCapabilityStatement> ;
+         fhir:reference [ fhir:v "CapabilityStatement/SpenserFHIRCapabilityStatement" ]
+       ] ;
+       fhir:name [ fhir:v "SpenserFHIRCapabilityStatement" ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "StructureDefinition:resource"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest> ;
+         fhir:reference [ fhir:v "StructureDefinition/SpenserRequest" ]
+       ] ;
+       fhir:name [ fhir:v "SpenserRequest" ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ActorDefinition"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ActorDefinition/UnitOwner> ;
+         fhir:reference [ fhir:v "ActorDefinition/UnitOwner" ]
+       ] ;
+       fhir:name [ fhir:v "Propriétaire de l'unité" ] ;
+       fhir:description [ fhir:v "La personne qui détient la clé d'une unité, et avec elle le pouvoir de configurer, de réapprovisionner et de mettre à jour l'unité." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] [
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://hl7.org/fhir/tools/StructureDefinition/resource-information"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:string ;
+           fhir:v "ActorDefinition"
+         ]
+       ] ) ;
+       fhir:reference [
+         fhir:link <http://costateixeira.github.io/spenser/ActorDefinition/UpdatePublisher> ;
+         fhir:reference [ fhir:v "ActorDefinition/UpdatePublisher" ]
+       ] ;
+       fhir:name [ fhir:v "Éditeur des mises à jour" ] ;
+       fhir:description [ fhir:v "Le site qui publie le manifeste de publication et les images du micrologiciel qu'une unité Spenser vérifie et installe." ] ;
+       fhir:isExample [ fhir:v false ]
+     ] ) ;
+     fhir:page [
+       fhir:source [
+         a fhir:url ;
+         fhir:v "toc.html"^^xsd:anyURI
+       ] ;
+       fhir:name [ fhir:v "toc.html"^^xsd:anyURI ] ;
+       fhir:title [ fhir:v "Table des matières" ] ;
+       fhir:generation [ fhir:v "html" ] ;
+       fhir:page ( [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "index.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "index.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Accueil" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "implementing.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "implementing.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Mise en œuvre" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "fhir-intro.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "fhir-intro.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "FHIR" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "interfaces.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "interfaces.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Interfaces" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "firmware.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "firmware.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Micrologiciel" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "hardware-bom.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "hardware-bom.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Nomenclature du matériel" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "hardware-3ddesign.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "hardware-3ddesign.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Pièces imprimables en 3D" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "assembly.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "assembly.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Assemblage" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "setup.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "setup.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Setup" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "authors.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "authors.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Auteurs" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "downloads.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "downloads.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Téléchargements" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "usage.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "usage.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Utilisation" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] [
+         fhir:source [
+           a fhir:url ;
+           fhir:v "translationinfo.html"^^xsd:anyURI
+         ] ;
+         fhir:name [ fhir:v "translationinfo.html"^^xsd:anyURI ] ;
+         fhir:title [ fhir:v "Traductions" ] ;
+         fhir:generation [ fhir:v "markdown" ]
+       ] )
+     ] ;
+     fhir:parameter ( [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "copyrightyear" ]
+       ] ;
+       fhir:value [ fhir:v "2021+" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "releaselabel" ]
+       ] ;
+       fhir:value [ fhir:v "STU1" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "i18n-default-lang" ]
+       ] ;
+       fhir:value [ fhir:v "en" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "i18n-lang" ]
+       ] ;
+       fhir:value [ fhir:v "pt" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "i18n-lang" ]
+       ] ;
+       fhir:value [ fhir:v "nl" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "i18n-lang" ]
+       ] ;
+       fhir:value [ fhir:v "fr" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "translation-sources" ]
+       ] ;
+       fhir:value [ fhir:v "input/translations/pt" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "translation-sources" ]
+       ] ;
+       fhir:value [ fhir:v "input/translations/nl" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "translation-sources" ]
+       ] ;
+       fhir:value [ fhir:v "input/translations/fr" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "autoload-resources" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/capabilities" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/examples" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/extensions" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/models" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/operations" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/profiles" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/resources" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/vocabulary" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/maps" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/testing" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "input/history" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-resource" ]
+       ] ;
+       fhir:value [ fhir:v "fsh-generated/resources" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-pages" ]
+       ] ;
+       fhir:value [ fhir:v "template/config" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-pages" ]
+       ] ;
+       fhir:value [ fhir:v "input/assets" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-pages" ]
+       ] ;
+       fhir:value [ fhir:v "input/images" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-liquid-template" ]
+       ] ;
+       fhir:value [ fhir:v "template/liquid" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-liquid-template" ]
+       ] ;
+       fhir:value [ fhir:v "input/liquid" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-qa" ]
+       ] ;
+       fhir:value [ fhir:v "temp/qa" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-temp" ]
+       ] ;
+       fhir:value [ fhir:v "temp/pages" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-output" ]
+       ] ;
+       fhir:value [ fhir:v "output" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/guide-parameter-code"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-tx-cache" ]
+       ] ;
+       fhir:value [ fhir:v "input-cache/txcache" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-suppressed-warnings" ]
+       ] ;
+       fhir:value [ fhir:v "input/ignoreWarnings.txt" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "path-history" ]
+       ] ;
+       fhir:value [ fhir:v "http://costateixeira.github.io/spenser/history.html" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "template-html" ]
+       ] ;
+       fhir:value [ fhir:v "template-page.html" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "template-md" ]
+       ] ;
+       fhir:value [ fhir:v "template-page-md.html" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-contact" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-context" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-copyright" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-jurisdiction" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-license" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-publisher" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-version" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "apply-wg" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "active-tables" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "fmm-definition" ]
+       ] ;
+       fhir:value [ fhir:v "http://hl7.org/fhir/versions.html#maturity" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "propagate-status" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "excludelogbinaryformat" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] [
+       fhir:code [
+         fhir:system [ fhir:v "http://hl7.org/fhir/tools/CodeSystem/ig-parameters"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "tabbed-snapshots" ]
+       ] ;
+       fhir:value [ fhir:v "true" ]
+     ] )
+  ] . # 
+
+# -------------------------------------------------------------------------------------
+

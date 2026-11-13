@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="OrderPlacer"/>
+  <language value="en"/>
+  <text>
+    <status value="generated"/><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ActorDefinition OrderPlacer</b></p><a name="OrderPlacer"> </a><a name="hcOrderPlacer"> </a><table class="grid"><tr><td><b>Actor: OrderPlacer </b></td><td>Order Placer</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"/>
+  <version value="1.0.0"/>
+  <name value="OrderPlacer"/>
+  <title value="Order Placer"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="On an Order Server, the placer decides whether an order is actionable, either by tagging the MedicationRequest or by creating a Task that points at it. When a Task coordinates the work, the placer also closes the MedicationRequest once the Task is completed."/>
+</ActorDefinition>

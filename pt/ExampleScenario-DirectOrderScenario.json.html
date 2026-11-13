@@ -1,0 +1,495 @@
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Scenario - Ordering straight from the unit - JSON Representation - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"14.11"}
+    h3,h4,h5,h6{--heading-prefix:"14.11"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - o companheiro do programador</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International bandeira" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Início</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuração</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilização</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Desenho 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Lista de materiais</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montagem</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Sobre
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Autores</a>
+      </li>
+      <li>
+        <a href="downloads.html">Transferências</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefactos</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-pt.png"/>Português</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Língua:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag pt" src="assets/images/lang-pt.png"/>Português</div>
+
+    <div><a href="../en/ExampleScenario-DirectOrderScenario.json.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../nl/ExampleScenario-DirectOrderScenario.json.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/ExampleScenario-DirectOrderScenario.json.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Índice</b></a></li><li><a href='artifacts.html'><b>Resumo de Artefactos</b></a></li><li><b>Scenario - Ordering straight from the unit</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<!-- layouts\layout-instance-format -->
+<div style="counter-reset: section 8" class="col-12">
+<!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publicado por José Costa Teixeira. Este guia não é uma publicação autorizada; é a compilação contínua para a versão 1.0.0 construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> e muda regularmente. Veja o <a href='http://costateixeira.github.io/spenser/history.html'>Diretório de versões publicadas</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+
+
+
+
+
+
+
+
+
+
+
+<ul class="nav nav-tabs">
+
+  <li>
+    <a href="ExampleScenario-DirectOrderScenario.html">Conteúdo narrativo</a>
+  </li>
+
+
+
+  
+    <li>
+      <a href="ExampleScenario-DirectOrderScenario.xml.html">XML</a>
+    </li>
+  
+
+
+  
+    <li class="active">
+      <a href="#">JSON</a>
+    </li>
+  
+
+
+  
+    <li>
+      <a href="ExampleScenario-DirectOrderScenario.ttl.html">TTL</a>
+    </li>
+  
+
+
+
+</ul>
+
+
+<a name="root"> </a>
+
+
+
+<h2 id="root">: Scenario - Ordering straight from the unit</h2>
+
+  <table class="colsi" data-fhir="generated">
+    <tr>
+
+      <td colspan="2">
+        
+          Active
+          
+
+            a partir de 
+2026-11-13
+
+          
+        
+      </td>
+
+    </tr>
+  </table>
+
+
+<p><a href="ExampleScenario-DirectOrderScenario.json" no-download="true">Bruto json</a> | <a href="ExampleScenario-DirectOrderScenario.json" download>Transferir</a></p>
+
+  <!-- insert intro if present -->
+  
+
+
+
+  <pre class="json" data-fhir="generated" style="white-space: pre; text-wrap: nowrap; width: auto;"><code class="language-json" style="white-space: pre; text-wrap: nowrap;">{
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario">resourceType</a>" : "ExampleScenario",
+  "<a href="http://hl7.org/fhir/R5/resource.html#XExampleScenario.id">id</a>" : "DirectOrderScenario",
+  "<a href="http://hl7.org/fhir/R5/resource.html#XExampleScenario.language">language</a>" : "pt",
+  "<a href="http://hl7.org/fhir/R5/domainresource.html#XExampleScenario.text">text</a>" : {
+    "<a href="http://hl7.org/fhir/R5/narrative.html#Narrative#XNarrative.status">status</a>" : "generated",
+    "<a href="http://hl7.org/fhir/R5/narrative.html#Narrative#XNarrative.div">div</a>" : "&lt;div xml:lang=\&quot;pt\&quot; lang=\&quot;pt\&quot;&gt;&lt;hr/&gt;&lt;p&gt;&lt;b&gt;Portuguese&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p class=\&quot;res-header-id\&quot;&gt;&lt;b&gt;Narrativa gerada: ExampleScenario DirectOrderScenario&lt;/b&gt;&lt;/p&gt;&lt;a name=\&quot;pt-DirectOrderScenario\&quot;&gt; &lt;/a&gt;&lt;a name=\&quot;pt-hcDirectOrderScenario\&quot;&gt; &lt;/a&gt;&lt;p&gt;&lt;b&gt;url&lt;/b&gt;: &lt;a href=\&quot;ExampleScenario-DirectOrderScenario.html\&quot;&gt;Ordering straight from the unit&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;version&lt;/b&gt;: 1.0.0&lt;/p&gt;&lt;p&gt;&lt;b&gt;name&lt;/b&gt;: DirectOrderScenario&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: Ordering straight from the unit&lt;/p&gt;&lt;p&gt;&lt;b&gt;status&lt;/b&gt;: Active&lt;/p&gt;&lt;p&gt;&lt;b&gt;experimental&lt;/b&gt;: true&lt;/p&gt;&lt;p&gt;&lt;b&gt;date&lt;/b&gt;: 2026-11-13 21:21:03+0000&lt;/p&gt;&lt;p&gt;&lt;b&gt;publisher&lt;/b&gt;: José Costa Teixeira&lt;/p&gt;&lt;p&gt;&lt;b&gt;contact&lt;/b&gt;: José Costa Teixeira: &lt;a href=\&quot;https://github.com/costateixeira\&quot;&gt;https://github.com/costateixeira&lt;/a&gt;, José Costa Teixeira: &lt;a href=\&quot;mailto:you-know.it@gmail.com\&quot;&gt;you-know.it@gmail.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization.&lt;/p&gt;\n&lt;/div&gt;&lt;p&gt;&lt;b&gt;jurisdiction&lt;/b&gt;: &lt;span title=\&quot;Códigos:{http://unstats.un.org/unsd/methods/m49/m49.htm 001}\&quot;&gt;World&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;purpose&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;The short way round. There is no order server here, so nothing has to make the\norder actionable: posting it at the unit is itself the instruction to dispense,\nand the servo has already turned by the time the unit answers.&lt;/p&gt;\n&lt;p&gt;This is the route to start from when trying a unit out, and the one a workshop\nruns on when the network is somebody's phone.&lt;/p&gt;\n&lt;/div&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;actor&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;key&lt;/b&gt;: placer&lt;/p&gt;&lt;p&gt;&lt;b&gt;type&lt;/b&gt;: System&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: Order Placer&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard.&lt;/p&gt;\n&lt;/div&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;actor&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;key&lt;/b&gt;: spenser&lt;/p&gt;&lt;p&gt;&lt;b&gt;type&lt;/b&gt;: System&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: Spenser Unit&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;One dispenser, acting here only as a FHIR server.&lt;/p&gt;\n&lt;/div&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;instance&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;key&lt;/b&gt;: order&lt;/p&gt;&lt;p&gt;&lt;b&gt;structureType&lt;/b&gt;: &lt;a href=\&quot;http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-MedicationRequest\&quot;&gt;All FHIR Types: MedicationRequest&lt;/a&gt; (MedicationRequest)&lt;/p&gt;&lt;p&gt;&lt;b&gt;structureProfile&lt;/b&gt;: &lt;a href=\&quot;StructureDefinition-SpenserRequest.html\&quot;&gt;SpenserRequest&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: The order&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;A MedicationRequest naming a chocolate from the IG's own code system. Neither the actionable tag nor a Task is needed on this route.&lt;/p&gt;\n&lt;/div&gt;&lt;p&gt;&lt;b&gt;content&lt;/b&gt;: &lt;a href=\&quot;MedicationRequest-PlainMilkOrder.html\&quot;&gt;MedicationRequest: status = active; intent = instance-order&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;instance&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;key&lt;/b&gt;: dispense&lt;/p&gt;&lt;p&gt;&lt;b&gt;structureType&lt;/b&gt;: &lt;a href=\&quot;http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-MedicationDispense\&quot;&gt;All FHIR Types: MedicationDispense&lt;/a&gt; (MedicationDispense)&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: The dispense&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;What the unit returns, pointing back at the order in &lt;code&gt;authorizingPrescription&lt;/code&gt;. An absent &lt;code&gt;whenHandedOver&lt;/code&gt; means the unit's clock has not been set by NTP, not that the time is unknown.&lt;/p&gt;\n&lt;/div&gt;&lt;p&gt;&lt;b&gt;content&lt;/b&gt;: &lt;a href=\&quot;MedicationDispense-DispenseForDirectOrder.html\&quot;&gt;MedicationDispense: status = completed&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;process&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: Order a chocolate from the unit&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;One request, one chocolate.&lt;/p&gt;\n&lt;/div&gt;&lt;p&gt;&lt;b&gt;preConditions&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;The unit is on the network and the placer can reach it. The lane for the code being ordered has stock.&lt;/p&gt;\n&lt;/div&gt;&lt;p&gt;&lt;b&gt;postConditions&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;A chocolate has been dispensed, and the unit holds a MedicationDispense recording it.&lt;/p&gt;\n&lt;/div&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;number&lt;/b&gt;: 1&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;operation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;type&lt;/b&gt;: &lt;a href=\&quot;http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-create\&quot;&gt;FHIR Restful Interactions: create&lt;/a&gt; (create)&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: POST /MedicationRequest&lt;/p&gt;&lt;p&gt;&lt;b&gt;initiator&lt;/b&gt;: placer&lt;/p&gt;&lt;p&gt;&lt;b&gt;receiver&lt;/b&gt;: spenser&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;The unit dispenses before it answers. The response is &lt;code&gt;201 Created&lt;/code&gt; carrying the MedicationDispense, with a &lt;code&gt;Location&lt;/code&gt; for the record the unit kept and an &lt;code&gt;ETag&lt;/code&gt;. This changes the unit, so it needs the unit's key.&lt;/p&gt;\n&lt;/div&gt;&lt;p&gt;&lt;b&gt;initiatorActive&lt;/b&gt;: true&lt;/p&gt;&lt;p&gt;&lt;b&gt;receiverActive&lt;/b&gt;: true&lt;/p&gt;&lt;h3&gt;Requests&lt;/h3&gt;&lt;table class=\&quot;grid\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;display: none\&quot;&gt;-&lt;/td&gt;&lt;td&gt;&lt;b&gt;InstanceReference&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=\&quot;display: none\&quot;&gt;*&lt;/td&gt;&lt;td&gt;order&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;h3&gt;Responses&lt;/h3&gt;&lt;table class=\&quot;grid\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;display: none\&quot;&gt;-&lt;/td&gt;&lt;td&gt;&lt;b&gt;InstanceReference&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=\&quot;display: none\&quot;&gt;*&lt;/td&gt;&lt;td&gt;dispense&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;alternative&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: The lane is empty&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;Nothing moves, and the unit still answers with a MedicationDispense: &lt;code&gt;status&lt;/code&gt; of &lt;code&gt;declined&lt;/code&gt;, and &lt;code&gt;notPerformedReason.concept&lt;/code&gt; of &lt;code&gt;outofstock&lt;/code&gt;. A refusal is an answer, not an error.&lt;/p&gt;\n&lt;/div&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;alternative&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;title&lt;/b&gt;: The order asks for something the unit does not carry&lt;/p&gt;&lt;p&gt;&lt;b&gt;description&lt;/b&gt;: &lt;/p&gt;&lt;div&gt;&lt;p&gt;The unit answers &lt;code&gt;400&lt;/code&gt; with an OperationOutcome. Every error from a FHIR route on the unit is an OperationOutcome; there is no second error format.&lt;/p&gt;\n&lt;/div&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt;&lt;b&gt;step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;number&lt;/b&gt;: 2&lt;/p&gt;&lt;h3&gt;Operations&lt;/h3&gt;&lt;table class=\&quot;grid\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;display: none\&quot;&gt;-&lt;/td&gt;&lt;td&gt;&lt;b&gt;Type&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Title&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Initiator&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Receiver&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;InitiatorActive&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;ReceiverActive&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=\&quot;display: none\&quot;&gt;*&lt;/td&gt;&lt;td&gt;&lt;a href=\&quot;http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-search-type\&quot;&gt;FHIR Restful Interactions: search-type&lt;/a&gt; (search-type)&lt;/td&gt;&lt;td&gt;GET /MedicationDispense&lt;/td&gt;&lt;td&gt;placer&lt;/td&gt;&lt;td&gt;spenser&lt;/td&gt;&lt;td&gt;&lt;div&gt;&lt;p&gt;Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with &lt;code&gt;search.mode&lt;/code&gt; of &lt;code&gt;outcome&lt;/code&gt;, saying when the unit last looked for work and how that went.&lt;/p&gt;\n&lt;/div&gt;&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/div&gt;"
+  },
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.url">url</a>" : "http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.version">version</a>" : "1.0.0",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.name">name</a>" : "DirectOrderScenario",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.title">title</a>" : "Ordering straight from the unit",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.status">status</a>" : "active",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.experimental">experimental</a>" : true,
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.date">date</a>" : "2026-11-13T21:21:03+00:00",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.publisher">publisher</a>" : "José Costa Teixeira",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.contact">contact</a>" : [
+    {
+      "<a href="http://hl7.org/fhir/R5/metadatatypes.html#ContactDetail#XContactDetail.name">name</a>" : "José Costa Teixeira",
+      "<a href="http://hl7.org/fhir/R5/metadatatypes.html#ContactDetail#XContactDetail.telecom">telecom</a>" : [
+        {
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#ContactPoint#XContactPoint.system">system</a>" : "url",
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#ContactPoint#XContactPoint.value">value</a>" : "https://github.com/costateixeira"
+        }
+      ]
+    },
+    {
+      "<a href="http://hl7.org/fhir/R5/metadatatypes.html#ContactDetail#XContactDetail.name">name</a>" : "José Costa Teixeira",
+      "<a href="http://hl7.org/fhir/R5/metadatatypes.html#ContactDetail#XContactDetail.telecom">telecom</a>" : [
+        {
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#ContactPoint#XContactPoint.system">system</a>" : "email",
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#ContactPoint#XContactPoint.value">value</a>" : "you-know.it@gmail.com",
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#ContactPoint#XContactPoint.use">use</a>" : "work"
+        }
+      ]
+    }
+  ],
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.description">description</a>" : "A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization.",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.jurisdiction">jurisdiction</a>" : [
+    {
+      "<a href="http://hl7.org/fhir/R5/datatypes.html#CodeableConcept#XCodeableConcept.coding">coding</a>" : [
+        {
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.system">system</a>" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.code">code</a>" : "001",
+          "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.display">display</a>" : "World"
+        }
+      ]
+    }
+  ],
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.purpose">purpose</a>" : "The short way round. There is no order server here, so nothing has to make the\norder actionable: posting it at the unit is itself the instruction to dispense,\nand the servo has already turned by the time the unit answers.\n\nThis is the route to start from when trying a unit out, and the one a workshop\nruns on when the network is somebody's phone.",
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor">actor</a>" : [
+    {
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.key">key</a>" : "placer",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.type">type</a>" : "system",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.title">title</a>" : "Order Placer",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.description">description</a>" : "Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard."
+    },
+    {
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.key">key</a>" : "spenser",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.type">type</a>" : "system",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.title">title</a>" : "Spenser Unit",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.actor.description">description</a>" : "One dispenser, acting here only as a FHIR server."
+    }
+  ],
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance">instance</a>" : [
+    {
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.key">key</a>" : "order",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.structureType">structureType</a>" : {
+        "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.system">system</a>" : "http://hl7.org/fhir/fhir-types",
+        "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.code">code</a>" : "MedicationRequest"
+      },
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.structureProfile_x_">structureProfileCanonical</a>" : "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.title">title</a>" : "The order",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.description">description</a>" : "A MedicationRequest naming a chocolate from the IG's own code system. Neither the actionable tag nor a Task is needed on this route.",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.content">content</a>" : {
+        <a href="MedicationRequest-PlainMilkOrder.html" class="targetLink" aria-label="Link to the referenced resource (repeats the reference, can be ignored)">&#x1F517;</a> "<a href="http://hl7.org/fhir/R5/references.html#Reference#XReference.reference">reference</a>" : "MedicationRequest/PlainMilkOrder"
+      }
+    },
+    {
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.key">key</a>" : "dispense",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.structureType">structureType</a>" : {
+        "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.system">system</a>" : "http://hl7.org/fhir/fhir-types",
+        "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.code">code</a>" : "MedicationDispense"
+      },
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.title">title</a>" : "The dispense",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.description">description</a>" : "What the unit returns, pointing back at the order in `authorizingPrescription`. An absent `whenHandedOver` means the unit's clock has not been set by NTP, not that the time is unknown.",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.content">content</a>" : {
+        <a href="MedicationDispense-DispenseForDirectOrder.html" class="targetLink" aria-label="Link to the referenced resource (repeats the reference, can be ignored)">&#x1F517;</a> "<a href="http://hl7.org/fhir/R5/references.html#Reference#XReference.reference">reference</a>" : "MedicationDispense/DispenseForDirectOrder"
+      }
+    }
+  ],
+  "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process">process</a>" : [
+    {
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.title">title</a>" : "Order a chocolate from the unit",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.description">description</a>" : "One request, one chocolate.",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.preConditions">preConditions</a>" : "The unit is on the network and the placer can reach it. The lane for the code being ordered has stock.",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.postConditions">postConditions</a>" : "A chocolate has been dispensed, and the unit holds a MedicationDispense recording it.",
+      "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step">step</a>" : [
+        {
+          "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.number">number</a>" : "1",
+          "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation">operation</a>" : {
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.type">type</a>" : {
+              "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.system">system</a>" : "http://hl7.org/fhir/restful-interaction",
+              "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.code">code</a>" : "create"
+            },
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.title">title</a>" : "POST /MedicationRequest",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.initiator">initiator</a>" : "placer",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.receiver">receiver</a>" : "spenser",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.description">description</a>" : "The unit dispenses before it answers. The response is `201 Created` carrying the MedicationDispense, with a `Location` for the record the unit kept and an `ETag`. This changes the unit, so it needs the unit's key.",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.initiatorActive">initiatorActive</a>" : true,
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.receiverActive">receiverActive</a>" : true,
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.request">request</a>" : {
+              "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.containedInstance.instanceReference">instanceReference</a>" : "order"
+            },
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.response">response</a>" : {
+              "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.instance.containedInstance.instanceReference">instanceReference</a>" : "dispense"
+            }
+          },
+          "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.alternative">alternative</a>" : [
+            {
+              "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.alternative.title">title</a>" : "The lane is empty",
+              "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.alternative.description">description</a>" : "Nothing moves, and the unit still answers with a MedicationDispense: `status` of `declined`, and `notPerformedReason.concept` of `outofstock`. A refusal is an answer, not an error."
+            },
+            {
+              "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.alternative.title">title</a>" : "The order asks for something the unit does not carry",
+              "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.alternative.description">description</a>" : "The unit answers `400` with an OperationOutcome. Every error from a FHIR route on the unit is an OperationOutcome; there is no second error format."
+            }
+          ]
+        },
+        {
+          "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.number">number</a>" : "2",
+          "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation">operation</a>" : {
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.type">type</a>" : {
+              "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.system">system</a>" : "http://hl7.org/fhir/restful-interaction",
+              "<a href="http://hl7.org/fhir/R5/datatypes.html#Coding#XCoding.code">code</a>" : "search-type"
+            },
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.title">title</a>" : "GET /MedicationDispense",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.initiator">initiator</a>" : "placer",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.receiver">receiver</a>" : "spenser",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.description">description</a>" : "Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with `search.mode` of `outcome`, saying when the unit last looked for work and how that went.",
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.initiatorActive">initiatorActive</a>" : true,
+            "<a href="http://hl7.org/fhir/R5/examplescenario.html#XExampleScenario.process.step.operation.receiverActive">receiverActive</a>" : true
+          }
+        }
+      ]
+    }
+  ]
+}</code></pre>
+
+
+  <!-- insert notes if present -->
+  
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pacote jct.fhir.spenser#1.0.0 baseado em <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gerado 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Ligações: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Índice</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Relatório de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

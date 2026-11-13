@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>3D printable parts - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"7"}
+    h3,h4,h5,h6{--heading-prefix:"7"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - a developer&#39;s companion</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International flag" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Home</a>
+  </li>
+  <li>
+    <a href="setup.html">Setup</a>
+  </li>
+  <li>
+    <a href="usage.html">Usage</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">3D design</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Bill of Materials</a>
+      </li>
+      <li>
+        <a href="assembly.html">Assembly</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">About
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Authors</a>
+      </li>
+      <li>
+        <a href="downloads.html">Downloads</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artifacts</a>
+  </li>
+</ul>
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-en.png"/>English</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Language:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-en.png"/>English</div>
+
+    <div><a href="../pt/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-pt.png" alt="flag pt"/>Português</a></div>
+
+    <div><a href="../nl/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/hardware-3ddesign.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Table of Contents</b></a></li><li><b>3D printable parts</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, published by José Costa Teixeira. This guide is not an authorized publication; it is the continuous build for version 1.0.0  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> and changes regularly. See the <a href='http://costateixeira.github.io/spenser/history.html'>Directory of published versions</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>3D printable parts</h2>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#description" id="markdown-toc-description">Description</a></li>
+  <li><a href="#for-smaller-chocolates" id="markdown-toc-for-smaller-chocolates">For smaller chocolates</a></li>
+  <li><a href="#bill-of-materials" id="markdown-toc-bill-of-materials">Bill of Materials</a></li>
+</ul>
+
+</div>
+<p>Below are the 3D parts used to build <strong>Spenser</strong>.</p>
+
+<h3 id="description">Description</h3>
+
+<p><br clear="all" /></p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Image</th>
+      <th>Description</th>
+      <th>Downloads</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Body</strong></td>
+      <td><img src="spenser-body.png" alt="" width="120px" /></td>
+      <td>Holds the chocolate stack, the servo motor and the slider rails, on its own base.</td>
+      <td><a href="spenser-body.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Pusher</strong></td>
+      <td><img src="spenser-pusher.png" alt="" width="120px" /></td>
+      <td>Slides along the rails and pushes one chocolate out.</td>
+      <td><a href="spenser-pusher.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Arm</strong></td>
+      <td><img src="spenser-arm.png" alt="" width="120px" /></td>
+      <td>Attaches to the servo horn and drives the pusher.</td>
+      <td><a href="spenser-arm.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Pin</strong></td>
+      <td><img src="spenser-pin.png" alt="" width="120px" /></td>
+      <td>Axle connecting the arm to the pusher.</td>
+      <td><a href="spenser-pin.stl">STL</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="for-smaller-chocolates">For smaller chocolates</h3>
+
+<p>The lane above takes a piece up to 60 × 39 mm, which suits a Belgian
+napolitain. A Swiss one is smaller — a Lindt Napolitain is around 40 × 25 mm —
+and has room to shift in it. The 9 mm of slack along the push is the one that
+matters: it is enough for a piece to creep forward under the retaining wall,
+where the pusher meets it edge on.</p>
+
+<p>These are the same parts with the lane cut 17.5 mm narrower, 9 mm
+shallower, and the rail 20.2 mm shorter, so they take a piece <strong>up to
+40 × 30 mm</strong>, at the same 5.5 to 7.5 mm thick. Measure a piece before
+printing: 30 mm is the limit along the push.</p>
+
+<p>The depth is the one cut to the piece, and it is exact. The width is not: it
+is set by the bay the Atomic Motion Base drops into, which is 24 mm wide for
+a module 24 mm wide, and by the servo's pocket beside it at 12.26 mm for a
+case 12.2 thick. Both stand between the same two side walls as the lane, and
+nothing can come out of either, so 17.5 mm is the whole of the width these
+parts can give up. A piece 40 mm across keeps 2.5 mm of side play in what is
+left, and even a loose fit there would cost nothing: a 30 × 40 piece cannot
+turn in a lane 31 mm deep however wide that lane is.</p>
+
+<p>Two things change on the build. Set <code class="language-plaintext highlighter-rouge">anglePush=78.6</code> on this unit, against
+the default of 77. And fit the arm so that at rest it sits about 44.5° back
+from pointing straight across the lane, rather than square to it: that moves
+the whole travel back and is what lets the body be this short. The check is
+that at rest the pushing face ends up just behind the chocolate stack. The
+26.7 mm comes off the back, behind the pusher, not off the mouth: the piece
+leaves through the other end, and 6.5 mm of it goes back in again under the
+servo, which is how its bay comes to sit against the back face. The servo
+itself goes in turned end for end from the standard unit, so that its cable
+leaves at the back; the pin then goes in the pusher's second slot, which takes
+out the 5 mm the turned-round case moves the shaft by. The pin has its own part here and needs no
+drilling: the hole in the arm is 3.1 mm in these files against 2.76 on the
+standard arm, and the pin itself is 2.3 mm rather than 2.55. Both halves had
+to move. A small hole prints under its size and a small shaft over its own,
+and together they ate the 0.44 mm of clearance the drawing had, so the pin
+would not enter; there is 0.79 mm now. The standard pin is unchanged — drill
+the standard arm 2.6 mm if you are building that one.</p>
+
+<p>For another size of piece, <a href="https://github.com/costateixeira/spenser/blob/master/tools/resize/build.py"><code class="language-plaintext highlighter-rouge">tools/resize/build.py</code></a> cuts these three
+parts to fit it and prints what the travel comes to. A piece is given as
+across the lane × along it × thick, so <code class="language-plaintext highlighter-rouge">--piece 40x30x7 --name small</code> is
+this variant; with nothing after it the script takes the Belgian mignonette
+the parts above are already cut for, and says there is nothing to cut.</p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Description</th>
+      <th>Downloads</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Body</strong></td>
+      <td>A lane 43.5 × 31 mm instead of 61 × 40; 46.5 × 80.8 × 105 mm overall. The module bay keeps its full 24 mm and the servo its 12.26, and no height in it moves at all: the ledge that holds the pusher down, the servo's box and the exit slot are all where the standard body has them. The servo goes in turned end for end, so its cable leaves at the back of the unit instead of towards the magazine, and its whole bay sits 6.5 mm further back so that the shaft stays near where it was. The lead then has the length of the tower to cross, so the magazine's side wall is carried 13.0 mm forward over it, as tall as the module rail opposite and with the same window through it, for the lead to run against.</td>
+      <td><a href="spenser-body-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Pusher</strong></td>
+      <td>42.4 × 46 mm, to match the narrower lane, with two pin slots 2.55 mm wide: the pin goes in either, and the second one, 5 mm further in, holds the pusher 5 mm further back through the whole swing, which is the one this body wants, the servo being turned round.</td>
+      <td><a href="spenser-pusher-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Arm</strong></td>
+      <td>26.75 mm between its holes instead of 41, which gives a 33.76 mm stroke at <code class="language-plaintext highlighter-rouge">anglePush=78.6</code>, matched to the shallower lane.</td>
+      <td><a href="spenser-arm-small.stl">STL</a></td>
+    </tr>
+    <tr>
+      <td><strong>Pin</strong></td>
+      <td>2.3 mm across its shaft instead of 2.55, which is the other half of the fit with the arm.</td>
+      <td><a href="spenser-pin-small.stl">STL</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bill-of-materials">Bill of Materials</h3>
+
+<p><strong>The quantities indicated are for the 2-position dispenser.</strong></p>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Description</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Body</td>
+      <td>Holds the chocolates, the motor and the slider rails</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Arm</td>
+      <td>Rotating arm attached to the servo</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Pin</td>
+      <td>Connects the arm to the pusher</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Pusher</td>
+      <td>Pushes a chocolate out</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Package jct.fhir.spenser#1.0.0 based on <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Generated 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Links: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Table of Contents</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">QA Report</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

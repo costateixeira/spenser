@@ -1,0 +1,24 @@
+{
+  "resourceType" : "MedicationDispense",
+  "id" : "DispenseForActionableDarkOrder",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: MedicationDispense DispenseForActionableDarkOrder</b></p><a name=\"DispenseForActionableDarkOrder\"> </a><a name=\"hcDispenseForActionableDarkOrder\"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><p><b>authorizingPrescription</b>: <a href=\"MedicationRequest-ActionableDarkOrder.html\">MedicationRequest: status = active; intent = instance-order</a></p></div>"
+  },
+  "status" : "completed",
+  "medication" : {
+    "concept" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+        "code" : "chocolate-dark",
+        "display" : "Dark Chocolate"
+      }]
+    }
+  },
+  "subject" : {
+    "reference" : "Patient/123"
+  },
+  "authorizingPrescription" : [{
+    "reference" : "MedicationRequest/ActionableDarkOrder"
+  }]
+}

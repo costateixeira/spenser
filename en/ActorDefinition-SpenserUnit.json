@@ -1,0 +1,41 @@
+{
+  "resourceType" : "ActorDefinition",
+  "id" : "SpenserUnit",
+  "language" : "en",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ActorDefinition SpenserUnit</b></p><a name=\"SpenserUnit\"> </a><a name=\"hcSpenserUnit\"> </a><table class=\"grid\"><tr><td><b>Actor: SpenserUnit </b></td><td>Spenser Unit</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>\n<p>See <a href=\"interfaces.html\">Interfaces</a>.</p>\n</div></td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit",
+  "version" : "1.0.0",
+  "name" : "SpenserUnit",
+  "title" : "Spenser Unit",
+  "status" : "draft",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "type" : "system",
+  "documentation" : "A single dispenser. As a **server** it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a **client** it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.\n\nSee [Interfaces](interfaces.html)."
+}

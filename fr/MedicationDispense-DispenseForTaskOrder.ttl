@@ -1,0 +1,44 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/MedicationDispense/DispenseForTaskOrder> a fhir:MedicationDispense ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "DispenseForTaskOrder"] ; # 
+  fhir:language [ fhir:v "fr"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : MedicationDispense DispenseForTaskOrder</b></p><a name=\"fr-DispenseForTaskOrder\"> </a><a name=\"fr-hcDispenseForTaskOrder\"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes :{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>Performers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Actor</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table><p><b>authorizingPrescription</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest : extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:status [ fhir:v "completed"] ; # 
+  fhir:medication [
+     fhir:concept [
+       fhir:coding ( [
+         fhir:system [ fhir:v "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "chocolate-dark" ] ;
+         fhir:display [ fhir:v "Dark Chocolate" ]
+       ] )
+     ]
+  ] ; # 
+  fhir:subject [
+     fhir:link <http://costateixeira.github.io/spenser/Patient/123> ;
+     fhir:reference [ fhir:v "Patient/123" ]
+  ] ; # 
+  fhir:performer ( [
+     fhir:actor [
+       fhir:link <http://costateixeira.github.io/spenser/Device/Spenser-E3D4> ;
+       fhir:reference [ fhir:v "Device/Spenser-E3D4" ] ;
+       fhir:display [ fhir:v "Spenser-E3D4" ]
+     ]
+  ] ) ; # 
+  fhir:authorizingPrescription ( [
+     fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainDarkOrderForOneUnit> ;
+     fhir:reference [ fhir:v "MedicationRequest/PlainDarkOrderForOneUnit" ]
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="UnitOwner"/>
+  <language value="en"/>
+  <text>
+    <status value="generated"/><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ActorDefinition UnitOwner</b></p><a name="UnitOwner"> </a><a name="hcUnitOwner"> </a><table class="grid"><tr><td><b>Actor: UnitOwner </b></td><td>Unit Owner</td><td>Type: person </td></tr><tr><td colspan="3"><div><p>Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.</p>
+<p>See <a href="interfaces.html#what-needs-a-key">What needs a key</a>.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/UnitOwner"/>
+  <version value="1.0.0"/>
+  <name value="UnitOwner"/>
+  <title value="Unit Owner"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="The person who holds a unit's key, and with it the authority to configure, restock and update the unit."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="person"/>
+  <documentation value="Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.&#xA;&#xA;See [What needs a key](interfaces.html#what-needs-a-key)."/>
+</ActorDefinition>

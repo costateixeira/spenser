@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Utilisation - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"12"}
+    h3,h4,h5,h6{--heading-prefix:"12"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - un compagnon pour développeurs</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International drapeau" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Accueil</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuration</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilisation</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Logiciel
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Micrologiciel</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Matériel
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Conception 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Nomenclature</a>
+      </li>
+      <li>
+        <a href="assembly.html">Assemblage</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">À propos
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Auteurs</a>
+      </li>
+      <li>
+        <a href="downloads.html">Téléchargements</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefacts</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-fr.png"/>Français</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Langue:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag fr" src="assets/images/lang-fr.png"/>Français</div>
+
+    <div><a href="../en/usage.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../pt/usage.html"><img class="flag" src="assets/images/lang-pt.png" alt="flag pt"/>Português</a></div>
+
+    <div><a href="../nl/usage.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Table des matières</b></a></li><li><b>Utilisation</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publié par José Costa Teixeira. Ce guide n'est pas une publication autorisée ; C'est la version en intégration continue pour la version 1.0.0 construite par le CI Build FHIR (HL7® FHIR® Standard). Cette version est basée sur le contenu actuel de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> et change régulièrement. Voir le <a href='http://costateixeira.github.io/spenser/history.html'>répertoire des versions publiées</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Utilisation</h2>
+  
+
+
+
+
+<p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+
+<p>Cette page comprend des traductions de la langue source originale dans laquelle le guide a été rédigé.  Des informations sur ces traductions et des instructions sur la manière de fournir un retour d'information sur les traductions sont disponibles <a href="translationinfo.html">ici</a>.</p>
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div class="markdown-toc">
+<ul id="markdown-toc">
+  <li><a href="#où-va-lordonnance" id="markdown-toc-où-va-lordonnance">Où va l'ordonnance</a></li>
+  <li><a href="#lordonnance" id="markdown-toc-lordonnance">L'ordonnance</a></li>
+  <li><a href="#pourquoi-le-tag" id="markdown-toc-pourquoi-le-tag">Pourquoi le tag</a></li>
+  <li><a href="#lautre-façon-de-le-dire" id="markdown-toc-lautre-façon-de-le-dire">L'autre façon de le dire</a></li>
+  <li><a href="#ce-qui-revient" id="markdown-toc-ce-qui-revient">Ce qui revient</a></li>
+  <li><a href="#quand-il-ne-peut-pas" id="markdown-toc-quand-il-ne-peut-pas">Quand il ne peut pas</a></li>
+  <li><a href="#observer-une-unité" id="markdown-toc-observer-une-unité">Observer une unité</a></li>
+  <li><a href="#les-réglages-qui-comptent" id="markdown-toc-les-réglages-qui-comptent">Les réglages qui comptent</a></li>
+  <li><a href="#quand-vous-êtes-juste-à-côté" id="markdown-toc-quand-vous-êtes-juste-à-côté">Quand vous êtes juste à côté</a></li>
+</ul>
+
+</div>
+<p>Spenser dispense du chocolat, et il traite le chocolat comme un médicament. Vous
+n'appuyez donc pas sur un bouton pour en obtenir. Vous déposez une ordonnance, et
+le distributeur décide s'il a le droit d'y donner suite.</p>
+
+<p>Cette page parcourt le tout de l'extérieur vers l'intérieur. La page
+<a href="interfaces.html">Interfaces</a> en est la référence.</p>
+
+<h3 id="où-va-lordonnance">Où va l'ordonnance</h3>
+
+<p>On peut parler directement à une unité posée sur votre bureau. Pas à une unité
+située ailleurs : le montage qui compte est donc celui où les ordonnances résident
+sur un serveur FHIR et où le distributeur vient les chercher.</p>
+
+<p>Le distributeur interroge son serveur d'ordonnances toutes les trente secondes.
+Vous y déposez une ordonnance, et dans la demi-minute environ un morceau de
+chocolat tombe de la machine. Rien n'envoie quoi que ce soit au distributeur, et
+personne n'a besoin de savoir où il se trouve.</p>
+
+<h3 id="lordonnance">L'ordonnance</h3>
+
+<p>Envoyez une MedicationRequest au serveur d'ordonnances, avec les codes
+<a href="CodeSystem-SpenserMeds.html">SpenserMeds</a> : <code class="language-plaintext highlighter-rouge">chocolate-dark</code> ou
+<code class="language-plaintext highlighter-rouge">chocolate-milk</code>. Un morceau à la fois, seule quantité que le profil
+<a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a> autorise.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"resourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MedicationRequest"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"tag"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w"> </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://terminology.hl7.org/CodeSystem/common-tags"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actionable"</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"intent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"instance-order"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"medication"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"concept"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"coding"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chocolate-dark"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dark Chocolate"</span><span class="w"> </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"subject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Patient/123"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"dosageInstruction"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One bite"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>L'exemple complet se trouve
+<a href="MedicationRequest-ActionableDarkOrder.html">ici</a>. La partie qui fait le travail
+est <code class="language-plaintext highlighter-rouge">meta.tag</code>.</p>
+
+<h3 id="pourquoi-le-tag">Pourquoi le tag</h3>
+
+<p>Une MedicationRequest est une autorisation, pas une instruction. Quelqu'un peut
+avoir une ordonnance au dossier sans que personne n'entende la faire exécuter
+tout de suite, et un distributeur qui se vide dans la pièce à chaque ordonnance
+rédigée ne rend pas vraiment service.</p>
+
+<p>Spenser attend donc qu'on lui dise qu'une ordonnance est prête à être traitée, ce
+que le guide Clinical Orders Workflow appelle une ordonnance exécutable
+(<em>actionable order</em>). Retirez le tag de l'exemple ci-dessus et vous obtenez
+<a href="MedicationRequest-PlainMilkOrder.html">une ordonnance que Spenser ignorera</a> :
+toujours parfaitement valide, simplement personne n'a demandé qu'on l'exécute.</p>
+
+<h3 id="lautre-façon-de-le-dire">L'autre façon de le dire</h3>
+
+<p>Il arrive que l'ordonnance soit rédigée par une personne et que la demande
+d'exécution vienne plus tard, ou d'ailleurs. C'est à cela que sert une Task.
+Laissez l'ordonnance telle quelle, et envoyez
+<a href="Task-FulfillPlainMilkOrder.html">une Task qui pointe vers elle</a> avec le statut
+<code class="language-plaintext highlighter-rouge">requested</code> et l'ordonnance dans <code class="language-plaintext highlighter-rouge">Task.focus</code>.</p>
+
+<p>Les deux voies fonctionnent, et le distributeur cherche les deux à chaque
+interrogation. Vous ne le configurez pas dans un mode ou dans l'autre. Si une
+ordonnance se présente avec un tag et une Task en même temps, elle n'est
+quand même dispensée qu'une fois.</p>
+
+<p>La différence apparaît ensuite, dans qui clôture quoi :</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>comment l'ordonnance a été rendue exécutable</th>
+      <th>ce que Spenser définit</th>
+      <th>ce qu'il vous laisse</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>le tag</td>
+      <td>l'ordonnance à <code class="language-plaintext highlighter-rouge">completed</code></td>
+      <td>rien</td>
+    </tr>
+    <tr>
+      <td>une Task</td>
+      <td>la Task à <code class="language-plaintext highlighter-rouge">completed</code>, avec la dispensation dans <code class="language-plaintext highlighter-rouge">Task.output</code></td>
+      <td>l'ordonnance, qui reste <code class="language-plaintext highlighter-rouge">active</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>La seconde ligne est délibérée. Quand une Task coordonne le travail, terminer
+l'ordonnance est l'affaire de son émetteur, et une Task terminée est le signal
+pour le faire.</p>
+
+<h3 id="ce-qui-revient">Ce qui revient</h3>
+
+<p>Chaque morceau de chocolat produit une
+<a href="MedicationDispense-DispenseForActionableDarkOrder.html">MedicationDispense</a> sur
+le serveur, qui renvoie à l'ordonnance par <code class="language-plaintext highlighter-rouge">authorizingPrescription</code>. C'est la
+trace qu'il s'est physiquement passé quelque chose, et c'est ce qu'il faut
+chercher pour savoir si votre ordonnance a été exécutée :</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET {server}/MedicationDispense?_count=20
+</code></pre></div></div>
+
+<h3 id="quand-il-ne-peut-pas">Quand il ne peut pas</h3>
+
+<p>Un couloir finit par se vider. Spenser le dit au lieu de se taire : il envoie
+<a href="MedicationDispense-DeclinedDispenseOutOfStock.html">une dispensation qui n'a pas eu lieu</a>,
+avec le statut <code class="language-plaintext highlighter-rouge">declined</code> et le motif dans <code class="language-plaintext highlighter-rouge">notPerformedReason</code>. Il le signale
+une fois, pas à chaque interrogation.</p>
+
+<p>Ce qu'il advient alors de l'ordonnance est un réglage. Par défaut, l'ordonnance
+reste ouverte : remplir le couloir permet de l'exécuter lors d'une interrogation
+ultérieure, sans que personne ne renvoie quoi que ce soit. L'autre choix est de
+l'abandonner, et si une Task coordonnait le travail, cette Task passe à <code class="language-plaintext highlighter-rouge">failed</code>.</p>
+
+<h3 id="observer-une-unité">Observer une unité</h3>
+
+<p>Le distributeur tient son propre registre de ce qu'il a fait, en FHIR, que
+l'ordonnance soit venue d'un serveur ou lui ait été remise directement :</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET http://spenser.local/MedicationDispense
+</code></pre></div></div>
+
+<p>Le Bundle contient ses dispensations récentes, les plus récentes d'abord. Il
+porte aussi une entrée dont le <code class="language-plaintext highlighter-rouge">search.mode</code> vaut <code class="language-plaintext highlighter-rouge">outcome</code> : un OperationOutcome
+qui indique comment s'est passée la dernière interrogation, à quel serveur elle
+s'est adressée, il y a combien de temps, combien d'ordonnances elle a trouvées et
+combien elle en a exécutées. Si rien ne sort, lisez d'abord cette entrée. Elle dit
+généralement pourquoi, et elle distingue un distributeur qui n'arrive pas à
+joindre son serveur d'un distributeur qui fonctionne correctement et à qui on n'a
+simplement rien donné qu'il ait le droit de traiter.</p>
+
+<p>L'écran du distributeur affiche les deux mêmes choses, qui sont les deux qui
+comptent : ce qu'il y a dans chaque couloir, et ce qu'a donné la dernière
+vérification.</p>
+
+<p>Rien de ce qui précède ne demande d'autorisation. Modifier une unité, si :
+dispenser à la main, les réglages, le stock, le Wi-Fi et les mises à jour
+nécessitent tous la clé de cette unité, qu'elle affiche sur sa console série au
+démarrage et qu'elle remet pendant cinq minutes après un redémarrage. Lire ce
+qu'elle a fait ne la demande jamais.</p>
+
+<h3 id="les-réglages-qui-comptent">Les réglages qui comptent</h3>
+
+<p>L'essentiel de la configuration d'une unité concerne les servos, le Wi-Fi et les
+LED. Voici ceux qui changent le comportement des ordonnances (les libellés sont
+ceux du tableau de bord, qui reste en anglais) :</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Réglage</th>
+      <th>Ce qu'il décide</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Order server</td>
+      <td>l'URL de base FHIR qu'elle interroge</td>
+    </tr>
+    <tr>
+      <td>Voies acceptées (Accept orders made actionable by)</td>
+      <td>à la fois un tag et une Task, ce qui est le réglage par défaut, ou une seule des deux pour montrer la différence</td>
+    </tr>
+    <tr>
+      <td>Check every</td>
+      <td>secondes entre les interrogations, 30 par défaut</td>
+    </tr>
+    <tr>
+      <td>Report back</td>
+      <td>si elle écrit la dispensation et la clôture sur le serveur</td>
+    </tr>
+    <tr>
+      <td>Give up when the lane is empty</td>
+      <td>abandonner une ordonnance impossible à exécuter, ou la garder ouverte en attendant un remplissage</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="quand-vous-êtes-juste-à-côté">Quand vous êtes juste à côté</h3>
+
+<p>Vous pouvez envoyer une ordonnance directement au distributeur. Il n'y a alors ni
+tag ni Task, car l'envoyer à la main est en soi la décision de dispenser, et
+il répond avec la MedicationDispense :</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST http://spenser.local/MedicationRequest
+</code></pre></div></div>
+
+<p>Et il y a le bouton en façade, qui dispense sans aucun FHIR.</p>
+
+<p>Une unité hors de portée reste maintenable : son micrologiciel et ses fichiers web
+peuvent tous deux être remplacés par Wi-Fi, et elle peut se tenir à jour à partir
+d'une version publiée. La page <a href="interfaces.html">Interfaces</a> donne les détails.</p>
+
+<p class="stu-note"><strong>En cas d'urgence, Spenser dispose d'un bouton "Hit me" pour dispenser un peu de chocolat.</strong><br />
+<strong>Cette fonction est à utiliser avec prudence.</strong></p>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Le package jct.fhir.spenser#1.0.0 est basé sur <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Date de génération : 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Liens: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Table des matières</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Rapport de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

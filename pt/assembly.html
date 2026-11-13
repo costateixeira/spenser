@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+
+
+
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt" dir="ltr">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>Montagem - Spenser - a developer&#39;s companion v1.0.0</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="http://hl7.org/fhir"/>
+
+    <link href="fhir.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap-fhir.css" rel="stylesheet"/>
+
+    <!-- Project extras -->
+    <link href="assets/css/pygments-manni.css" rel="stylesheet"/>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet"/>
+  	<link href="assets/css/prism.css" rel="stylesheet" />
+    <link href="assets/css/liquid.css" rel="stylesheet" />
+    <link href="assets/css/project.css" rel="stylesheet"/>
+  	<link href="assets/css/spenser.css" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="fhir-table-scripts.js"> </script>
+    <script type="text/javascript" src="assets/js/direction-management.js"> </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicons -->
+    <link rel="fhir-logo" sizes="144x144" href="assets/ico/icon-fhir-144.png"/>
+    <link rel="fhir-logo" sizes="114x114" href="assets/ico/icon-fhir-114.png"/>
+    <link rel="fhir-logo" sizes="72x72" href="assets/ico/icon-fhir-72.png"/>
+    <link rel="fhir-logo" href="assets/ico/icon-fhir-57.png"/>
+    <link rel="shortcut icon" href="assets/ico/favicon.png"/>
+  </head>
+  <body onload="document.body.style.opacity='1'">
+
+	  <script type="text/javascript" src="assets/js/prism.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="assets/js/prism-cql.js"></script>
+    <script type="text/javascript" src="assets/js/mermaid-init.js"></script>
+    <style type="text/css">h2{--heading-prefix:"8"}
+    h3,h4,h5,h6{--heading-prefix:"8"}</style>
+    <div id="segment-header" class="segment">  <!-- segment-header -->
+      <div class="container">  <!-- container -->
+
+                <div id="project-nav">
+          <a id="project-logo" no-external="true" href="index.html"><img height="60" alt="" src="assets/images/spenser-logo.png"/>Spenser</a>
+        </div>
+
+
+        <div id="ig-status" data-fhir="generated">
+          <p><span style="font-size:12pt;font-weight:bold">Spenser - o companheiro do programador</span>
+            <br/>
+            <span style="display:inline-block;">1.0.0 - STU1
+
+
+
+  <img alt="International bandeira" src="../assets/images/001.svg" height="16" title="International"/>
+
+
+            </span>
+          </p>
+        </div>
+      </div> <!-- /container -->
+    </div>  <!-- /segment-header -->
+
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
+      <div id="stripe"> </div>
+      <div class="container">  <!-- container -->
+        <!-- HEADER CONTENT -->
+
+        <nav class="navbar navbar-inverse">
+          <!--status-bar-->
+          <div class="container">
+
+            <button data-target=".navbar-inverse-collapse" class="navbar-toggle" data-toggle="collapse" type="button">
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+              <span class="icon-bar"> </span>
+            </button>
+            <a class="navbar-brand hidden" href="http://hl7.org/fhir/R5/index.html">FHIR</a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+              <ul xmlns="http://www.w3.org/1999/xhtml" class="nav navbar-nav">
+  <li>
+    <a href="index.html">Início</a>
+  </li>
+  <li>
+    <a href="setup.html">Configuração</a>
+  </li>
+  <li>
+    <a href="usage.html">Utilização</a>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Software
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="fhir-intro.html">FHIR</a>
+      </li>
+      <li>
+        <a href="interfaces.html">Interfaces</a>
+      </li>
+      <li>
+        <a href="firmware.html">Firmware</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Hardware
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="hardware-3ddesign.html">Desenho 3D</a>
+      </li>
+      <li>
+        <a href="hardware-bom.html">Lista de materiais</a>
+      </li>
+      <li>
+        <a href="assembly.html">Montagem</a>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">Sobre
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="authors.html">Autores</a>
+      </li>
+      <li>
+        <a href="downloads.html">Transferências</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="artifacts.html">Artefactos</a>
+  </li>
+</ul>
+
+            </div>  <!-- /.nav-collapse -->
+
+              
+
+
+<div style="float: var(--ig-right);padding: 8px 0px;" id="language">
+  <div id="select_flg" class="flaglist" style="background-image: url(assets/images/icon_arrow_down.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag en" src="assets/images/lang-pt.png"/>Português</div>
+  </div>
+  <div style="float: var(--ig-right); margin: 2px 0px; padding: 1px 0;color: var(--btn-text-color);font-size:12px">Língua:</div>
+ 	<div id="flaglist" class="flaglist" style="display: none;position: absolute;right: 0;z-index: 100;background-image: url(assets/images/icon_arrow_up.png);background-position: 133px 3px;">
+    <div><img class="flag" alt="flag pt" src="assets/images/lang-pt.png"/>Português</div>
+
+    <div><a href="../en/assembly.html"><img class="flag" src="assets/images/lang-en.png" alt="flag en"/>English</a></div>
+
+    <div><a href="../nl/assembly.html"><img class="flag" src="assets/images/lang-nl.png" alt="flag nl"/>Nederlands</a></div>
+
+    <div><a href="../fr/assembly.html"><img class="flag" src="assets/images/lang-fr.png" alt="flag fr"/>Français</a></div>
+
+  </div>
+</div>
+
+
+          </div>  <!-- /.container -->
+        </nav>  <!-- /.navbar -->
+      <!-- /HEADER CONTENT -->
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-navbar -->
+    <!--status-bar-->
+
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
+      <div class="container">  <!-- container -->
+        <ul class="breadcrumb">
+          <li><a href='toc.html'><b>Índice</b></a></li><li><b>Montagem</b></li>
+
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /segment-breadcrumb -->
+
+    <a name="top"> </a>
+    <div id="segment-content" class="segment">  <!-- segment-content -->
+      <div class="container">  <!-- container -->
+        <div class="row">
+          <div class="inner-wrapper">
+
+<style type="text/css">
+h2:before{color:silver;counter-increment:section;content:var(--heading-prefix) " ";}
+h3:before{color:silver;counter-increment:sub-section;content:var(--heading-prefix) "." counter(sub-section) " ";}
+h4:before{color:silver;counter-increment:composite;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) " ";}
+h5:before{color:silver;counter-increment:detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";}
+h6:before{color:silver;counter-increment:more-detail;content:var(--heading-prefix) "." counter(sub-section) "." counter(composite) "." counter(detail) "." counter(more-detail)" ";}
+</style>
+<div class="col-12">
+  <!--ReleaseHeader--><p id="publish-box">Spenser - a developer's companion, publicado por José Costa Teixeira. Este guia não é uma publicação autorizada; é a compilação contínua para a versão 1.0.0 construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href='https://github.com/costateixeira/spenser/tree/master'>https://github.com/costateixeira/spenser/tree/master</a> e muda regularmente. Veja o <a href='http://costateixeira.github.io/spenser/history.html'>Diretório de versões publicadas</a><br/><span data-smart-ci-extra="1" style="font-size:.85em;">Built from commit <a href="https://github.com/costateixeira/spenser/commit/32957debb51151eac02f85df3d493aa10a608fff"><code>32957deb</code></a>.</span></p><!--EndReleaseHeader-->
+  <h2>Montagem</h2>
+  
+
+
+
+
+<p style="border:var(--translation-box-border);background-color:var(--translation-background-color);padding: 5px 5px 5px 5px;">
+
+<p>Esta página inclui traduções a partir da língua original em que o guia foi criado. Informações sobre estas traduções e instruções para fornecer feedback podem ser encontradas <a href="translationinfo.html">aqui</a>.</p>
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+    <p><!-- white space is critical inside of capture --></p>
+<div>
+<!-- do not remove - needed to prevent Jekyll from adding a p tag to any non block level element in the markdown.-->
+</div>
+<p>Duas calhas, uma para chocolate negro e outra para chocolate de leite. Tudo o que
+estiver marcado com <strong>2x</strong> é feito uma vez para cada calha.</p>
+
+<p>Imprima as <a href="hardware-3ddesign.html">peças 3D</a>, compre a
+<a href="hardware-bom.html">eletrónica</a> e coloque primeiro o <a href="firmware.html">firmware</a> no
+controlador.</p>
+
+<p class="stu-note">Estes desenhos foram feitos a partir dos modelos 3D das peças, não fotografados de
+uma unidade acabada. Se algo aqui não corresponder ao que tem nas mãos,
+<a href="https://github.com/costateixeira/spenser/issues">diga-nos</a>.</p>
+
+<div class="assembly">
+
+<figure class="assembly-step assembly-wide">
+  <img src="assembly-00.svg" alt="As peças: dois corpos, empurradores, braços, pinos, servos e cruzetas, um Atom S3 Lite, uma base Atomic Motion, uma bateria externa, seis parafusos e uma chave de fendas. Uma peça de chocolate pode ter até 60 por 39 mm e entre 5,5 e 7,5 mm de espessura." />
+  <figcaption>Verifique se tem tudo. As cruzetas e os parafusos vêm com os servos, e precisa também de um cabo USB-C. Uma peça de chocolate não pode ser maior do que 60 × 39 mm e deve ter entre 5,5 e 7,5 mm de espessura.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">1</span>
+  <img src="assembly-01.svg" alt="Um servo é descido para dentro da caixa no corpo, com o veio virado para baixo." />
+  <figcaption>Desça o servo para dentro da caixa, com o veio para baixo, até as orelhas assentarem no rebordo. O veio aponta para o tabuleiro.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">2</span>
+  <img src="assembly-02.svg" alt="Dois parafusos atravessam as orelhas do servo." />
+  <figcaption>Fixe-o com dois parafusos através das orelhas. Justos, não apertados: estão a entrar em plástico.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">3</span>
+  <img src="assembly-03.svg" alt="O Atom é encaixado na extremidade da base de movimento oposta à bateria." />
+  <figcaption>Encaixe o Atom na extremidade da base Atomic Motion oposta à bateria.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">4</span>
+  <img src="assembly-04.svg" alt="A base desliza para baixo no compartimento da frente da torre, com a bateria primeiro e o Atom em cima." />
+  <figcaption>Faça deslizar a base para baixo no compartimento da frente de uma das torres, com a extremidade da bateria primeiro, de modo que o Atom fique em cima. A bateria e o botão do Atom ficam virados para o tabuleiro, e os conectores dos servos do lado do servo. Só um dos corpos precisa dela.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">5</span>
+  <img src="assembly-05.svg" alt="Dois corpos lado a lado. Uma ficha de servo vai para o conector marcado S4 e a outra para o S3. Um pormenor mostra uma ficha a entrar nos pinos." />
+  <figcaption>Coloque os corpos lado a lado. Encaixe a ficha do servo da calha do chocolate negro no conector marcado S4 e a da calha do chocolate de leite no S3, a que o firmware chama canais 3 e 2. O fio castanho é a terra: alinhe-o com a marca de terra junto ao conector. Pode escolher outros no painel.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">6</span>
+  <img src="assembly-06.svg" alt="Uma bateria externa ligada por um cabo USB-C à porta em cima do Atom, e o interruptor da base ligado." />
+  <figcaption>Ligue a bateria externa à porta USB-C em cima do Atom e ligue o interruptor da base. Abra o painel e prima <strong>Move both to rest</strong>. A partir daqui, não rode os servos à mão. A bateria da própria base carrega pelo mesmo cabo.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">7</span>
+  <img src="assembly-07.svg" alt="O empurrador desliza para dentro do canal pela frente. Um pormenor mostra as nervuras por baixo." />
+  <figcaption>Deslize o empurrador para dentro do canal pela frente, com as nervuras para baixo e a ranhura comprida virada para si.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">8</span>
+  <img src="assembly-08.svg" alt="A cruzeta é encaixada sob pressão no braço. O braço desliza por baixo da caixa do servo, e um parafuso é apertado por baixo do corpo." />
+  <figcaption>Encaixe uma cruzeta no sulco do braço, pressionando. Deslize o braço por baixo da caixa e para o veio, e depois fixe-o com o parafuso da cruzeta, através do orifício por baixo do corpo.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">8</span>
+  <img src="assembly-08b.svg" alt="Visto de cima, na posição correta o braço aponta para a frente do tabuleiro e o fundo da torre fica livre. Na posição errada o braço aponta para a torre e o empurrador sai pela parte de trás." />
+  <figcaption>Em repouso, o braço aponta para a frente e o empurrador deixa livre o fundo da torre. Se não for assim, retire o braço e volte a colocá-lo no veio na posição correta.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">9</span>
+  <img src="assembly-09.svg" alt="O pino desce pela ponta do braço e entra na ranhura do empurrador. Um pormenor mostra a cabeça a assentar no braço." />
+  <figcaption>Deixe cair o pino através do braço e para dentro da ranhura, com a cabeça para cima. Tem de deslizar livremente ao longo da ranhura. Se prender, lime a ranhura para a alargar um pouco.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">10</span>
+  <img src="assembly-10.svg" alt="Visto de trás, o empurrador sai pela ranhura na parte de trás da torre, e um pedaço de chocolate sai à frente dele." />
+  <figcaption>Com a torre ainda vazia, prima <strong>Test dark cycle</strong> e <strong>Test milk cycle</strong> no painel. O empurrador deve passar pela ranhura na parte de trás e depois regressar. É aqui que sai o chocolate, por isso deixe espaço para um copo.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <span class="assembly-number">11</span>
+  <img src="assembly-11.svg" alt="Pedaços de chocolate são empilhados na horizontal pelo topo da torre." />
+  <figcaption>Empilhe o chocolate na horizontal pelo topo da torre. A janela na parte de trás mostra quanto resta. Indique à unidade quanto carregou, no painel.</figcaption>
+</figure>
+
+<figure class="assembly-step">
+  <img src="assembly-12.svg" alt="O dispensador acabado, com duas calhas, ao lado de uma pessoa sorridente com um pedaço de chocolate." />
+  <figcaption>Pronto. Agora <a href="usage.html">emita uma prescrição</a>.</figcaption>
+</figure>
+
+</div>
+
+<p>Estes desenhos são gerados a partir dos mesmos ficheiros STL que imprime. Para
+alterar um deles, edite <code class="language-plaintext highlighter-rouge">tools/assembly/build.py</code> no repositório de código e volte
+a executá-lo.</p>
+
+
+
+
+</div>
+        </div>  <!-- /inner-wrapper -->
+      </div>  <!-- /row -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-content -->
+
+  <script type="text/javascript" src="assets/js/jquery.js"> </script>     <!-- note keep space here, otherwise it will be transformed to empty tag -> fails -->
+  <script type="text/javascript" src="assets/js/jquery-ui.min.js"> </script>
+  <script type="text/javascript" src="assets/js/flags.js"> </script>
+
+  <script type="text/javascript" src="assets/js/window-hash.js"> </script>
+  <script type="text/javascript" src="assets/js/togglechanges.js"> </script>
+  <script type="text/javascript" src="assets/js/requirements-table.js"> </script>
+  <a name="bottom"> </a>
+  <div id="segment-footer" igtool="footer" class="segment">  <!-- segment-footer -->
+    <div class="container" data-fhir="generated">  <!-- container -->
+
+      <div class="inner-wrapper">
+        <p>
+
+
+
+          IG © 2021+ <a style="color:var(--footer-hyperlink-text-color)" href="https://github.com/costateixeira">José Costa Teixeira</a>.  
+          Pacote jct.fhir.spenser#1.0.0 baseado em <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R5/">FHIR 5.0.0</a>.
+          Gerado 
+  <span title="2026-11-13 21:21:00 +0000">
+    2026-11-13
+  </span>
+
+          <br/>
+          <span style="color: var(--footer-highlight-text-color)">
+                      Ligações: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Índice</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">Relatório de QA</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" target="_blank" href="https://github.com/costateixeira/spenser/issues">GitHub</a>
+
+          </span>
+        </p>
+      </div>  <!-- /inner-wrapper -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-footer -->
+  
+  <div id="segment-post-footer" class="segment hidden">  <!-- segment-post-footer -->
+    <div class="container">  <!-- container -->
+    </div>  <!-- /container -->
+  </div>  <!-- /segment-post-footer -->
+
+  <!-- JS and analytics only. -->
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"> </script>
+  <script type="text/javascript" src="assets/js/respond.min.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard.min.js"> </script>
+  <script type="text/javascript" src="assets/js/clipboard-btn.js"> </script>
+  <script type="text/javascript" src="assets/js/anchor-hover.js"> </script>
+  <!-- Analytics Below
+  ================================================== -->
+  </body>
+</html>
+

@@ -1,0 +1,74 @@
+# jct.fhir.spenser#1.0.0: Spenser - a developer's companion(fr)
+
+## Pages
+
+* [Accueil](index.md)
+* [Micrologiciel](firmware.md)
+* [Traductions](translationinfo.md)
+* [Résumé des artefacts](artifacts.md)
+* [FHIR](fhir-intro.md)
+* [Auteurs](authors.md)
+* [Mise en œuvre](implementing.md)
+* [Pièces imprimables en 3D](hardware-3ddesign.md)
+* [Assemblage](assembly.md)
+* [Utilisation](usage.md)
+* [Téléchargements](downloads.md)
+* [Setup](setup.md)
+* [Nomenclature du matériel](hardware-bom.md)
+* [Interfaces](interfaces.md)
+
+## Resources
+
+### CodeSystems
+
+* [Spenser Medications - Code System](CodeSystem-SpenserMeds.md)
+
+### ValueSets
+
+* [Spenser Medications - ValueSet](ValueSet-SpenserMedsVS.md)
+
+### Resource Profiles
+
+* [SpenserRequest](StructureDefinition-SpenserRequest.md)
+
+### Extensions
+
+* [Dispensing device](StructureDefinition-dispensingDevice.md)
+
+### ActorDefinitions
+
+* [Order Placer](ActorDefinition-OrderPlacer.md)
+* [Order Server](ActorDefinition-OrderServer.md)
+* [Spenser Unit](ActorDefinition-SpenserUnit.md)
+* [Unit Owner](ActorDefinition-UnitOwner.md)
+* [Update Publisher](ActorDefinition-UpdatePublisher.md)
+
+### CapabilityStatements
+
+* [SpenserFHIRCapabilityStatement](CapabilityStatement-SpenserFHIRCapabilityStatement.md)
+
+### ExampleScenarios
+
+* [Ordering straight from the unit](ExampleScenario-DirectOrderScenario.md)
+* [Ordering through an order server](ExampleScenario-TaskOrderScenario.md)
+
+### ImplementationGuides
+
+* [Spenser - a developer's companion](ImplementationGuide-jct.fhir.spenser.md)
+
+### Examples
+
+* [Spenser-E3D4 (Device)](Device-Spenser-E3D4.md)
+* [Add5Milk (InventoryReport)](InventoryReport-Add5Milk.md)
+* [SetDarkTo17 (InventoryReport)](InventoryReport-SetDarkTo17.md)
+* [DeclinedDispenseOutOfStock (MedicationDispense)](MedicationDispense-DeclinedDispenseOutOfStock.md)
+* [DispenseForActionableDarkOrder (MedicationDispense)](MedicationDispense-DispenseForActionableDarkOrder.md)
+* [DispenseForDirectOrder (MedicationDispense)](MedicationDispense-DispenseForDirectOrder.md)
+* [DispenseForTaskOrder (MedicationDispense)](MedicationDispense-DispenseForTaskOrder.md)
+* [ActionableDarkOrder (MedicationRequest)](MedicationRequest-ActionableDarkOrder.md)
+* [ActionableDarkOrderForOneUnit (MedicationRequest)](MedicationRequest-ActionableDarkOrderForOneUnit.md)
+* [PlainDarkOrderForOneUnit (MedicationRequest)](MedicationRequest-PlainDarkOrderForOneUnit.md)
+* [PlainMilkOrder (MedicationRequest)](MedicationRequest-PlainMilkOrder.md)
+* [med-request-1234 (MedicationRequest)](MedicationRequest-med-request-1234.md)
+* [FulfillForOneUnit (Task)](Task-FulfillForOneUnit.md)
+* [FulfillPlainMilkOrder (Task)](Task-FulfillPlainMilkOrder.md)

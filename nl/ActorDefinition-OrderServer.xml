@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="OrderServer"/>
+  <language value="nl"/>
+  <text>
+    <status value="generated"/><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: ActorDefinition OrderServer</b></p><a name="nl-OrderServer"> </a><a name="nl-hcOrderServer"> </a><table class="grid"><tr><td><b>Actor: OrderServer </b></td><td>Orderserver</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including <code>_include=Task:focus</code>. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.</p>
+<p>See <a href="interfaces.html#what-spenser-asks-of-an-order-server">What Spenser asks of an order server</a>.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/OrderServer"/>
+  <version value="1.0.0"/>
+  <name value="OrderServer"/>
+  <title value="Orderserver"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Een FHIR-server die orders bewaart tot een Spenser-unit ze ophaalt, en ontvangt wat de unit terugmeldt."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="Answers the unit's searches for tagged MedicationRequests and for requested Tasks, including `_include=Task:focus`. Accepts the MedicationDispense the unit creates and the updates it makes to the Task or MedicationRequest.&#xA;&#xA;See [What Spenser asks of an order server](interfaces.html#what-spenser-asks-of-an-order-server)."/>
+</ActorDefinition>

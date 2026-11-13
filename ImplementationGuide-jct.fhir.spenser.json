@@ -1,0 +1,2342 @@
+{
+  "resourceType" : "ImplementationGuide",
+  "id" : "jct.fhir.spenser",
+  "language" : "en",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: ImplementationGuide jct.fhir.spenser</b></p><a name=\"jct.fhir.spenser\"> </a><a name=\"hcjct.fhir.spenser\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Language: en</p></div><h2>Spenser</h2><p>The official URL for this implementation guide is: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>\n</div></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ImplementationGuide jct.fhir.spenser</b></p><a name=\"pt-jct.fhir.spenser\"> </a><a name=\"pt-hcjct.fhir.spenser\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Língua: en</p></div><h2>Spenser</h2><p>O URL oficial para este guia de implementação é: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>\n</div></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ImplementationGuide jct.fhir.spenser</b></p><a name=\"nl-jct.fhir.spenser\"> </a><a name=\"nl-hcjct.fhir.spenser\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Taal: en</p></div><h2>Spenser</h2><p>De officiële url voor deze implementatiegids is: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>\n</div></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : ImplementationGuide jct.fhir.spenser</b></p><a name=\"fr-jct.fhir.spenser\"> </a><a name=\"fr-hcjct.fhir.spenser\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Langue : en</p></div><h2>Spenser</h2><p>L'URL officielle pour ce guide d'implémentation est : </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>\n</div></div></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser",
+  "version" : "1.0.0",
+  "name" : "Spenser",
+  "title" : "Spenser - a developer's companion",
+  "_title" : {
+    "extension" : [{
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "pt"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Spenser - o companheiro do programador"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "nl"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Spenser - de metgezel van de ontwikkelaar"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "fr"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Spenser - un compagnon pour développeurs"
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    }]
+  },
+  "status" : "active",
+  "date" : "2025-05-01",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "Spenser - a developer's companion.",
+  "_description" : {
+    "extension" : [{
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "pt"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Spenser - o companheiro do programador."
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "nl"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Spenser - de metgezel van de ontwikkelaar."
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    },
+    {
+      "extension" : [{
+        "url" : "lang",
+        "valueCode" : "fr"
+      },
+      {
+        "url" : "content",
+        "valueString" : "Spenser - un compagnon pour développeurs."
+      }],
+      "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+    }]
+  },
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "packageId" : "jct.fhir.spenser",
+  "fhirVersion" : ["5.0.0"],
+  "dependsOn" : [{
+    "id" : "hl7tx",
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment",
+      "valueMarkdown" : "Automatically added as a dependency - all IGs depend on HL7 Terminology"
+    }],
+    "uri" : "http://terminology.hl7.org/ImplementationGuide/hl7.terminology",
+    "packageId" : "hl7.terminology.r5",
+    "version" : "7.5.0"
+  },
+  {
+    "id" : "hl7ext",
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment",
+      "valueMarkdown" : "Automatically added as a dependency - all IGs depend on the HL7 Extension Pack"
+    }],
+    "uri" : "http://hl7.org/fhir/extensions/ImplementationGuide/hl7.fhir.uv.extensions",
+    "packageId" : "hl7.fhir.uv.extensions.r5",
+    "version" : "5.4.0"
+  }],
+  "definition" : {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency",
+      "valueCode" : "hl7.fhir.uv.tools.r5#1.3.0"
+    }],
+    "resource" : [{
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "StructureDefinition:extension"
+      }],
+      "reference" : {
+        "reference" : "StructureDefinition/dispensingDevice"
+      },
+      "name" : "Dispensing device",
+      "description" : "The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.\n\nR5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.\n\nWhen a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit.",
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "Device"
+      }],
+      "reference" : {
+        "reference" : "Device/Spenser-E3D4"
+      },
+      "name" : "Example - A Spenser unit on the order server",
+      "description" : "The Device a unit writes on the order server once per boot. Its id is the unit's name, the network it shows in setup mode: Spenser- and the last two bytes of its factory MAC.",
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "InventoryReport"
+      }],
+      "reference" : {
+        "reference" : "InventoryReport/Add5Milk"
+      },
+      "name" : "Example - Add to inventory - 5 Milk Chocolates",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Acrescentar ao inventário - 5 chocolates de leite"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Aan de voorraad toevoegen - 5 melkchocolaatjes"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Ajout au stock - 5 chocolats au lait"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "Example - Add to inventory - 5 Milk Chocolates",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Acrescentar ao inventário - 5 chocolates de leite"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Aan de voorraad toevoegen - 5 melkchocolaatjes"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Ajout au stock - 5 chocolats au lait"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationDispense"
+      }],
+      "reference" : {
+        "reference" : "MedicationDispense/DispenseForDirectOrder"
+      },
+      "name" : "Example - Dispense answering an order posted at the unit",
+      "description" : "What a unit returns to an order posted straight at it. The chocolate is already out by the time the placer reads this.",
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationDispense"
+      }],
+      "reference" : {
+        "reference" : "MedicationDispense/DispenseForActionableDarkOrder"
+      },
+      "name" : "Example - Dispense reported back",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Dispensa comunicada de volta"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Teruggemelde verstrekking"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Dispensation signalée en retour"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "What Spenser creates on the order server once a piece has come out, pointing back at the order in authorizingPrescription. The same resource is the answer to an order posted straight at the device.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "O que o Spenser cria no servidor de prescrições depois de sair um pedaço, apontando de volta para a prescrição em authorizingPrescription. O mesmo recurso é a resposta a uma prescrição publicada diretamente no dispositivo."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Wat Spenser op de orderserver aanmaakt zodra er een stukje is uitgekomen, met in authorizingPrescription een verwijzing terug naar de order. Dezelfde resource is het antwoord op een order die rechtstreeks naar het apparaat wordt gepost."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Ce que Spenser crée sur le serveur d'ordonnances une fois qu'un morceau est sorti, en renvoyant à l'ordonnance dans authorizingPrescription. La même ressource est la réponse à une ordonnance envoyée directement à l'appareil."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationDispense"
+      }],
+      "reference" : {
+        "reference" : "MedicationDispense/DispenseForTaskOrder"
+      },
+      "name" : "Example - Dispense reported for a Task",
+      "description" : "What a unit creates on the order server once a Task has asked it to fill an order. The same resource goes into Task.output when the unit completes the Task.",
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationDispense"
+      }],
+      "reference" : {
+        "reference" : "MedicationDispense/DeclinedDispenseOutOfStock"
+      },
+      "name" : "Example - Dispense that did not happen",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Dispensa que não aconteceu"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Verstrekking die niet is gebeurd"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Dispensation qui n'a pas eu lieu"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "An order Spenser could not fill because the lane is empty. R5 removed MedicationDispense.statusReason, so the reason lives in notPerformedReason, which is a CodeableReference - hence the .concept in the path.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Uma prescrição que o Spenser não conseguiu aviar porque a calha está vazia. O R5 removeu MedicationDispense.statusReason, pelo que o motivo fica em notPerformedReason, que é um CodeableReference - daí o .concept no caminho."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een order die Spenser niet kon uitvoeren omdat de baan leeg is. R5 heeft MedicationDispense.statusReason verwijderd, dus de reden staat in notPerformedReason, een CodeableReference - vandaar de .concept in het pad."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Une ordonnance que Spenser n'a pas pu exécuter parce que le couloir est vide. R5 a supprimé MedicationDispense.statusReason : le motif se trouve donc dans notPerformedReason, qui est un CodeableReference - d'où le .concept dans le chemin."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationRequest"
+      }],
+      "reference" : {
+        "reference" : "MedicationRequest/ActionableDarkOrder"
+      },
+      "name" : "Example - Order made actionable by a tag",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Prescrição tornada acionável por uma tag"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Order die door een tag uitvoerbaar is gemaakt"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Ordonnance rendue exécutable par un tag"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "A MedicationRequest the placer has marked actionable. Spenser dispenses it on its next check and, because no Task is coordinating the work, sets the request itself to completed.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Uma MedicationRequest que o emissor marcou como acionável. O Spenser dispensa-a na verificação seguinte e, como nenhuma Task está a coordenar o trabalho, define ele próprio a MedicationRequest como completed."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een MedicationRequest die de plaatser als uitvoerbaar heeft gemarkeerd. Spenser verstrekt ze bij zijn volgende controle en zet, omdat geen Task het werk coördineert, de aanvraag zelf op completed."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Une MedicationRequest que l'émetteur a marquée comme exécutable. Spenser la dispense à sa prochaine vérification et, comme aucune Task ne coordonne le travail, passe lui-même la demande à completed."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true,
+      "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationRequest"
+      }],
+      "reference" : {
+        "reference" : "MedicationRequest/PlainDarkOrderForOneUnit"
+      },
+      "name" : "Example - Order meant for one unit",
+      "description" : "A plain order, made actionable by the Task that addresses it to one unit. The order names the unit too, in the dispensingDevice extension, by a logical reference: R5 has no element on MedicationRequest that takes a Device.",
+      "isExample" : true,
+      "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationRequest"
+      }],
+      "reference" : {
+        "reference" : "MedicationRequest/PlainMilkOrder"
+      },
+      "name" : "Example - Order that is not actionable on its own",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Prescrição que não é acionável por si só"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Order die op zichzelf niet uitvoerbaar is"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Ordonnance qui n'est pas exécutable à elle seule"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "The same order without the tag. On its own this is an authorization and nothing more: Spenser ignores it until a Task asks for it to be fulfilled.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "A mesma prescrição sem a tag. Por si só, é uma autorização e nada mais: o Spenser ignora-a até que uma Task peça que seja aviada."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Dezelfde order zonder de tag. Op zichzelf is dit een machtiging en niets meer: Spenser negeert ze tot een Task vraagt om ze uit te voeren."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "La même ordonnance sans le tag. À elle seule, c'est une autorisation et rien de plus : Spenser l'ignore jusqu'à ce qu'une Task demande son exécution."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true,
+      "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "InventoryReport"
+      }],
+      "reference" : {
+        "reference" : "InventoryReport/SetDarkTo17"
+      },
+      "name" : "Example - Set inventory - 17 Dark Chocolates",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Definir inventário - 17 chocolates negros"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Voorraad instellen - 17 pure chocolaatjes"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Définition du stock - 17 chocolats noirs"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "Example - Set inventory - 17 Dark Chocolates",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Definir inventário - 17 chocolates negros"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Voorraad instellen - 17 pure chocolaatjes"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Définition du stock - 17 chocolats noirs"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationRequest"
+      }],
+      "reference" : {
+        "reference" : "MedicationRequest/med-request-1234"
+      },
+      "name" : "Example - Spenser Request",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Prescrição para o Spenser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Spenser-aanvraag"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Ordonnance Spenser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "Example of a MedicationRequest to send to Spenser",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo de uma MedicationRequest a enviar ao Spenser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld van een MedicationRequest om naar Spenser te sturen"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple de MedicationRequest à envoyer à Spenser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true,
+      "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "MedicationRequest"
+      }],
+      "reference" : {
+        "reference" : "MedicationRequest/ActionableDarkOrderForOneUnit"
+      },
+      "name" : "Example - Tagged order for one unit",
+      "description" : "An order made actionable by the tag, with no Task, that names the unit to dispense it in the dispensingDevice extension. Every other unit polling the server skips it.",
+      "isExample" : true,
+      "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "Task"
+      }],
+      "reference" : {
+        "reference" : "Task/FulfillForOneUnit"
+      },
+      "name" : "Example - Task addressed to one unit",
+      "description" : "Task.requestedPerformer names the unit that is to fill the order: the one Task element R5 lets name a Device. Every other unit skips this Task; the unit it names dispenses it and closes it.",
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "Task"
+      }],
+      "reference" : {
+        "reference" : "Task/FulfillPlainMilkOrder"
+      },
+      "name" : "Example - Task asking for an order to be fulfilled",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemplo - Task a pedir que uma prescrição seja aviada"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Voorbeeld - Task die vraagt om een order uit te voeren"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Exemple - Task demandant l'exécution d'une ordonnance"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "A Coordination Task pointing at the order in Task.focus. This is what makes the plain order actionable. Spenser completes the Task with the dispense in Task.output, and leaves the request itself to the placer.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Uma Task de coordenação que aponta para a prescrição em Task.focus. É isto que torna acionável a prescrição simples. O Spenser conclui a Task com a dispensa em Task.output e deixa a própria MedicationRequest ao emissor."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een coördinerende Task die in Task.focus naar de order verwijst. Dit maakt de gewone order uitvoerbaar. Spenser voltooit de Task met de verstrekking in Task.output, en laat de aanvraag zelf aan de plaatser over."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Une Task de coordination qui pointe vers l'ordonnance dans Task.focus. C'est ce qui rend l'ordonnance simple exécutable. Spenser termine la Task avec la dispensation dans Task.output, et laisse la demande elle-même à l'émetteur."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : true
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ActorDefinition"
+      }],
+      "reference" : {
+        "reference" : "ActorDefinition/OrderPlacer"
+      },
+      "name" : "Order Placer",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Emissor de Prescrições"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Orderplaatser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Émetteur d'ordonnances"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Het systeem dat om chocolade vraagt, door een order naar een Spenser-unit te posten of er een op een orderserver te plaatsen."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ActorDefinition"
+      }],
+      "reference" : {
+        "reference" : "ActorDefinition/OrderServer"
+      },
+      "name" : "Order Server",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Servidor de Prescrições"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Orderserver"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Serveur d'ordonnances"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "A FHIR server that holds orders until a Spenser Unit collects them, and receives what the unit reports back.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Um servidor FHIR que guarda as prescrições até uma Unidade Spenser as recolher, e recebe o que a unidade comunica de volta."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een FHIR-server die orders bewaart tot een Spenser-unit ze ophaalt, en ontvangt wat de unit terugmeldt."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Un serveur FHIR qui conserve les ordonnances jusqu'à ce qu'une unité Spenser vienne les chercher, et reçoit les comptes rendus de l'unité."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ExampleScenario"
+      }],
+      "reference" : {
+        "reference" : "ExampleScenario/DirectOrderScenario"
+      },
+      "name" : "Scenario - Ordering straight from the unit",
+      "description" : "A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization.",
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ExampleScenario"
+      }],
+      "reference" : {
+        "reference" : "ExampleScenario/TaskOrderScenario"
+      },
+      "name" : "Scenario - Ordering through an order server",
+      "description" : "A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did.",
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "CodeSystem"
+      }],
+      "reference" : {
+        "reference" : "CodeSystem/SpenserMeds"
+      },
+      "name" : "Spenser Medications - Code System",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Medicamentos Spenser - Sistema de códigos"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Spenser-geneesmiddelen - Codesysteem"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Médicaments Spenser - Système de codes"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "A code system of medications that Spenser can dispense.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Um sistema de códigos dos medicamentos que o Spenser pode dispensar."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een codesysteem van geneesmiddelen die Spenser kan verstrekken."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Un système de codes des médicaments que Spenser peut dispenser."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ValueSet"
+      }],
+      "reference" : {
+        "reference" : "ValueSet/SpenserMedsVS"
+      },
+      "name" : "Spenser Medications - ValueSet",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Medicamentos Spenser - Conjunto de valores"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Spenser-geneesmiddelen - ValueSet"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Médicaments Spenser - Jeu de valeurs"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "A value set of medications that Spenser can dispense.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Um conjunto de valores dos medicamentos que o Spenser pode dispensar."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een ValueSet van geneesmiddelen die Spenser kan verstrekken."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Un jeu de valeurs des médicaments que Spenser peut dispenser."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ActorDefinition"
+      }],
+      "reference" : {
+        "reference" : "ActorDefinition/SpenserUnit"
+      },
+      "name" : "Spenser Unit",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Unidade Spenser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Spenser-unit"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Unité Spenser"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Um dispensador de chocolate, que atua como servidor FHIR e como cliente FHIR ao mesmo tempo."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Een chocoladedispenser die tegelijk als FHIR-server en als FHIR-client optreedt."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Un distributeur de chocolat, qui agit à la fois comme serveur FHIR et comme client FHIR."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "CapabilityStatement"
+      }],
+      "reference" : {
+        "reference" : "CapabilityStatement/SpenserFHIRCapabilityStatement"
+      },
+      "name" : "SpenserFHIRCapabilityStatement",
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "StructureDefinition:resource"
+      }],
+      "reference" : {
+        "reference" : "StructureDefinition/SpenserRequest"
+      },
+      "name" : "SpenserRequest",
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ActorDefinition"
+      }],
+      "reference" : {
+        "reference" : "ActorDefinition/UnitOwner"
+      },
+      "name" : "Unit Owner",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Proprietário da Unidade"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Unit-eigenaar"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Propriétaire de l'unité"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "The person who holds a unit's key, and with it the authority to configure, restock and update the unit.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "A pessoa que detém a chave de uma unidade e, com ela, a autoridade para configurar, reabastecer e atualizar a unidade."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "De persoon die de sleutel van een unit heeft, en daarmee de bevoegdheid om de unit te configureren, te bevoorraden en te updaten."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "La personne qui détient la clé d'une unité, et avec elle le pouvoir de configurer, de réapprovisionner et de mettre à jour l'unité."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/tools/StructureDefinition/resource-information",
+        "valueString" : "ActorDefinition"
+      }],
+      "reference" : {
+        "reference" : "ActorDefinition/UpdatePublisher"
+      },
+      "name" : "Update Publisher",
+      "_name" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Publicador de Atualizações"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Update-uitgever"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Éditeur des mises à jour"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "description" : "The site that publishes the release manifest and firmware images a Spenser Unit checks for and installs.",
+      "_description" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "O sítio que publica o manifesto da versão e as imagens de firmware que uma Unidade Spenser procura e instala."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "De site die het releasemanifest en de firmware-images publiceert die een Spenser-unit controleert en installeert."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Le site qui publie le manifeste de publication et les images du micrologiciel qu'une unité Spenser vérifie et installe."
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "isExample" : false
+    }],
+    "page" : {
+      "sourceUrl" : "toc.html",
+      "name" : "toc.html",
+      "title" : "Table of Contents",
+      "_title" : {
+        "extension" : [{
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "pt"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Índice"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "nl"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Inhoudsopgave"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        },
+        {
+          "extension" : [{
+            "url" : "lang",
+            "valueCode" : "fr"
+          },
+          {
+            "url" : "content",
+            "valueString" : "Table des matières"
+          }],
+          "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+        }]
+      },
+      "generation" : "html",
+      "page" : [{
+        "sourceUrl" : "index.html",
+        "name" : "index.html",
+        "title" : "Home",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Início"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Startpagina"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Accueil"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "implementing.html",
+        "name" : "implementing.html",
+        "title" : "Implementing",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Implementação"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Implementeren"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Mise en œuvre"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "fhir-intro.html",
+        "name" : "fhir-intro.html",
+        "title" : "FHIR",
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "interfaces.html",
+        "name" : "interfaces.html",
+        "title" : "Interfaces",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Interfaces"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Interfaces"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Interfaces"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "firmware.html",
+        "name" : "firmware.html",
+        "title" : "Firmware",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Firmware"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Firmware"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Micrologiciel"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "hardware-bom.html",
+        "name" : "hardware-bom.html",
+        "title" : "Hardware Bill of Materials",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Lista de materiais do hardware"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Stuklijst van de hardware"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Nomenclature du matériel"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "hardware-3ddesign.html",
+        "name" : "hardware-3ddesign.html",
+        "title" : "3D printable parts",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Peças para impressão 3D"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "3D-printbare onderdelen"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Pièces imprimables en 3D"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "assembly.html",
+        "name" : "assembly.html",
+        "title" : "Assembly",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Montagem"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Montage"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Assemblage"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "setup.html",
+        "name" : "setup.html",
+        "title" : "Setup",
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "authors.html",
+        "name" : "authors.html",
+        "title" : "Authors",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Autores"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Auteurs"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Auteurs"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "downloads.html",
+        "name" : "downloads.html",
+        "title" : "Downloads",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Transferências"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Downloads"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Téléchargements"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "usage.html",
+        "name" : "usage.html",
+        "title" : "Usage",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Utilização"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Gebruik"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Utilisation"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      },
+      {
+        "sourceUrl" : "translationinfo.html",
+        "name" : "translationinfo.html",
+        "title" : "Translations",
+        "_title" : {
+          "extension" : [{
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "pt"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Traduções"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "nl"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Vertalingen"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          },
+          {
+            "extension" : [{
+              "url" : "lang",
+              "valueCode" : "fr"
+            },
+            {
+              "url" : "content",
+              "valueString" : "Traductions"
+            }],
+            "url" : "http://hl7.org/fhir/StructureDefinition/translation"
+          }]
+        },
+        "generation" : "markdown"
+      }]
+    },
+    "parameter" : [{
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "copyrightyear"
+      },
+      "value" : "2021+"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "releaselabel"
+      },
+      "value" : "STU1"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "i18n-default-lang"
+      },
+      "value" : "en"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "i18n-lang"
+      },
+      "value" : "pt"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "i18n-lang"
+      },
+      "value" : "nl"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "i18n-lang"
+      },
+      "value" : "fr"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "translation-sources"
+      },
+      "value" : "input/translations/pt"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "translation-sources"
+      },
+      "value" : "input/translations/nl"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "translation-sources"
+      },
+      "value" : "input/translations/fr"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "autoload-resources"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/capabilities"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/examples"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/extensions"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/models"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/operations"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/profiles"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/resources"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/vocabulary"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/maps"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/testing"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "input/history"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-resource"
+      },
+      "value" : "fsh-generated/resources"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-pages"
+      },
+      "value" : "template/config"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-pages"
+      },
+      "value" : "input/assets"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-pages"
+      },
+      "value" : "input/images"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-liquid-template"
+      },
+      "value" : "template/liquid"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-liquid-template"
+      },
+      "value" : "input/liquid"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-qa"
+      },
+      "value" : "temp/qa"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-temp"
+      },
+      "value" : "temp/pages"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-output"
+      },
+      "value" : "output"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/guide-parameter-code",
+        "code" : "path-tx-cache"
+      },
+      "value" : "input-cache/txcache"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-suppressed-warnings"
+      },
+      "value" : "input/ignoreWarnings.txt"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "path-history"
+      },
+      "value" : "http://costateixeira.github.io/spenser/history.html"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "template-html"
+      },
+      "value" : "template-page.html"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "template-md"
+      },
+      "value" : "template-page-md.html"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-contact"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-context"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-copyright"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-jurisdiction"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-license"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-publisher"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-version"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "apply-wg"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "active-tables"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "fmm-definition"
+      },
+      "value" : "http://hl7.org/fhir/versions.html#maturity"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "propagate-status"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "excludelogbinaryformat"
+      },
+      "value" : "true"
+    },
+    {
+      "code" : {
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/ig-parameters",
+        "code" : "tabbed-snapshots"
+      },
+      "value" : "true"
+    }]
+  }
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="OrderPlacer"/>
+  <language value="pt"/>
+  <text>
+    <status value="generated"/><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: ActorDefinition OrderPlacer</b></p><a name="pt-OrderPlacer"> </a><a name="pt-hcOrderPlacer"> </a><table class="grid"><tr><td><b>Actor: OrderPlacer </b></td><td>Emissor de Prescrições</td><td>Tipo: system </td></tr><tr><td colspan="3"><div><p>Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"/>
+  <version value="1.0.0"/>
+  <name value="OrderPlacer"/>
+  <title value="Emissor de Prescrições"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="Num Servidor de Prescrições, o emissor decide se uma prescrição é acionável, quer colocando uma tag na MedicationRequest, quer criando uma Task que aponte para ela. Quando é uma Task a coordenar o trabalho, o emissor também fecha a MedicationRequest depois de a Task estar concluída."/>
+</ActorDefinition>

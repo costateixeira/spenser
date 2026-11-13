@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="OrderPlacer"/>
+  <language value="fr"/>
+  <text>
+    <status value="generated"/><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : ActorDefinition OrderPlacer</b></p><a name="fr-OrderPlacer"> </a><a name="fr-hcOrderPlacer"> </a><table class="grid"><tr><td><b>Acteur : OrderPlacer </b></td><td>Émetteur d'ordonnances</td><td>Type : system </td></tr><tr><td colspan="3"><div><p>Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer"/>
+  <version value="1.0.0"/>
+  <name value="OrderPlacer"/>
+  <title value="Émetteur d'ordonnances"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="Sur un serveur d'ordonnances, l'émetteur décide si une ordonnance est exécutable, soit en apposant un tag sur la MedicationRequest, soit en créant une Task qui pointe vers elle. Quand une Task coordonne le travail, l'émetteur clôture aussi la MedicationRequest une fois la Task terminée."/>
+</ActorDefinition>

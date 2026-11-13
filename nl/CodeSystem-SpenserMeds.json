@@ -1,0 +1,73 @@
+{
+  "resourceType" : "CodeSystem",
+  "id" : "SpenserMeds",
+  "language" : "nl",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: CodeSystem SpenserMeds</b></p><a name=\"nl-SpenserMeds\"> </a><a name=\"nl-hcSpenserMeds\"> </a><p>Dit  codesysteem <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code> definieert de volgende codes:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Weergave</b></td></tr><tr><td style=\"white-space:nowrap\">chocolate-dark<a name=\"nl-SpenserMeds-chocolate-dark\"> </a></td><td>Dark Chocolate</td></tr><tr><td style=\"white-space:nowrap\">chocolate-milk<a name=\"nl-SpenserMeds-chocolate-milk\"> </a></td><td>Milk Chocolate</td></tr></table><p><b>Additionele taalweergaven</b></p><table class=\"codes\"><tr><td><b>Code</b></td><td><b>French (fr)</b></td><td><b>Nederlands (Dutch, nl)</b></td><td><b>Portuguese (pt)</b></td></tr><tr><td>chocolate-dark</td><td>Chocolat noir</td><td>Pure chocolade</td><td>Chocolate negro</td></tr><tr><td>chocolate-milk</td><td>Chocolat au lait</td><td>Melkchocolade</td><td>Chocolate de leite</td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+  "version" : "1.0.0",
+  "name" : "SpenserMeds",
+  "title" : "Spenser-geneesmiddelen - Codesysteem",
+  "status" : "active",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "Een codesysteem van geneesmiddelen die Spenser kan verstrekken.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "content" : "complete",
+  "count" : 2,
+  "concept" : [{
+    "code" : "chocolate-dark",
+    "display" : "Dark Chocolate",
+    "designation" : [{
+      "language" : "pt",
+      "value" : "Chocolate negro"
+    },
+    {
+      "language" : "nl",
+      "value" : "Pure chocolade"
+    },
+    {
+      "language" : "fr",
+      "value" : "Chocolat noir"
+    }]
+  },
+  {
+    "code" : "chocolate-milk",
+    "display" : "Milk Chocolate",
+    "designation" : [{
+      "language" : "pt",
+      "value" : "Chocolate de leite"
+    },
+    {
+      "language" : "nl",
+      "value" : "Melkchocolade"
+    },
+    {
+      "language" : "fr",
+      "value" : "Chocolat au lait"
+    }]
+  }]
+}

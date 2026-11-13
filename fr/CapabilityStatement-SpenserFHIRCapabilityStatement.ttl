@@ -1,0 +1,114 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/CapabilityStatement/SpenserFHIRCapabilityStatement> a fhir:CapabilityStatement ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "SpenserFHIRCapabilityStatement"] ; # 
+  fhir:language [ fhir:v "fr"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "extensions" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : CapabilityStatement SpenserFHIRCapabilityStatement</b></p><a name=\"fr-SpenserFHIRCapabilityStatement\"> </a><a name=\"fr-hcSpenserFHIRCapabilityStatement\"> </a><h2 id=\"fr-title\"/><ul><li>Version du guide d'implémentation : 1.0.0 </li><li>Version de FHIR : 5.0.0 </li><li>Formats supportés : <code>json</code></li><li>Publié sur : 2025-04-18 </li><li>Publié par : José Costa Teixeira </li></ul><blockquote class=\"impl-note\"><p><strong>Note aux implémenteurs : capacités FHIR</strong></p><p>Toute capacité FHIR peut être 'autorisée' par le système sauf si elle est explicitement marquée comme 'SHALL NOT'. Quelques éléments sont marqués comme MAY dans le guide d'implémentation pour souligner leur pertinence potentielle pour le cas d'usage.</p></blockquote><h2 id=\"fr-rest\">Capacités RESTful FHIR</h2><h3 id=\"fr-rest1\">Configuration REST : 1 </h3><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 id=\"fr-mode1\" class=\"panel-title\">Mode: <code>server</code></h4></div><div class=\"panel-body\"/></div><h4 id=\"fr-resourcesCap1\">Capacités par ressource/profil</h4><h5 id=\"fr-resourcesSummary1\">Résumé</h5><p>Le tableau récapitulatif liste les ressources faisant partie de cette configuration, et pour chaque ressource, il liste :</p><ul><li>Les profils pertinents (le cas échéant)</li><li>Les interactions supportées par chaque ressource (<b><span class=\"bg-info\">R</span></b>ead, <b><span class=\"bg-info\">S</span></b>earch, <b><span class=\"bg-info\">U</span></b>pdate, and <b><span class=\"bg-info\">C</span></b>reate, are always shown, while <b><span class=\"bg-info\">VR</span></b>ead, <b><span class=\"bg-info\">P</span></b>atch, <b><span class=\"bg-info\">D</span></b>elete, <b><span class=\"bg-info\">H</span></b>istory on <b><span class=\"bg-info\">I</span></b>nstance, or <b><span class=\"bg-info\">H</span></b>istory on <b><span class=\"bg-info\">T</span></b>les types sont seulement présents si au moins une des ressources les prend en charge.</li><li><span>Les paramètres de recherche (SearchParameters) requis, recommandés, optionnels (le cas échéant). </span></li><li>Les ressources liées activées pour <code>_include</code></li><li>Les autres ressources activées pour <code>_revinclude</code></li><li>Les opérations sur la ressource (le cas échéant)</li></ul><div class=\"table-responsive\"><table class=\"table table-condensed table-hover\"><thead><tr><th><b>Type de Ressource</b></th><th><b>Profil</b></th><th class=\"text-center\"><b title=\"GET d'une ressource (interaction read)\">R</b></th><th class=\"text-center\"><b title=\"GET de l'ensemble des ressources du type (interaction search)\">S</b></th><th class=\"text-center\"><b title=\"PUT d'une nouvelle version de ressource (interaction update)\">U</b></th><th class=\"text-center\"><b title=\"POST d'une nouvelle ressource (interaction create)\">C</b></th><th><b title=\"Paramètres de recherche requis et recommandés\">Recherches</b></th><th><code><b>_include</b></code></th><th><code><b>_revinclude</b></code></th><th><b>Opérations</b></th></tr></thead><tbody><tr><td><a href=\"#fr-MedicationRequest1-1\">MedicationRequest</a></td><td> </td><td class=\"text-center\"/><td class=\"text-center\"/><td class=\"text-center\"/><td class=\"text-center\">y</td><td/><td/><td/><td/></tr><tr><td><a href=\"#fr-MedicationDispense1-2\">MedicationDispense</a></td><td> </td><td class=\"text-center\">y</td><td class=\"text-center\"/><td class=\"text-center\"/><td class=\"text-center\"/><td/><td/><td/><td/></tr><tr><td><a href=\"#fr-InventoryReport1-3\">InventoryReport</a></td><td> </td><td class=\"text-center\">y</td><td class=\"text-center\"/><td class=\"text-center\"/><td class=\"text-center\">y</td><td/><td/><td/><td/></tr></tbody></table></div><hr/><div class=\"panel panel-default\"><div class=\"panel-heading\"><h5 id=\"fr-MedicationRequest1-1\" class=\"panel-title\"><span style=\"float: right;\">Conformité de la ressource : unspecified </span>MedicationRequest</h5></div><div class=\"panel-body\"><div class=\"container\"><div class=\"row\"><div class=\"col-lg-4\"><span class=\"lead\">Ressource FHIR coeur</span><br/><a href=\"http://hl7.org/fhir/medicationrequest.html\">MedicationRequest</a></div><div class=\"col-lg-4\"><span class=\"lead\">Politique de référence</span><br/></div><div class=\"col-lg-4\"><span class=\"lead\">Résumé des interactions</span><br/><ul><li>Supporte <code>create</code>.</li></ul></div></div><p/><p/></div></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h5 id=\"fr-MedicationDispense1-2\" class=\"panel-title\"><span style=\"float: right;\">Conformité de la ressource : unspecified </span>MedicationDispense</h5></div><div class=\"panel-body\"><div class=\"container\"><div class=\"row\"><div class=\"col-lg-4\"><span class=\"lead\">Ressource FHIR coeur</span><br/><a href=\"http://hl7.org/fhir/medicationdispense.html\">MedicationDispense</a></div><div class=\"col-lg-4\"><span class=\"lead\">Politique de référence</span><br/></div><div class=\"col-lg-4\"><span class=\"lead\">Résumé des interactions</span><br/><ul><li>Supporte <code>read</code>.</li></ul></div></div><p/><p/></div></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h5 id=\"fr-InventoryReport1-3\" class=\"panel-title\"><span style=\"float: right;\">Conformité de la ressource : unspecified </span>InventoryReport</h5></div><div class=\"panel-body\"><div class=\"container\"><div class=\"row\"><div class=\"col-lg-4\"><span class=\"lead\">Ressource FHIR coeur</span><br/><a href=\"http://hl7.org/fhir/inventoryreport.html\">InventoryReport</a></div><div class=\"col-lg-4\"><span class=\"lead\">Politique de référence</span><br/></div><div class=\"col-lg-4\"><span class=\"lead\">Résumé des interactions</span><br/><ul><li>Supporte <code>read</code>, <code>create</code>.</li></ul></div></div><p/><p/></div></div></div><h3 id=\"fr-rest2\">Configuration REST : 2 </h3><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 id=\"fr-mode2\" class=\"panel-title\">Mode: <code>client</code></h4></div><div class=\"panel-body\"><div><p>Spenser also acts as a client: it polls a server for orders it should fulfil. Following the COW guidance on actionable orders, an order is only dispensed when the MedicationRequest carries the 'actionable' tag, or when a Task asks for it to be fulfilled.</p>\n</div></div></div><h4 id=\"fr-resourcesCap2\">Capacités par ressource/profil</h4><h5 id=\"fr-resourcesSummary2\">Résumé</h5><p>Le tableau récapitulatif liste les ressources faisant partie de cette configuration, et pour chaque ressource, il liste :</p><ul><li>Les profils pertinents (le cas échéant)</li><li>Les interactions supportées par chaque ressource (<b><span class=\"bg-info\">R</span></b>ead, <b><span class=\"bg-info\">S</span></b>earch, <b><span class=\"bg-info\">U</span></b>pdate, and <b><span class=\"bg-info\">C</span></b>reate, are always shown, while <b><span class=\"bg-info\">VR</span></b>ead, <b><span class=\"bg-info\">P</span></b>atch, <b><span class=\"bg-info\">D</span></b>elete, <b><span class=\"bg-info\">H</span></b>istory on <b><span class=\"bg-info\">I</span></b>nstance, or <b><span class=\"bg-info\">H</span></b>istory on <b><span class=\"bg-info\">T</span></b>les types sont seulement présents si au moins une des ressources les prend en charge.</li><li><span>Les paramètres de recherche (SearchParameters) requis, recommandés, optionnels (le cas échéant). </span></li><li>Les ressources liées activées pour <code>_include</code></li><li>Les autres ressources activées pour <code>_revinclude</code></li><li>Les opérations sur la ressource (le cas échéant)</li></ul><div class=\"table-responsive\"><table class=\"table table-condensed table-hover\"><thead><tr><th><b>Type de Ressource</b></th><th><b>Profil</b></th><th class=\"text-center\"><b title=\"GET d'une ressource (interaction read)\">R</b></th><th class=\"text-center\"><b title=\"GET de l'ensemble des ressources du type (interaction search)\">S</b></th><th class=\"text-center\"><b title=\"PUT d'une nouvelle version de ressource (interaction update)\">U</b></th><th class=\"text-center\"><b title=\"POST d'une nouvelle ressource (interaction create)\">C</b></th><th><b title=\"Paramètres de recherche requis et recommandés\">Recherches</b></th><th><code><b>_include</b></code></th><th><code><b>_revinclude</b></code></th><th><b>Opérations</b></th></tr></thead><tbody><tr><td><a href=\"#fr-MedicationRequest2-1\">MedicationRequest</a></td><td> </td><td class=\"text-center\"/><td class=\"text-center\">y</td><td class=\"text-center\">y</td><td class=\"text-center\"/><td>_tag, status, intent</td><td/><td/><td/></tr><tr><td><a href=\"#fr-Task2-2\">Task</a></td><td> </td><td class=\"text-center\"/><td class=\"text-center\">y</td><td class=\"text-center\">y</td><td class=\"text-center\"/><td>status</td><td><code>Task:focus</code></td><td/><td/></tr><tr><td><a href=\"#fr-MedicationDispense2-3\">MedicationDispense</a></td><td> </td><td class=\"text-center\"/><td class=\"text-center\"/><td class=\"text-center\"/><td class=\"text-center\">y</td><td/><td/><td/><td/></tr></tbody></table></div><hr/><div class=\"panel panel-default\"><div class=\"panel-heading\"><h5 id=\"fr-MedicationRequest2-1\" class=\"panel-title\"><span style=\"float: right;\">Conformité de la ressource : unspecified </span>MedicationRequest</h5></div><div class=\"panel-body\"><div class=\"container\"><div class=\"row\"><div class=\"col-lg-4\"><span class=\"lead\">Ressource FHIR coeur</span><br/><a href=\"http://hl7.org/fhir/medicationrequest.html\">MedicationRequest</a></div><div class=\"col-lg-4\"><span class=\"lead\">Politique de référence</span><br/></div><div class=\"col-lg-4\"><span class=\"lead\">Résumé des interactions</span><br/><ul><li>Supporte <code>search-type</code>, <code>update</code>.</li></ul></div></div><p/><p/><div class=\"row\"><div class=\"col-12\"><span class=\"lead\">Documentation</span><blockquote><div><p>Searched for orders tagged as actionable. Set to 'completed' after dispensing, when no Task is coordinating the work.</p>\n</div></blockquote></div></div><div class=\"row\"><div class=\"col-lg-7\"><span class=\"lead\">Paramètres de recherche</span><table class=\"table table-condensed table-hover\"><thead><tr><th>Conformité</th><th>Paramètre</th><th>Type</th><th>Documentation</th></tr></thead><tbody><tr><td><b>SHALL</b></td><td>_tag</td><td><code>token</code></td><td><div><p>Selects orders tagged http://terminology.hl7.org/CodeSystem/common-tags#actionable</p>\n</div></td></tr><tr><td><b>SHALL</b></td><td>status</td><td><code>token</code></td><td><div/></td></tr><tr><td><b>SHALL</b></td><td>intent</td><td><code>token</code></td><td><div/></td></tr></tbody></table></div><div class=\"col-lg-5\"> </div></div></div></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h5 id=\"fr-Task2-2\" class=\"panel-title\"><span style=\"float: right;\">Conformité de la ressource : unspecified </span>Task</h5></div><div class=\"panel-body\"><div class=\"container\"><div class=\"row\"><div class=\"col-lg-4\"><span class=\"lead\">Ressource FHIR coeur</span><br/><a href=\"http://hl7.org/fhir/task.html\">Task</a></div><div class=\"col-lg-4\"><span class=\"lead\">Politique de référence</span><br/></div><div class=\"col-lg-4\"><span class=\"lead\">Résumé des interactions</span><br/><ul><li>Supporte <code>search-type</code>, <code>update</code>.</li></ul></div></div><p/><p/><div class=\"row\"><div class=\"col-12\"><span class=\"lead\">Documentation</span><blockquote><div><p>Coordination Task pointing at the order in Task.focus. Set to 'completed' with the dispense in Task.output; the status of the request itself is left to the placer.</p>\n</div></blockquote></div></div><div class=\"row\"><div class=\"col-lg-7\"><span class=\"lead\">Paramètres de recherche</span><table class=\"table table-condensed table-hover\"><thead><tr><th>Conformité</th><th>Paramètre</th><th>Type</th><th>Documentation</th></tr></thead><tbody><tr><td><b>SHALL</b></td><td>status</td><td><code>token</code></td><td><div/></td></tr></tbody></table></div><div class=\"col-lg-5\"> </div></div></div></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h5 id=\"fr-MedicationDispense2-3\" class=\"panel-title\"><span style=\"float: right;\">Conformité de la ressource : unspecified </span>MedicationDispense</h5></div><div class=\"panel-body\"><div class=\"container\"><div class=\"row\"><div class=\"col-lg-4\"><span class=\"lead\">Ressource FHIR coeur</span><br/><a href=\"http://hl7.org/fhir/medicationdispense.html\">MedicationDispense</a></div><div class=\"col-lg-4\"><span class=\"lead\">Politique de référence</span><br/></div><div class=\"col-lg-4\"><span class=\"lead\">Résumé des interactions</span><br/><ul><li>Supporte <code>create</code>.</li></ul></div></div><p/><p/><div class=\"row\"><div class=\"col-12\"><span class=\"lead\">Documentation</span><blockquote><div><p>Created on the server once an order has been dispensed, referring to the order in authorizingPrescription.</p>\n</div></blockquote></div></div></div></div></div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/CapabilityStatement/SpenserFHIRCapabilityStatement"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:status [ fhir:v "active"] ; # 
+  fhir:date [ fhir:v "2025-04-18"^^xsd:date] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:kind [ fhir:v "instance"] ; # 
+  fhir:implementation [
+     fhir:description [ fhir:v "Spenser FHIR Endpoint" ]
+  ] ; # 
+  fhir:fhirVersion [ fhir:v "5.0.0"] ; # 
+  fhir:format ( [ fhir:v "json"] ) ; # 
+  fhir:rest ( [
+     fhir:mode [ fhir:v "server" ] ;
+     fhir:resource ( [
+       fhir:type [ fhir:v "MedicationRequest" ] ;
+       fhir:interaction ( [
+         fhir:code [ fhir:v "create" ]
+       ] )
+     ] [
+       fhir:type [ fhir:v "MedicationDispense" ] ;
+       fhir:interaction ( [
+         fhir:code [ fhir:v "read" ]
+       ] )
+     ] [
+       fhir:type [ fhir:v "InventoryReport" ] ;
+       fhir:interaction ( [
+         fhir:code [ fhir:v "read" ]
+       ] [
+         fhir:code [ fhir:v "create" ]
+       ] )
+     ] )
+  ] [
+     fhir:mode [ fhir:v "client" ] ;
+     fhir:documentation [ fhir:v "Spenser also acts as a client: it polls a server for orders it should fulfil. Following the COW guidance on actionable orders, an order is only dispensed when the MedicationRequest carries the 'actionable' tag, or when a Task asks for it to be fulfilled." ] ;
+     fhir:resource ( [
+       fhir:type [ fhir:v "MedicationRequest" ] ;
+       fhir:documentation [ fhir:v "Searched for orders tagged as actionable. Set to 'completed' after dispensing, when no Task is coordinating the work." ] ;
+       fhir:interaction ( [
+         fhir:code [ fhir:v "search-type" ]
+       ] [
+         fhir:code [ fhir:v "update" ]
+       ] ) ;
+       fhir:searchParam ( [
+         fhir:name [ fhir:v "_tag" ] ;
+         fhir:type [ fhir:v "token" ] ;
+         fhir:documentation [ fhir:v "Selects orders tagged http://terminology.hl7.org/CodeSystem/common-tags#actionable" ]
+       ] [
+         fhir:name [ fhir:v "status" ] ;
+         fhir:type [ fhir:v "token" ]
+       ] [
+         fhir:name [ fhir:v "intent" ] ;
+         fhir:type [ fhir:v "token" ]
+       ] )
+     ] [
+       fhir:type [ fhir:v "Task" ] ;
+       fhir:documentation [ fhir:v "Coordination Task pointing at the order in Task.focus. Set to 'completed' with the dispense in Task.output; the status of the request itself is left to the placer." ] ;
+       fhir:interaction ( [
+         fhir:code [ fhir:v "search-type" ]
+       ] [
+         fhir:code [ fhir:v "update" ]
+       ] ) ;
+       fhir:searchInclude ( [ fhir:v "Task:focus" ] ) ;
+       fhir:searchParam ( [
+         fhir:name [ fhir:v "status" ] ;
+         fhir:type [ fhir:v "token" ]
+       ] )
+     ] [
+       fhir:type [ fhir:v "MedicationDispense" ] ;
+       fhir:documentation [ fhir:v "Created on the server once an order has been dispensed, referring to the order in authorizingPrescription." ] ;
+       fhir:interaction ( [
+         fhir:code [ fhir:v "create" ]
+       ] )
+     ] )
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

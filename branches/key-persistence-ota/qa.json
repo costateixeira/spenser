@@ -1,0 +1,21 @@
+{
+  "url" : "http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser",
+  "name" : "Spenser",
+  "title" : "Spenser - a developer's companion",
+  "description" : "Spenser - a developer's companion.",
+  "ig-date" : "2025-05-01",
+  "status" : "active",
+  "package-id" : "jct.fhir.spenser",
+  "ig-ver" : "1.0.0",
+  "date" : "Tue, 20 Oct, 2026 07:59:11 +0000",
+  "dateISO8601" : "2026-10-20T07:59:11+00:00",
+  "errs" : 12,
+  "warnings" : 21,
+  "hints" : 25,
+  "broken-links" : 8,
+  "suppressed-hints" : 0,
+  "suppressed-warnings" : 0,
+  "version" : "5.0.0",
+  "tool" : "6.0.0-snapshot1 (3)",
+  "maxMemory" : 654336304
+}

@@ -1,0 +1,41 @@
+{
+  "resourceType" : "ActorDefinition",
+  "id" : "UnitOwner",
+  "language" : "pt",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ActorDefinition UnitOwner</b></p><a name=\"pt-UnitOwner\"> </a><a name=\"pt-hcUnitOwner\"> </a><table class=\"grid\"><tr><td><b>Actor: UnitOwner </b></td><td>Proprietário da Unidade</td><td>Tipo: person </td></tr><tr><td colspan=\"3\"><div><p>Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.</p>\n<p>See <a href=\"interfaces.html#what-needs-a-key\">What needs a key</a>.</p>\n</div></td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/UnitOwner",
+  "version" : "1.0.0",
+  "name" : "UnitOwner",
+  "title" : "Proprietário da Unidade",
+  "status" : "draft",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "A pessoa que detém a chave de uma unidade e, com ela, a autoridade para configurar, reabastecer e atualizar a unidade.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "type" : "person",
+  "documentation" : "Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.\n\nSee [What needs a key](interfaces.html#what-needs-a-key)."
+}

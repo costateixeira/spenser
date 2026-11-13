@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="SpenserUnit"/>
+  <language value="nl"/>
+  <text>
+    <status value="generated"/><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: ActorDefinition SpenserUnit</b></p><a name="nl-SpenserUnit"> </a><a name="nl-hcSpenserUnit"> </a><table class="grid"><tr><td><b>Actor: SpenserUnit </b></td><td>Spenser-unit</td><td>Type: system </td></tr><tr><td colspan="3"><div><p>A single dispenser. As a <strong>server</strong> it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a <strong>client</strong> it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.</p>
+<p>See <a href="interfaces.html">Interfaces</a>.</p>
+</div></td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/SpenserUnit"/>
+  <version value="1.0.0"/>
+  <name value="SpenserUnit"/>
+  <title value="Spenser-unit"/>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Een chocoladedispenser die tegelijk als FHIR-server en als FHIR-client optreedt."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="system"/>
+  <documentation value="A single dispenser. As a **server** it accepts an order posted straight at it and dispenses on the spot, because posting to the device is itself the authorization to dispense. As a **client** it polls an Order Server, acts only on orders that have been made actionable, and reports back what it did.&#xA;&#xA;See [Interfaces](interfaces.html)."/>
+</ActorDefinition>

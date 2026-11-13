@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActorDefinition xmlns="http://hl7.org/fhir">
+  <id value="UnitOwner"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ActorDefinition UnitOwner</b></p><a name="UnitOwner"> </a><a name="hcUnitOwner"> </a><table class="grid"><tr><td><b>Actor: UnitOwner </b></td><td>Unit Owner</td><td>Type: person </td></tr><tr><td colspan="3"><div><p>Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.</p>
+<p>See <a href="interfaces.html#what-needs-a-key">What needs a key</a>.</p>
+</div></td></tr></table></div><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: ActorDefinition UnitOwner</b></p><a name="pt-UnitOwner"> </a><a name="pt-hcUnitOwner"> </a><table class="grid"><tr><td><b>Actor: UnitOwner </b></td><td>Proprietário da Unidade</td><td>Tipo: person </td></tr><tr><td colspan="3"><div><p>Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.</p>
+<p>See <a href="interfaces.html#what-needs-a-key">What needs a key</a>.</p>
+</div></td></tr></table></div><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: ActorDefinition UnitOwner</b></p><a name="nl-UnitOwner"> </a><a name="nl-hcUnitOwner"> </a><table class="grid"><tr><td><b>Actor: UnitOwner </b></td><td>Unit-eigenaar</td><td>Type: person </td></tr><tr><td colspan="3"><div><p>Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.</p>
+<p>See <a href="interfaces.html#what-needs-a-key">What needs a key</a>.</p>
+</div></td></tr></table></div><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : ActorDefinition UnitOwner</b></p><a name="fr-UnitOwner"> </a><a name="fr-hcUnitOwner"> </a><table class="grid"><tr><td><b>Acteur : UnitOwner </b></td><td>Propriétaire de l'unité</td><td>Type : person </td></tr><tr><td colspan="3"><div><p>Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.</p>
+<p>See <a href="interfaces.html#what-needs-a-key">What needs a key</a>.</p>
+</div></td></tr></table></div></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ActorDefinition/UnitOwner"/>
+  <version value="1.0.0"/>
+  <name value="UnitOwner">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="UnitOwner"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="UnitOwner"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="UnitOwner"/>
+      </extension>
+    </extension>
+  </name>
+  <title value="Unit Owner">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Proprietário da Unidade"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Unit-eigenaar"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Propriétaire de l'unité"/>
+      </extension>
+    </extension>
+  </title>
+  <status value="draft"/>
+  <date value="2026-11-13T21:21:03+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="The person who holds a unit's key, and with it the authority to configure, restock and update the unit.">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="A pessoa que detém a chave de uma unidade e, com ela, a autoridade para configurar, reabastecer e atualizar a unidade."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="De persoon die de sleutel van een unit heeft, en daarmee de bevoegdheid om de unit te configureren, te bevoorraden en te updaten."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="La personne qui détient la clé d'une unité, et avec elle le pouvoir de configurer, de réapprovisionner et de mettre à jour l'unité."/>
+      </extension>
+    </extension>
+  </description>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <type value="person"/>
+  <documentation value="Reading a unit is open, but changing one needs its key. A script acting with the key acts as the owner.&#xA;&#xA;See [What needs a key](interfaces.html#what-needs-a-key)."/>
+</ActorDefinition>

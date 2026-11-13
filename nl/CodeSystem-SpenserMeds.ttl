@@ -1,0 +1,77 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds> a fhir:CodeSystem ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "SpenserMeds"] ; # 
+  fhir:language [ fhir:v "nl"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: CodeSystem SpenserMeds</b></p><a name=\"nl-SpenserMeds\"> </a><a name=\"nl-hcSpenserMeds\"> </a><p>Dit  codesysteem <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds</code> definieert de volgende codes:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Weergave</b></td></tr><tr><td style=\"white-space:nowrap\">chocolate-dark<a name=\"nl-SpenserMeds-chocolate-dark\"> </a></td><td>Dark Chocolate</td></tr><tr><td style=\"white-space:nowrap\">chocolate-milk<a name=\"nl-SpenserMeds-chocolate-milk\"> </a></td><td>Milk Chocolate</td></tr></table><p><b>Additionele taalweergaven</b></p><table class=\"codes\"><tr><td><b>Code</b></td><td><b>French (fr)</b></td><td><b>Nederlands (Dutch, nl)</b></td><td><b>Portuguese (pt)</b></td></tr><tr><td>chocolate-dark</td><td>Chocolat noir</td><td>Pure chocolade</td><td>Chocolate negro</td></tr><tr><td>chocolate-milk</td><td>Chocolat au lait</td><td>Melkchocolade</td><td>Chocolate de leite</td></tr></table></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "SpenserMeds"] ; # 
+  fhir:title [ fhir:v "Spenser-geneesmiddelen - Codesysteem"] ; # 
+  fhir:status [ fhir:v "active"] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "Een codesysteem van geneesmiddelen die Spenser kan verstrekken."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:content [ fhir:v "complete"] ; # 
+  fhir:count [ fhir:v "2"^^xsd:nonNegativeInteger] ; # 
+  fhir:concept ( [
+     fhir:code [ fhir:v "chocolate-dark" ] ;
+     fhir:display [ fhir:v "Dark Chocolate" ] ;
+     fhir:designation ( [
+       fhir:language [ fhir:v "pt" ] ;
+       fhir:value [ fhir:v "Chocolate negro" ]
+     ] [
+       fhir:language [ fhir:v "nl" ] ;
+       fhir:value [ fhir:v "Pure chocolade" ]
+     ] [
+       fhir:language [ fhir:v "fr" ] ;
+       fhir:value [ fhir:v "Chocolat noir" ]
+     ] )
+  ] [
+     fhir:code [ fhir:v "chocolate-milk" ] ;
+     fhir:display [ fhir:v "Milk Chocolate" ] ;
+     fhir:designation ( [
+       fhir:language [ fhir:v "pt" ] ;
+       fhir:value [ fhir:v "Chocolate de leite" ]
+     ] [
+       fhir:language [ fhir:v "nl" ] ;
+       fhir:value [ fhir:v "Melkchocolade" ]
+     ] [
+       fhir:language [ fhir:v "fr" ] ;
+       fhir:value [ fhir:v "Chocolat au lait" ]
+     ] )
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

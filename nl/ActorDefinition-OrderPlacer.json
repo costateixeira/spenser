@@ -1,0 +1,41 @@
+{
+  "resourceType" : "ActorDefinition",
+  "id" : "OrderPlacer",
+  "language" : "nl",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: ActorDefinition OrderPlacer</b></p><a name=\"nl-OrderPlacer\"> </a><a name=\"nl-hcOrderPlacer\"> </a><table class=\"grid\"><tr><td><b>Actor: OrderPlacer </b></td><td>Orderplaatser</td><td>Type: system </td></tr><tr><td colspan=\"3\"><div><p>Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid.</p>\n</div></td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/ActorDefinition/OrderPlacer",
+  "version" : "1.0.0",
+  "name" : "OrderPlacer",
+  "title" : "Orderplaatser",
+  "status" : "draft",
+  "date" : "2026-11-13T21:21:03+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "Het systeem dat om chocolade vraagt, door een order naar een Spenser-unit te posten of er een op een orderserver te plaatsen.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "type" : "system",
+  "documentation" : "Op een orderserver beslist de plaatser of een order uitvoerbaar is, door de MedicationRequest een tag te geven of door een Task aan te maken die ernaar verwijst. Als een Task het werk coördineert, sluit de plaatser ook de MedicationRequest af zodra de Task is voltooid."
+}

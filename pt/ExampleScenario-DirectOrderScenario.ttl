@@ -1,0 +1,139 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario> a fhir:ExampleScenario ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "DirectOrderScenario"] ; # 
+  fhir:language [ fhir:v "pt"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: ExampleScenario DirectOrderScenario</b></p><a name=\"pt-DirectOrderScenario\"> </a><a name=\"pt-hcDirectOrderScenario\"> </a><p><b>url</b>: <a href=\"ExampleScenario-DirectOrderScenario.html\">Ordering straight from the unit</a></p><p><b>version</b>: 1.0.0</p><p><b>name</b>: DirectOrderScenario</p><p><b>title</b>: Ordering straight from the unit</p><p><b>status</b>: Active</p><p><b>experimental</b>: true</p><p><b>date</b>: 2026-11-13 21:21:03+0000</p><p><b>publisher</b>: José Costa Teixeira</p><p><b>contact</b>: José Costa Teixeira: <a href=\"https://github.com/costateixeira\">https://github.com/costateixeira</a>, José Costa Teixeira: <a href=\"mailto:you-know.it@gmail.com\">you-know.it@gmail.com</a></p><p><b>description</b>: </p><div><p>A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization.</p>\n</div><p><b>jurisdiction</b>: <span title=\"Códigos:{http://unstats.un.org/unsd/methods/m49/m49.htm 001}\">World</span></p><p><b>purpose</b>: </p><div><p>The short way round. There is no order server here, so nothing has to make the\norder actionable: posting it at the unit is itself the instruction to dispense,\nand the servo has already turned by the time the unit answers.</p>\n<p>This is the route to start from when trying a unit out, and the one a workshop\nruns on when the network is somebody's phone.</p>\n</div><blockquote><p><b>actor</b></p><p><b>key</b>: placer</p><p><b>type</b>: System</p><p><b>title</b>: Order Placer</p><p><b>description</b>: </p><div><p>Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard.</p>\n</div></blockquote><blockquote><p><b>actor</b></p><p><b>key</b>: spenser</p><p><b>type</b>: System</p><p><b>title</b>: Spenser Unit</p><p><b>description</b>: </p><div><p>One dispenser, acting here only as a FHIR server.</p>\n</div></blockquote><blockquote><p><b>instance</b></p><p><b>key</b>: order</p><p><b>structureType</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-MedicationRequest\">All FHIR Types: MedicationRequest</a> (MedicationRequest)</p><p><b>structureProfile</b>: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p><p><b>title</b>: The order</p><p><b>description</b>: </p><div><p>A MedicationRequest naming a chocolate from the IG's own code system. Neither the actionable tag nor a Task is needed on this route.</p>\n</div><p><b>content</b>: <a href=\"MedicationRequest-PlainMilkOrder.html\">MedicationRequest: status = active; intent = instance-order</a></p></blockquote><blockquote><p><b>instance</b></p><p><b>key</b>: dispense</p><p><b>structureType</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-fhir-types.html#fhir-types-MedicationDispense\">All FHIR Types: MedicationDispense</a> (MedicationDispense)</p><p><b>title</b>: The dispense</p><p><b>description</b>: </p><div><p>What the unit returns, pointing back at the order in <code>authorizingPrescription</code>. An absent <code>whenHandedOver</code> means the unit's clock has not been set by NTP, not that the time is unknown.</p>\n</div><p><b>content</b>: <a href=\"MedicationDispense-DispenseForDirectOrder.html\">MedicationDispense: status = completed</a></p></blockquote><blockquote><p><b>process</b></p><p><b>title</b>: Order a chocolate from the unit</p><p><b>description</b>: </p><div><p>One request, one chocolate.</p>\n</div><p><b>preConditions</b>: </p><div><p>The unit is on the network and the placer can reach it. The lane for the code being ordered has stock.</p>\n</div><p><b>postConditions</b>: </p><div><p>A chocolate has been dispensed, and the unit holds a MedicationDispense recording it.</p>\n</div><blockquote><p><b>step</b></p><p><b>number</b>: 1</p><blockquote><p><b>operation</b></p><p><b>type</b>: <a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-create\">FHIR Restful Interactions: create</a> (create)</p><p><b>title</b>: POST /MedicationRequest</p><p><b>initiator</b>: placer</p><p><b>receiver</b>: spenser</p><p><b>description</b>: </p><div><p>The unit dispenses before it answers. The response is <code>201 Created</code> carrying the MedicationDispense, with a <code>Location</code> for the record the unit kept and an <code>ETag</code>. This changes the unit, so it needs the unit's key.</p>\n</div><p><b>initiatorActive</b>: true</p><p><b>receiverActive</b>: true</p><h3>Requests</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td></tr><tr><td style=\"display: none\">*</td><td>order</td></tr></table><h3>Responses</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>InstanceReference</b></td></tr><tr><td style=\"display: none\">*</td><td>dispense</td></tr></table></blockquote><blockquote><p><b>alternative</b></p><p><b>title</b>: The lane is empty</p><p><b>description</b>: </p><div><p>Nothing moves, and the unit still answers with a MedicationDispense: <code>status</code> of <code>declined</code>, and <code>notPerformedReason.concept</code> of <code>outofstock</code>. A refusal is an answer, not an error.</p>\n</div></blockquote><blockquote><p><b>alternative</b></p><p><b>title</b>: The order asks for something the unit does not carry</p><p><b>description</b>: </p><div><p>The unit answers <code>400</code> with an OperationOutcome. Every error from a FHIR route on the unit is an OperationOutcome; there is no second error format.</p>\n</div></blockquote></blockquote><blockquote><p><b>step</b></p><p><b>number</b>: 2</p><h3>Operations</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Type</b></td><td><b>Title</b></td><td><b>Initiator</b></td><td><b>Receiver</b></td><td><b>Description</b></td><td><b>InitiatorActive</b></td><td><b>ReceiverActive</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"http://hl7.org/fhir/R5/codesystem-restful-interaction.html#restful-interaction-search-type\">FHIR Restful Interactions: search-type</a> (search-type)</td><td>GET /MedicationDispense</td><td>placer</td><td>spenser</td><td><div><p>Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with <code>search.mode</code> of <code>outcome</code>, saying when the unit last looked for work and how that went.</p>\n</div></td><td>true</td><td>true</td></tr></table></blockquote></blockquote></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/ExampleScenario/DirectOrderScenario"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "DirectOrderScenario"] ; # 
+  fhir:title [ fhir:v "Ordering straight from the unit"] ; # 
+  fhir:status [ fhir:v "active"] ; # 
+  fhir:experimental [ fhir:v true] ; # 
+  fhir:date [ fhir:v "2026-11-13T21:21:03+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:purpose [ fhir:v "The short way round. There is no order server here, so nothing has to make the\norder actionable: posting it at the unit is itself the instruction to dispense,\nand the servo has already turned by the time the unit answers.\n\nThis is the route to start from when trying a unit out, and the one a workshop\nruns on when the network is somebody's phone."] ; # 
+  fhir:actor ( [
+     fhir:key [ fhir:v "placer" ] ;
+     fhir:type [ fhir:v "system" ] ;
+     fhir:title [ fhir:v "Order Placer" ] ;
+     fhir:description [ fhir:v "Whatever is asking for chocolate: a script, a client under development, or the unit's own dashboard." ]
+  ] [
+     fhir:key [ fhir:v "spenser" ] ;
+     fhir:type [ fhir:v "system" ] ;
+     fhir:title [ fhir:v "Spenser Unit" ] ;
+     fhir:description [ fhir:v "One dispenser, acting here only as a FHIR server." ]
+  ] ) ; # 
+  fhir:instance ( [
+     fhir:key [ fhir:v "order" ] ;
+     fhir:structureType [
+       fhir:system [ fhir:v "http://hl7.org/fhir/fhir-types"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "MedicationRequest" ]
+     ] ;
+     fhir:structureProfile [
+       a fhir:canonical ;
+       fhir:v "http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"^^xsd:anyURI ;
+       fhir:link <http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest>
+     ] ;
+     fhir:title [ fhir:v "The order" ] ;
+     fhir:description [ fhir:v "A MedicationRequest naming a chocolate from the IG's own code system. Neither the actionable tag nor a Task is needed on this route." ] ;
+     fhir:content [
+       fhir:link <http://costateixeira.github.io/spenser/MedicationRequest/PlainMilkOrder> ;
+       fhir:reference [ fhir:v "MedicationRequest/PlainMilkOrder" ]
+     ]
+  ] [
+     fhir:key [ fhir:v "dispense" ] ;
+     fhir:structureType [
+       fhir:system [ fhir:v "http://hl7.org/fhir/fhir-types"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "MedicationDispense" ]
+     ] ;
+     fhir:title [ fhir:v "The dispense" ] ;
+     fhir:description [ fhir:v "What the unit returns, pointing back at the order in `authorizingPrescription`. An absent `whenHandedOver` means the unit's clock has not been set by NTP, not that the time is unknown." ] ;
+     fhir:content [
+       fhir:link <http://costateixeira.github.io/spenser/MedicationDispense/DispenseForDirectOrder> ;
+       fhir:reference [ fhir:v "MedicationDispense/DispenseForDirectOrder" ]
+     ]
+  ] ) ; # 
+  fhir:process ( [
+     fhir:title [ fhir:v "Order a chocolate from the unit" ] ;
+     fhir:description [ fhir:v "One request, one chocolate." ] ;
+     fhir:preConditions [ fhir:v "The unit is on the network and the placer can reach it. The lane for the code being ordered has stock." ] ;
+     fhir:postConditions [ fhir:v "A chocolate has been dispensed, and the unit holds a MedicationDispense recording it." ] ;
+     fhir:step ( [
+       fhir:number [ fhir:v "1" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "create" ]
+         ] ;
+         fhir:title [ fhir:v "POST /MedicationRequest" ] ;
+         fhir:initiator [ fhir:v "placer" ] ;
+         fhir:receiver [ fhir:v "spenser" ] ;
+         fhir:description [ fhir:v "The unit dispenses before it answers. The response is `201 Created` carrying the MedicationDispense, with a `Location` for the record the unit kept and an `ETag`. This changes the unit, so it needs the unit's key." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ] ;
+         fhir:request [
+           fhir:instanceReference [ fhir:v "order" ]
+         ] ;
+         fhir:response [
+           fhir:instanceReference [ fhir:v "dispense" ]
+         ]
+       ] ;
+       fhir:alternative ( [
+         fhir:title [ fhir:v "The lane is empty" ] ;
+         fhir:description [ fhir:v "Nothing moves, and the unit still answers with a MedicationDispense: `status` of `declined`, and `notPerformedReason.concept` of `outofstock`. A refusal is an answer, not an error." ]
+       ] [
+         fhir:title [ fhir:v "The order asks for something the unit does not carry" ] ;
+         fhir:description [ fhir:v "The unit answers `400` with an OperationOutcome. Every error from a FHIR route on the unit is an OperationOutcome; there is no second error format." ]
+       ] )
+     ] [
+       fhir:number [ fhir:v "2" ] ;
+       fhir:operation [
+         fhir:type [
+           fhir:system [ fhir:v "http://hl7.org/fhir/restful-interaction"^^xsd:anyURI ] ;
+           fhir:code [ fhir:v "search-type" ]
+         ] ;
+         fhir:title [ fhir:v "GET /MedicationDispense" ] ;
+         fhir:initiator [ fhir:v "placer" ] ;
+         fhir:receiver [ fhir:v "spenser" ] ;
+         fhir:description [ fhir:v "Optional, and open: reads need no key. The unit keeps what it dispensed, so the record can be read back later. The searchset also carries an entry with `search.mode` of `outcome`, saying when the unit last looked for work and how that went." ] ;
+         fhir:initiatorActive [ fhir:v true ] ;
+         fhir:receiverActive [ fhir:v true ]
+       ]
+     ] )
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

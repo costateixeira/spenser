@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task xmlns="http://hl7.org/fhir">
+  <id value="FulfillForOneUnit"/>
+  <language value="fr"/>
+  <text>
+    <status value="generated"/><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : Task FulfillForOneUnit</b></p><a name="fr-FulfillForOneUnit"> </a><a name="fr-hcFulfillForOneUnit"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title="Codes :{http://hl7.org/fhir/CodeSystem/task-code fulfill}">Fulfill the focal request</span></p><p><b>focus</b>: <a href="MedicationRequest-PlainDarkOrderForOneUnit.html">MedicationRequest : extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p><p><b>for</b>: <a href="Patient/123">Patient/123</a></p><h3>RequestedPerformers</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Reference</b></td></tr><tr><td style="display: none">*</td><td><a href="Device-Spenser-E3D4.html">Spenser-E3D4</a></td></tr></table></div>
+  </text>
+  <status value="requested"/>
+  <intent value="order"/>
+  <code>
+    <coding>
+      <system value="http://hl7.org/fhir/CodeSystem/task-code"/>
+      <code value="fulfill"/>
+      <display value="Fulfill the focal request"/>
+    </coding>
+  </code>
+  <focus>
+    <reference value="MedicationRequest/PlainDarkOrderForOneUnit"/>
+  </focus>
+  <for>
+    <reference value="Patient/123"/>
+  </for>
+  <requestedPerformer>
+    <reference>
+      <reference value="Device/Spenser-E3D4"/>
+      <display value="Spenser-E3D4"/>
+    </reference>
+  </requestedPerformer>
+</Task>

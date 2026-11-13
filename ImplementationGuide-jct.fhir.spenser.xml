@@ -1,0 +1,1875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ImplementationGuide xmlns="http://hl7.org/fhir">
+  <id value="jct.fhir.spenser"/>
+  <language value="en"/>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: ImplementationGuide jct.fhir.spenser</b></p><a name="jct.fhir.spenser"> </a><a name="hcjct.fhir.spenser"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px">Language: en</p></div><h2>Spenser</h2><p>The official URL for this implementation guide is: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>
+</div></div><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: ImplementationGuide jct.fhir.spenser</b></p><a name="pt-jct.fhir.spenser"> </a><a name="pt-hcjct.fhir.spenser"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px">Língua: en</p></div><h2>Spenser</h2><p>O URL oficial para este guia de implementação é: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>
+</div></div><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: ImplementationGuide jct.fhir.spenser</b></p><a name="nl-jct.fhir.spenser"> </a><a name="nl-hcjct.fhir.spenser"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px">Taal: en</p></div><h2>Spenser</h2><p>De officiële url voor deze implementatiegids is: </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>
+</div></div><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : ImplementationGuide jct.fhir.spenser</b></p><a name="fr-jct.fhir.spenser"> </a><a name="fr-hcjct.fhir.spenser"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px">Langue : en</p></div><h2>Spenser</h2><p>L'URL officielle pour ce guide d'implémentation est : </p><pre>http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser</pre><div><p>Spenser - a developer's companion.</p>
+</div></div></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/ImplementationGuide/jct.fhir.spenser"/>
+  <version value="1.0.0"/>
+  <name value="Spenser"/>
+  <title value="Spenser - a developer's companion">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser - o companheiro do programador"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser - de metgezel van de ontwikkelaar"/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser - un compagnon pour développeurs"/>
+      </extension>
+    </extension>
+  </title>
+  <status value="active"/>
+  <date value="2025-05-01"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Spenser - a developer's companion.">
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="pt"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser - o companheiro do programador."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="nl"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser - de metgezel van de ontwikkelaar."/>
+      </extension>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+      <extension url="lang">
+        <valueCode value="fr"/>
+      </extension>
+      <extension url="content">
+        <valueString value="Spenser - un compagnon pour développeurs."/>
+      </extension>
+    </extension>
+  </description>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <packageId value="jct.fhir.spenser"/>
+  <fhirVersion value="5.0.0"/>
+  <dependsOn id="hl7tx">
+    <extension url="http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment">
+      <valueMarkdown value="Automatically added as a dependency - all IGs depend on HL7 Terminology"/>
+    </extension>
+    <uri value="http://terminology.hl7.org/ImplementationGuide/hl7.terminology"/>
+    <packageId value="hl7.terminology.r5"/>
+    <version value="7.5.0"/>
+  </dependsOn>
+  <dependsOn id="hl7ext">
+    <extension url="http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment">
+      <valueMarkdown value="Automatically added as a dependency - all IGs depend on the HL7 Extension Pack"/>
+    </extension>
+    <uri value="http://hl7.org/fhir/extensions/ImplementationGuide/hl7.fhir.uv.extensions"/>
+    <packageId value="hl7.fhir.uv.extensions.r5"/>
+    <version value="5.4.0"/>
+  </dependsOn>
+  <definition>
+    <extension url="http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency">
+      <valueCode value="hl7.fhir.uv.tools.r5#1.3.0"/>
+    </extension>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="StructureDefinition:extension"/>
+      </extension>
+      <reference>
+        <reference value="StructureDefinition/dispensingDevice"/>
+      </reference>
+      <name value="Dispensing device"/>
+      <description value="The Spenser unit that is to dispense this order, named by a logical reference: the unit's identifier in http://costateixeira.github.io/spenser/unit, which is its name, Spenser- and the last two bytes of its factory MAC.&#xA;&#xA;R5 has no element on MedicationRequest for this. MedicationRequest.performer and MedicationRequest.device take a DeviceDefinition, a kind of device, and dispenseRequest.dispenser takes only an Organization. A logical reference needs nothing on the server: the unit does not have to be registered as a Device for the order to name it.&#xA;&#xA;When a Task makes the order actionable, a Device in Task.requestedPerformer takes precedence over this extension. On an order with no Task, or a Task that names no unit, a unit acts on this extension: it skips an order that names another unit."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="Device"/>
+      </extension>
+      <reference>
+        <reference value="Device/Spenser-E3D4"/>
+      </reference>
+      <name value="Example - A Spenser unit on the order server"/>
+      <description value="The Device a unit writes on the order server once per boot. Its id is the unit's name, the network it shows in setup mode: Spenser- and the last two bytes of its factory MAC."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="InventoryReport"/>
+      </extension>
+      <reference>
+        <reference value="InventoryReport/Add5Milk"/>
+      </reference>
+      <name value="Example - Add to inventory - 5 Milk Chocolates">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Acrescentar ao inventário - 5 chocolates de leite"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Aan de voorraad toevoegen - 5 melkchocolaatjes"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Ajout au stock - 5 chocolats au lait"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="Example - Add to inventory - 5 Milk Chocolates">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Acrescentar ao inventário - 5 chocolates de leite"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Aan de voorraad toevoegen - 5 melkchocolaatjes"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Ajout au stock - 5 chocolats au lait"/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DispenseForDirectOrder"/>
+      </reference>
+      <name value="Example - Dispense answering an order posted at the unit"/>
+      <description value="What a unit returns to an order posted straight at it. The chocolate is already out by the time the placer reads this."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DispenseForActionableDarkOrder"/>
+      </reference>
+      <name value="Example - Dispense reported back">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Dispensa comunicada de volta"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Teruggemelde verstrekking"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Dispensation signalée en retour"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="What Spenser creates on the order server once a piece has come out, pointing back at the order in authorizingPrescription. The same resource is the answer to an order posted straight at the device.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="O que o Spenser cria no servidor de prescrições depois de sair um pedaço, apontando de volta para a prescrição em authorizingPrescription. O mesmo recurso é a resposta a uma prescrição publicada diretamente no dispositivo."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Wat Spenser op de orderserver aanmaakt zodra er een stukje is uitgekomen, met in authorizingPrescription een verwijzing terug naar de order. Dezelfde resource is het antwoord op een order die rechtstreeks naar het apparaat wordt gepost."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Ce que Spenser crée sur le serveur d'ordonnances une fois qu'un morceau est sorti, en renvoyant à l'ordonnance dans authorizingPrescription. La même ressource est la réponse à une ordonnance envoyée directement à l'appareil."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DispenseForTaskOrder"/>
+      </reference>
+      <name value="Example - Dispense reported for a Task"/>
+      <description value="What a unit creates on the order server once a Task has asked it to fill an order. The same resource goes into Task.output when the unit completes the Task."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationDispense"/>
+      </extension>
+      <reference>
+        <reference value="MedicationDispense/DeclinedDispenseOutOfStock"/>
+      </reference>
+      <name value="Example - Dispense that did not happen">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Dispensa que não aconteceu"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Verstrekking die niet is gebeurd"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Dispensation qui n'a pas eu lieu"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="An order Spenser could not fill because the lane is empty. R5 removed MedicationDispense.statusReason, so the reason lives in notPerformedReason, which is a CodeableReference - hence the .concept in the path.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Uma prescrição que o Spenser não conseguiu aviar porque a calha está vazia. O R5 removeu MedicationDispense.statusReason, pelo que o motivo fica em notPerformedReason, que é um CodeableReference - daí o .concept no caminho."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een order die Spenser niet kon uitvoeren omdat de baan leeg is. R5 heeft MedicationDispense.statusReason verwijderd, dus de reden staat in notPerformedReason, een CodeableReference - vandaar de .concept in het pad."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Une ordonnance que Spenser n'a pas pu exécuter parce que le couloir est vide. R5 a supprimé MedicationDispense.statusReason : le motif se trouve donc dans notPerformedReason, qui est un CodeableReference - d'où le .concept dans le chemin."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/ActionableDarkOrder"/>
+      </reference>
+      <name value="Example - Order made actionable by a tag">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Prescrição tornada acionável por uma tag"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Order die door een tag uitvoerbaar is gemaakt"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Ordonnance rendue exécutable par un tag"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="A MedicationRequest the placer has marked actionable. Spenser dispenses it on its next check and, because no Task is coordinating the work, sets the request itself to completed.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Uma MedicationRequest que o emissor marcou como acionável. O Spenser dispensa-a na verificação seguinte e, como nenhuma Task está a coordenar o trabalho, define ele próprio a MedicationRequest como completed."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een MedicationRequest die de plaatser als uitvoerbaar heeft gemarkeerd. Spenser verstrekt ze bij zijn volgende controle en zet, omdat geen Task het werk coördineert, de aanvraag zelf op completed."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Une MedicationRequest que l'émetteur a marquée comme exécutable. Spenser la dispense à sa prochaine vérification et, comme aucune Task ne coordonne le travail, passe lui-même la demande à completed."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/PlainDarkOrderForOneUnit"/>
+      </reference>
+      <name value="Example - Order meant for one unit"/>
+      <description value="A plain order, made actionable by the Task that addresses it to one unit. The order names the unit too, in the dispensingDevice extension, by a logical reference: R5 has no element on MedicationRequest that takes a Device."/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/PlainMilkOrder"/>
+      </reference>
+      <name value="Example - Order that is not actionable on its own">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Prescrição que não é acionável por si só"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Order die op zichzelf niet uitvoerbaar is"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Ordonnance qui n'est pas exécutable à elle seule"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="The same order without the tag. On its own this is an authorization and nothing more: Spenser ignores it until a Task asks for it to be fulfilled.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="A mesma prescrição sem a tag. Por si só, é uma autorização e nada mais: o Spenser ignora-a até que uma Task peça que seja aviada."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Dezelfde order zonder de tag. Op zichzelf is dit een machtiging en niets meer: Spenser negeert ze tot een Task vraagt om ze uit te voeren."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="La même ordonnance sans le tag. À elle seule, c'est une autorisation et rien de plus : Spenser l'ignore jusqu'à ce qu'une Task demande son exécution."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="InventoryReport"/>
+      </extension>
+      <reference>
+        <reference value="InventoryReport/SetDarkTo17"/>
+      </reference>
+      <name value="Example - Set inventory - 17 Dark Chocolates">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Definir inventário - 17 chocolates negros"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Voorraad instellen - 17 pure chocolaatjes"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Définition du stock - 17 chocolats noirs"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="Example - Set inventory - 17 Dark Chocolates">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Definir inventário - 17 chocolates negros"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Voorraad instellen - 17 pure chocolaatjes"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Définition du stock - 17 chocolats noirs"/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/med-request-1234"/>
+      </reference>
+      <name value="Example - Spenser Request">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Prescrição para o Spenser"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Spenser-aanvraag"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Ordonnance Spenser"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="Example of a MedicationRequest to send to Spenser">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo de uma MedicationRequest a enviar ao Spenser"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld van een MedicationRequest om naar Spenser te sturen"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple de MedicationRequest à envoyer à Spenser"/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="MedicationRequest"/>
+      </extension>
+      <reference>
+        <reference value="MedicationRequest/ActionableDarkOrderForOneUnit"/>
+      </reference>
+      <name value="Example - Tagged order for one unit"/>
+      <description value="An order made actionable by the tag, with no Task, that names the unit to dispense it in the dispensingDevice extension. Every other unit polling the server skips it."/>
+      <isExample value="true"/>
+      <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="Task"/>
+      </extension>
+      <reference>
+        <reference value="Task/FulfillForOneUnit"/>
+      </reference>
+      <name value="Example - Task addressed to one unit"/>
+      <description value="Task.requestedPerformer names the unit that is to fill the order: the one Task element R5 lets name a Device. Every other unit skips this Task; the unit it names dispenses it and closes it."/>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="Task"/>
+      </extension>
+      <reference>
+        <reference value="Task/FulfillPlainMilkOrder"/>
+      </reference>
+      <name value="Example - Task asking for an order to be fulfilled">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemplo - Task a pedir que uma prescrição seja aviada"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Voorbeeld - Task die vraagt om een order uit te voeren"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Exemple - Task demandant l'exécution d'une ordonnance"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="A Coordination Task pointing at the order in Task.focus. This is what makes the plain order actionable. Spenser completes the Task with the dispense in Task.output, and leaves the request itself to the placer.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Uma Task de coordenação que aponta para a prescrição em Task.focus. É isto que torna acionável a prescrição simples. O Spenser conclui a Task com a dispensa em Task.output e deixa a própria MedicationRequest ao emissor."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een coördinerende Task die in Task.focus naar de order verwijst. Dit maakt de gewone order uitvoerbaar. Spenser voltooit de Task met de verstrekking in Task.output, en laat de aanvraag zelf aan de plaatser over."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Une Task de coordination qui pointe vers l'ordonnance dans Task.focus. C'est ce qui rend l'ordonnance simple exécutable. Spenser termine la Task avec la dispensation dans Task.output, et laisse la demande elle-même à l'émetteur."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="true"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/OrderPlacer"/>
+      </reference>
+      <name value="Order Placer">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Emissor de Prescrições"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Orderplaatser"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Émetteur d'ordonnances"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="The system that asks for chocolate, by posting an order to a Spenser Unit or by placing one on an Order Server.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="O sistema que pede chocolate, publicando uma prescrição numa Unidade Spenser ou emitindo-a num Servidor de Prescrições."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Het systeem dat om chocolade vraagt, door een order naar een Spenser-unit te posten of er een op een orderserver te plaatsen."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Le système qui demande du chocolat, en envoyant une ordonnance à une unité Spenser ou en en déposant une sur un serveur d'ordonnances."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/OrderServer"/>
+      </reference>
+      <name value="Order Server">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Servidor de Prescrições"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Orderserver"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Serveur d'ordonnances"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="A FHIR server that holds orders until a Spenser Unit collects them, and receives what the unit reports back.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Um servidor FHIR que guarda as prescrições até uma Unidade Spenser as recolher, e recebe o que a unidade comunica de volta."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een FHIR-server die orders bewaart tot een Spenser-unit ze ophaalt, en ontvangt wat de unit terugmeldt."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Un serveur FHIR qui conserve les ordonnances jusqu'à ce qu'une unité Spenser vienne les chercher, et reçoit les comptes rendus de l'unité."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ExampleScenario"/>
+      </extension>
+      <reference>
+        <reference value="ExampleScenario/DirectOrderScenario"/>
+      </reference>
+      <name value="Scenario - Ordering straight from the unit"/>
+      <description value="A placer posts an order to a Spenser unit and gets back the dispense. No server, no Task, no tag: the POST is the authorization."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ExampleScenario"/>
+      </extension>
+      <reference>
+        <reference value="ExampleScenario/TaskOrderScenario"/>
+      </reference>
+      <name value="Scenario - Ordering through an order server"/>
+      <description value="A placer puts an order and a Task on an order server. The unit polls the server, dispenses what is addressed to it, and reports back what it did."/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="CodeSystem"/>
+      </extension>
+      <reference>
+        <reference value="CodeSystem/SpenserMeds"/>
+      </reference>
+      <name value="Spenser Medications - Code System">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Medicamentos Spenser - Sistema de códigos"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Spenser-geneesmiddelen - Codesysteem"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Médicaments Spenser - Système de codes"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="A code system of medications that Spenser can dispense.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Um sistema de códigos dos medicamentos que o Spenser pode dispensar."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een codesysteem van geneesmiddelen die Spenser kan verstrekken."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Un système de codes des médicaments que Spenser peut dispenser."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ValueSet"/>
+      </extension>
+      <reference>
+        <reference value="ValueSet/SpenserMedsVS"/>
+      </reference>
+      <name value="Spenser Medications - ValueSet">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Medicamentos Spenser - Conjunto de valores"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Spenser-geneesmiddelen - ValueSet"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Médicaments Spenser - Jeu de valeurs"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="A value set of medications that Spenser can dispense.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Um conjunto de valores dos medicamentos que o Spenser pode dispensar."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een ValueSet van geneesmiddelen die Spenser kan verstrekken."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Un jeu de valeurs des médicaments que Spenser peut dispenser."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/SpenserUnit"/>
+      </reference>
+      <name value="Spenser Unit">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Unidade Spenser"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Spenser-unit"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Unité Spenser"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="A chocolate dispenser, acting as a FHIR server and a FHIR client at the same time.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Um dispensador de chocolate, que atua como servidor FHIR e como cliente FHIR ao mesmo tempo."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Een chocoladedispenser die tegelijk als FHIR-server en als FHIR-client optreedt."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Un distributeur de chocolat, qui agit à la fois comme serveur FHIR et comme client FHIR."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="CapabilityStatement"/>
+      </extension>
+      <reference>
+        <reference value="CapabilityStatement/SpenserFHIRCapabilityStatement"/>
+      </reference>
+      <name value="SpenserFHIRCapabilityStatement"/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="StructureDefinition:resource"/>
+      </extension>
+      <reference>
+        <reference value="StructureDefinition/SpenserRequest"/>
+      </reference>
+      <name value="SpenserRequest"/>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/UnitOwner"/>
+      </reference>
+      <name value="Unit Owner">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Proprietário da Unidade"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Unit-eigenaar"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Propriétaire de l'unité"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="The person who holds a unit's key, and with it the authority to configure, restock and update the unit.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="A pessoa que detém a chave de uma unidade e, com ela, a autoridade para configurar, reabastecer e atualizar a unidade."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="De persoon die de sleutel van een unit heeft, en daarmee de bevoegdheid om de unit te configureren, te bevoorraden en te updaten."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="La personne qui détient la clé d'une unité, et avec elle le pouvoir de configurer, de réapprovisionner et de mettre à jour l'unité."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <resource>
+      <extension url="http://hl7.org/fhir/tools/StructureDefinition/resource-information">
+        <valueString value="ActorDefinition"/>
+      </extension>
+      <reference>
+        <reference value="ActorDefinition/UpdatePublisher"/>
+      </reference>
+      <name value="Update Publisher">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Publicador de Atualizações"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Update-uitgever"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Éditeur des mises à jour"/>
+          </extension>
+        </extension>
+      </name>
+      <description value="The site that publishes the release manifest and firmware images a Spenser Unit checks for and installs.">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="O sítio que publica o manifesto da versão e as imagens de firmware que uma Unidade Spenser procura e instala."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="De site die het releasemanifest en de firmware-images publiceert die een Spenser-unit controleert en installeert."/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Le site qui publie le manifeste de publication et les images du micrologiciel qu'une unité Spenser vérifie et installe."/>
+          </extension>
+        </extension>
+      </description>
+      <isExample value="false"/>
+    </resource>
+    <page>
+      <sourceUrl value="toc.html"/>
+      <name value="toc.html"/>
+      <title value="Table of Contents">
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="pt"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Índice"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="nl"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Inhoudsopgave"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+          <extension url="lang">
+            <valueCode value="fr"/>
+          </extension>
+          <extension url="content">
+            <valueString value="Table des matières"/>
+          </extension>
+        </extension>
+      </title>
+      <generation value="html"/>
+      <page>
+        <sourceUrl value="index.html"/>
+        <name value="index.html"/>
+        <title value="Home">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Início"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Startpagina"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Accueil"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="implementing.html"/>
+        <name value="implementing.html"/>
+        <title value="Implementing">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Implementação"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Implementeren"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Mise en œuvre"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="fhir-intro.html"/>
+        <name value="fhir-intro.html"/>
+        <title value="FHIR"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="interfaces.html"/>
+        <name value="interfaces.html"/>
+        <title value="Interfaces">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Interfaces"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Interfaces"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Interfaces"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="firmware.html"/>
+        <name value="firmware.html"/>
+        <title value="Firmware">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Firmware"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Firmware"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Micrologiciel"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="hardware-bom.html"/>
+        <name value="hardware-bom.html"/>
+        <title value="Hardware Bill of Materials">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Lista de materiais do hardware"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Stuklijst van de hardware"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Nomenclature du matériel"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="hardware-3ddesign.html"/>
+        <name value="hardware-3ddesign.html"/>
+        <title value="3D printable parts">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Peças para impressão 3D"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="3D-printbare onderdelen"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Pièces imprimables en 3D"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="assembly.html"/>
+        <name value="assembly.html"/>
+        <title value="Assembly">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Montagem"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Montage"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Assemblage"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="setup.html"/>
+        <name value="setup.html"/>
+        <title value="Setup"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="authors.html"/>
+        <name value="authors.html"/>
+        <title value="Authors">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Autores"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Auteurs"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Auteurs"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="downloads.html"/>
+        <name value="downloads.html"/>
+        <title value="Downloads">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Transferências"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Downloads"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Téléchargements"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="usage.html"/>
+        <name value="usage.html"/>
+        <title value="Usage">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Utilização"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Gebruik"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Utilisation"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <sourceUrl value="translationinfo.html"/>
+        <name value="translationinfo.html"/>
+        <title value="Translations">
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="pt"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Traduções"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="nl"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Vertalingen"/>
+            </extension>
+          </extension>
+          <extension url="http://hl7.org/fhir/StructureDefinition/translation">
+            <extension url="lang">
+              <valueCode value="fr"/>
+            </extension>
+            <extension url="content">
+              <valueString value="Traductions"/>
+            </extension>
+          </extension>
+        </title>
+        <generation value="markdown"/>
+      </page>
+    </page>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="copyrightyear"/>
+      </code>
+      <value value="2021+"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="releaselabel"/>
+      </code>
+      <value value="STU1"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-default-lang"/>
+      </code>
+      <value value="en"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-lang"/>
+      </code>
+      <value value="pt"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-lang"/>
+      </code>
+      <value value="nl"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="i18n-lang"/>
+      </code>
+      <value value="fr"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="translation-sources"/>
+      </code>
+      <value value="input/translations/pt"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="translation-sources"/>
+      </code>
+      <value value="input/translations/nl"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="translation-sources"/>
+      </code>
+      <value value="input/translations/fr"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="autoload-resources"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/capabilities"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/examples"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/extensions"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/models"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/operations"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/profiles"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/resources"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/vocabulary"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/maps"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/testing"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="input/history"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-resource"/>
+      </code>
+      <value value="fsh-generated/resources"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-pages"/>
+      </code>
+      <value value="template/config"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-pages"/>
+      </code>
+      <value value="input/assets"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-pages"/>
+      </code>
+      <value value="input/images"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-liquid-template"/>
+      </code>
+      <value value="template/liquid"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-liquid-template"/>
+      </code>
+      <value value="input/liquid"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-qa"/>
+      </code>
+      <value value="temp/qa"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-temp"/>
+      </code>
+      <value value="temp/pages"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-output"/>
+      </code>
+      <value value="output"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/guide-parameter-code"/>
+        <code value="path-tx-cache"/>
+      </code>
+      <value value="input-cache/txcache"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-suppressed-warnings"/>
+      </code>
+      <value value="input/ignoreWarnings.txt"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="path-history"/>
+      </code>
+      <value value="http://costateixeira.github.io/spenser/history.html"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="template-html"/>
+      </code>
+      <value value="template-page.html"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="template-md"/>
+      </code>
+      <value value="template-page-md.html"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-contact"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-context"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-copyright"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-jurisdiction"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-license"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-publisher"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-version"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="apply-wg"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="active-tables"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="fmm-definition"/>
+      </code>
+      <value value="http://hl7.org/fhir/versions.html#maturity"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="propagate-status"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="excludelogbinaryformat"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+    <parameter>
+      <code>
+        <system value="http://hl7.org/fhir/tools/CodeSystem/ig-parameters"/>
+        <code value="tabbed-snapshots"/>
+      </code>
+      <value value="true"/>
+    </parameter>
+  </definition>
+</ImplementationGuide>
