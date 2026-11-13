@@ -48,6 +48,8 @@ the middle of it and nothing about the height needs to change:
   stroke          51.05 mm        ->  33.76
   servo           cable to the magazine  ->  turned round, cable to the back,
                                       and its whole bay 6.50 mm back with it
+  cable           nothing to run on  ->  the magazine's side wall carried 12.70
+                                      forward over the tower, window and all
   module bay      24.00 mm wide   ->  unchanged; it is what sets the width
   retaining ledge z 9.0..10.0     ->  unchanged, and 3.61 mm clear of the arm
   servo box       unchanged       ->  unchanged, like every height in the body
@@ -350,6 +352,44 @@ here obeys - the band has to be a prism, so that the cavity is a copy of its
 cross-section - and a thickness that straddles the band is refused rather than
 sliced, because the cavity would then stop part way up it and need a floor. That
 is why the slope's edge is moved first: it puts both carves on flat plate.
+
+Turned round, the lead leaves at the back of the tower and has the length of
+it to cross to the module's header - about 38 mm where it had 12 - so the body
+gives it something to run against. The magazine's side wall on the motor side
+stops being full height at y 37.8, where the lane ends; --flip carries it 12.70
+mm further forward, to where the module rail opposite stops, with that rail's
+own window through it to feed the lead in, and ties it across to the tower's
+inner rail. The wall stands outside the pocket, which ends at x 80.502, so it
+is clear of the servo and its ears at every point of fitting them, and the tie
+stands on the tower's top past the pocket's far wall, so it roofs nothing the
+servo has to come down through.
+
+It is a wall, not a channel. What it stands on is 1.5 mm wide and a three-wire
+servo lead is about 3.6 by 1.3, so the lead runs on edge against the wall
+rather than inside anything. Something it could lie flat in would have to hang
+outboard of the body, which is a wider change than this one.
+
+Standing a box on the part is the one thing here that adds material, and it
+adds it the way the body itself is built and the way --union stands lanes in
+each other's side walls: as a closed box of its own, sunk into what it stands
+on rather than welded to it. Nothing that is there is cut, so every edge keeps
+the two triangles it had and the part is exactly as watertight as it was; what
+makes the box part of the body is that the two share solid material, which is
+what a slicer unions. Welding would mean cutting the face underneath, and on a
+body built as a union of overlapping boxes every such cut grazes a seam
+somewhere and leaves slivers - four of them, when it was tried that way. So the
+wall is five boxes rather than one carved shape: a sill the width of it, a leg
+at each end of the window, a head spanning between the legs, and the tie. The
+window is simply the gap the legs leave.
+
+What is checked is the same kind of thing as everywhere else. Over each corner
+of the footprint the part's top has to be the face the box stands on, which is
+both that there is something to stand on and that there is nothing above it -
+the corners rather than the middle, because a head is carried at its ends and
+spans air between them. Nothing over the footprint may reach above that face.
+The volume has to grow by the box. And afterwards the part's top has to be the
+box's top everywhere over the footprint, and exactly what it was everywhere
+else.
 
 All of the above is one size of piece. The numbers come from PIECE, three
 dimensions in millimetres - across the lane, along it, and thick. PIECE itself
@@ -936,6 +976,99 @@ def verify_plug(before, after, xa, xb, y0, y1, zlo, zhi, step=0.23, margin=0.06)
     return checked, closed, skipped, wrong
 
 
+def boss(tris, xa, xb, y0, y1, at, to, sink=1.0, eps=5e-4):
+    """Stand a box on the part: the one operation here that adds material.
+
+    It adds it the way the body itself is built and the way `union` stands
+    lanes in each other's side walls - as a closed box of its own, sunk into
+    what it stands on rather than welded to it. Nothing that is there is cut,
+    so every edge keeps the two triangles it had and the part is exactly as
+    watertight as it was; what makes the box part of the body is that the two
+    share solid material, which is what a slicer unions. Welding instead would
+    mean cutting the face under it, and on a body built as a union of
+    overlapping boxes every such cut grazes a seam somewhere and leaves
+    slivers.
+
+    What is checked is that the box has something to stand on and nothing to
+    foul. Over each corner of the footprint the part's top surface has to be
+    the face at `at`, which is both at once: it is there, and there is nothing
+    above it. The corners rather than the middle, because a lintel is carried
+    at its ends and spans air between them. Everywhere over the footprint the
+    part must stop at or below `at`, or the box would run into something.
+    """
+    for x, y in ((xa, y0), (xb, y0), (xa, y1), (xb, y1)):
+        x = min(max(x, xa + 1e-3), xb - 1e-3)
+        y = min(max(y, y0 + 1e-3), y1 - 1e-3)
+        column = _column(tris, x, y)
+        if not column or abs(max(column) - at) > eps:
+            raise ValueError('the part stops at %s over the corner (%.3f, %.3f), not at '
+                             'z = %.3f: a box has to stand on a face, with nothing above'
+                             % ('%.3f' % max(column) if column else 'nothing', x, y, at))
+    step = max(0.17, min(xb - xa, y1 - y0) / 4.0)
+    y = y0 + step / 2.0
+    while y < y1:
+        x = xa + step / 2.0
+        while x < xb:
+            column = _column(tris, x, y)
+            if column and max(column) > at + eps:
+                raise ValueError('the part reaches z = %.3f at (%.3f, %.3f), above the '
+                                 'face at %.3f the box stands on'
+                                 % (max(column), x, y, at))
+            x += step
+        y += step
+
+    base = at - sink
+    c = [(xa, y0), (xb, y0), (xb, y1), (xa, y1)]
+    out = list(tris)
+    for lo, hi, up in ((base, base, -1), (to, to, +1)):
+        quad = [(p[0], p[1], lo) for p in c]
+        if up < 0:
+            quad = quad[::-1]
+        out += [(quad[0], quad[1], quad[2]), (quad[0], quad[2], quad[3])]
+    for n in range(4):
+        a, b = c[n], c[(n + 1) % 4]
+        out += [((a[0], a[1], base), (b[0], b[1], base), (b[0], b[1], to)),
+                ((a[0], a[1], base), (b[0], b[1], to), (a[0], a[1], to))]
+    return out, (xb - xa) * (y1 - y0) * (to - base)
+
+
+def verify_boss(before, after, xa, xb, y0, y1, at, to, step=0.23, margin=0.06):
+    """Prove the box: the part's top is its top where it stands, and nowhere else.
+
+    A box that overlaps rather than welds meets a line more times than the
+    face it replaced did, so what is checked is not the whole column but the
+    top of it: over the footprint the part must now stop at the box's top, and
+    anywhere else it must stop exactly where it stopped. Lines within a margin
+    of the box's walls are left out, a line on a face being neither in nor out.
+    """
+    spanx = (min(p[0] for t in before for p in t), max(p[0] for t in before for p in t))
+    spany = (min(p[1] for t in before for p in t), max(p[1] for t in before for p in t))
+    wrong = []
+    checked = stood = skipped = 0
+    y = spany[0] + 0.137
+    while y < spany[1]:
+        x = spanx[0] + 0.113
+        while x < spanx[1]:
+            here, there = _column(after, x, y), _column(before, x, y)
+            top = max(here) if here else None
+            was = max(there) if there else None
+            if xa < x < xb and y0 < y < y1:
+                if top is None or abs(top - to) > 1e-3:
+                    wrong.append((x, y, [top], [to]))
+                else:
+                    stood += 1
+            elif (xa - margin < x < xb + margin and y0 - margin < y < y1 + margin):
+                skipped += 1
+            else:
+                checked += 1
+                if (top is None) != (was is None) or (
+                        top is not None and abs(top - was) > 1e-3):
+                    wrong.append((x, y, [top], [was]))
+            x += step
+        y += step
+    return checked, stood, skipped, wrong
+
+
 def widen_hole(tris, cx, cy, radius, to, tol=0.05):
     """Move the wall of a round feature that runs straight through, along its radius.
 
@@ -1332,6 +1465,27 @@ FLOOR_Z = (16.00, 19.248)     # the heights the floor opening owns: up to the to
 #                             # wall, which stands in the same plane as the opening's
 #                             # far end, is left out of it
 SEAT_Z = (17.00, 23.10)       # and the heights the far screw's hole goes through
+# A wall for the cable. Turned round, the servo's lead leaves at the back of
+# the tower and has the length of it to cross, so it is given something to run
+# against: the module rail's own wall, repeated on the other side of the body.
+# The magazine's side wall on the motor side stops being full height at y 37.8,
+# where the lane ends; this carries it 12.70 mm further forward, to where the
+# module rail opposite stops, with the same window through it to feed the lead.
+RAIL_X = (81.000, 82.500)     # that wall, whose top at z 32.501 the work stands on
+RAIL_Y = (25.000, 37.700)     # and how far forward it goes. It stands outside the
+#                             # pocket, which ends at x 80.502, so it is clear of the
+#                             # servo and its ears at every point of fitting them
+RAIL_AT = 32.501              # the face it stands on
+RAIL_SILL = 33.310            # the window's sill and head, both the module rail's own
+RAIL_HEAD = 74.320
+RAIL_TOP = 100.000            # and its top, which is the rail's too
+RAIL_WINDOW = (28.730, 36.796)   # the window itself, the rail's own again
+BRIDGE_X = 67.025             # the tie across to the tower's inner rail. It stands on
+BRIDGE_Y = 31.500             # the tower's top where that is solid right across, which
+#                             # is past the pocket's far wall at y 31.404, so it roofs
+#                             # nothing the servo has to go down through
+BRIDGE_AT = 32.500            # the tower's top, a thousandth below the wall's
+
 ARM_TIP = 31.75               # the arm's far end, this far out from the axis
 ARM_REACH = 24.218            # which puts it this far past the axis along the lane
 REST = 46.87                  # at rest, clamped this far back from square
@@ -1547,6 +1701,7 @@ def recipes(p):
         body.append(('lift', 'z', LEDGE_AT, p['lift']))
     if p['flip']:
         body += turn_round(p['slide'])
+        body += cable_rail()
 
     pusher = []
     if p['x_cut']:
@@ -1626,6 +1781,32 @@ def turn_round(slide):
              FLOOR_Z[0], FLOOR_Z[1])]
 
 
+def cable_rail():
+    """A wall for the cable to run against, as five boxes.
+
+    The magazine's side wall carried forward over the tower, with the module
+    rail's window in it, and a tie across to the tower's inner rail. Four boxes
+    make the wall - a sill the width of it, a leg at each end of the window,
+    and a head spanning between the legs - and the fifth is the tie. Built that
+    way rather than cut, the window is simply the gap the legs leave, so
+    nothing has to be carved out of a wall 1.5 mm thick.
+
+    What it is not is a closed channel. The wall it stands on is 1.5 mm wide
+    and a three-wire servo lead is about 3.6 by 1.3, so the lead runs on edge
+    against this wall rather than inside anything. A channel it could lie flat
+    in would have to hang outboard of the body, which is a wider change than
+    this one.
+    """
+    x0, x1 = RAIL_X
+    y0, y1 = RAIL_Y
+    w0, w1 = RAIL_WINDOW
+    return [('boss', x0, x1, y0, y1, RAIL_AT, RAIL_SILL),
+            ('boss', x0, x1, y0, w0, RAIL_SILL, RAIL_HEAD),
+            ('boss', x0, x1, w1, y1, RAIL_SILL, RAIL_HEAD),
+            ('boss', x0, x1, y0, y1, RAIL_HEAD, RAIL_TOP),
+            ('boss', BRIDGE_X, x0, BRIDGE_Y, y1, BRIDGE_AT, RAIL_SILL)]
+
+
 def describe(p, parts):
     """What the plan comes to, before anything is cut."""
     print('a piece %.1f x %.1f x %.1f mm: across the lane, along it, and thick'
@@ -1669,6 +1850,11 @@ def describe(p, parts):
         print('            and the shaft %.2f forward of where it is, which the '
               'second slot at %.2f takes off the pusher'
               % (p['net'], p['second']))
+        print('   cable    the magazine\'s side wall carried %.2f mm forward over '
+              'the tower,' % (RAIL_Y[1] - RAIL_Y[0]))
+        print('            to z %.0f with the module rail\'s own window in it, and '
+              'tied across to the tower\'s inner rail'
+              % RAIL_TOP)
         print('   arm      clamped %.1f degrees back at rest instead of %.1f, so '
               'anglePush is %.1f' % (p['rest'], REST, p['angle_push']))
         print('            which is what keeps its far end off the wall the stack '
@@ -1802,6 +1988,34 @@ def main():
                       'agree, %d through the ramp not looked at'
                       % (facets, gate_axis, ramp[0], ramp[1], checked, skipped))
                 tris = stepped
+            elif op[0] == 'boss':
+                xa, xb, y0, y1, at, to = op[1:]
+                stood, added = boss(tris, xa, xb, y0, y1, at, to)
+                checked, standing, skipped, wrong = verify_boss(
+                    tris, stood, xa, xb, y0, y1, at, to)
+                if wrong:
+                    raise SystemExit('%s: the wall at y %.3f..%.3f does not hold up: '
+                                     '%d of %d lines disagree, first at x %.2f y %.2f'
+                                     % ((target_name, y0, y1, len(wrong),
+                                         checked + standing) + wrong[0][:2]))
+                was, now = measure(tris), measure(stood)
+                made = now['volume'] - was['volume']
+                if abs(made - added) > 0.05:
+                    raise SystemExit('%s: the wall at y %.3f..%.3f added %.3f mm3, and '
+                                     'the box it stands is %.3f'
+                                     % (target_name, y0, y1, made, added))
+                if now['open_edges'] != was['open_edges']:
+                    raise SystemExit('%s: the wall at y %.3f..%.3f left the mesh open: '
+                                     '%d edges against %d'
+                                     % (target_name, y0, y1, now['open_edges'],
+                                        was['open_edges']))
+                print('   stood a box %.2f x %.2f on the face at z %.3f, up to %.3f'
+                      % (xb - xa, y1 - y0, at, to))
+                print('   it added %.0f mm3, which is the box to 0.05; %d lines over it '
+                      'now stop at its top, %d elsewhere stop where they did, %d along '
+                      'its walls not looked at'
+                      % (added, standing, checked, skipped))
+                tris = stood
             elif op[0] == 'plug':
                 xa, xb, y0, y1, zlo, zhi, cx, cy = op[1:]
                 filled, gained, faces = plug(tris, xa, xb, y0, y1, zlo, zhi, cx, cy)
