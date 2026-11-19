@@ -1512,6 +1512,48 @@ void finishCheck()
   orderCheck.busy = false;
 }
 
+// What this unit last learned about reaching its order server, for /network:
+// the name in the server URL and what it resolved to. Resolving can block for
+// seconds, so it happens in loop(), at each check, never in a request handler.
+// loop() writes these while the web task reads them, hence plain buffers.
+char serverHost[96] = "";
+char serverAddress[48] = "";
+unsigned long resolvedAt = 0;
+
+String hostOf(const String &url)
+{
+  int start = url.indexOf("://");
+  start = start < 0 ? 0 : start + 3;
+  int end = url.length();
+  for (const char *stop : {"/", ":", "?"})
+  {
+    int at = url.indexOf(stop, start);
+    if (at >= 0 && at < end)
+      end = at;
+  }
+  return url.substring(start, end);
+}
+
+void resolveServer(const String &base)
+{
+  String host = hostOf(base);
+  IPAddress address;
+  bool ok = WiFi.hostByName(host.c_str(), address) == 1;
+  strlcpy(serverHost, host.c_str(), sizeof(serverHost));
+  strlcpy(serverAddress, ok ? address.toString().c_str() : "could not resolve", sizeof(serverAddress));
+  resolvedAt = millis();
+  Serial.printf("[Orders] %s -> %s\n", serverHost, serverAddress);
+}
+
+// An HTTP status, or what went wrong when there is none. HTTPClient reports a
+// failure to connect as a negative number, which on its own says nothing.
+String httpOutcome(int status)
+{
+  if (status >= 0)
+    return "HTTP " + String(status);
+  return HTTPClient::errorToString(status) + " (" + String(status) + ")";
+}
+
 String serverBase()
 {
   String base = orderServerUrl;
@@ -1838,7 +1880,7 @@ bool runOrderPage(const String &base, bool taskLane, String &problem, const Stri
   if (status != 200)
   {
     http.end();
-    problem = String(taskLane ? "Task" : "Order") + " search failed (HTTP " + String(status) + ")";
+    problem = String(taskLane ? "Task" : "Order") + " search failed (" + httpOutcome(status) + ")";
     return false;
   }
 
@@ -2043,6 +2085,8 @@ void checkOrders()
     finishCheck();
     return;
   }
+
+  resolveServer(base);
 
   if (settings.writeBack)
     registerUnit(base);
@@ -2496,7 +2540,7 @@ bool fetchManifest(String &version, String &firmwareUrl, String &filesystemUrl,
   if (status != 200)
   {
     http.end();
-    lastUpdateResult = "manifest HTTP " + String(status);
+    lastUpdateResult = "manifest " + httpOutcome(status);
     Serial.println("[OTA] " + lastUpdateResult);
     return false;
   }
@@ -3479,6 +3523,38 @@ void setup()
     request->send(200, "text/plain", "Inventory updated"); });
 
   // Battery — single-cell Li-ion via INA226 bus voltage
+  // GET /network - how this unit is connected: for when it answers on its own
+  // network but reaches nothing beyond it. Read-only, so open like every read.
+  server.on("/network", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    StaticJsonDocument<1024> doc;
+    doc["unitName"] = String(unitName);
+    doc["mode"] = netMode == NET_STA ? "station" : netMode == NET_AP ? "setup" : "starting";
+    doc["connected"] = WiFi.status() == WL_CONNECTED;
+    doc["ssid"] = WiFi.SSID();
+    doc["rssi"] = WiFi.RSSI();
+    doc["mac"] = WiFi.macAddress();
+    doc["ip"] = WiFi.localIP().toString();
+    doc["gateway"] = WiFi.gatewayIP().toString();
+    doc["subnet"] = WiFi.subnetMask().toString();
+    JsonArray dns = doc.createNestedArray("dns");
+    dns.add(WiFi.dnsIP(0).toString());
+    dns.add(WiFi.dnsIP(1).toString());
+    doc["clock"] = clockReady() ? nowIso() : "unset";
+    doc["freeHeap"] = ESP.getFreeHeap();
+    doc["largestFreeBlock"] = ESP.getMaxAllocHeap(); // a TLS connection needs about 40 KB in one piece
+
+    JsonObject target = doc.createNestedObject("orderServer");
+    target["host"] = serverHost;
+    target["address"] = serverAddress;
+    if (resolvedAt)
+      target["resolvedSecondsAgo"] = (millis() - resolvedAt) / 1000;
+    target["lastCheck"] = orderCheck.message;
+
+    String out;
+    serializeJson(doc, out);
+    request->send(200, "application/json", out); });
+
   server.on("/battery", HTTP_GET, [](AsyncWebServerRequest *request)
             {
     // Sensor presence

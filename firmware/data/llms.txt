@@ -387,6 +387,13 @@ Stock and hardware
   GET /setServos?dark=&milk=
   GET /flashServo1, /flashServo2
   GET /setColor?r=&g=&b=
+  GET /network            How the unit is connected: Wi-Fi network and signal,
+                          IP, gateway, subnet, DNS servers, MAC, clock, free
+                          memory and the largest free block, and what the
+                          order server's name last resolved to. For a unit
+                          that answers on its own network but reaches nothing
+                          beyond it: a search that fails with "connection
+                          refused" and a clock that stays unset point there.
   GET /battery            Voltage, current, percent, and whether it is on USB,
                           charging or running off the pack.
   GET /reset              Reboot.

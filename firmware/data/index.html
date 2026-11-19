@@ -511,6 +511,7 @@
           the request and asking for it to be fulfilled.</p>
 
           <div class="order-status" id="order-status">Not checked yet</div>
+          <div class="order-status" id="network-status" title="GET /network">Network: …</div>
 
           <div class="settings-row">
             <label class="field" style="flex:1">Order server (FHIR base URL)
@@ -1460,6 +1461,26 @@
         if (lastHandled !== null && d.handled > lastHandled) refreshInventory();
         lastHandled = d.handled;
       } catch (e) { console.error('order status failed', e); }
+      refreshNetwork();
+    }
+
+    // How the unit is connected: enough to tell "no internet" from "no server".
+    async function refreshNetwork() {
+      try {
+        const n = await (await api('/network')).json();
+        const dns = n.dns.filter((d) => d && d !== '0.0.0.0');
+        const parts = [
+          n.ssid ? n.ssid + ' (' + n.rssi + ' dBm)' : 'no Wi-Fi',
+          'IP ' + n.ip,
+          'gateway ' + n.gateway,
+          dns.length ? 'DNS ' + dns.join(', ') : 'no DNS server',
+          'clock ' + n.clock,
+          Math.round(n.largestFreeBlock / 1024) + ' KB free in one block'
+        ];
+        const s = n.orderServer || {};
+        if (s.host) parts.push(s.host + ' \u2192 ' + s.address);
+        $('network-status').textContent = 'Network: ' + parts.join(' \u00b7 ');
+      } catch (e) { console.error('network status failed', e); }
     }
 
     /* ---------- Boot ---------- */

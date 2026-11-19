@@ -391,6 +391,7 @@ dashboard.
 | Updates | `/ota/status`, `/ota/firmware`, `/ota/filesystem`, `/ota/file`, `/ota/check`, `/ota/rollback` |
 | The key | `/key`, within the window described above |
 | Stock and hardware | `/inventory`, `/setInventory`, `/resetInventory`, `/setServos`, `/flashServo1`, `/flashServo2`, `/setColor`, `/battery`, `/reset` |
+| Network | `/network`: the Wi-Fi network and signal, IP, gateway, DNS servers, clock, free memory, and what the order server's name last resolved to. For a unit that answers on its own network but reaches nothing beyond it |
 | Wi-Fi and identity | `/`, `/scan`, `/cfg`, `/save`, `/wifi-settings`, `/wifi-reset`, `/wifi-reboot-config`, `/getMac`, `/setMac`, `/clearMac` |
 | Captive portal | `/generate_204`, `/hotspot-detect.html`, `/fwlink`, `/ncsi.txt`, `/connecttest.txt` |
 
