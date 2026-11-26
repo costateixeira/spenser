@@ -1654,6 +1654,15 @@ JsonObject addProperty(JsonArray properties, const char *code)
   return property;
 }
 
+// A text property, left out when there is no text: FHIR has no empty strings,
+// and a server refuses the whole Device over one (a first check has no result
+// yet, a setting may be blank).
+void addText(JsonArray properties, const char *code, const String &value)
+{
+  if (value.length())
+    addProperty(properties, code)["valueString"] = value;
+}
+
 void reportUnit(const String &base)
 {
   if (registeredWith == base && !reportDue && millis() - lastReportAt < REPORT_EVERY_MS)
@@ -1675,24 +1684,22 @@ void reportUnit(const String &base)
   // no element of its own for it.
 
   JsonArray properties = doc.createNestedArray("property");
-  addProperty(properties, "server-url")["valueString"] = orderServerUrl;
-  addProperty(properties, "order-mode")["valueString"] = settings.orderMode;
-  addProperty(properties, "order-query")["valueString"] = settings.orderQuery;
-  addProperty(properties, "task-query")["valueString"] = settings.taskQuery;
+  addText(properties, "server-url", orderServerUrl);
+  addText(properties, "order-mode", settings.orderMode);
+  addText(properties, "order-query", settings.orderQuery);
+  addText(properties, "task-query", settings.taskQuery);
   addProperty(properties, "poll-enabled")["valueBoolean"] = settings.pollEnabled;
   addProperty(properties, "poll-seconds")["valueInteger"] = settings.pollSeconds;
   addProperty(properties, "write-back")["valueBoolean"] = settings.writeBack;
   addProperty(properties, "give-up-on-stock-empty")["valueBoolean"] = settings.giveUpOnStockEmpty;
-  addProperty(properties, "update-mode")["valueString"] = settings.updateMode;
+  addText(properties, "update-mode", settings.updateMode);
   addProperty(properties, "update-check-minutes")["valueInteger"] = settings.updateCheckMinutes;
   addProperty(properties, "stock-dark")["valueInteger"] = inventoryDark;
   addProperty(properties, "stock-milk")["valueInteger"] = inventoryMilk;
-  if (orderCheck.everRan)
-    addProperty(properties, "last-check")["valueString"] = String(orderCheck.message);
-  if (lastConfiguration[0])
-    addProperty(properties, "last-configuration")["valueString"] = String(lastConfiguration);
-  addProperty(properties, "ssid")["valueString"] = WiFi.SSID();
-  addProperty(properties, "ip-address")["valueString"] = WiFi.localIP().toString();
+  addText(properties, "last-check", String(orderCheck.message));
+  addText(properties, "last-configuration", String(lastConfiguration));
+  addText(properties, "ssid", WiFi.SSID());
+  addText(properties, "ip-address", WiFi.localIP().toString());
   addProperty(properties, "rssi")["valueInteger"] = WiFi.RSSI();
   addProperty(properties, "largest-free-block")["valueInteger"] = ESP.getMaxAllocHeap();
 
