@@ -330,6 +330,67 @@ toe aan zijn `taskQuery`. Een zoekopdracht vindt maar één vorm: Tasks die de u
 **Elke MedicationDispense noemt de unit die hem maakte**, in `performer.actor`, dus de
 server laat zien welke unit welke order heeft uitgevoerd.
 
+### Een unit op afstand bekijken en wijzigen {#seeing-and-changing-a-unit-from-afar}
+
+Een unit staat meestal op een netwerk dat u niet kunt bereiken. De orderserver is de
+enige plek die u allebei zien, dus daar meldt de unit zijn toestand en daar krijgt
+hij instructies.
+
+**Wat hij meldt.** Zijn `Device/<naam>` bevat zijn instellingen en toestand in
+`Device.property`, elk gecodeerd in
+[SpenserUnitProperty](CodeSystem-SpenserUnitProperty.html): de orderserver, de
+ordermodus en zoekopdrachten, het pollen, het terugschrijven, de updatemodus, de
+voorraad per baan, het resultaat van de laatste controle, het resultaat van de
+laatste configuratie-Task, en zijn wifinetwerk, IP-adres, signaal en vrij geheugen.
+Hij schrijft ze bij zijn eerste controle tegen een server, na elke wijziging van
+instellingen, en elke tien minuten; `meta.lastUpdated` zegt wanneer hij het laatst
+meldde. Zie [de unit zoals hij op de server staat](Device-Spenser-E3D4.html).
+
+**Wat hij aanneemt.** Een Task met code
+[`configure`](CodeSystem-SpenserTaskCodes.html) die de unit noemt in
+`requestedPerformer`. Elke input is één instelling, genoemd in `input.type`, met de
+waarde in `input.value[x]`:
+
+```json
+{
+  "resourceType": "Task",
+  "status": "requested",
+  "intent": "order",
+  "code": { "coding": [ {
+    "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+    "code": "configure" } ] },
+  "requestedPerformer": [ { "reference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" } } } ],
+  "input": [
+    { "type": { "text": "pollSeconds" }, "valueInteger": 60 },
+    { "type": { "text": "serverUrl" }, "valueString": "http://spenser.178.104.103.200.sslip.io/fhir/r5" }
+  ]
+}
+```
+
+Zie [een configuratie-Task](Task-ConfigureSpenserE3D4.html). Bij zijn volgende
+controle:
+
+* neemt de unit alleen een configuratie-Task aan die hem noemt, nooit een die geen
+  unit noemt;
+* controleert hij elke instelling voordat hij er een toepast, dus past hij ze
+  allemaal toe of geen;
+* vraagt hij, voordat hij naar een nieuwe `serverUrl` overstapt, de nieuwe server om
+  `/metadata`, en houdt hij de oude als de nieuwe niet antwoordt, zodat een tikfout
+  hem niet afsnijdt;
+* rondt hij de Task af met een `output` met wat hij toepaste, of laat hij hem
+  mislukken met de reden in `statusReason.concept.text`, op de server waar de Task
+  vandaan kwam.
+
+De instellingen die hij zo aanneemt zijn `serverUrl`, `orderMode`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds`, `writeBack`, `giveUpOnStockEmpty`, `updateMode`, `updateCheckMinutes`. Deze route heeft geen
+sleutel: wie naar de orderserver kan schrijven, kan ze wijzigen. Voor speelgoed dat
+zelden online is, is dat aanvaardbaar, en daarom kunnen de wifi, de sleutel en de
+update-URL niet zo worden ingesteld. `GET /network` toont wat de laatste
+configuratie-Task deed.
+
+`tools/order/configure-unit.ps1` en `.sh` sturen zo'n Task en wachten op het
+antwoord; zonder instellingen tonen ze wat een unit het laatst meldde.
+
 ### Orders die u kunt kopiëren {#orders-you-can-copy}
 
 De IG bevat deze als formele voorbeelden:
@@ -397,6 +458,7 @@ dashboard aan te bieden.
 | Updates | `/ota/status`, `/ota/firmware`, `/ota/filesystem`, `/ota/file`, `/ota/check`, `/ota/rollback` |
 | De sleutel | `/key`, binnen het hierboven beschreven venster |
 | Voorraad en hardware | `/inventory`, `/setInventory`, `/resetInventory`, `/setServos`, `/flashServo1`, `/flashServo2`, `/setColor`, `/battery`, `/reset` |
+| Netwerk | `/network`: het wifinetwerk en signaal, IP, gateway, DNS-servers, klok, vrij geheugen, waarnaar de naam van de orderserver het laatst verwees, en wat de laatste configuratie-Task deed. Voor een unit die op zijn eigen netwerk antwoordt maar daarbuiten niets bereikt |
 | Wi-Fi en identiteit | `/`, `/scan`, `/cfg`, `/save`, `/wifi-settings`, `/wifi-reset`, `/wifi-reboot-config`, `/getMac`, `/setMac`, `/clearMac` |
 | Captive portal | `/generate_204`, `/hotspot-detect.html`, `/fwlink`, `/ncsi.txt`, `/connecttest.txt` |
 

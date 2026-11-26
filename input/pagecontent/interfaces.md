@@ -324,6 +324,63 @@ to its `taskQuery`. A search matches one form only: Tasks that name the unit as
 **Every MedicationDispense names the unit that made it**, in
 `performer.actor`, so the server shows which unit filled which order.
 
+### Seeing and changing a unit from afar {#seeing-and-changing-a-unit-from-afar}
+
+A unit usually sits on a network you cannot reach. The order server is the one
+place both of you can see, so the unit reports there and takes instructions
+from there.
+
+**What it reports.** Its `Device/<name>` carries its settings and state in
+`Device.property`, each coded in
+[SpenserUnitProperty](CodeSystem-SpenserUnitProperty.html): the order server,
+order mode and searches, polling, write-back, update mode, stock in each lane,
+the last check's result, the last configuration Task's result, and its Wi-Fi
+network, IP address, signal and free memory. It writes them on its first check
+against a server, after any change of settings, and every ten minutes;
+`meta.lastUpdated` says when it last reported. See
+[the unit as it appears on the server](Device-Spenser-E3D4.html).
+
+**What it takes.** A Task with code
+[`configure`](CodeSystem-SpenserTaskCodes.html) that names the unit in
+`requestedPerformer`. Each input is one setting, named in `input.type` with its
+value in `input.value[x]`:
+
+```json
+{
+  "resourceType": "Task",
+  "status": "requested",
+  "intent": "order",
+  "code": { "coding": [ {
+    "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+    "code": "configure" } ] },
+  "requestedPerformer": [ { "reference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" } } } ],
+  "input": [
+    { "type": { "text": "pollSeconds" }, "valueInteger": 60 },
+    { "type": { "text": "serverUrl" }, "valueString": "http://spenser.178.104.103.200.sslip.io/fhir/r5" }
+  ]
+}
+```
+
+See [a configuration Task](Task-ConfigureSpenserE3D4.html). On its next check the
+unit:
+
+* takes only a configuration Task that names it, never one that names no unit;
+* checks every setting before applying any, so it applies all of them or none;
+* before moving to a new `serverUrl`, asks the new server for `/metadata`, and
+  keeps the old one unless the new one answers, so a typo cannot cut it off;
+* completes the Task with an `output` listing what it applied, or fails it with
+  the reason in `statusReason.concept.text`, on the server the Task came from.
+
+The settings it accepts this way are `serverUrl`, `orderMode`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds`, `writeBack`, `giveUpOnStockEmpty`, `updateMode`, `updateCheckMinutes`. There is no key on this
+route: anyone who can write to the order server can change them. That is
+acceptable for a toy that is seldom online, and it is why the Wi-Fi, the key and
+the update URL cannot be set this way. `GET /network` shows what the last
+configuration Task did.
+
+`tools/order/configure-unit.ps1` and `.sh` send such a Task and wait for the
+answer; with no settings, they show what a unit last reported.
+
 ### Orders you can copy
 
 The IG carries these as formal examples:
@@ -391,7 +448,7 @@ dashboard.
 | Updates | `/ota/status`, `/ota/firmware`, `/ota/filesystem`, `/ota/file`, `/ota/check`, `/ota/rollback` |
 | The key | `/key`, within the window described above |
 | Stock and hardware | `/inventory`, `/setInventory`, `/resetInventory`, `/setServos`, `/flashServo1`, `/flashServo2`, `/setColor`, `/battery`, `/reset` |
-| Network | `/network`: the Wi-Fi network and signal, IP, gateway, DNS servers, clock, free memory, and what the order server's name last resolved to. For a unit that answers on its own network but reaches nothing beyond it |
+| Network | `/network`: the Wi-Fi network and signal, IP, gateway, DNS servers, clock, free memory, and what the order server's name last resolved to, and what the last configuration Task did. For a unit that answers on its own network but reaches nothing beyond it |
 | Wi-Fi and identity | `/`, `/scan`, `/cfg`, `/save`, `/wifi-settings`, `/wifi-reset`, `/wifi-reboot-config`, `/getMac`, `/setMac`, `/clearMac` |
 | Captive portal | `/generate_204`, `/hotspot-detect.html`, `/fwlink`, `/ncsi.txt`, `/connecttest.txt` |
 

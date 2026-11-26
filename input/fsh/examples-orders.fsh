@@ -72,7 +72,7 @@ Usage: #example
 Instance: Spenser-E3D4
 InstanceOf: Device
 Title: "Example - A Spenser unit on the order server"
-Description: "The Device a unit writes on the order server once per boot. Its id is the unit's name, the network it shows in setup mode: Spenser- and the last two bytes of its factory MAC."
+Description: "The Device a unit writes on the order server: its id is the unit's name, the network it shows in setup mode, Spenser- and the last two bytes of its factory MAC. Its settings and state are in Device.property, so its owner can see how it is set up without reaching it."
 Usage: #example
 * identifier.system = "http://costateixeira.github.io/spenser/unit"
 * identifier.value = "Spenser-E3D4"
@@ -81,6 +81,22 @@ Usage: #example
 * name.value = "Spenser-E3D4"
 * name.type = #user-friendly-name
 * version.value = "1.3.0"
+* property[0].type = SpenserUnitProperty#server-url
+* property[0].valueString = "http://spenser.178.104.103.200.sslip.io/fhir/r5"
+* property[1].type = SpenserUnitProperty#order-mode
+* property[1].valueString = "both"
+* property[2].type = SpenserUnitProperty#poll-enabled
+* property[2].valueBoolean = true
+* property[3].type = SpenserUnitProperty#poll-seconds
+* property[3].valueInteger = 30
+* property[4].type = SpenserUnitProperty#stock-dark
+* property[4].valueInteger = 12
+* property[5].type = SpenserUnitProperty#stock-milk
+* property[5].valueInteger = 15
+* property[6].type = SpenserUnitProperty#last-check
+* property[6].valueString = "No new orders"
+* property[7].type = SpenserUnitProperty#ip-address
+* property[7].valueString = "192.168.1.50"
 
 
 Instance: PlainDarkOrderForOneUnit

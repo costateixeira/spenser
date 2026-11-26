@@ -334,6 +334,67 @@ unidade como `Device/<nome>` precisam antes de `requestedperformer-reference=Dev
 **Cada MedicationDispense nomeia a unidade que a fez**, em `performer.actor`, pelo
 que o servidor mostra que unidade aviou cada prescrição.
 
+### Ver e alterar uma unidade à distância {#seeing-and-changing-a-unit-from-afar}
+
+Uma unidade costuma estar numa rede a que não chega. O servidor de prescrições é o
+único sítio que ambos veem, por isso a unidade comunica lá o seu estado e recebe lá
+instruções.
+
+**O que comunica.** O seu `Device/<nome>` contém as definições e o estado em
+`Device.property`, cada um codificado em
+[SpenserUnitProperty](CodeSystem-SpenserUnitProperty.html): o servidor de
+prescrições, o modo e as pesquisas de prescrições, a consulta periódica, a escrita
+de volta, o modo de atualização, o stock de cada calha, o resultado da última
+verificação, o resultado da última Task de configuração, e a rede Wi-Fi, o
+endereço IP, o sinal e a memória livre. Escreve-os na primeira verificação contra um
+servidor, depois de qualquer alteração de definições, e de dez em dez minutos;
+`meta.lastUpdated` diz quando comunicou pela última vez. Veja
+[a unidade tal como aparece no servidor](Device-Spenser-E3D4.html).
+
+**O que aceita.** Uma Task com o código
+[`configure`](CodeSystem-SpenserTaskCodes.html) que nomeia a unidade em
+`requestedPerformer`. Cada input é uma definição, nomeada em `input.type`, com o
+valor em `input.value[x]`:
+
+```json
+{
+  "resourceType": "Task",
+  "status": "requested",
+  "intent": "order",
+  "code": { "coding": [ {
+    "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+    "code": "configure" } ] },
+  "requestedPerformer": [ { "reference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" } } } ],
+  "input": [
+    { "type": { "text": "pollSeconds" }, "valueInteger": 60 },
+    { "type": { "text": "serverUrl" }, "valueString": "http://spenser.178.104.103.200.sslip.io/fhir/r5" }
+  ]
+}
+```
+
+Veja [uma Task de configuração](Task-ConfigureSpenserE3D4.html). Na verificação
+seguinte, a unidade:
+
+* só aceita uma Task de configuração que a nomeie, nunca uma que não nomeie nenhuma
+  unidade;
+* verifica todas as definições antes de aplicar qualquer uma, pelo que aplica
+  todas ou nenhuma;
+* antes de mudar para um novo `serverUrl`, pede `/metadata` ao novo servidor e
+  mantém o antigo se o novo não responder, para que um erro de escrita não a deixe
+  isolada;
+* conclui a Task com um `output` que lista o que aplicou, ou falha-a com o motivo em
+  `statusReason.concept.text`, no servidor de onde a Task veio.
+
+As definições que aceita assim são `serverUrl`, `orderMode`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds`, `writeBack`, `giveUpOnStockEmpty`, `updateMode`, `updateCheckMinutes`. Este caminho não tem chave:
+quem puder escrever no servidor de prescrições pode alterá-las. É aceitável para um
+brinquedo que raramente está ligado, e é por isso que o Wi-Fi, a chave e o URL de
+atualização não se podem definir assim. `GET /network` mostra o que fez a última
+Task de configuração.
+
+`tools/order/configure-unit.ps1` e `.sh` enviam uma Task destas e esperam pela
+resposta; sem definições, mostram o que uma unidade comunicou pela última vez.
+
 ### Prescrições que pode copiar {#orders-you-can-copy}
 
 O IG contém-nas como exemplos formais:
@@ -401,6 +462,7 @@ painel integrado.
 | Atualizações | `/ota/status`, `/ota/firmware`, `/ota/filesystem`, `/ota/file`, `/ota/check`, `/ota/rollback` |
 | A chave | `/key`, dentro da janela descrita acima |
 | Stock e hardware | `/inventory`, `/setInventory`, `/resetInventory`, `/setServos`, `/flashServo1`, `/flashServo2`, `/setColor`, `/battery`, `/reset` |
+| Rede | `/network`: a rede Wi-Fi e o sinal, IP, gateway, servidores DNS, relógio, memória livre, o que o nome do servidor de prescrições resolveu da última vez, e o que fez a última Task de configuração. Para uma unidade que responde na sua própria rede mas não chega a mais nada |
 | Wi-Fi e identidade | `/`, `/scan`, `/cfg`, `/save`, `/wifi-settings`, `/wifi-reset`, `/wifi-reboot-config`, `/getMac`, `/setMac`, `/clearMac` |
 | Portal cativo | `/generate_204`, `/hotspot-detect.html`, `/fwlink`, `/ncsi.txt`, `/connecttest.txt` |
 

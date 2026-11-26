@@ -145,6 +145,10 @@ char unitName[16] = "Spenser";
 #define UNIT_SYSTEM "http://costateixeira.github.io/spenser/unit"
 // The IG's extension on MedicationRequest naming the unit that is to dispense it.
 #define DISPENSING_DEVICE_URL "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice"
+// The IG's codes for what a unit reports about itself in Device.property, and
+// for the Task that changes its settings from afar.
+#define UNIT_PROPERTY_SYSTEM "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty"
+#define TASK_CODE_SYSTEM "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes"
 
 String unitReference() { return String("Device/") + unitName; }
 
@@ -1562,12 +1566,21 @@ String serverBase()
   return base;
 }
 
-// Put this unit on the order server as Device/<name>, once per boot and server,
-// so a Task's requestedPerformer and a dispense's performer point at something real. An
-// update rather than a create: the id is the unit's name, and writing it again
-// keeps the firmware version current. A failure is only logged; the next boot
-// tries again, and orders are handled either way.
+// Put this unit on the order server as Device/<name>, so a Task's
+// requestedPerformer and a dispense's performer point at something real, and so
+// that its owner can see how it is set up from anywhere: its settings and state
+// go in Device.property. Written on the first check against a server, after any
+// change made by a configuration Task, and otherwise every ten minutes, which
+// keeps the server's history short. An update rather than a create: the id is
+// the unit's name. A failure is only logged, and orders are handled either way.
 String registeredWith = ""; // only loop() reads and writes it
+unsigned long lastReportAt = 0;
+bool reportDue = true;
+const unsigned long REPORT_EVERY_MS = 10UL * 60UL * 1000UL;
+
+// Set by the last configuration Task, for /network. A plain buffer: loop()
+// writes it while the web task reads it.
+char lastConfiguration[160] = "";
 
 // Which unit an order is meant for. A unit is named either by a literal
 // reference, Device/<name>, or by a logical one, its identifier in UNIT_SYSTEM;
@@ -1628,12 +1641,21 @@ UnitAddress orderAddress(JsonObject task, JsonObject request)
   return requestAddress(request);
 }
 
-void registerUnit(const String &base)
+JsonObject addProperty(JsonArray properties, const char *code)
 {
-  if (registeredWith == base)
+  JsonObject property = properties.createNestedObject();
+  JsonObject coding = property.createNestedObject("type").createNestedArray("coding").createNestedObject();
+  coding["system"] = UNIT_PROPERTY_SYSTEM;
+  coding["code"] = code;
+  return property;
+}
+
+void reportUnit(const String &base)
+{
+  if (registeredWith == base && !reportDue && millis() - lastReportAt < REPORT_EVERY_MS)
     return;
 
-  StaticJsonDocument<768> doc;
+  DynamicJsonDocument doc(4096);
   doc["resourceType"] = "Device";
   doc["id"] = String(unitName);
   JsonObject identifier = doc.createNestedArray("identifier").createNestedObject();
@@ -1645,13 +1667,41 @@ void registerUnit(const String &base)
   name["value"] = String(unitName);
   name["type"] = "user-friendly-name";
   doc.createNestedArray("version").createNestedObject()["value"] = FIRMWARE_VERSION;
+  // When the unit last reported is the server's meta.lastUpdated: R5 Device has
+  // no element of its own for it.
+
+  JsonArray properties = doc.createNestedArray("property");
+  addProperty(properties, "server-url")["valueString"] = orderServerUrl;
+  addProperty(properties, "order-mode")["valueString"] = settings.orderMode;
+  addProperty(properties, "order-query")["valueString"] = settings.orderQuery;
+  addProperty(properties, "task-query")["valueString"] = settings.taskQuery;
+  addProperty(properties, "poll-enabled")["valueBoolean"] = settings.pollEnabled;
+  addProperty(properties, "poll-seconds")["valueInteger"] = settings.pollSeconds;
+  addProperty(properties, "write-back")["valueBoolean"] = settings.writeBack;
+  addProperty(properties, "give-up-on-stock-empty")["valueBoolean"] = settings.giveUpOnStockEmpty;
+  addProperty(properties, "update-mode")["valueString"] = settings.updateMode;
+  addProperty(properties, "update-check-minutes")["valueInteger"] = settings.updateCheckMinutes;
+  addProperty(properties, "stock-dark")["valueInteger"] = inventoryDark;
+  addProperty(properties, "stock-milk")["valueInteger"] = inventoryMilk;
+  if (orderCheck.everRan)
+    addProperty(properties, "last-check")["valueString"] = String(orderCheck.message);
+  if (lastConfiguration[0])
+    addProperty(properties, "last-configuration")["valueString"] = String(lastConfiguration);
+  addProperty(properties, "ssid")["valueString"] = WiFi.SSID();
+  addProperty(properties, "ip-address")["valueString"] = WiFi.localIP().toString();
+  addProperty(properties, "rssi")["valueInteger"] = WiFi.RSSI();
+  addProperty(properties, "largest-free-block")["valueInteger"] = ESP.getMaxAllocHeap();
 
   String body;
   serializeJson(doc, body);
   int status = sendResource("PUT", base + "/Device/" + unitName, body, "");
   Serial.printf("PUT Device/%s -> %d\n", unitName, status);
   if (status >= 200 && status < 300)
+  {
     registeredWith = base;
+    lastReportAt = millis();
+    reportDue = false;
+  }
 }
 
 // Take an unaddressed Task before dispensing it, so that two units polling the
@@ -2062,6 +2112,237 @@ bool runOrderLane(const String &base, bool taskLane, String &problem)
   return true;
 }
 
+// ==================== Configuration from afar ====================
+// A Task with code SpenserTaskCodes#configure, addressed to this unit in
+// requestedPerformer, carries settings as inputs: input.type names the setting,
+// input.value[x] holds the value. The unit applies them all or none, then
+// completes the Task with what it applied, or fails it with the reason.
+//
+// There is no key here: anyone who can write to the order server can change
+// these settings. That is the deal for a toy that is seldom online, and why the
+// list below leaves out what could take a unit over - the Wi-Fi, the key, and
+// the update URL, which could point it at somebody else's firmware.
+
+const char *REMOTE_SETTINGS[] = {"serverUrl", "orderMode", "orderQuery", "taskQuery", "pollEnabled", "pollSeconds",
+                                 "writeBack", "giveUpOnStockEmpty", "updateMode", "updateCheckMinutes"};
+
+bool parseFlag(const String &text, bool &out)
+{
+  if (text == "1" || text.equalsIgnoreCase("true")) { out = true; return true; }
+  if (text == "0" || text.equalsIgnoreCase("false")) { out = false; return true; }
+  return false;
+}
+
+bool parseNumber(const String &text, int &out)
+{
+  if (text.isEmpty())
+    return false;
+  for (unsigned int i = 0; i < text.length(); i++)
+    if (!isDigit(text[i]))
+      return false;
+  out = text.toInt();
+  return true;
+}
+
+// Whether a setting can be changed remotely and the value makes sense. Says why
+// not in "error".
+bool checkSetting(const String &name, const String &value, String &error)
+{
+  bool known = false;
+  for (const char *setting : REMOTE_SETTINGS)
+    if (name == setting)
+      known = true;
+  if (!known)
+  {
+    error = name + " cannot be set remotely";
+    return false;
+  }
+  bool flag;
+  int number;
+  if ((name == "pollEnabled" || name == "writeBack" || name == "giveUpOnStockEmpty") && !parseFlag(value, flag))
+    error = name + " needs true or false, not '" + value + "'";
+  else if ((name == "pollSeconds" || name == "updateCheckMinutes") && !parseNumber(value, number))
+    error = name + " needs a whole number, not '" + value + "'";
+  else if (name == "serverUrl" && !(value.startsWith("http://") || value.startsWith("https://")))
+    error = "serverUrl needs http:// or https://";
+  else if (name == "orderMode" && value != "both" && value != "tag" && value != "task")
+    error = "orderMode is both, tag or task";
+  else if (name == "updateMode" && value != "notify" && value != "install")
+    error = "updateMode is notify or install";
+  return error.isEmpty();
+}
+
+void setServerUrl(String url)
+{
+  while (url.endsWith("/"))
+    url.remove(url.length() - 1);
+  orderServerUrl = url;
+  prefs.begin("config", false);
+  prefs.putString("serverUrl", orderServerUrl);
+  prefs.end();
+}
+
+void applySetting(const String &name, const String &value)
+{
+  bool flag = false;
+  int number = 0;
+  parseFlag(value, flag);
+  parseNumber(value, number);
+  if (name == "serverUrl") setServerUrl(value);
+  else if (name == "orderMode") settings.orderMode = value;
+  else if (name == "orderQuery") settings.orderQuery = value;
+  else if (name == "taskQuery") settings.taskQuery = value;
+  else if (name == "pollEnabled") settings.pollEnabled = flag;
+  else if (name == "pollSeconds") settings.pollSeconds = constrain(number, 5, 3600);
+  else if (name == "writeBack") settings.writeBack = flag;
+  else if (name == "giveUpOnStockEmpty") settings.giveUpOnStockEmpty = flag;
+  else if (name == "updateMode") settings.updateMode = value;
+  else if (name == "updateCheckMinutes") settings.updateCheckMinutes = constrain(number, 0, 7 * 24 * 60);
+}
+
+// The value of a Task input, whichever type it came in.
+String inputValue(JsonObject input)
+{
+  for (const char *key : {"valueString", "valueUrl", "valueUri", "valueCode"})
+    if (input.containsKey(key))
+      return input[key].as<String>();
+  if (input.containsKey("valueBoolean"))
+    return input["valueBoolean"].as<bool>() ? "true" : "false";
+  if (input.containsKey("valueInteger"))
+    return String(input["valueInteger"].as<long>());
+  return "";
+}
+
+String inputName(JsonObject input)
+{
+  String code = input["type"]["coding"][0]["code"] | "";
+  return code.length() ? code : String(input["type"]["text"] | "");
+}
+
+// Whether a server answers at all, before this unit commits to it. A mistyped
+// order server would cut the unit off from the very channel that could fix it.
+int probeServer(const String &base)
+{
+  WiFiClientSecure secureClient;
+  WiFiClient plainClient;
+  HTTPClient http;
+  String url = base;
+  while (url.endsWith("/"))
+    url.remove(url.length() - 1);
+  url += "/metadata";
+  if (!beginHttp(http, secureClient, plainClient, url))
+    return -1;
+  http.addHeader("Accept", "application/fhir+json");
+  http.setTimeout(8000);
+  int status = http.GET();
+  http.end();
+  return status;
+}
+
+void runConfigurationTasks(const String &base)
+{
+  String url = base + "/Task?status=requested&code=" TASK_CODE_SYSTEM "%7Cconfigure&_count=10";
+  WiFiClientSecure secureClient;
+  WiFiClient plainClient;
+  HTTPClient http;
+  if (!beginHttp(http, secureClient, plainClient, url))
+    return;
+  http.addHeader("Accept", "application/fhir+json");
+  http.setTimeout(8000);
+  int status = http.GET();
+  if (status != 200)
+  {
+    http.end();
+    Serial.println("[Config] search " + httpOutcome(status));
+    return;
+  }
+  String payload = http.getString(); // getString, never getStream: see the chunked trap
+  http.end();
+
+  DynamicJsonDocument doc(12288);
+  if (deserializeJson(doc, payload))
+    return;
+
+  for (JsonObject entry : doc["entry"].as<JsonArray>())
+  {
+    JsonObject task = entry["resource"];
+    if (task.isNull() || String(task["resourceType"] | "") != "Task")
+      continue;
+    // Only a Task that names this unit. One that names nobody is not taken:
+    // a setting is never meant for whichever unit happens to look first.
+    if (taskAddress(task) != ADDRESSED_TO_THIS_UNIT)
+      continue;
+    String taskId = task["id"] | "";
+    if (taskId.isEmpty() || alreadyHandled("Task/" + taskId))
+      continue;
+
+    // Check everything before applying anything.
+    String names[12], values[12], why;
+    int count = 0;
+    for (JsonObject input : task["input"].as<JsonArray>())
+    {
+      String name = inputName(input);
+      if (name.isEmpty())
+        continue;
+      if (count == 12)
+      {
+        why = "too many settings in one Task";
+        break;
+      }
+      names[count] = name;
+      values[count] = inputValue(input);
+      if (!checkSetting(names[count], values[count], why))
+        break;
+      count++;
+    }
+    if (why.isEmpty() && count == 0)
+      why = "the Task carries no settings";
+
+    // A new order server must answer before the unit moves to it.
+    for (int i = 0; why.isEmpty() && i < count; i++)
+      if (names[i] == "serverUrl" && values[i] != orderServerUrl)
+      {
+        int answer = probeServer(values[i]);
+        if (answer != 200)
+          why = "the new order server did not answer (" + httpOutcome(answer) + "), kept " + orderServerUrl;
+      }
+
+    String applied;
+    if (why.isEmpty())
+    {
+      for (int i = 0; i < count; i++)
+      {
+        applySetting(names[i], values[i]);
+        applied += (applied.length() ? ", " : "") + names[i] + "=" + values[i];
+      }
+      saveSettings();
+      reportDue = true;
+    }
+
+    // Close the Task on the server it came from, which a new serverUrl has
+    // not changed for this request.
+    task["status"] = why.isEmpty() ? "completed" : "failed";
+    if (why.isEmpty())
+    {
+      JsonObject output = task.createNestedArray("output").createNestedObject();
+      output.createNestedObject("type")["text"] = "applied";
+      output["valueString"] = applied;
+    }
+    else
+      task.createNestedObject("statusReason").createNestedObject("concept")["text"] = why;
+
+    String body;
+    serializeJson(task, body);
+    String version = task["meta"]["versionId"] | "";
+    int closed = sendResource("PUT", base + "/Task/" + taskId, body, version);
+    markHandled("Task/" + taskId);
+
+    String result = "Task/" + taskId + ": " + (why.isEmpty() ? "applied " + applied : "refused, " + why);
+    strlcpy(lastConfiguration, result.c_str(), sizeof(lastConfiguration));
+    Serial.println("[Config] " + result + " (closed: " + httpOutcome(closed) + ")");
+  }
+}
+
 void checkOrders()
 {
   orderCheck.busy = true;
@@ -2088,8 +2369,13 @@ void checkOrders()
 
   resolveServer(base);
 
+  // Settings first: a configuration Task may change how the rest of this check
+  // runs, the order server included.
+  runConfigurationTasks(base);
+  base = serverBase();
+
   if (settings.writeBack)
-    registerUnit(base);
+    reportUnit(base);
 
   // Both lanes run on every check unless the settings narrow it down. The Task
   // lane goes first: when an order is both tagged and pointed at by a Task, the
@@ -3089,11 +3375,7 @@ void setup()
     // The server URL is shared with the Wi-Fi portal, so it stays where the
     // portal put it rather than moving in with the rest of the settings.
     if (paramStr(request, "serverUrl", text)) {
-      while (text.endsWith("/")) text.remove(text.length() - 1);
-      orderServerUrl = text;
-      prefs.begin("config", false);
-      prefs.putString("serverUrl", orderServerUrl);
-      prefs.end();
+      setServerUrl(text);
       updated = true;
     }
     if (paramStr(request, "orderMode", text)) {
@@ -3154,6 +3436,7 @@ void setup()
     }
 
     saveSettings();
+    reportDue = true; // the order server sees the change at the next check
     Serial.println("Settings saved: " + settingsJson());
     request->send(200, "application/json", settingsJson()); });
 
@@ -3550,6 +3833,8 @@ void setup()
     if (resolvedAt)
       target["resolvedSecondsAgo"] = (millis() - resolvedAt) / 1000;
     target["lastCheck"] = orderCheck.message;
+    if (lastConfiguration[0])
+      doc["lastConfiguration"] = lastConfiguration;
 
     String out;
     serializeJson(doc, out);
@@ -3752,9 +4037,14 @@ void setup()
     JsonArray cres2_interaction = cres2.createNestedArray("interaction");
     cres2_interaction.createNestedObject()["code"] = "search-type";
     cres2_interaction.createNestedObject()["code"] = "update";
-    JsonObject cres2_status = cres2.createNestedArray("searchParam").createNestedObject();
+    JsonArray cres2_params = cres2.createNestedArray("searchParam");
+    JsonObject cres2_status = cres2_params.createNestedObject();
     cres2_status["name"] = "status";
     cres2_status["type"] = "token";
+    JsonObject cres2_code = cres2_params.createNestedObject();
+    cres2_code["name"] = "code";
+    cres2_code["type"] = "token";
+    cres2_code["documentation"] = "Finds configuration Tasks, code " TASK_CODE_SYSTEM "#configure. One addressed to this unit in requestedPerformer has its inputs applied as settings, all or none, and is completed with what was applied or failed with the reason. A new order server must answer before the unit moves to it";
     cres2["searchInclude"][0] = "Task:focus";
 
     // MedicationDispense: what this unit reports back
@@ -3766,7 +4056,7 @@ void setup()
     // Device: this unit, as Task.requestedPerformer and performer.actor refer to it
     JsonObject cres4 = clientResources.createNestedObject();
     cres4["type"] = "Device";
-    cres4["documentation"] = "This unit, written once per boot as Device/Spenser-XXXX with its identifier in " UNIT_SYSTEM " and its firmware version. Task.requestedPerformer and MedicationDispense.performer.actor refer to it";
+    cres4["documentation"] = "This unit, as Device/Spenser-XXXX with its identifier in " UNIT_SYSTEM " and its firmware version, its settings and state in Device.property, coded in " UNIT_PROPERTY_SYSTEM ". Written on the first check, after a change of settings, and every ten minutes. Task.requestedPerformer and MedicationDispense.performer.actor refer to it";
     cres4.createNestedArray("interaction").createNestedObject()["code"] = "update";
 
     String response;

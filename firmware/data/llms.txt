@@ -238,6 +238,64 @@ Every MedicationDispense names the unit that wrote it:
 
 
 
+## Seeing and changing a unit from afar
+
+A unit is usually on a network you cannot reach. The order server is the one
+place it and you both see, so that is where it reports and where it takes
+instructions.
+
+What it reports: its Device/<name> carries its settings and state in
+Device.property, each coded in
+http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty:
+server-url, order-mode, order-query, task-query, poll-enabled, poll-seconds,
+write-back, give-up-on-stock-empty, update-mode, update-check-minutes,
+stock-dark, stock-milk, last-check, last-configuration, ssid, ip-address,
+rssi, largest-free-block. It writes them on its first check against a server,
+after any change of settings, and every ten minutes. meta.lastUpdated says when
+it last reported.
+
+    GET {server}/Device/Spenser-E3D4
+
+What it takes: a Task with code SpenserTaskCodes#configure that names the unit
+in requestedPerformer. Each input is one setting, named in input.type (text or
+code) with its value in input.value[x] (string, integer, boolean, url):
+
+    {
+      "resourceType": "Task",
+      "status": "requested",
+      "intent": "order",
+      "code": { "coding": [ {
+        "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+        "code": "configure" } ] },
+      "requestedPerformer": [ { "reference": {
+        "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" } } } ],
+      "input": [
+        { "type": { "text": "pollSeconds" }, "valueInteger": 60 },
+        { "type": { "text": "serverUrl" }, "valueString": "http://spenser.178.104.103.200.sslip.io/fhir/r5" }
+      ]
+    }
+
+On its next check the unit:
+
+- takes only a configuration Task that names it; one naming no unit is left;
+- checks every setting before applying any: all or none;
+- before moving to a new serverUrl, asks GET {new}/metadata and keeps the old
+  server unless the new one answers 200, so a typo cannot cut it off;
+- completes the Task with output "applied" listing what it set, or fails it
+  with the reason in statusReason.concept.text, on the server the Task came
+  from.
+
+Settings it accepts this way: serverUrl, orderMode, orderQuery, taskQuery,
+pollEnabled, pollSeconds, writeBack, giveUpOnStockEmpty, updateMode,
+updateCheckMinutes. There is no key on this route: anyone who can write to the
+order server can change these, which is why the Wi-Fi, the key and the update
+URL cannot be set this way. GET /network shows what the last configuration Task
+did.
+
+tools/order/configure-unit.ps1 and .sh send such a Task and wait for the
+answer; run them with no settings to see what a unit last reported.
+
+
 ## Time
 
 A dispense carries recorded, whenPrepared and whenHandedOver, and a refusal

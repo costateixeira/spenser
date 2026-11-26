@@ -345,6 +345,68 @@ plutôt `requestedperformer-reference=Device/<nom>`.
 **Chaque MedicationDispense nomme l'unité qui l'a produite**, dans `performer.actor`,
 de sorte que le serveur montre quelle unité a honoré quelle ordonnance.
 
+### Voir et modifier une unité à distance {#seeing-and-changing-a-unit-from-afar}
+
+Une unité se trouve en général sur un réseau que vous ne pouvez pas atteindre. Le
+serveur d'ordonnances est le seul endroit que vous voyez tous les deux : c'est donc
+là que l'unité rend compte de son état et là qu'elle reçoit des instructions.
+
+**Ce qu'elle rapporte.** Son `Device/<nom>` porte ses réglages et son état dans
+`Device.property`, chacun codé dans
+[SpenserUnitProperty](CodeSystem-SpenserUnitProperty.html) : le serveur
+d'ordonnances, le mode et les recherches d'ordonnances, l'interrogation périodique,
+l'écriture en retour, le mode de mise à jour, le stock de chaque couloir, le résultat
+de la dernière vérification, celui de la dernière Task de configuration, ainsi que
+son réseau Wi-Fi, son adresse IP, son signal et sa mémoire libre. Elle les écrit à sa
+première vérification auprès d'un serveur, après tout changement de réglages, et
+toutes les dix minutes ; `meta.lastUpdated` indique quand elle a rendu compte pour la
+dernière fois. Voir [l'unité telle qu'elle apparaît sur le serveur](Device-Spenser-E3D4.html).
+
+**Ce qu'elle accepte.** Une Task de code
+[`configure`](CodeSystem-SpenserTaskCodes.html) qui nomme l'unité dans
+`requestedPerformer`. Chaque input est un réglage, nommé dans `input.type`, avec sa
+valeur dans `input.value[x]` :
+
+```json
+{
+  "resourceType": "Task",
+  "status": "requested",
+  "intent": "order",
+  "code": { "coding": [ {
+    "system": "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+    "code": "configure" } ] },
+  "requestedPerformer": [ { "reference": {
+    "identifier": { "system": "http://costateixeira.github.io/spenser/unit", "value": "Spenser-E3D4" } } } ],
+  "input": [
+    { "type": { "text": "pollSeconds" }, "valueInteger": 60 },
+    { "type": { "text": "serverUrl" }, "valueString": "http://spenser.178.104.103.200.sslip.io/fhir/r5" }
+  ]
+}
+```
+
+Voir [une Task de configuration](Task-ConfigureSpenserE3D4.html). À sa vérification
+suivante, l'unité :
+
+* n'accepte qu'une Task de configuration qui la nomme, jamais une qui ne nomme
+  aucune unité ;
+* vérifie chaque réglage avant d'en appliquer un seul : elle les applique tous ou
+  aucun ;
+* avant de passer à un nouveau `serverUrl`, demande `/metadata` au nouveau serveur
+  et garde l'ancien si le nouveau ne répond pas, pour qu'une faute de frappe ne la
+  coupe pas du monde ;
+* termine la Task avec un `output` qui liste ce qu'elle a appliqué, ou la met en
+  échec avec la raison dans `statusReason.concept.text`, sur le serveur d'où venait
+  la Task.
+
+Les réglages qu'elle accepte ainsi sont `serverUrl`, `orderMode`, `orderQuery`, `taskQuery`, `pollEnabled`, `pollSeconds`, `writeBack`, `giveUpOnStockEmpty`, `updateMode`, `updateCheckMinutes`. Cette voie n'a pas de
+clé : quiconque peut écrire sur le serveur d'ordonnances peut les modifier. C'est
+acceptable pour un jouet rarement en ligne, et c'est pourquoi le Wi-Fi, la clé et
+l'URL de mise à jour ne peuvent pas être réglés ainsi. `GET /network` montre ce qu'a
+fait la dernière Task de configuration.
+
+`tools/order/configure-unit.ps1` et `.sh` envoient une telle Task et attendent la
+réponse ; sans réglage, ils montrent ce qu'une unité a rapporté en dernier.
+
 ### Ordonnances à copier {#orders-you-can-copy}
 
 L'IG les fournit comme exemples formels :
@@ -412,6 +474,7 @@ démonstration et servir le tableau de bord intégré.
 | Mises à jour | `/ota/status`, `/ota/firmware`, `/ota/filesystem`, `/ota/file`, `/ota/check`, `/ota/rollback` |
 | La clé | `/key`, dans la fenêtre décrite plus haut |
 | Stock et matériel | `/inventory`, `/setInventory`, `/resetInventory`, `/setServos`, `/flashServo1`, `/flashServo2`, `/setColor`, `/battery`, `/reset` |
+| Réseau | `/network` : le réseau Wi-Fi et le signal, l'IP, la passerelle, les serveurs DNS, l'horloge, la mémoire libre, ce que le nom du serveur d'ordonnances a donné à la dernière résolution, et ce qu'a fait la dernière Task de configuration. Pour une unité qui répond sur son propre réseau mais n'atteint rien au-delà |
 | Wi-Fi et identité | `/`, `/scan`, `/cfg`, `/save`, `/wifi-settings`, `/wifi-reset`, `/wifi-reboot-config`, `/getMac`, `/setMac`, `/clearMac` |
 | Portail captif | `/generate_204`, `/hotspot-detect.html`, `/fwlink`, `/ncsi.txt`, `/connecttest.txt` |
 
