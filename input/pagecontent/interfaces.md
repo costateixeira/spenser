@@ -219,7 +219,9 @@ told apart.
 ### What Spenser asks of an order server
 
 Point a unit at a server, and on every check it runs two searches and writes
-back what happened:
+back what happened. A unit with no server stored uses the project's,
+`http://spenser.178.104.103.200.sslip.io/fhir/r5`, and so does one that has that server stored
+without its `/fhir/r5` path:
 
 ```
 PUT  {server}/Device/{unit name}

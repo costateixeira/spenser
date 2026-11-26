@@ -138,8 +138,10 @@ POST /InventoryReport                                    [key]
 
 ## What this device asks of an order server
 
-Set the server with GET /setSettings?serverUrl=... Then, on every check, it
-runs two searches and writes back what happened.
+Set the server with GET /setSettings?serverUrl=... A unit with no server
+stored uses the project's, http://spenser.178.104.103.200.sslip.io/fhir/r5, and so does one that has
+that server stored without its /fhir/r5 path. Then, on every check, it runs
+two searches and writes back what happened.
 
   PUT  {server}/Device/{unit name}        (once per boot: this unit, see below)
   GET  {server}/Task?status=requested&_include=Task:focus&_count=5

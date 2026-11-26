@@ -169,6 +169,10 @@ String wifiSsid;
 String wifiPass;
 String orderServerUrl = "";
 
+// The project's order server, for a unit that has none stored. Plain http, so the
+// unit is spared a TLS handshake on every poll.
+#define DEFAULT_SERVER_URL "http://spenser.178.104.103.200.sslip.io/fhir/r5"
+
 // Writes to the order server that have not landed yet. Posting a dispense and
 // closing the order out are both writes this unit owes the server, so both are
 // queued: a close-out that is dropped on the floor leaves a Task requested
@@ -3030,6 +3034,22 @@ void setup()
   orderServerUrl = prefs.getString("serverUrl", "");
   prefs.end();
   Serial.println("Saved server URL: " + orderServerUrl);
+
+  // No server stored: use the project's. The project's server stored without its
+  // FHIR path (".../fhir/r5" left off, which answers 404 to everything) is the
+  // same mistake, and is corrected the same way and saved.
+  {
+    String stored = orderServerUrl;
+    while (stored.endsWith("/"))
+      stored.remove(stored.length() - 1);
+    String bare = String(DEFAULT_SERVER_URL).substring(0, String(DEFAULT_SERVER_URL).indexOf('/', 8));
+    bool sameHostNoPath = stored.indexOf('/', stored.indexOf("://") + 3) < 0 && hostOf(stored) == hostOf(bare);
+    if (stored.isEmpty() || sameHostNoPath)
+    {
+      setServerUrl(DEFAULT_SERVER_URL);
+      Serial.println("Server URL set to the default: " + orderServerUrl);
+    }
+  }
 
   // Compute AP SSID from MAC tail
   uint8_t mac[6];

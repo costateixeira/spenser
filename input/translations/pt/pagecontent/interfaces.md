@@ -226,7 +226,9 @@ possível distinguir as unidades de uma frota.
 ### O que o Spenser pede a um servidor de prescrições {#what-spenser-asks-of-an-order-server}
 
 Aponte uma unidade para um servidor e, em cada verificação, ela faz duas pesquisas
-e escreve de volta o que aconteceu:
+e escreve de volta o que aconteceu. Uma unidade sem servidor guardado usa o do
+projeto, `http://spenser.178.104.103.200.sslip.io/fhir/r5`, e o mesmo faz uma que tenha esse
+servidor guardado sem o caminho `/fhir/r5`:
 
 ```
 PUT  {server}/Device/{unit name}

@@ -232,7 +232,9 @@ distinguer les unités d'un parc.
 ### Ce que Spenser demande à un serveur d'ordonnances {#what-spenser-asks-of-an-order-server}
 
 Pointez une unité vers un serveur, et à chaque vérification elle lance deux
-recherches et écrit en retour ce qui s'est passé :
+recherches et écrit en retour ce qui s'est passé. Une unité sans serveur enregistré
+utilise celui du projet, `http://spenser.178.104.103.200.sslip.io/fhir/r5`, tout comme une unité
+qui a enregistré ce serveur sans son chemin `/fhir/r5` :
 
 ```
 PUT  {server}/Device/{unit name}

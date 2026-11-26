@@ -221,7 +221,9 @@ zijn.
 ### Wat Spenser van een orderserver vraagt {#what-spenser-asks-of-an-order-server}
 
 Wijs een unit naar een server, en bij elke controle voert hij twee zoekopdrachten uit
-en schrijft hij terug wat er is gebeurd:
+en schrijft hij terug wat er is gebeurd. Een unit zonder opgeslagen server gebruikt
+die van het project, `http://spenser.178.104.103.200.sslip.io/fhir/r5`, en dat geldt ook voor een
+unit die die server zonder het pad `/fhir/r5` heeft opgeslagen:
 
 ```
 PUT  {server}/Device/{unit name}
