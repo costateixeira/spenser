@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task xmlns="http://hl7.org/fhir">
+  <id value="ConfigureSpenserE3D4"/>
+  <language value="pt"/>
+  <text>
+    <status value="generated"/><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: Task ConfigureSpenserE3D4</b></p><a name="pt-ConfigureSpenserE3D4"> </a><a name="pt-hcConfigureSpenserE3D4"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title="Códigos:{http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes configure}">Configure</span></p><p><b>focus</b>: <a href="Device-Spenser-E3D4.html">Device: identifier = http://costateixeira.github.io/spenser/unit#Spenser-E3D4; status = active; manufacturer = Spenser</a></p><h3>RequestedPerformers</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Reference</b></td></tr><tr><td style="display: none">*</td><td>Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</td></tr></table><blockquote><p><b>input</b></p><p><b>type</b>: <span title="Códigos:">pollSeconds</span></p><p><b>value</b>: 60</p></blockquote><blockquote><p><b>input</b></p><p><b>type</b>: <span title="Códigos:">serverUrl</span></p><p><b>value</b>: http://spenser.178.104.103.200.sslip.io/fhir/r5</p></blockquote></div>
+  </text>
+  <status value="requested"/>
+  <intent value="order"/>
+  <code>
+    <coding>
+      <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes"/>
+      <code value="configure"/>
+      <display value="Configure"/>
+    </coding>
+  </code>
+  <focus>
+    <reference value="Device/Spenser-E3D4"/>
+  </focus>
+  <requestedPerformer>
+    <reference>
+      <identifier>
+        <system value="http://costateixeira.github.io/spenser/unit"/>
+        <value value="Spenser-E3D4"/>
+      </identifier>
+      <display value="Spenser-E3D4"/>
+    </reference>
+  </requestedPerformer>
+  <input>
+    <type>
+      <text value="pollSeconds"/>
+    </type>
+    <valueInteger value="60"/>
+  </input>
+  <input>
+    <type>
+      <text value="serverUrl"/>
+    </type>
+    <valueString value="http://spenser.178.104.103.200.sslip.io/fhir/r5"/>
+  </input>
+</Task>

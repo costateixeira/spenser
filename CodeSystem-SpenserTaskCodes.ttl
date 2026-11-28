@@ -1,0 +1,56 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes> a fhir:CodeSystem ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "SpenserTaskCodes"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: CodeSystem SpenserTaskCodes</b></p><a name=\"SpenserTaskCodes\"> </a><a name=\"hcSpenserTaskCodes\"> </a><p>This case-sensitive code system <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes</code> defines the following code:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Display</b></td><td><b>Definition</b></td></tr><tr><td style=\"white-space:nowrap\">configure<a name=\"SpenserTaskCodes-configure\"> </a></td><td>Configure</td><td>Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none.</td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: CodeSystem SpenserTaskCodes</b></p><a name=\"pt-SpenserTaskCodes\"> </a><a name=\"pt-hcSpenserTaskCodes\"> </a><p>Este case-sensitive sistema de código <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes</code> define o seguinte código:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Código</b></td><td><b>Ecrã</b></td><td><b>Definição</b></td></tr><tr><td style=\"white-space:nowrap\">configure<a name=\"pt-SpenserTaskCodes-configure\"> </a></td><td>Configure</td><td>Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none.</td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: CodeSystem SpenserTaskCodes</b></p><a name=\"nl-SpenserTaskCodes\"> </a><a name=\"nl-hcSpenserTaskCodes\"> </a><p>Dit case-sensitive codesysteem <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes</code> definieert de volgende code:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Weergave</b></td><td><b>Definitie</b></td></tr><tr><td style=\"white-space:nowrap\">configure<a name=\"nl-SpenserTaskCodes-configure\"> </a></td><td>Configure</td><td>Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none.</td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : CodeSystem SpenserTaskCodes</b></p><a name=\"fr-SpenserTaskCodes\"> </a><a name=\"fr-hcSpenserTaskCodes\"> </a><p>This case-sensitive code system <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes</code> defines the following code:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Affichage</b></td><td><b>Définition</b></td></tr><tr><td style=\"white-space:nowrap\">configure<a name=\"fr-SpenserTaskCodes-configure\"> </a></td><td>Configure</td><td>Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none.</td></tr></table></div></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:url [ fhir:v "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes"^^xsd:anyURI] ; # 
+  fhir:version [ fhir:v "1.0.0"] ; # 
+  fhir:name [ fhir:v "SpenserTaskCodes"] ; # 
+  fhir:title [ fhir:v "Spenser Task Codes"] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:experimental [ fhir:v true] ; # 
+  fhir:date [ fhir:v "2026-11-26T15:58:54+00:00"^^xsd:dateTime] ; # 
+  fhir:publisher [ fhir:v "José Costa Teixeira"] ; # 
+  fhir:contact ( [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "url" ] ;
+       fhir:value [ fhir:v "https://github.com/costateixeira" ]
+     ] )
+  ] [
+     fhir:name [ fhir:v "José Costa Teixeira" ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "email" ] ;
+       fhir:value [ fhir:v "you-know.it@gmail.com" ] ;
+       fhir:use [ fhir:v "work" ]
+     ] )
+  ] ) ; # 
+  fhir:description [ fhir:v "Task codes for work asked of a Spenser unit other than dispensing."] ; # 
+  fhir:jurisdiction ( [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://unstats.un.org/unsd/methods/m49/m49.htm"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "001" ] ;
+       fhir:display [ fhir:v "World" ]
+     ] )
+  ] ) ; # 
+  fhir:caseSensitive [ fhir:v true] ; # 
+  fhir:content [ fhir:v "complete"] ; # 
+  fhir:count [ fhir:v "1"^^xsd:nonNegativeInteger] ; # 
+  fhir:concept ( [
+     fhir:code [ fhir:v "configure" ] ;
+     fhir:display [ fhir:v "Configure" ] ;
+     fhir:definition [ fhir:v "Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none." ]
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

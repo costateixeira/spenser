@@ -1,0 +1,30 @@
+{
+  "resourceType" : "MedicationDispense",
+  "id" : "DispenseForTaskOrder",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: MedicationDispense DispenseForTaskOrder</b></p><a name=\"DispenseForTaskOrder\"> </a><a name=\"hcDispenseForTaskOrder\"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>Performers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Actor</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table><p><b>authorizingPrescription</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: MedicationDispense DispenseForTaskOrder</b></p><a name=\"pt-DispenseForTaskOrder\"> </a><a name=\"pt-hcDispenseForTaskOrder\"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Códigos:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>Performers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Actor</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table><p><b>authorizingPrescription</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: MedicationDispense DispenseForTaskOrder</b></p><a name=\"nl-DispenseForTaskOrder\"> </a><a name=\"nl-hcDispenseForTaskOrder\"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>Performers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Actor</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table><p><b>authorizingPrescription</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest: extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : MedicationDispense DispenseForTaskOrder</b></p><a name=\"fr-DispenseForTaskOrder\"> </a><a name=\"fr-hcDispenseForTaskOrder\"> </a><p><b>status</b>: Completed</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes :{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>Performers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Actor</b></td></tr><tr><td style=\"display: none\">*</td><td><a href=\"Device-Spenser-E3D4.html\">Spenser-E3D4</a></td></tr></table><p><b>authorizingPrescription</b>: <a href=\"MedicationRequest-PlainDarkOrderForOneUnit.html\">MedicationRequest : extension = -&gt;Spenser-E3D4; status = active; intent = instance-order</a></p></div></div>"
+  },
+  "status" : "completed",
+  "medication" : {
+    "concept" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+        "code" : "chocolate-dark",
+        "display" : "Dark Chocolate"
+      }]
+    }
+  },
+  "subject" : {
+    "reference" : "Patient/123"
+  },
+  "performer" : [{
+    "actor" : {
+      "reference" : "Device/Spenser-E3D4",
+      "display" : "Spenser-E3D4"
+    }
+  }],
+  "authorizingPrescription" : [{
+    "reference" : "MedicationRequest/PlainDarkOrderForOneUnit"
+  }]
+}

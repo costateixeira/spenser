@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CodeSystem xmlns="http://hl7.org/fhir">
+  <id value="SpenserTaskCodes"/>
+  <language value="fr"/>
+  <text>
+    <status value="generated"/><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : CodeSystem SpenserTaskCodes</b></p><a name="fr-SpenserTaskCodes"> </a><a name="fr-hcSpenserTaskCodes"> </a><p>This case-sensitive code system <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes</code> defines the following code:</p><table class="codes"><tr><td style="white-space:nowrap"><b>Code</b></td><td><b>Affichage</b></td><td><b>Définition</b></td></tr><tr><td style="white-space:nowrap">configure<a name="fr-SpenserTaskCodes-configure"> </a></td><td>Configure</td><td>Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none.</td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes"/>
+  <version value="1.0.0"/>
+  <name value="SpenserTaskCodes"/>
+  <title value="Spenser Task Codes"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <date value="2026-11-26T15:58:54+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="Task codes for work asked of a Spenser unit other than dispensing."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <caseSensitive value="true"/>
+  <content value="complete"/>
+  <count value="1"/>
+  <concept>
+    <code value="configure"/>
+    <display value="Configure"/>
+    <definition value="Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none."/>
+  </concept>
+</CodeSystem>

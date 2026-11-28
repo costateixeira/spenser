@@ -1,0 +1,42 @@
+{
+  "resourceType" : "MedicationRequest",
+  "id" : "ActionableDarkOrderForOneUnit",
+  "meta" : {
+    "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"],
+    "tag" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/common-tags",
+      "code" : "actionable"
+    }]
+  },
+  "text" : {
+    "status" : "extensions",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\" lang=\"en\"><hr/><p><b>English</b></p><hr/><p class=\"res-header-id\"><b>Generated Narrative: MedicationRequest ActionableDarkOrderForOneUnit</b></p><a name=\"ActionableDarkOrderForOneUnit\"> </a><a name=\"hcActionableDarkOrderForOneUnit\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profile: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p><p style=\"margin-bottom: 0px\">Tag: <a href=\"http://terminology.hl7.org/7.5.0/CodeSystem-common-tags.html\">Actionable (Details: Common Tags code actionable = 'Actionable')</a></p></div><p><b>Dispensing device</b>: Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</p><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>DosageInstructions</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Text</b></td></tr><tr><td style=\"display: none\">*</td><td>One bite</td></tr></table></div><div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: MedicationRequest ActionableDarkOrderForOneUnit</b></p><a name=\"pt-ActionableDarkOrderForOneUnit\"> </a><a name=\"pt-hcActionableDarkOrderForOneUnit\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Perfil: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p><p style=\"margin-bottom: 0px\">Etiqueta: <a href=\"http://terminology.hl7.org/7.5.0/CodeSystem-common-tags.html\">Actionable (Pormenores: Common Tags código actionable = 'Actionable')</a></p></div><p><b>Dispensing device</b>: Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</p><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Códigos:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>DosageInstructions</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Text</b></td></tr><tr><td style=\"display: none\">*</td><td>One bite</td></tr></table></div><div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: MedicationRequest ActionableDarkOrderForOneUnit</b></p><a name=\"nl-ActionableDarkOrderForOneUnit\"> </a><a name=\"nl-hcActionableDarkOrderForOneUnit\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profiel: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p><p style=\"margin-bottom: 0px\">Tag: <a href=\"http://terminology.hl7.org/7.5.0/CodeSystem-common-tags.html\">Actionable (Details: Common Tags code actionable = 'Actionable')</a></p></div><p><b>Dispensing device</b>: Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</p><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>DosageInstructions</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Text</b></td></tr><tr><td style=\"display: none\">*</td><td>One bite</td></tr></table></div><div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : MedicationRequest ActionableDarkOrderForOneUnit</b></p><a name=\"fr-ActionableDarkOrderForOneUnit\"> </a><a name=\"fr-hcActionableDarkOrderForOneUnit\"> </a><div style=\"display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profil: <a href=\"StructureDefinition-SpenserRequest.html\">SpenserRequest</a></p><p style=\"margin-bottom: 0px\">Balise: <a href=\"http://terminology.hl7.org/7.5.0/CodeSystem-common-tags.html\">Actionable (Détails : code Common Tags actionable = 'Actionable')</a></p></div><p><b>Dispensing device</b>: Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</p><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Concept</b></td></tr><tr><td style=\"display: none\">*</td><td><span title=\"Codes :{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}\">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href=\"Patient/123\">Patient/123</a></p><h3>DosageInstructions</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Text</b></td></tr><tr><td style=\"display: none\">*</td><td>One bite</td></tr></table></div></div>"
+  },
+  "extension" : [{
+    "url" : "http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice",
+    "valueReference" : {
+      "identifier" : {
+        "system" : "http://costateixeira.github.io/spenser/unit",
+        "value" : "Spenser-E3D4"
+      },
+      "display" : "Spenser-E3D4"
+    }
+  }],
+  "status" : "active",
+  "intent" : "instance-order",
+  "medication" : {
+    "concept" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+        "code" : "chocolate-dark",
+        "display" : "Dark Chocolate"
+      }]
+    }
+  },
+  "subject" : {
+    "reference" : "Patient/123"
+  },
+  "dosageInstruction" : [{
+    "text" : "One bite"
+  }]
+}

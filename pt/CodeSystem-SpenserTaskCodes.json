@@ -1,0 +1,48 @@
+{
+  "resourceType" : "CodeSystem",
+  "id" : "SpenserTaskCodes",
+  "language" : "pt",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"pt\" lang=\"pt\"><hr/><p><b>Portuguese</b></p><hr/><p class=\"res-header-id\"><b>Narrativa gerada: CodeSystem SpenserTaskCodes</b></p><a name=\"pt-SpenserTaskCodes\"> </a><a name=\"pt-hcSpenserTaskCodes\"> </a><p>Este case-sensitive sistema de código <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes</code> define o seguinte código:</p><table class=\"codes\"><tr><td style=\"white-space:nowrap\"><b>Código</b></td><td><b>Ecrã</b></td><td><b>Definição</b></td></tr><tr><td style=\"white-space:nowrap\">configure<a name=\"pt-SpenserTaskCodes-configure\"> </a></td><td>Configure</td><td>Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none.</td></tr></table></div>"
+  },
+  "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+  "version" : "1.0.0",
+  "name" : "SpenserTaskCodes",
+  "title" : "Spenser Task Codes",
+  "status" : "draft",
+  "experimental" : true,
+  "date" : "2026-11-26T15:58:54+00:00",
+  "publisher" : "José Costa Teixeira",
+  "contact" : [{
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://github.com/costateixeira"
+    }]
+  },
+  {
+    "name" : "José Costa Teixeira",
+    "telecom" : [{
+      "system" : "email",
+      "value" : "you-know.it@gmail.com",
+      "use" : "work"
+    }]
+  }],
+  "description" : "Task codes for work asked of a Spenser unit other than dispensing.",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "caseSensitive" : true,
+  "content" : "complete",
+  "count" : 1,
+  "concept" : [{
+    "code" : "configure",
+    "display" : "Configure",
+    "definition" : "Change the settings of the unit named in requestedPerformer. Each input is one setting: input.type names it, input.value[x] holds the value. The unit applies them all or none."
+  }]
+}

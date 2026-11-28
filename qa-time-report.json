@@ -1,0 +1,1770 @@
+{
+  "date" : "Thu, 26 Nov, 2026 15:58:54 +0000",
+  "doco" : "For each file: start is seconds after start activity occurred. Length = milliseconds activity took",
+  "files" : [{
+    "name" : "/fsh-generated/resources/ImplementationGuide-jct.fhir.spenser.json",
+    "size" : 16319,
+    "processes" : [{
+      "activity" : "load",
+      "start" : 39,
+      "length" : 9
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 13
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 106
+    },
+    {
+      "activity" : "validate",
+      "start" : 42,
+      "length" : 3002
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 46,
+      "length" : 1
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 48
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 206
+    },
+    {
+      "activity" : "generate2",
+      "start" : 50,
+      "length" : 291
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 4
+    },
+    {
+      "activity" : "scanExamplesForR5",
+      "start" : 80,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ActorDefinition-OrderPlacer.json",
+    "size" : 5126,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 16
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 12
+    },
+    {
+      "activity" : "load-configure",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 11
+    },
+    {
+      "activity" : "validate",
+      "start" : 45,
+      "length" : 272
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 7
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 17
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 89
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ActorDefinition-OrderServer.json",
+    "size" : 3528,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 10
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 4
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 11
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 51
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 7
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 14
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 68
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ActorDefinition-SpenserUnit.json",
+    "size" : 3503,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 9
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 4
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 12
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 31
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 46,
+      "length" : 1
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 7
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 14
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 65
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ActorDefinition-UnitOwner.json",
+    "size" : 3369,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 9
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 4
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 8
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 27
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 8
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 14
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 61
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ActorDefinition-UpdatePublisher.json",
+    "size" : 3420,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 8
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 4
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 6
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 28
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 8
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 13
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 61
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/CapabilityStatement-SpenserFHIRCapabilityStatement.json",
+    "size" : 3057,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 4
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 5
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 42
+    },
+    {
+      "activity" : "validate",
+      "start" : 42,
+      "length" : 90
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 6
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 47
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 103
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 3
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/CodeSystem-SpenserMeds.json",
+    "size" : 3706,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 10
+    },
+    {
+      "activity" : "load",
+      "start" : 38,
+      "length" : 62
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 2
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 13
+    },
+    {
+      "activity" : "validate",
+      "start" : 40,
+      "length" : 1183
+    },
+    {
+      "activity" : "checkConformanceResources",
+      "start" : 46,
+      "length" : 1
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 7
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 15
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 176
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 1
+    },
+    {
+      "activity" : "scanExamplesForR5",
+      "start" : 80,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/CodeSystem-SpenserTaskCodes.json",
+    "size" : 688,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 4
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 4
+    },
+    {
+      "activity" : "validate",
+      "start" : 41,
+      "length" : 10
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 5
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 10
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 132
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/CodeSystem-SpenserUnitProperty.json",
+    "size" : 3233,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 2
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 3
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 10
+    },
+    {
+      "activity" : "validate",
+      "start" : 41,
+      "length" : 29
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 7
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 23
+    },
+    {
+      "activity" : "generate2",
+      "start" : 51,
+      "length" : 195
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/Device-Spenser-E3D4.json",
+    "size" : 2442,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 2
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 39,
+      "length" : 266
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 15
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 15
+    },
+    {
+      "activity" : "generate2",
+      "start" : 52,
+      "length" : 86
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ExampleScenario-DirectOrderScenario.json",
+    "size" : 4764,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 2
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 15
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 47
+    },
+    {
+      "activity" : "validate",
+      "start" : 42,
+      "length" : 90
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 6
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 28
+    },
+    {
+      "activity" : "generate2",
+      "start" : 52,
+      "length" : 574
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ExampleScenario-TaskOrderScenario.json",
+    "size" : 9685,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 2
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 6
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 69
+    },
+    {
+      "activity" : "validate",
+      "start" : 42,
+      "length" : 82
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 8
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 49
+    },
+    {
+      "activity" : "generate2",
+      "start" : 52,
+      "length" : 227
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/InventoryReport-Add5Milk.json",
+    "size" : 836,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 7
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 6
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 5
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 9
+    },
+    {
+      "activity" : "generate2",
+      "start" : 52,
+      "length" : 38
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/InventoryReport-SetDarkTo17.json",
+    "size" : 838,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 5
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 8
+    },
+    {
+      "activity" : "generate2",
+      "start" : 52,
+      "length" : 32
+    },
+    {
+      "activity" : "generateExampleZip",
+      "start" : 69,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationDispense-DeclinedDispenseOutOfStock.json",
+    "size" : 790,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 2
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 8
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 16
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 9
+    },
+    {
+      "activity" : "generate2",
+      "start" : 52,
+      "length" : 28
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationDispense-DispenseForActionableDarkOrder.json",
+    "size" : 656,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 7
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 11
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 8
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 24
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationDispense-DispenseForDirectOrder.json",
+    "size" : 643,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 8
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 10
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 3
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 8
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 28
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationDispense-DispenseForTaskOrder.json",
+    "size" : 651,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 7
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 10
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 26
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-ActionableDarkOrder.json",
+    "size" : 752,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 10
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 13
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 8
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 43
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-ActionableDarkOrderForOneUnit.json",
+    "size" : 1092,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "load",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 8
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 18
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 9
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 29
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-PlainDarkOrderForOneUnit.json",
+    "size" : 884,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 2
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 5
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 14
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 27
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-PlainMilkOrder.json",
+    "size" : 544,
+    "processes" : [{
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 6
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 10
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 3
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 30
+    },
+    {
+      "activity" : "generateExampleZip",
+      "start" : 68,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/MedicationRequest-med-request-1234.json",
+    "size" : 618,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 50
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 46,
+      "length" : 1
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 9
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 30
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/StructureDefinition-SpenserRequest.json",
+    "size" : 2095,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 4
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 7
+    },
+    {
+      "activity" : "generateSnapshots",
+      "start" : 39,
+      "length" : 94
+    },
+    {
+      "activity" : "load-configure",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 166
+    },
+    {
+      "activity" : "validate",
+      "start" : 41,
+      "length" : 632
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 46,
+      "length" : 2
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 3
+    },
+    {
+      "activity" : "generate1",
+      "start" : 47,
+      "length" : 215
+    },
+    {
+      "activity" : "generate2",
+      "start" : 53,
+      "length" : 2664
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 631
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 14
+    },
+    {
+      "activity" : "scanExamplesForR5",
+      "start" : 80,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/StructureDefinition-dispensingDevice.json",
+    "size" : 3717,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 5
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 6
+    },
+    {
+      "activity" : "generateSnapshots",
+      "start" : 39,
+      "length" : 18
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 43
+    },
+    {
+      "activity" : "validate",
+      "start" : 42,
+      "length" : 111
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 2
+    },
+    {
+      "activity" : "generate1",
+      "start" : 48,
+      "length" : 116
+    },
+    {
+      "activity" : "generate2",
+      "start" : 55,
+      "length" : 698
+    },
+    {
+      "activity" : "generate2",
+      "start" : 57,
+      "length" : 93
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 10
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/Task-ConfigureSpenserE3D4.json",
+    "size" : 856,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 9
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 6
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 48,
+      "length" : 9
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 37
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/Task-FulfillForOneUnit.json",
+    "size" : 572,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 8
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 8
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 3
+    },
+    {
+      "activity" : "generate1",
+      "start" : 48,
+      "length" : 7
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 25
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/Task-FulfillPlainMilkOrder.json",
+    "size" : 528,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 6
+    },
+    {
+      "activity" : "validate",
+      "start" : 46,
+      "length" : 7
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 48,
+      "length" : 6
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 26
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/ValueSet-SpenserMedsVS.json",
+    "size" : 441,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "load",
+      "start" : 39,
+      "length" : 3
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 102
+    },
+    {
+      "activity" : "validate",
+      "start" : 41,
+      "length" : 74
+    },
+    {
+      "activity" : "translate",
+      "start" : 46,
+      "length" : 4
+    },
+    {
+      "activity" : "generate1",
+      "start" : 48,
+      "length" : 9
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 169
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 69,
+      "length" : 3
+    }]
+  },
+  {
+    "name" : "/input/includes/menu.xml",
+    "size" : 1389,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/fsh-generated/includes/fsh-link-references.md",
+    "size" : 1725,
+    "processes" : [{
+      "activity" : "scan",
+      "start" : 39,
+      "length" : 1
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/data/features.yml",
+    "size" : 5,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/fhir-intro.md",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/authors.md",
+    "size" : 81,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/copyright.md",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/translationinfo.md",
+    "size" : 516,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/assembly.md",
+    "size" : 6512,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 6
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/roadmap.md",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/setup.md",
+    "size" : 6638,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 6
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/firmware.md",
+    "size" : 6352,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 4
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/index.md",
+    "size" : 2281,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/hardware-bom.md",
+    "size" : 757,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/usage.md",
+    "size" : 10000,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 4
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/hardware-3ddesign.md",
+    "size" : 5518,
+    "processes" : [{
+      "activity" : "validate",
+      "start" : 45,
+      "length" : 1
+    },
+    {
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 3
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/interfaces.md",
+    "size" : 25294,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 9
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/implementing.md",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/pagecontent/downloads.md",
+    "size" : 729,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/template/config",
+    "size" : 0
+  },
+  {
+    "name" : "/template/config/_config.yml",
+    "size" : 140
+  },
+  {
+    "name" : "/input/images",
+    "size" : 0,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-04.svg",
+    "size" : 5951,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pin-normal.stl",
+    "size" : 19684,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-body-small-x2.stl",
+    "size" : 1201484,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 3
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-11.svg",
+    "size" : 10512,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-body-small.stl",
+    "size" : 600784,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-12.svg",
+    "size" : 32380,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pin.png",
+    "size" : 17457,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pusher-small.stl",
+    "size" : 15484,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-02.svg",
+    "size" : 8673,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-07.svg",
+    "size" : 4243,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pin-small.stl",
+    "size" : 19684,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-03.svg",
+    "size" : 2645,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pusher.stl",
+    "size" : 4084,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-arm.png",
+    "size" : 127191,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-08.svg",
+    "size" : 14179,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pin.stl",
+    "size" : 19684,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pusher.png",
+    "size" : 274510,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-06.svg",
+    "size" : 8277,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-body.png",
+    "size" : 197933,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-01.svg",
+    "size" : 3946,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-arm.stl",
+    "size" : 191084,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-body.stl",
+    "size" : 73184,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-arm-normal.stl",
+    "size" : 191084,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-05.svg",
+    "size" : 12247,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-09.svg",
+    "size" : 9042,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-10.svg",
+    "size" : 4080
+  },
+  {
+    "name" : "/input/images/spenser-body-normal.stl",
+    "size" : 603084,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 3
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-arm-small.stl",
+    "size" : 191084,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-00.svg",
+    "size" : 22032,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/assembly-08b.svg",
+    "size" : 9941,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/input/images/spenser-pusher-normal.stl",
+    "size" : 15484,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/temp/pages/_includes/artifacts.xml",
+    "size" : 216,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/temp/pages/_includes/fragment-artifacts-table.html",
+    "size" : 4272,
+    "processes" : [{
+      "activity" : "generate2",
+      "start" : 56,
+      "length" : 2
+    }]
+  }]
+}

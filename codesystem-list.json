@@ -1,0 +1,29 @@
+{
+  "codeSystems" : [{
+    "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+    "version" : "1.0.0",
+    "status" : "active",
+    "name" : "SpenserMeds",
+    "title" : "Spenser Medications - Code System",
+    "description" : "A code system of medications that Spenser can dispense.",
+    "uses" : {
+    },
+    "ValueSet-SpenserMedsVS.html" : "Spenser Medications - ValueSet"
+  },
+  {
+    "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes",
+    "version" : "1.0.0",
+    "status" : "draft",
+    "name" : "SpenserTaskCodes",
+    "title" : "Spenser Task Codes",
+    "description" : "Task codes for work asked of a Spenser unit other than dispensing."
+  },
+  {
+    "url" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+    "version" : "1.0.0",
+    "status" : "draft",
+    "name" : "SpenserUnitProperty",
+    "title" : "Spenser Unit Properties",
+    "description" : "What a Spenser unit reports about itself in Device.property on the order server: its settings and its state. Written on the first check against a server, after a change of settings, and every ten minutes."
+  }]
+}

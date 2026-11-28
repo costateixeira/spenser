@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MedicationRequest xmlns="http://hl7.org/fhir">
+  <id value="med-request-1234"/>
+  <meta>
+    <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+  </meta>
+  <text>
+    <status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><div xml:lang="en" lang="en"><hr/><p><b>English</b></p><hr/><p class="res-header-id"><b>Generated Narrative: MedicationRequest med-request-1234</b></p><a name="med-request-1234"> </a><a name="hcmed-request-1234"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px"/><p style="margin-bottom: 0px">Profile: <a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></p></div><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}">Milk chocolate</span></td></tr></table><p><b>subject</b>: <a href="Patient/123">Patient/123</a></p><h3>DosageInstructions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Text</b></td></tr><tr><td style="display: none">*</td><td>Just take it.</td></tr></table></div><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: MedicationRequest med-request-1234</b></p><a name="pt-med-request-1234"> </a><a name="pt-hcmed-request-1234"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px"/><p style="margin-bottom: 0px">Perfil: <a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></p></div><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Códigos:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}">Milk chocolate</span></td></tr></table><p><b>subject</b>: <a href="Patient/123">Patient/123</a></p><h3>DosageInstructions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Text</b></td></tr><tr><td style="display: none">*</td><td>Just take it.</td></tr></table></div><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: MedicationRequest med-request-1234</b></p><a name="nl-med-request-1234"> </a><a name="nl-hcmed-request-1234"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px"/><p style="margin-bottom: 0px">Profiel: <a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></p></div><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}">Milk chocolate</span></td></tr></table><p><b>subject</b>: <a href="Patient/123">Patient/123</a></p><h3>DosageInstructions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Text</b></td></tr><tr><td style="display: none">*</td><td>Just take it.</td></tr></table></div><div xml:lang="fr" lang="fr"><hr/><p><b>French</b></p><hr/><p class="res-header-id"><b>Narratif généré : MedicationRequest med-request-1234</b></p><a name="fr-med-request-1234"> </a><a name="fr-hcmed-request-1234"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px"/><p style="margin-bottom: 0px">Profil: <a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></p></div><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Codes :{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-milk}">Milk chocolate</span></td></tr></table><p><b>subject</b>: <a href="Patient/123">Patient/123</a></p><h3>DosageInstructions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Text</b></td></tr><tr><td style="display: none">*</td><td>Just take it.</td></tr></table></div></div>
+  </text>
+  <status value="active"/>
+  <intent value="instance-order"/>
+  <medication>
+    <concept>
+      <coding>
+        <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+        <code value="chocolate-milk"/>
+        <display value="Milk chocolate"/>
+      </coding>
+    </concept>
+  </medication>
+  <subject>
+    <reference value="Patient/123"/>
+  </subject>
+  <dosageInstruction>
+    <text value="Just take it."/>
+  </dosageInstruction>
+</MedicationRequest>

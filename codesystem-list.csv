@@ -1,0 +1,4 @@
+URL,Version,Status,OIDs,Name,Title,Description,Used
+http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds,1.0.0,active,,SpenserMeds,Spenser Medications - Code System,"A code system of medications that Spenser can dispense.","ValueSet/SpenserMedsVS"
+http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes,1.0.0,draft,,SpenserTaskCodes,Spenser Task Codes,"Task codes for work asked of a Spenser unit other than dispensing.",
+http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty,1.0.0,draft,,SpenserUnitProperty,Spenser Unit Properties,"What a Spenser unit reports about itself in Device.property on the order server: its settings and its state. Written on the first check against a server, after a change of settings, and every ten minutes.",

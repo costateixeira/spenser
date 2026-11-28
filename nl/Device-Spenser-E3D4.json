@@ -1,0 +1,94 @@
+{
+  "resourceType" : "Device",
+  "id" : "Spenser-E3D4",
+  "language" : "nl",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xml:lang=\"nl\" lang=\"nl\"><hr/><p><b>Dutch</b></p><hr/><p class=\"res-header-id\"><b>Gegenereerde narrative: Device Spenser-E3D4</b></p><a name=\"nl-Spenser-E3D4\"> </a><a name=\"nl-hcSpenser-E3D4\"> </a><p><b>identifier</b>: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4</p><p><b>status</b>: Active</p><p><b>manufacturer</b>: Spenser</p><h3>Names</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Value</b></td><td><b>Type</b></td></tr><tr><td style=\"display: none\">*</td><td>Spenser-E3D4</td><td>User Friendly name</td></tr></table><h3>Versions</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Value</b></td></tr><tr><td style=\"display: none\">*</td><td>1.3.0</td></tr></table><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty server-url}\">Order server</span></p><p><b>value</b>: http://spenser.178.104.103.200.sslip.io/fhir/r5</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty order-mode}\">Order mode</span></p><p><b>value</b>: both</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty poll-enabled}\">Polling</span></p><p><b>value</b>: true</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty poll-seconds}\">Poll interval</span></p><p><b>value</b>: 30</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty stock-dark}\">Dark stock</span></p><p><b>value</b>: 12</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty stock-milk}\">Milk stock</span></p><p><b>value</b>: 15</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty last-check}\">Last check</span></p><p><b>value</b>: No new orders</p></blockquote><blockquote><p><b>property</b></p><p><b>type</b>: <span title=\"Codes:{http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty ip-address}\">IP address</span></p><p><b>value</b>: 192.168.1.50</p></blockquote></div>"
+  },
+  "identifier" : [{
+    "system" : "http://costateixeira.github.io/spenser/unit",
+    "value" : "Spenser-E3D4"
+  }],
+  "status" : "active",
+  "manufacturer" : "Spenser",
+  "name" : [{
+    "value" : "Spenser-E3D4",
+    "type" : "user-friendly-name"
+  }],
+  "version" : [{
+    "value" : "1.3.0"
+  }],
+  "property" : [{
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "server-url"
+      }]
+    },
+    "valueString" : "http://spenser.178.104.103.200.sslip.io/fhir/r5"
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "order-mode"
+      }]
+    },
+    "valueString" : "both"
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "poll-enabled"
+      }]
+    },
+    "valueBoolean" : true
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "poll-seconds"
+      }]
+    },
+    "valueInteger" : 30
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "stock-dark"
+      }]
+    },
+    "valueInteger" : 12
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "stock-milk"
+      }]
+    },
+    "valueInteger" : 15
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "last-check"
+      }]
+    },
+    "valueString" : "No new orders"
+  },
+  {
+    "type" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty",
+        "code" : "ip-address"
+      }]
+    },
+    "valueString" : "192.168.1.50"
+  }]
+}

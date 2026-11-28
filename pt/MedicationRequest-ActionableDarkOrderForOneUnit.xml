@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MedicationRequest xmlns="http://hl7.org/fhir">
+  <id value="ActionableDarkOrderForOneUnit"/>
+  <meta>
+    <profile value="http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"/>
+    <tag>
+      <system value="http://terminology.hl7.org/CodeSystem/common-tags"/>
+      <code value="actionable"/>
+    </tag>
+  </meta>
+  <language value="pt"/>
+  <text>
+    <status value="extensions"/><div xml:lang="pt" lang="pt"><hr/><p><b>Portuguese</b></p><hr/><p class="res-header-id"><b>Narrativa gerada: MedicationRequest ActionableDarkOrderForOneUnit</b></p><a name="pt-ActionableDarkOrderForOneUnit"> </a><a name="pt-hcActionableDarkOrderForOneUnit"> </a><div style="display: inline-block; background-color: #fbffeb; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%"><p style="margin-bottom: 0px"/><p style="margin-bottom: 0px">Perfil: <a href="StructureDefinition-SpenserRequest.html">SpenserRequest</a></p><p style="margin-bottom: 0px">Etiqueta: <a href="http://terminology.hl7.org/7.5.0/CodeSystem-common-tags.html">Actionable (Pormenores: Common Tags código actionable = 'Actionable')</a></p></div><p><b>Dispensing device</b>: Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</p><p><b>status</b>: Active</p><p><b>intent</b>: Instance Order</p><h3>Medications</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Concept</b></td></tr><tr><td style="display: none">*</td><td><span title="Códigos:{http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds chocolate-dark}">Dark Chocolate</span></td></tr></table><p><b>subject</b>: <a href="Patient/123">Patient/123</a></p><h3>DosageInstructions</h3><table class="grid"><tr><td style="display: none">-</td><td><b>Text</b></td></tr><tr><td style="display: none">*</td><td>One bite</td></tr></table></div>
+  </text>
+  <extension url="http://costateixeira.github.io/spenser/StructureDefinition/dispensingDevice">
+    <valueReference>
+      <identifier>
+        <system value="http://costateixeira.github.io/spenser/unit"/>
+        <value value="Spenser-E3D4"/>
+      </identifier>
+      <display value="Spenser-E3D4"/>
+    </valueReference>
+  </extension>
+  <status value="active"/>
+  <intent value="instance-order"/>
+  <medication>
+    <concept>
+      <coding>
+        <system value="http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds"/>
+        <code value="chocolate-dark"/>
+        <display value="Dark Chocolate"/>
+      </coding>
+    </concept>
+  </medication>
+  <subject>
+    <reference value="Patient/123"/>
+  </subject>
+  <dosageInstruction>
+    <text value="One bite"/>
+  </dosageInstruction>
+</MedicationRequest>

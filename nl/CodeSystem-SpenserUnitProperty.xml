@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CodeSystem xmlns="http://hl7.org/fhir">
+  <id value="SpenserUnitProperty"/>
+  <language value="nl"/>
+  <text>
+    <status value="generated"/><div xml:lang="nl" lang="nl"><hr/><p><b>Dutch</b></p><hr/><p class="res-header-id"><b>Gegenereerde narrative: CodeSystem SpenserUnitProperty</b></p><a name="nl-SpenserUnitProperty"> </a><a name="nl-hcSpenserUnitProperty"> </a><p>Dit case-sensitive codesysteem <code>http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty</code> definieert de volgende codes:</p><table class="codes"><tr><td style="white-space:nowrap"><b>Code</b></td><td><b>Weergave</b></td><td><b>Definitie</b></td></tr><tr><td style="white-space:nowrap">server-url<a name="nl-SpenserUnitProperty-server-url"> </a></td><td>Order server</td><td>The FHIR base URL the unit polls for orders.</td></tr><tr><td style="white-space:nowrap">order-mode<a name="nl-SpenserUnitProperty-order-mode"> </a></td><td>Order mode</td><td>Which routes make an order actionable for this unit: both, tag or task.</td></tr><tr><td style="white-space:nowrap">order-query<a name="nl-SpenserUnitProperty-order-query"> </a></td><td>Order search</td><td>Extra search parameters for tagged orders.</td></tr><tr><td style="white-space:nowrap">task-query<a name="nl-SpenserUnitProperty-task-query"> </a></td><td>Task search</td><td>Extra search parameters for Tasks.</td></tr><tr><td style="white-space:nowrap">poll-enabled<a name="nl-SpenserUnitProperty-poll-enabled"> </a></td><td>Polling</td><td>Whether the unit checks the order server on its own.</td></tr><tr><td style="white-space:nowrap">poll-seconds<a name="nl-SpenserUnitProperty-poll-seconds"> </a></td><td>Poll interval</td><td>Seconds between checks.</td></tr><tr><td style="white-space:nowrap">write-back<a name="nl-SpenserUnitProperty-write-back"> </a></td><td>Write back</td><td>Whether the unit reports dispenses and closes orders on the server.</td></tr><tr><td style="white-space:nowrap">give-up-on-stock-empty<a name="nl-SpenserUnitProperty-give-up-on-stock-empty"> </a></td><td>Give up when empty</td><td>Whether an order for an empty lane is abandoned rather than retried after a refill.</td></tr><tr><td style="white-space:nowrap">update-mode<a name="nl-SpenserUnitProperty-update-mode"> </a></td><td>Update mode</td><td>notify, or install firmware updates on its own.</td></tr><tr><td style="white-space:nowrap">update-check-minutes<a name="nl-SpenserUnitProperty-update-check-minutes"> </a></td><td>Update check interval</td><td>Minutes between looks at the release manifest.</td></tr><tr><td style="white-space:nowrap">stock-dark<a name="nl-SpenserUnitProperty-stock-dark"> </a></td><td>Dark stock</td><td>Pieces of dark chocolate the unit believes it holds.</td></tr><tr><td style="white-space:nowrap">stock-milk<a name="nl-SpenserUnitProperty-stock-milk"> </a></td><td>Milk stock</td><td>Pieces of milk chocolate the unit believes it holds.</td></tr><tr><td style="white-space:nowrap">last-check<a name="nl-SpenserUnitProperty-last-check"> </a></td><td>Last check</td><td>What the last order check reported.</td></tr><tr><td style="white-space:nowrap">last-configuration<a name="nl-SpenserUnitProperty-last-configuration"> </a></td><td>Last configuration</td><td>What the last configuration Task did.</td></tr><tr><td style="white-space:nowrap">ssid<a name="nl-SpenserUnitProperty-ssid"> </a></td><td>Wi-Fi network</td><td>The Wi-Fi network the unit is on.</td></tr><tr><td style="white-space:nowrap">ip-address<a name="nl-SpenserUnitProperty-ip-address"> </a></td><td>IP address</td><td>The unit's address on its own network.</td></tr><tr><td style="white-space:nowrap">rssi<a name="nl-SpenserUnitProperty-rssi"> </a></td><td>Signal</td><td>Wi-Fi signal strength, in dBm.</td></tr><tr><td style="white-space:nowrap">largest-free-block<a name="nl-SpenserUnitProperty-largest-free-block"> </a></td><td>Largest free block</td><td>The largest block of free memory, in bytes. A TLS connection needs about 40 KB in one piece.</td></tr></table></div>
+  </text>
+  <url value="http://costateixeira.github.io/spenser/CodeSystem/SpenserUnitProperty"/>
+  <version value="1.0.0"/>
+  <name value="SpenserUnitProperty"/>
+  <title value="Spenser Unit Properties"/>
+  <status value="draft"/>
+  <experimental value="true"/>
+  <date value="2026-11-26T15:58:54+00:00"/>
+  <publisher value="José Costa Teixeira"/>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="url"/>
+      <value value="https://github.com/costateixeira"/>
+    </telecom>
+  </contact>
+  <contact>
+    <name value="José Costa Teixeira"/>
+    <telecom>
+      <system value="email"/>
+      <value value="you-know.it@gmail.com"/>
+      <use value="work"/>
+    </telecom>
+  </contact>
+  <description value="What a Spenser unit reports about itself in Device.property on the order server: its settings and its state. Written on the first check against a server, after a change of settings, and every ten minutes."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <caseSensitive value="true"/>
+  <content value="complete"/>
+  <count value="18"/>
+  <concept>
+    <code value="server-url"/>
+    <display value="Order server"/>
+    <definition value="The FHIR base URL the unit polls for orders."/>
+  </concept>
+  <concept>
+    <code value="order-mode"/>
+    <display value="Order mode"/>
+    <definition value="Which routes make an order actionable for this unit: both, tag or task."/>
+  </concept>
+  <concept>
+    <code value="order-query"/>
+    <display value="Order search"/>
+    <definition value="Extra search parameters for tagged orders."/>
+  </concept>
+  <concept>
+    <code value="task-query"/>
+    <display value="Task search"/>
+    <definition value="Extra search parameters for Tasks."/>
+  </concept>
+  <concept>
+    <code value="poll-enabled"/>
+    <display value="Polling"/>
+    <definition value="Whether the unit checks the order server on its own."/>
+  </concept>
+  <concept>
+    <code value="poll-seconds"/>
+    <display value="Poll interval"/>
+    <definition value="Seconds between checks."/>
+  </concept>
+  <concept>
+    <code value="write-back"/>
+    <display value="Write back"/>
+    <definition value="Whether the unit reports dispenses and closes orders on the server."/>
+  </concept>
+  <concept>
+    <code value="give-up-on-stock-empty"/>
+    <display value="Give up when empty"/>
+    <definition value="Whether an order for an empty lane is abandoned rather than retried after a refill."/>
+  </concept>
+  <concept>
+    <code value="update-mode"/>
+    <display value="Update mode"/>
+    <definition value="notify, or install firmware updates on its own."/>
+  </concept>
+  <concept>
+    <code value="update-check-minutes"/>
+    <display value="Update check interval"/>
+    <definition value="Minutes between looks at the release manifest."/>
+  </concept>
+  <concept>
+    <code value="stock-dark"/>
+    <display value="Dark stock"/>
+    <definition value="Pieces of dark chocolate the unit believes it holds."/>
+  </concept>
+  <concept>
+    <code value="stock-milk"/>
+    <display value="Milk stock"/>
+    <definition value="Pieces of milk chocolate the unit believes it holds."/>
+  </concept>
+  <concept>
+    <code value="last-check"/>
+    <display value="Last check"/>
+    <definition value="What the last order check reported."/>
+  </concept>
+  <concept>
+    <code value="last-configuration"/>
+    <display value="Last configuration"/>
+    <definition value="What the last configuration Task did."/>
+  </concept>
+  <concept>
+    <code value="ssid"/>
+    <display value="Wi-Fi network"/>
+    <definition value="The Wi-Fi network the unit is on."/>
+  </concept>
+  <concept>
+    <code value="ip-address"/>
+    <display value="IP address"/>
+    <definition value="The unit's address on its own network."/>
+  </concept>
+  <concept>
+    <code value="rssi"/>
+    <display value="Signal"/>
+    <definition value="Wi-Fi signal strength, in dBm."/>
+  </concept>
+  <concept>
+    <code value="largest-free-block"/>
+    <display value="Largest free block"/>
+    <definition value="The largest block of free memory, in bytes. A TLS connection needs about 40 KB in one piece."/>
+  </concept>
+</CodeSystem>

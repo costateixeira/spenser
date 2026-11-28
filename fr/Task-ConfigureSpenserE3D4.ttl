@@ -1,0 +1,58 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://costateixeira.github.io/spenser/Task/ConfigureSpenserE3D4> a fhir:Task ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "ConfigureSpenserE3D4"] ; # 
+  fhir:language [ fhir:v "fr"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xml:lang=\"fr\" lang=\"fr\"><hr/><p><b>French</b></p><hr/><p class=\"res-header-id\"><b>Narratif généré : Task ConfigureSpenserE3D4</b></p><a name=\"fr-ConfigureSpenserE3D4\"> </a><a name=\"fr-hcConfigureSpenserE3D4\"> </a><p><b>status</b>: Requested</p><p><b>intent</b>: order</p><p><b>code</b>: <span title=\"Codes :{http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes configure}\">Configure</span></p><p><b>focus</b>: <a href=\"Device-Spenser-E3D4.html\">Device : identifier = http://costateixeira.github.io/spenser/unit#Spenser-E3D4; status = active; manufacturer = Spenser</a></p><h3>RequestedPerformers</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Reference</b></td></tr><tr><td style=\"display: none\">*</td><td>Spenser-E3D4 (Identifier: <code>http://costateixeira.github.io/spenser/unit</code>/Spenser-E3D4)</td></tr></table><blockquote><p><b>input</b></p><p><b>type</b>: <span title=\"Codes :\">pollSeconds</span></p><p><b>value</b>: 60</p></blockquote><blockquote><p><b>input</b></p><p><b>type</b>: <span title=\"Codes :\">serverUrl</span></p><p><b>value</b>: http://spenser.178.104.103.200.sslip.io/fhir/r5</p></blockquote></div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:status [ fhir:v "requested"] ; # 
+  fhir:intent [ fhir:v "order"] ; # 
+  fhir:code [
+     fhir:coding ( [
+       fhir:system [ fhir:v "http://costateixeira.github.io/spenser/CodeSystem/SpenserTaskCodes"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "configure" ] ;
+       fhir:display [ fhir:v "Configure" ]
+     ] )
+  ] ; # 
+  fhir:focus [
+     fhir:link <http://costateixeira.github.io/spenser/Device/Spenser-E3D4> ;
+     fhir:reference [ fhir:v "Device/Spenser-E3D4" ]
+  ] ; # 
+  fhir:requestedPerformer ( [
+     fhir:reference [
+       fhir:identifier [
+         fhir:system [ fhir:v "http://costateixeira.github.io/spenser/unit"^^xsd:anyURI ] ;
+         fhir:value [ fhir:v "Spenser-E3D4" ]
+       ] ;
+       fhir:display [ fhir:v "Spenser-E3D4" ]
+     ]
+  ] ) ; # 
+  fhir:input ( [
+     fhir:type [
+       fhir:text [ fhir:v "pollSeconds" ]
+     ] ;
+     fhir:value [
+       a fhir:integer ;
+       fhir:v 60
+     ]
+  ] [
+     fhir:type [
+       fhir:text [ fhir:v "serverUrl" ]
+     ] ;
+     fhir:value [
+       a fhir:string ;
+       fhir:v "http://spenser.178.104.103.200.sslip.io/fhir/r5"
+     ]
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

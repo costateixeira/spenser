@@ -1,0 +1,63 @@
+# Exemplo - Prescrição para o Spenser - Spenser - a developer's companion v1.0.0
+
+## Exemplo MedicationRequest: Exemplo - Prescrição para o Spenser
+
+-------
+
+**Portuguese**
+
+-------
+
+Perfil: [SpenserRequest](StructureDefinition-SpenserRequest.md)
+
+**status**: Active
+
+**intent**: Instance Order
+
+### Medications
+
+| | |
+| :--- | :--- |
+| - | **Concept** |
+| * | Milk chocolate |
+
+**subject**: [Patient/123](Patient/123)
+
+### DosageInstructions
+
+| | |
+| :--- | :--- |
+| - | **Text** |
+| * | Just take it. |
+
+
+
+## Resource Content
+
+```json
+{
+  "resourceType" : "MedicationRequest",
+  "id" : "med-request-1234",
+  "meta" : {
+    "profile" : ["http://costateixeira.github.io/spenser/StructureDefinition/SpenserRequest"]
+  },
+  "status" : "active",
+  "intent" : "instance-order",
+  "medication" : {
+    "concept" : {
+      "coding" : [{
+        "system" : "http://costateixeira.github.io/spenser/CodeSystem/SpenserMeds",
+        "code" : "chocolate-milk",
+        "display" : "Milk chocolate"
+      }]
+    }
+  },
+  "subject" : {
+    "reference" : "Patient/123"
+  },
+  "dosageInstruction" : [{
+    "text" : "Just take it."
+  }]
+}
+
+```

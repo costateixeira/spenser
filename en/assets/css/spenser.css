@@ -1,0 +1,165 @@
+/* Spenser: dark chocolate and flame, from the logo. The base template reads its
+   colours from these variables, and this file loads after its stylesheets. */
+:root {
+  --chocolate: #2a1810;
+  --chocolate-mid: #4a2c1d;
+  --chocolate-soft: #6b4530;
+  --flame: #e4602a;
+  --flame-deep: #a8431a;
+  --paper: #fff8f1;
+
+  --ig-header-color: var(--chocolate);
+  --ig-header-container-color: var(--chocolate);
+  --navbar-bg-color: var(--chocolate);
+  --stripe-bg-color: var(--flame);
+  --ig-status-text-color: #ffd9a8;
+  --btn-hover-color: var(--flame-deep);
+  --btn-active-color: var(--flame);
+  --btn-text-color: #fff8f1;
+  --btn-gradient-start-color: var(--chocolate-mid);
+  --btn-gradient-end-color: var(--chocolate);
+  --btn-gradient-start-color-alpha: #ff4a2c1d;
+  --btn-gradient-end-color-alpha: #ff2a1810;
+  --link-color: var(--flame-deep);
+  --link-hover-color: var(--chocolate-mid);
+  --toc-box-bg-color: var(--paper);
+  --toc-box-border: 1px solid var(--chocolate-soft);
+  --stu-note-background-color: var(--paper);
+  --stu-note-border-left-color: var(--flame);
+  --footer-container-bg-color: var(--chocolate);
+  --footer-bg-color: var(--chocolate);
+  --footer-nav-bg-color: var(--paper);
+  --footer-text-color: #fff8f1;
+  --footer-hyperlink-text-color: #f4b98d;
+  --footer-highlight-text-color: #ffd9a8;
+  --breadcrumb-bg-color: var(--paper);
+  --breadcrumb-text-color: var(--chocolate);
+}
+
+#segment-header, #segment-header .container {
+  background-color: var(--chocolate);
+}
+
+#project-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff8f1;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+#project-logo:hover {
+  color: #ffd9a8;
+  text-decoration: none;
+}
+
+#ig-status, #ig-status p, #ig-status a {
+  color: #f4dcc6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--chocolate-mid);
+}
+
+/* The base's Bootstrap sets the menu's colour directly, not through a variable. */
+.navbar-inverse {
+  background-color: var(--chocolate-mid);
+  background-image: none;
+  border-color: var(--chocolate-mid);
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff8f1;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .active > a {
+  color: #ffffff;
+  background-color: var(--flame-deep);
+  background-image: none;
+}
+
+/* ---- The assembly guide: black lines on white, one idea per panel ---- */
+
+.assembly {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin: 24px 0;
+}
+
+.assembly-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 14px;
+  background: #ffffff;
+  border: 2px solid #111111;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.assembly-wide {
+  grid-column: 1 / -1;
+}
+
+.assembly-step img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.assembly-number {
+  position: absolute;
+  top: 6px;
+  left: 14px;
+  z-index: 1;
+  color: #111111;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 54px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* A sheet's own "2x" sits at its top left, so make room under the number. */
+.assembly-step:has(.assembly-number) img {
+  margin-top: 28px;
+}
+
+.assembly-step figcaption {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #111111;
+  color: #111111;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.assembly-step figcaption a {
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .assembly {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media print {
+  #segment-header, #segment-navbar, #segment-breadcrumb, #segment-footer {
+    display: none;
+  }
+  .assembly {
+    gap: 12px;
+  }
+}
