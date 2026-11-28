@@ -47,7 +47,8 @@ Preferences prefs;
 // unit would either offer the same update forever or never notice one.
 // Published builds live at https://costateixeira.github.io/spenser/firmware/
 // with the notes for each one. A build from a workstation says -dev, so a
-// hand-flashed unit is recognisable in a fleet.
+// hand-flashed unit is recognisable in a fleet. A unit in install mode moves
+// from a -dev build to the published one on its next update check.
 #ifndef FIRMWARE_VERSION
 #define FIRMWARE_VERSION "1.3.0-dev"
 #endif
